@@ -1,0 +1,175 @@
+<div class="container-fluid">
+  <p class="page-title">Reporte Financiero</p>
+</div>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="card card-white">
+        <div class="card-header"></div>
+        <div class="card-body">
+          <div class="row form-group">
+            <label dlabels class="col-sm-2 control-label">Región:</label>
+            <div class="col-sm-4">
+              <ng-select [items]="listRegion" placeholder="Seleccione una región" bindLabel="departamento"
+                bindValue="coddepa" [(ngModel)]="model.coddepa" name="coddepa" id="coddepa">
+              </ng-select>
+            </div>
+            <label dlabels class="col-sm-2 control-label">Código Unificado o SNIP:</label>
+            <div class="col-sm-4">
+              <input dTextBox maxlength="20" (keypress)="funciones.IsNumberKey($event)" class="form-control" type='text'
+                name="txtCodigoSnipUnificado" (keyup.enter)="buscarDataSource(model)" [(ngModel)]="model.cod_snip"
+                placeholder="SNIP / C.U." />
+            </div>
+          </div>
+          <div class="row form-group">
+            <label dlabels class="col-sm-2 control-label">Estado Proyecto:</label>
+            <div class="col-sm-4">
+              <ng-select [items]="listEstado" placeholder="Seleccione un estado de proyecto" bindLabel="nombre_estado"
+                bindValue="codigo_estado" [(ngModel)]="model.codigo_estado" name="codigo_estado" id="codigo_estado">
+              </ng-select>
+            </div>
+            <label dlabels class="col-sm-2 control-label">GL / GR:</label>
+            <div class="col-sm-4">
+              <ng-select [items]="listUnidadEjecutora" placeholder="Ingrese Gobierno Local"
+                bindLabel="nombre_municipalidad" bindValue="id_municipalidad" [(ngModel)]="model.id_municipalidad"
+                name="id_municipalidad" id="id_municipalidad">
+              </ng-select>
+            </div>
+          </div>
+          <div class="row form-group">
+            <div class="col-sm-12">
+              <div class=" pull-right">
+                <button type="button" (click)="buscarDataSource(model)" class="btn pull-left btn-plomo" id="btnBuscar">
+                  <i class="fa fa-search"></i> Buscar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="card card-auto bg-black-600">
+        <div class="card-body">
+          <div class="div-centrado text-center c-white">
+            <div class="f-s-5rem l-h-100">{{totalRegistros}}</div>
+            <div>Registros</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <div class="card card-white">
+        <div class="card-head"></div>
+        <div class="card-body">
+          <div>
+            <div class="row form-group">
+              <div class="col-12 text-right">
+                <a href="javascript:void(0)" class="btn btn-exportar" target="_blank"
+                  (click)="exportarFormatoExcel(model)" [hidden]="totalRegistros == 0">
+                  <i class="icon icon-excel"></i> Exportar
+                </a>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12 container-scroll">
+                <table class="table table-striped table-bordered">
+                  <thead class="thead-info">
+                    <tr>
+                      <th rowspan="2" class="text-center" colspan="3">NOMBRE DEL PROYECTO</th>
+                      <th rowspan="2" class="text-center" colspan="3">GL / GR</th>
+                      <!-- <th rowspan="2" class="text-center" colspan="3">CÓDIGO DE RUTA</th> -->
+                      <th rowspan="2" class="text-center" colspan="3">SNIP</th>
+                      <th rowspan="2" class="text-center" colspan="3">CÓDIGO UNIFICADO</th>
+                      <th rowspan="2" class="text-center" colspan="3">ESTADO</th>
+                      <th rowspan="2" class="text-center" colspan="3">% AVANCE FISICO</th>
+                      <th rowspan="2" class="text-center" colspan="3">% AVANCE FINANCIERO</th>
+                      <th colspan="10" class="text-center">CONTRATO DE OBRA</th>
+                      <th colspan="15" class=" text-center">META GLOBAL</th>
+                      <th colspan="6" class=" text-center">EJECUTADO AÑO ANTERIOR</th>
+                      <th colspan="3" class=" text-center">EJECUCIÓN ACUMULADO ACTUAL</th>
+                      <th colspan="2" class=" text-center">PROGRAMADO</th>
+                      <!-- <th rowspan="2" class="text-center">MONTO TRANSFERENCIA</th> -->
+                      <!-- <th rowspan="2" class="text-center">DU/DS</th> -->
+                      <th rowspan="2" class="text-center">OBSERVACIONES</th>
+                    </tr>
+                    <tr>
+                      <!-- contrato de obra -->
+                      <th colspan="3" class="text-center">N° CONTRATO</th>
+                      <th colspan="3" class="text-center">FECHA DE SUSCRIPCIÓN</th>
+                      <th colspan="4" class="text-center">VALOR ADJUDICADO (S/)</th>
+                      <!-- meta global -->
+                      <th colspan="3" class="text-center">INICIO EJECUCIÓN</th>
+                      <th colspan="3" class="text-center">FIN EJECUCIÓN</th>
+                      <th colspan="3" class="text-center">METAS FÍSICAS</th>
+                      <th colspan="3" class="text-center">UNID</th>
+                      <th colspan="3" class="text-center">COSTO TOTAL ACTUAL (S/)</th>
+                      <!-- ejecutado 2018 -->
+                      <th colspan="3" class="text-center">%</th>
+                      <th colspan="3" class="text-center">DEVENGADO AÑO ANTERIOR</th>
+                      <!-- ejecutado ejecucion acumulado actual -->
+                      <th class="text-center">%</th>
+                      <th class="text-center">DEVENGADO ACUMULADO A LA FECHA (S/)</th>
+                      <th class="text-center">AÑO-MES DEL ÚLTIMO DEVENGADO</th>
+                      <!-- programado -->
+                      <th class="text-center">%</th>
+                      <th class="text-center">PIM AÑO ACTUAL (S/)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="bg-light" *ngFor="let proyecto of listProyecto">
+                      <td colspan="3">{{ proyecto.proyecto }}</td>
+                      <td colspan="3">{{ proyecto.pliego_habilitado }}</td>
+                      <!-- <td colspan="3">{{ proyecto.ruta }}</td> -->
+                      <td colspan="3">{{ proyecto.snip }}</td>
+                      <td colspan="3">{{ proyecto.codigo_unificado }}</td>
+                      <td colspan="3">{{ proyecto.estado }}</td>
+                      <td colspan="3">{{ proyecto.avance_fisico }}</td>
+                      <td colspan="3">{{ proyecto.avance_financiero }}</td>
+                      <td colspan="3" class="text-center">{{ proyecto.nro_contrato }}</td>
+                      <td colspan="3" class="text-center">{{ proyecto.fecha_inscripcion | formatoFecha }}</td>
+                      <td colspan="4" class="text-center">{{ proyecto.valor_adjudicado | currency: " " }}</td>
+                      <td colspan="3" class="text-center">{{ proyecto.inicio_ejecucion | formatoFecha }}</td>
+                      <td colspan="3" class="text-center">{{ proyecto.fin_ejecucion | formatoFecha }}</td>
+                      <td colspan="3" class="text-center">{{ proyecto.meta_fisica }}</td>
+                      <td colspan="3" class="text-center">{{ proyecto.unidad }}</td>
+                      <td colspan="3" class="text-center">{{ proyecto.costo_total_actual | currency: " " }}</td>
+                      <td colspan="3" class="text-center">{{ proyecto.por_eje_anterior }}</td>
+                      <td colspan="3" class="text-center">{{ proyecto.dev_eje_anterior | currency:" " }}</td>
+                      <td class="text-center">{{ proyecto.por_eje_actual }}</td>
+                      <td class="text-center">{{ proyecto.dev_acu_actual | currency: " " }}</td>
+                      <td class="text-center">{{ proyecto.anio_mes_devengado }}</td>
+                      <td class="text-center">{{ proyecto.por_programado }}</td>
+                      <td class="text-center">{{ proyecto.pim_actual | currency: " " }}</td>
+                      <!-- <td class="text-center">{{ proyecto.mon_transferencia | currency: " "}}</td> -->
+                      <!-- <td>
+                        {{proyecto.duds}}
+                      </td> -->
+                      <td>
+                        {{proyecto.observaciones}}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <nav class="pt-4 pl-3 pull-right">
+                <pagination [totalItems]="totalRegistros" [itemsPerPage]="numPaginasMostrar" [boundaryLinks]="true"
+                  previousText="&lsaquo;" nextText="&rsaquo;" [rotate]="false" firstText="&laquo;" lastText="&raquo;"
+                  [maxSize]="5" (pageChanged)="cambiarPagina($event)">
+                </pagination>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

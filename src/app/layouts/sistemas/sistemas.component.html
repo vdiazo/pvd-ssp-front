@@ -1,0 +1,71 @@
+<nav class="navbar fixed-top navbar-expand" id="nav-top">
+
+  <ul class="navbar-nav mr-auto">
+    <li class="nav-item xs-display">
+      <button type="button" id="sidebarCollapse" class="btn btn-default">
+        <i class="icon icon-menu"></i>
+      </button>
+    </li>
+    <li style="
+display: flex;
+align-items: center;
+"><img src="assets/img/logo-mtc.png" style="
+width: 160px;
+" class="xs-hidden" alt="mtc"></li>
+  </ul>
+
+  <ul class="navbar-nav ml-auto">
+    <li class="nav-item">
+      <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+        aria-expanded="false"><span class="txtUsuario">{{txtUsuario}}</span>&nbsp; <img class="foto-usuario"
+          src="assets/img/man-1.svg" alt="usuario" /></a>
+      <div class="dropdown-menu dropdown-menu-right f-s-14">
+        <a routerLink="/perfil" class="dropdown-item" routerLinkActive="active-link"><i class="fa fa-user-o"></i>
+          &nbsp;Perfil</a>
+        <a class="dropdown-item" href="#" (click)="cerrarSesion()"><i class="fa fa-sign-out"></i> &nbsp;Salir</a>
+      </div>
+    </li>
+  </ul>
+</nav>
+<div class="wrapper">
+  <!-- Sidebar  -->
+
+
+
+  <nav id="sidebar">
+  </nav>
+
+  <div id="black-panel"></div>
+  <!-- Page Content  -->
+  <div id="content">
+    <div class="container-componentes pt-5">
+      <div class="container">
+
+        <div class="row form-group">
+          <div class="col-md-6 col-sm-12" *ngFor="let item of ListadoSistemas">
+
+            <div class="card">
+              <div class="card-header" [ngStyle]="{'background': item.bg_color, 'color': item.color}">
+                <div class="text-center title">{{item.codigo_modulo == 'ssi' ? 'SSP': item.codigo_modulo}}</div>
+                <div class="text-center">{{item.nombre_modulo}}</div>
+              </div>
+              <div class="mt-4 mb-4">
+                <ng-container *ngFor="let perfil of item.perfiles">
+                  <div class="perfil" (click)="PerfilSeleccionado(perfil,item.codigo_modulo);">
+                    {{perfil.nombre_perfil}}
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <router-outlet></router-outlet>
+    </div>
+    <div class="container-fluid text-center app-footer">
+      Ministerio de Transportes y Comunicaciones - Oficina General de Tecnología de la Información<br>Todos los derechos
+      reservados © 2018
+    </div>
+  </div>
+</div>

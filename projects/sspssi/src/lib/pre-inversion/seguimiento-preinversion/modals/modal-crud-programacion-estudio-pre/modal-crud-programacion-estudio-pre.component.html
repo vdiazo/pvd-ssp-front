@@ -1,0 +1,100 @@
+<div class="modal-header">
+  <h4 class="modal-title">Programación de avance del Estudio</h4>
+  <p class="pb-2 pl-4 pr-4">Nueva Programación de Avance del Estudio</p>
+</div>
+<div class="modal-body">
+  <form [formGroup]="formRegistroProgramacionEstudio" (ngSubmit)="registrarProgramacionEstudio()">
+    <div class="row form-group">
+      <label class="form-label col-12 col-lg-3" for="">(*) NRO. DE ENTREGABLES:</label>
+      <div class="col-12 col-lg-3 mb-2">
+        <input type="number" min="0" max="12" class="form-control rounded-left" formControlName="nro_entregable"
+          (change)="crearEntregables($event)" [readonly]="cambiarEditar" [ngClass]="{'is-invalid': f.nro_entregable.invalid && (f.nro_entregable.dirty || f.nro_entregable.touched), 
+                'ng-inicio': f.nro_entregable.invalid && f.nro_entregable.untouched}">
+        <div *ngIf="f.nro_entregable.invalid && (f.nro_entregable.dirty || f.nro_entregable.touched)">
+          <strong *ngIf="f.nro_entregable.errors.required" class="text-danger">Nro. de entregables es
+            obligatorio</strong>
+        </div>
+      </div>
+      <label class="form-label col-12 col-lg-3" for="">(*) DOCUMENTO DE APROBACION:</label>
+      <div class="col-12 col-lg-3 mb-2">
+        <input *ngIf="cambiarEditar" type="text" class="form-control" formControlName="documento_aprueba" readonly>
+        <ng-select *ngIf="!cambiarEditar" [items]="lstDocumentoAprobacion" placeholder="Seleccione"
+          bindLabel="documento_aprueba" bindValue="id_seguimiento_actividad"
+          notFoundText="no se ha encontrado ningún item" formControlName="id_seguimiento_actividad"
+          (change)="seleccionarDocumentoAprueba($event)" [ngClass]="{'is-invalid': f.id_seguimiento_actividad.invalid && (f.id_seguimiento_actividad.dirty || f.id_seguimiento_actividad.touched), 
+        'ng-inicio': f.id_seguimiento_actividad.invalid && f.id_seguimiento_actividad.untouched}"></ng-select>
+        <div
+          *ngIf="f.id_seguimiento_actividad.invalid && (f.id_seguimiento_actividad.dirty || f.id_seguimiento_actividad.touched)">
+          <strong *ngIf="f.id_seguimiento_actividad.errors.required" class="text-danger">Documento de aprobación es
+            obligatorio</strong>
+        </div>
+      </div>
+    </div>
+    <div class="row form-group">
+      <div class="col-12 container-scroll xs-hidden">
+        <table class="table table-hover table-responsive">
+          <thead>
+            <tr>
+              <th>ITEM</th>
+              <th>NRO. ENTREGABLE</th>
+              <th>DESCRIPCION DEL CONTENIDO</th>
+              <th>PLAZO DE ENTREGA (NRO. DE DIAS)</th>
+              <th>MONTO</th>
+            </tr>
+          </thead>
+          <tbody formArrayName="detalle" *ngFor="let item of entregable.controls; index as i;">
+            <tr [formGroupName]="i">
+              <td class="text-center">{{i + 1}}</td>
+              <td class="text-center">
+                {{ item.value.nro_entregable }}
+              </td>
+              <td>
+                <textarea id="{{ 'nro_entregable' + i }}" class="form-control" formControlName="descripcion_contenido"
+                  rows="1"
+                  [ngClass]="{'is-invalid': item.get('descripcion_contenido').invalid && (item.get('descripcion_contenido').dirty || item.get('descripcion_contenido').touched),
+                  'ng-inicio': item.get('descripcion_contenido').invalid && item.get('descripcion_contenido').untouched}"></textarea>
+                <div
+                  *ngIf="item.get('descripcion_contenido').invalid && (item.get('descripcion_contenido').dirty || item.get('descripcion_contenido').touched)">
+                  <strong *ngIf="item.get('descripcion_contenido').errors.required" class="text-danger">Descripción es
+                    obligatorio</strong>
+                </div>
+              </td>
+              <td>
+                <input type="text" id="{{ 'plazo_entrega' + i }}" class="form-control" formControlName="plazo_entrega"
+                  [textMask]="{mask: funciones.currencyMaskNumber}" [ngClass]="{'is-invalid': item.get('plazo_entrega').invalid && (item.get('plazo_entrega').dirty || item.get('plazo_entrega').touched),
+                  'ng-inicio': item.get('plazo_entrega').invalid && item.get('plazo_entrega').untouched}">
+                <div
+                  *ngIf="item.get('plazo_entrega').invalid && (item.get('plazo_entrega').dirty || item.get('plazo_entrega').touched)">
+                  <strong *ngIf="item.get('plazo_entrega').errors.required" class="text-danger">Plazo es
+                    obligatorio</strong>
+                </div>
+              </td>
+              <td>
+                <input type="text" id="{{ 'monto' + i }}" [textMask]="{mask: funciones.currencyMask}"
+                  class="form-control" formControlName="monto" [ngClass]="{'is-invalid': item.get('monto').invalid && (item.get('monto').dirty || item.get('monto').touched),
+                  'ng-inicio': item.get('monto').invalid && item.get('monto').untouched}">
+                <div *ngIf="item.get('monto').invalid && (item.get('monto').dirty || item.get('monto').touched)">
+                  <strong *ngIf="item.get('monto').errors.required" class="text-danger">Monto es obligatorio</strong>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <strong class="text-danger">(*) Campos Obligatorios</strong>
+    <div class="row form-group">
+      <div class="col-12 clearfix">
+        <ng-container>
+          <div class="float-right">
+            <button class="btn btn-danger" type="submit" [disabled]="formRegistroProgramacionEstudio.invalid">
+              <i [ngClass]=" (cambiarEditar)? 'fa fa-edit' : 'fa fa-save'"></i>
+              Guardar</button>
+            <button class="btn btn-plomo ml-1" type="button" (click)="closeModal()"><i class="fa fa-arrow-left"></i>
+              Cerrar</button>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </form>
+</div>

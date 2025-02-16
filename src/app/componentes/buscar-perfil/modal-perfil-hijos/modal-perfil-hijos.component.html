@@ -1,0 +1,44 @@
+<div class="modal-header">
+    <h4 class="modal-title">{{PerfilPadre}}</h4>
+    <p class="pl-4 pr-4">Perfiles a los cuales puede dar acceso.</p>
+  </div>
+  <div class="modal-body mr-5 ml-5">
+      <div class="row form-group">
+          <label dlabels class="col-sm-2 control-label">Perfil:</label>
+          <div class="col-sm-10">
+            <input class="form-control" type="text" [(ngModel)]="PerfilABuscar" (keyup.enter)="BuscarPerfilHijos()">
+          </div>
+        </div>
+        <div class="text-right">
+            <button class="btn btn-plomo" type="submit" (click)="BuscarPerfilHijos()"><i class="fa fa-search"></i> Buscar</button>
+            <button class="ml-1 btn btn-danger" type="submit" (click)="AbrirModalAsignarHijos()"><i class="fa fa-plus"></i> Nuevo</button>
+
+        </div>
+        <hr>
+        <div>
+          <table class="table table-hover table-responsive table-normal">
+            <thead>
+                <tr>
+                    <th>Perfil</th>
+                    <th></th>
+                  </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of ListadoPerfilesHijosFiltro">
+                    <td>{{ item.nombre_perfil }}</td>
+                    <td class="xs-text-right"><a class="btn btn-sm btn-icon" href="javascript:void(0);"  (click)="ConfirmarEliminacion(item.id_perfil_configuracion)">
+                        <i class="fa fa-15x">
+                          <img src="assets/img/icons/trash.svg" alt="eliminar">
+                        </i>
+                      </a>
+                    </td>
+                  </tr>
+            </tbody>
+          </table>
+        </div>
+    </div>
+    <div>
+    <div class="modal-footer">
+      <button class="btn btn-plomo" id="btnCancelar" type="button" (click)="closeModal()"><i class="fa fa-arrow-left"></i> Cancelar</button>
+    </div>
+  </div>

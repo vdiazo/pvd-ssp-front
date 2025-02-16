@@ -1,0 +1,239 @@
+<!-- <div *ngIf=bValorizacion> -->
+<div class="group-box" *hasClaim="'monitoreo_tabSeg_valorizaciones_divConsultaSigat_eje_dir'">
+  <form [formGroup]="myForm" (ngSubmit)="obtenerInformacionSigat(myForm.get('nro_contrato').value)">
+    <div class="row form-group">
+      <div class="col-sm-2">
+        <label dlabels class="control-label" for="nro_contrato">Nro. Contrato (Obra):</label>
+      </div>
+      <div class="col-sm-3">
+        <input dTextBox class="form-control" type="text" formControlName="nro_contrato" id="nro_contrato" maxlength="10"
+          placeholder="Ingrese Nro. Contrato">
+      </div>
+      <div class="col-sm-1" [hidden]=!bEstado>
+        <button class="btn btn-danger" type="submit" id="btnConsultarInfoSigat"
+          [disabled]="myForm.invalid">Consultar</button>
+      </div>
+      <div class="col-sm-4 text-left text-danger"
+        *ngIf="myForm.get('nro_contrato').errors && myForm.get('nro_contrato').dirty">
+        <span *ngIf="myForm.get('nro_contrato').hasError('required')">Ingrese el Nro. de Contrato</span><br>
+        <span *ngIf="myForm.get('nro_contrato').hasError('pattern')">Nro. de contrato es de la forma 2018-0002 (formato
+          SIGAT)</span><br>
+        <span *ngIf="myForm.get('nro_contrato').hasError('minlength')">Nro. de contrato es de 10 digitos</span>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="row form-group" *hasClaim="'monitoreo_tabSeg_obraValorizaciones_nuevObraValorizaciones_eje_dir'">
+  <div class="col-sm-3" [hidden]=!bEstado>
+    <button class="btn btn-plomo" type="button" id="btnNuevaAccionSeguimientoMonitoreo"
+      (click)="openModalAccSeguimientoObra()">
+      <i class="fa fa-plus"></i> Nuevo</button>
+  </div>
+  <div class="col-sm-3" *hasClaim="'monitoreo_tabSeg_obraValorizaciones_valInfoObras_eje_dir'">
+    <button class="btn btn-primary" type="button" (click)="openModalInfoObras()">Valorizaciones INFObras</button>
+  </div>
+  <div class="col-6 text-right">
+    <label dlabels class="control-label">Última Actualización:</label> &nbsp;
+    <span>{{UltimaActualizacionValorizacion}}</span>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-12 container-scroll">
+    <table class="table table-hover table-bordered table-responsive table-full-detalle">
+      <thead class="table-active">
+        <tr>
+          <th rowspan="2">Item</th>
+          <th rowspan="2">Mes y Año de la Valorización</th>
+          <th colspan="2">Monto a Valorizar,Según Resumen de Valorización </th>
+          <th colspan="2">Avance Físico</th>
+          <th rowspan="2">Fecha de Aprobación de la Valorización por el Supervisor</th>
+          <th rowspan="2">Valorización del</th>
+          <th rowspan="2">Observación</th>
+          <th rowspan="2">Doc.</th>
+          <th rowspan="2" [hidden]=!bEstado>Galeria</th>
+          <th rowspan="2" [hidden]=!bEstado></th>
+        </tr>
+        <tr>
+          <th *ngIf="false">id_accion_seguimiento_monitoreo_obra</th>
+          <th *ngIf="false">id_seguimiento_monitoreo_obra</th>
+          <th *ngIf="false">id_estado_situacional</th>
+          <th *ngIf=false>Monto (S/)</th>
+          <th>Bruto</th>
+          <th>Neto</th>
+          <th>Real</th>
+          <th>Prog.</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let accionMonitoreo of listAccionSeguimientoMonitoreo">
+          <td *ngIf="false">{{accionMonitoreo.id_accion_seguimiento_monitoreo_obra}}</td>
+          <td *ngIf="false">{{accionMonitoreo.id_seguimiento_monitoreo_obra}}</td>
+          <td *ngIf="false">{{accionMonitoreo.id_estado_situacional}}</td>
+          <td class="xs-hidden">{{accionMonitoreo.indice}}</td>
+          <td class="xs-hidden text-left" *ngIf="accionMonitoreo.periodo_texto">{{accionMonitoreo.periodo_texto}}
+          </td>
+          <td class="xs-hidden text-left" *ngIf="accionMonitoreo.periodo_adicional_texto">
+            {{accionMonitoreo.periodo_adicional_texto}}</td>
+          <td class="xs-hidden text-right">{{accionMonitoreo.avance_financiero_programado | currency:" S/"}}</td>
+          <td class="xs-hidden text-right">{{accionMonitoreo.avance_financiero_real | currency:" S/"}}
+          </td>
+          <td class="xs-hidden text-right">{{accionMonitoreo.avance_fisico_real}}</td>
+          <td class="xs-hidden text-right">{{accionMonitoreo.avance_fisico_programado}}</td>
+          <td>
+            <div class="xs-hidden">
+              {{accionMonitoreo.fecha_valorizacion}}
+            </div>
+            <div class="xs-display">
+              <div>
+                <span class="xs-th f-s-8"></span>
+                <span class="pull-right"></span>
+              </div>
+              <div class="xs-th f-s-14">
+              </div>
+              <div class="xs-th">Mes y Año de la Valorización</div>
+              <div class="" *ngIf="accionMonitoreo.periodo_texto">{{accionMonitoreo.periodo_texto}}</div>
+              <div class="" *ngIf="accionMonitoreo.periodo_adicional_texto">
+                {{accionMonitoreo.periodo_adicional_texto}}</div>
+              <div class="row">
+                <div class="col-6 pl-0">
+                  <div>
+                    <span class="xs-th">Avance Financiero Bruto: </span>&nbsp;&nbsp;
+                    <span>{{accionMonitoreo.avance_financiero_programado | currency:" S/"}} %</span>
+                  </div>
+                  <div>
+                    <span class="xs-th">Avance Financiero Neto: </span>&nbsp;&nbsp;
+                    <span>{{accionMonitoreo.avance_financiero_real | currency:" S/"}} %</span>
+                  </div>
+                </div>
+                <div class="col-6 pl-0">
+                  <div>
+                    <span class="xs-th">Avance Físico Real: </span>&nbsp;&nbsp;
+                    <span>{{accionMonitoreo.avance_fisico_real}} %</span>
+                  </div>
+                  <div>
+                    <span class="xs-th">Avance Físico Prog: </span>&nbsp;&nbsp;
+                    <span>{{accionMonitoreo.avance_fisico_programado}} %</span>
+                  </div>
+                </div>
+              </div>
+              <div class="xs-th">Fecha de Aprobación de la Valorización por el Supervisor</div>
+              <div class="">{{accionMonitoreo.fecha_valorizacion}}</div>
+              <div class="xs-th">Estado Situacional</div>
+              <div>{{accionMonitoreo.nombre_estado_situacional}}</div>
+              <div class="xs-th">
+                Observaciones:
+              </div>
+              <div class="text-justify">
+                {{accionMonitoreo.observacion}}
+              </div>
+            </div>
+          </td>
+          <td class="xs-hidden text-left">{{accionMonitoreo.nombre_estado_situacional}}</td>
+          <td class="xs-hidden text-justify">{{accionMonitoreo.observacion}}</td>
+          <td class="xs-hidden">
+            <div *ngIf="accionMonitoreo.nombre_archivo != '' ; else templateicono">
+              <a href="{{accionMonitoreo.ruta_archivo}}" target="_blank" class="btn-icon" [LinkNube]="accionMonitoreo.nombre_archivo" [Ruta]="accionMonitoreo.ruta_archivo">
+                <i class="fa fa-15x">
+                  <img src="assets/img/icons/file.svg" alt="archivo">
+                </i>
+              </a>
+            </div>
+            <ng-template #templateicono>
+            </ng-template>
+          </td>
+          <td class="xs-hidden" [hidden]=!bEstado>
+            <div *ngIf="accionMonitoreo.lista_archivos.length != 0 ; else templateicono">
+              <a href="javascript:void(0)" (click)="verImagenesValorizacion(accionMonitoreo)"
+                class="btn btn-sm btn-icon">
+                <i class="fa fa-15x">
+                  <img src="assets/img/icons/camera.svg" alt="fotos">
+                </i>
+              </a>
+            </div>
+            <ng-template #templateicono>
+            </ng-template>
+          </td>
+          <td class="icon-group xs-footer-lista" [hidden]=!bEstado>
+            <div class="xs-hidden pre-wrap">
+              <a href="javascript:void(0)"
+                *hasClaim="'monitoreo_tabSeg_obraValorizaciones_editObraValorizaciones_eje_dir'"
+                (click)="editarAccionSeguimientoObra(accionMonitoreo)" class="btn btn-sm btn-icon">
+                <i class="fa fa-15x">
+                  <img src="assets/img/icons/pencil.svg" alt="editar">
+                </i>
+              </a>
+              <a href="javascript:void(0)"
+                *hasClaim="'monitoreo_tabSeg_obraValorizaciones_eliObraValorizaciones_eje_dir'"
+                (click)="eliminarAccionSeguimientoMonitoreo(accionMonitoreo)" class="btn btn-sm btn-icon">
+                <i class="fa fa-15x">
+                  <img src="assets/img/icons/trash.svg" alt="eliminar">
+                </i>
+              </a>
+            </div>
+            <div class="xs-display xs-text-right">
+              <a *ngIf="accionMonitoreo.lista_archivos.length != 0" href="javascript:void(0)"
+                (click)="verImagenesValorizacion(accionMonitoreo)" class="btn-icon mr-1">
+                <i class="icon icon-camera"></i>
+              </a>
+              <a *ngIf="accionMonitoreo.nombre_archivo != ''" href="{{accionMonitoreo.ruta_archivo}}" target="_blank"
+                class="btn-icon mr-1" [LinkNube]="accionMonitoreo.nombre_archivo" [Ruta]="accionMonitoreo.ruta_archivo">
+                <i class="fa fa-file"></i>
+              </a>
+              <a href="javascript:void(0)"
+                *hasClaim="'monitoreo_tabSeg_obraValorizaciones_editObraValorizaciones_eje_dir'"
+                (click)="editarAccionSeguimientoObra(accionMonitoreo)" class="btn-icon mr-1">
+                <i class="fa fa-pencil"></i>
+              </a>
+              <a href="javascript:void(0)"
+                *hasClaim="'monitoreo_tabSeg_obraValorizaciones_eliObraValorizaciones_eje_dir'"
+                (click)="eliminarAccionSeguimientoMonitoreo(accionMonitoreo)" class="btn-icon">
+                <i class="fa fa-trash"></i>
+              </a>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-12">
+    <nav class="pt-4 pl-3 pull-right">
+      <pagination [totalItems]="totalAccionSeguimientoMonitoreo" [boundaryLinks]="true" previousText="&lsaquo;"
+        nextText="&rsaquo;" [rotate]="false" firstText="&laquo;" lastText="&raquo;" [maxSize]="5" [itemsPerPage]="5"
+        (pageChanged)="cambiarPaginaAccionSeguimiento($event)">
+      </pagination>
+    </nav>
+  </div>
+</div>
+<!-- <div class="group-box">
+  <div class="row">
+    <div class="col-sm-12">
+      <label dlabels class="control-label">
+        <b>Avance Financiero Acumulado Total:</b> {{montoTotalFinancieroProgramado | currency:" S/"}}
+        <b>- Neto:</b>
+        {{ montoTotalFinancieroReal | currency:" S/"}}
+      </label>
+      <br>
+      <label dlabels class="control-label">
+        <b>Avace Físico Acumulado(%) Real:</b> {{montoTotalFisicoReal}}
+        <b>- Programado:</b> {{montoTotalFisicoProgramado}}
+      </label>
+    </div>
+  </div>
+</div> -->
+<div class="group-box">
+  <div class="row">
+    <div class="col-sm-12">
+      <label dlabels class="control-label">
+        <b>Monto Acumulado Bruto:</b> {{montoTotalFinancieroProgramado | currency:" S/"}}
+        <b>- Neto:</b>
+        {{montoTotalFinancieroReal | currency:" S/"}}
+      </label>
+      <br>
+      <label dlabels class="control-label">
+        <b>Avance Físico Acumulado(%) Real:</b> {{montoTotalFisicoReal}}
+        <b>- Programado:</b> {{montoTotalFisicoProgramado}}
+      </label>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,95 @@
+<div class="modal-header">
+  <h4 class="modal-title">NUEVO CIERRE - TRANSFERENCIA FISICA DE OBRA</h4>
+</div>
+
+<div class="modal-body">
+  <div class="group-box">
+    <form (ngSubmit)="administrarCierreTransfFisica(model);" #accCierreTransfFisicaForm="ngForm">
+      <div class="row form-group">
+        <input *ngIf="false" type="text" name="id_cierre_transferencia_fisica" id="id_cierre_transferencia_fisica"
+          [(ngModel)]="model.id_cierre_transferencia_fisica" #id_cierre_transferencia_fisica="ngModel">
+
+        <div class="col-sm-4">
+          <label dlabels="dlabels" class="control-label">Estado Transferencia Fisica:</label>
+        </div>
+
+        <div class="col-sm-8">
+          <ng-select required="required" [items]="lstEstadoCierreTransfFisica" placeholder="Seleccione el Estado"
+            bindLabel="nombre_estado_cierre" bindValue="id_estado_cierre" [(ngModel)]="model.id_estado_cierre"
+            name="id_estado_cierre" #id_estado_cierre="ngModel"></ng-select>
+
+          <div [hidden]="id_estado_cierre.valid || id_estado_cierre.pristine" class="alert alert-danger">El Estado es
+            obligatorio</div>
+        </div>
+      </div>
+
+      <div class="row form-group">
+        <div class="col-sm-4">
+          <label dlabels="dlabels" class="control-label" for="fecha">Fecha:</label>
+        </div>
+
+        <div class="col-sm-8">
+          <input dTextBox="dTextBox" class="form-control" readonly="readonly" type="text" name="model.fecha"
+            id="model.fecha" placeholder="dd/mm/aaaa" [(ngModel)]="model.fecha" #fecha="ngModel"
+            bsDatepicker="bsDatepicker" required="required"
+            [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es', containerClass: 'theme-red' }">
+
+          <div [hidden]="fecha.valid || fecha.pristine" class="alert alert-danger">Fecha es obligatoria</div>
+        </div>
+      </div>
+
+      <div class="row form-group">
+        <div class="col-sm-4">
+          <label dlabels="dlabels" class="control-label">Tipo Documento:</label>
+        </div>
+
+        <div class="col-sm-8">
+          <ng-select required="required" [items]="lstTipoDocumentoCierreTransfFisica" placeholder="Seleccione Documento"
+            bindLabel="nombre_tipo_documento_cierre" bindValue="id_tipo_documento_cierre"
+            #id_tipo_documento_cierre="ngModel" [(ngModel)]="model.id_tipo_documento_cierre"
+            name="id_tipo_documento_cierre"></ng-select>
+
+          <div [hidden]="id_tipo_documento_cierre.valid || id_tipo_documento_cierre.pristine"
+            class="alert alert-danger">
+            El tipo de documento es obligatorio
+          </div>
+        </div>
+      </div>
+
+      <div class="row form-group">
+        <div class="col-sm-4">
+          <label dlabels="dlabels" class="control-label" for="observaciones">Observaciones :</label>
+        </div>
+
+        <div class="col-sm-8">
+          <input dTextBox="dTextBox" class="form-control" type="text" name="model.observacion" id="model.observacion"
+            placeholder="Ingrese observaciones" [(ngModel)]="model.observacion" #observacion="ngModel">
+
+          <!-- <div [hidden]="observacion.valid || observacion.pristine" class="alert alert-danger">
+          Resolución de aprobación es obligatorio
+        </div> -->
+        </div>
+      </div>
+
+      <div class="row form-group">
+        <div class="col-sm-4">
+          <label dlabels="dlabels" class="control-label">Documento :</label>
+        </div>
+
+        <div class="col-sm-8">
+          <app-input-file idComp="fileCierreTransfFisica" (onChange)="fileChangeEvent($event)"
+            IdTipoArchivo="{{IdTipoArchivo}}" class="input-group"
+            Value="{{this.modelCierreTransfFisica.archivo_doc_cierre}}"></app-input-file>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="submit" id="btnGuardar" [disabled]="!accCierreTransfFisicaForm.form.valid"
+          class="btn btn-danger"><i class="fa fa-save"></i> Guardar</button>
+
+        <button id="btnCancelar" type="button" (click)="closeModal()" class="btn btn-plomo"><i
+            class="fa fa-arrow-left"></i> Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>

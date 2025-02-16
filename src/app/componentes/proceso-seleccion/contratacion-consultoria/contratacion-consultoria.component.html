@@ -1,0 +1,129 @@
+<div class="container-scroll">
+  <table class="table table-hover table-bordered table-responsive table-full-detalle" border="1">
+    <thead class="table-active">
+      <tr>
+        <th>Tipo de Selección</th>
+        <th>Nomenclatura</th>
+        <th>Fecha de Publicación</th>
+        <th>Decripción</th>
+        <th>Estado del Proceso</th>
+        <th>Fecha</th>
+        <th>Valor Referencial</th>
+        <th *hasClaim="'monitoreo_tabSel_consultoria_verResultados'">Ver Resultados</th>
+        <th>Cronograma</th>
+        <th>El proceso, corresponde al proyecto</th>
+        <th>Comentarios</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let consultoria of lstCntConsultoria; index as s">
+        <td class="text-left xs-hidden">{{consultoria.tipo_seleccion}}</td>
+        <td class="text-left xs-hidden">{{consultoria.nomenclatura}}</td>
+        <td class="xs-hidden">{{consultoria.fecha_publicacion}}</td>
+        <td class="text-left xs-hidden">{{consultoria.descripcion}}</td>
+        <td class="text-left xs-hidden">{{consultoria.estado_proceso}}</td>
+        <td class="xs-hidden">{{consultoria.fecha}}</td>
+        <td class="text-right xs-hidden">
+          {{((consultoria.valor_referencial) ? (consultoria.valor_referencial) :"") | currency:" S/" }}</td>
+        <td *hasClaim="'monitoreo_tabSel_consultoria_verResultados'" class="xs-hidden">
+          <a href="javascript:void(0)" class="btn btn-sm btn-icon" (click)="openModalVerResultados(consultoria)">
+            <i class="fa fa-15x"><img src="assets/img/icons/checklist.svg" alt="resultados"></i>
+          </a>
+        </td>
+        <td class="xs-hidden">
+          <a href="javascript:void(0)" class="btn btn-sm btn-icon"
+            (click)="openModalListCrono(consultoria.identificador)">
+            <i class="fa fa-15x"><img src="assets/img/icons/calendar.svg" alt="cronograma"></i>
+          </a>
+        </td>
+        <td>
+          <div class="xs-display">
+            <div class="xs-th f-s-14">{{consultoria.nomenclatura}}</div>
+            <div>
+              <span class="xs-th"> Tipo de selección: </span>
+              <span> {{consultoria.tipo_seleccion}}</span>
+            </div>
+            <div>
+              <span class="xs-th"> Fecha de publicación: </span>
+              <span> {{consultoria.fecha_publicacion}} </span>
+            </div>
+            <div>
+              <span class="xs-th"> Estado: </span>
+              <span> {{consultoria.estado_proceso}} </span>
+              <span>
+                <i class="fa fa-calendar"></i> {{consultoria.fecha}} </span>
+            </div>
+            <div>
+              <span class="xs-th"> Valor referencial: </span>
+              <span>
+                {{((consultoria.valor_referencial) ? (consultoria.valor_referencial) :"") | currency:" S/" }}</span>
+            </div>
+            <div class="xs-th">Descripción:</div>
+            <div>{{consultoria.descripcion}}</div>
+            <div class="xs-th">El proceso, corresponde al proyecto:</div>
+          </div>
+          <ui-switch [disabled]="!habilitar" size="small" [checked]="setearEstadoCorrespondeProyecto(s)"
+            (change)="procesoCorrespondeProyecto($event,s)"></ui-switch>
+        </td>
+        <td class="text-left">
+          <textarea *ngIf="mostrarTextBoxComentario(s)" rows="3" dTextBox maxlength="2000" class="form-control"
+            name="txtComentario" [(ngModel)]="consultoria.comentario"></textarea>
+          <label dlabels class="control-label"
+            *ngIf="mostrarLabelComentario(s)">{{consultoria.comentario}}&nbsp;&nbsp;</label>
+          <span style="font-size: 8px;">Actualización: {{ (consultoria.fecha_modificacion) ? (consultoria.fecha_modificacion | date:'dd/MM/yyyy hh:mm:ss')
+              :"" }} </span>
+        </td>
+        <td class="xs-footer-lista xs-text-right">
+          <div class="xs-hidden">
+            <span *hasClaim="'monitoreo_tabSel_consultoria_modComentario'">
+              <a href="javascript:void(0)" *ngIf="mostrarBotonEditar(s)" class="btn btn-sm btn-icon"
+                (click)="editarComentario(s)">
+                <i class="fa fa-15x"><img src="assets/img/icons/pencil.svg" alt="editar"></i>
+              </a>
+            </span>
+            <span *hasClaim="'monitoreo_tabSel_consultoria_regComentario'">
+              <a href="javascript:void(0)" *ngIf="mostrarBotonGuardar(s)" class="btn btn-sm btn-icon"
+                (click)="grabarComentario(consultoria,s)">
+                <i class="fa fa-15x"><img src="assets/img/icons/save.svg" alt="guardar"></i>
+              </a>
+            </span>
+          </div>
+          <div class="xs-display">
+            <a *hasClaim="'monitoreo_tabSel_consultoria_verResultados'" href="javascript:void(0)" class="btn-icon mr-1"
+              (click)="openModalVerResultados(consultoria)">
+              <i class="fa icon-checklist"></i>
+            </a>
+            <a href="javascript:void(0)" class="btn-icon mr-1" (click)="openModalListCrono(consultoria.identificador)">
+              <i class="fa fa-calendar"></i>
+            </a>
+            <span *hasClaim="'monitoreo_tabSel_consultoria_modComentario'">
+              <a href="javascript:void(0)" *ngIf="mostrarBotonEditar(s)" class="btn-icon mr-1"
+                (click)="editarComentario(s)">
+                <i class="fa fa-pencil"></i>
+              </a>
+            </span>
+            <span *hasClaim="'monitoreo_tabSel_consultoria_regComentario'">
+              <a href="javascript:void(0)" *ngIf="mostrarBotonGuardar(s)" class=" btn-icon"
+                (click)="grabarComentario(consultoria,s)">
+                <i class="fa fa-save"></i>
+              </a>
+            </span>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div class="row">
+  <div class="col-12">
+    <nav class="pt-2 pull-right">
+      <pagination [totalItems]="totalRegistros" [boundaryLinks]="true" previousText="&lsaquo;" nextText="&rsaquo;"
+        [rotate]="false" firstText="&laquo;" lastText="&raquo;" [itemsPerPage]="5" [maxSize]="5"
+        (pageChanged)="cambiarPagina($event)">
+      </pagination>
+    </nav>
+  </div>
+</div>
+<div *ngIf="lstCntConsultoria.length > 0">Fuente | <span class="c-dark-blue">Organismo Supervisor de las Contrataciones
+    del Estado (OSCE)</span></div>

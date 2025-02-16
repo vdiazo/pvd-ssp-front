@@ -1,0 +1,102 @@
+<div class="modal-header">
+
+  <h4 class="modal-title">Vinculación de Procesosppp</h4>
+  <br>
+</div>
+<div class="modal-body">
+  <div class="group-box">
+    <div class="row form-group">
+      <div class="col-lg-2 col-sm-2">
+        <label dlabels class="control-label">GR / GL:</label>
+      </div>
+      <div class="col-lg-8 col-sm-10">
+        <ng-select [items]="unidadesEjecutoras" placeholder="Seleccione la Entidad" bindLabel="entidad" bindValue="entidad" [(ngModel)]="nombreEntidad"
+          name="txtNombreMunicipalidad" id="txtNombreMunicipalidad">
+        </ng-select>
+      </div>
+      <!-- <div class="col-lg-2 col-sm-2">
+          <label dlabels class="control-label">OBJETO CONTRATACION</label>
+        </div>
+        <div class="col-lg-3 col-sm-2">
+
+            <ng-select [items]="ObjetosContratacion" 
+            [clearable]=false
+            placeholder="Obra" 
+            bindLabel="NombreObjeto" 
+            bindValue="IdObjeto" 
+            [(ngModel)]="ItemObjetoContratacion">
+          </ng-select>
+          
+        </div> -->
+    </div>
+    <div class="row form-group">
+      <div class="col-sm-2">
+        <label dlabels class="control-label">Descripcion de la Convocatoria:</label>
+      </div>
+      <div class="col-sm-8">
+        <input dTextBox class="form-control" style="text-transform: uppercase;" type='text' name="txtNombreConvocatoria" (keyup.enter)="buscarConvocatorias()"
+          (focus)="limpiarAutocompleteDescripcionItem()" matInput [formControl]="buscarConvocatoria" [matAutocomplete]="auto"
+          [(ngModel)]="nombreConvocatoria" placeholder="Nombre de la Convocatoria" />
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)='mostrarConvocatoriaSeleccionada($event.option.value)'>
+          <mat-option *ngFor="let itemConvocatoria of lstConvocatorias" [value]="itemConvocatoria.descripcion_item">
+            {{ itemConvocatoria.descripcion_item }}
+          </mat-option>
+        </mat-autocomplete>
+      </div>
+      <div class="col-sm-2">
+        <button type="button" id="btnBuscar" class="btn pull-left btn-primary d-inline-flex align-items-center" (click)="buscarConvocatorias()">
+          <i class="material-icons v-m">search</i>Buscar
+        </button>
+      </div>
+    </div>
+  </div>
+  <table class="table table-hover responsivo">
+    <thead>
+      <tr>
+        <th class="text-center">ID</th>
+        <th>ENTIDAD</th>
+        <th>DESCRIPCIÓN</th>
+        <th>FECHA PUBLICACIÓN</th>
+        <th>ASOCIACIÓN</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of ListaGeneral.resultado; index as s">
+        <td class="td-c">
+          <div class="xs-display th">ID</div>{{item.identificador}}</td>
+        <td class="td-c">
+          <div class="xs-display th">ENTIDAD</div>{{item.nro_exp_interes}}</td>
+        <td class="td-c">
+          <div class="xs-display th">DESCRIPCIÓN</div>{{item.descripcion_item}}</td>
+        <td class="td-c">
+          <div class="xs-display th">FECHA PUBLICACIÓN</div>{{ item.fecha_publicacion }}</td>
+        <td class="td-checkbox td-c">
+            <label class="checkbox">
+                <input type="checkbox" (click)="Insertar(item)">
+                <span class="check"></span>
+            </label>
+          <!-- <div class="container-ckb">
+            <input type="checkbox" (change)="seleccionExpresionInteres($event,item)" [checked]="item.estado" id="chkSeleccion{{s}}" />
+            <label for="chkSeleccion{{s}}"></label>
+          </div> -->
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="row">
+    <div class="col-12">
+      <nav class="pl-3 pull-right">
+        <div class="text-right">
+          <span class="f-s-1-5rem">{{ListaGeneral.cantidad}}</span> Expresiones de Interés</div>
+        <pagination [totalItems]="ListaGeneral.cantidad" [boundaryLinks]="true" previousText="&lsaquo;" nextText="&rsaquo;" [rotate]="false"
+          firstText="&laquo;" lastText="&raquo;" [maxSize]="5" [itemsPerPage]="numPaginasMostrar" [(ngModel)]="paginaActual"
+          (pageChanged)="cambiarPagina($event)">
+        </pagination>
+      </nav>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-plomo d-inline-flex align-items-center" id="btnCancelar" type="button" (click)="closeModal()">
+    <i class="material-icons v-m">keyboard_backspace</i>Cancelar</button>
+</div>

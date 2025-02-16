@@ -1,0 +1,102 @@
+
+<accordion [closeOthers]="true">
+    <div *ngFor="let row of item; index as i" [className]="(row.nivel==0)?'mb-3 group-req group-req-header':''">
+      
+      <accordion-group>
+
+          <div class="btn btn-link btn-block clearfix" accordion-heading>
+              <div class="pull-left float-left">
+                  <span class="float-left pull-right arrow"><i class="material-icons"></i></span>
+    
+                {{orden}}{{row.orden}}: {{row.contenido_exptec}}</div>
+
+      
+          </div>
+
+
+          <div class="m-4" *ngIf="row.flag_archivo">
+            <!--<set-input-req IdComponente="{{row.id_contenido_exptec_fase}}" IdProyectoDetalle={{row.id_contenido_exptec_fase}}
+              [EsObligatorio]=row.es_obligatorio 
+              (propagarEventEmitter)="ArchivoCargado($event,row.id_contenido_exptec)"
+              (checkEventEmitter)="NoCorreonde($event,row.id_contenido_exptec)" 
+              [CantidadArchivos]=row.cantidad_archivos
+              [NoCorresponde]=row.no_corresponde
+              [ShowBtnSubirArchivo]=ShowBtnSubirArchivo
+              [ShowBtnNoCorresponde]=ShowBtnNoCorresponde 
+              [HabilitarBtnInputReq]="validarEdicion(row,'HabilitarBtnInputReq')"
+              [documentosExpediente]="row.archivos"
+              ></set-input-req>-->
+
+              <set-input-file-uploader
+              IdComponente="{{row.id_contenido_exptec_fase}}" IdProyectoDetalle={{row.id_contenido_exptec_fase}}
+              [EsObligatorio]=row.es_obligatorio 
+              (propagarEventEmitter)="ArchivoCargado($event,row.id_contenido_exptec)"
+              (checkEventEmitter)="NoCorreonde($event,row.id_contenido_exptec)" 
+              [CantidadArchivos]=row.cantidad_archivos
+              [NoCorresponde]=row.no_corresponde
+              [ShowBtnSubirArchivo]=ShowBtnSubirArchivo
+              [ShowBtnNoCorresponde]=ShowBtnNoCorresponde 
+              [HabilitarBtnInputReq]="validarEdicion(row,'HabilitarBtnInputReq')"
+              [documentosExpediente]="row.archivos"
+              ></set-input-file-uploader>
+
+
+              
+
+
+
+
+              <div class="div-tabla" id="ListaRequisitos-{{row.id_proyecto_detalle}}" *ngIf="!row.no_corresponde">
+                  <div class="list-sorted">
+                    <div *ngFor="let item of row.archivos; index as wkl;" class="row tbody item-uploader" cdkDrag>
+                      <div class="col-1">
+                        {{wkl + 1}}
+                      </div>
+                      <div class="col-3 text-left">
+                        {{item.nombre_archivo}}
+                      </div>
+                      <div class="col-2 text-right">
+                          {{ item.tamanio/1024/1024 | number:'.2' }} MB
+                      </div>
+                      <div class="col-2 text-right">
+                        {{item.fecha_creacion  | date:'dd/MM/yyyy'}}
+                      </div>
+                      <div class="col-2">
+                      </div>
+                      <div class="col-2 ItemAccion text-right">
+                        <a href="{{item.ruta_archivo}}" target="_blank" [LinkNube]="item.nombre_archivo" [Ruta]="item.ruta_archivo">
+                          <i class="material-icons">cloud_download</i>
+                        </a>
+                        <button type="button" href="javascript:void(0)" (click)="Anular_File($event,row.id_contenido_exptec_fase,item.id_contenido_exptec_fase_archivo)" *hasClaim="'monitoreo_tabRYL_LiqSeg_AnularComponentesFile_exp_tec'">
+                          <i class="material-icons">delete</i>
+                        </button>
+      
+                        
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+          <div class="div-tabla" id="ListaRequisitos-{{row.id_contenido_exptec}}" *ngIf="!row.no_corresponde">
+            <div class="thead">
+              
+            </div>
+          </div>
+        </div>
+        <set-item-expediente [item]="row.hijos" *ngIf="row.hijos.length>0" orden="{{orden}}{{row.orden}}."></set-item-expediente>
+      </accordion-group>
+    </div>
+  
+  </accordion>

@@ -1,0 +1,114 @@
+<div class="row form-group" *ngIf="monitoreo_tabSeg_regAccionesSegMonitoreo_nuevo">
+  <div class="col-2" [hidden]=!bEstado>
+    <button class="btn btn-plomo" (click)="openModalNuevo()">
+      <i class="fa fa-plus"></i> Nuevo
+    </button>
+  </div>
+  <div class="col-3">
+    <button class="btn btn-primary d-flex align-items-center" (click)="descargarFormatoActaVisitaPDF()"
+      *ngIf="tipoPerfil == 'PVD'">
+      <i class="fa fa-file-pdf-o" aria-hidden="true"></i>&nbsp;
+      Formato de Acta de Visita 
+    </button>
+  </div>
+  <div class="col-7 text-right">
+    <label dlabels class="control-label">Última Actualización:</label> &nbsp;
+    <span>{{UltimaActualizacion}}</span>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12 container-scroll" *ngIf="monitoreo_tabSeg_accionesSegMonitoreo_lista">
+    <table class="table table-hover table-bordered table-responsive table-full-detalle">
+      <thead>
+        <tr>
+          <th>Nro</th>
+          <th>Acciones de Seguimiento y Monitoreo</th>
+          <th>Fecha</th>
+          <th>Descripción y/o Comentarios</th>
+          <th>Tipo de Documento</th>
+          <th>Documento</th>
+          <th [hidden]=!bEstado></th>
+          <th>Auditoría</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let item of lista; let i = index">
+        <tr>
+          <td class="xs-hidden">{{ i + 1 }}</td>
+          <td class="text-left xs-hidden">{{ item.acciones_seguimiento }}</td>
+          <td class="xs-hidden">{{ item.fecha | formatoFecha }}</td>
+          <td class="text-left xs-hidden">{{ item.descripcion }}</td>
+          <td class="text-left xs-hidden">{{ item.nombre_tipo_documento }}</td>
+          <td>
+            <div class="xs-hidden">
+              <div *ngIf="item.nombre_archivo != '' ; else templateicono">
+                <a href="{{ item.ruta + item.nombre_archivo}}" target="_blank" class="btn-icon" [LinkNube]="item.nombre_archivo" [Ruta]="item.ruta">
+                  <i class="fa fa-15x">
+                    <img src="assets/img/icons/file.svg" alt="archivo">
+                  </i>
+                </a>
+              </div>
+              <ng-template #templateicono>
+              </ng-template>
+            </div>
+            <div class="xs-display">
+              <div class="xs-th"><i class="fa fa-calendar"></i> {{ item.fecha | formatoFecha }}</div>
+              <div class="xs-th">Acciones de Seguimiento y Monitoreo</div>
+              <div>{{ item.acciones_seguimiento }}</div>
+              <div class="xs-th">Descripción</div>
+              <div>{{ item.descripcion }}</div>
+              <div class="xs-th">Tipo documento</div>
+              <div>{{ item.nombre_tipo_documento }}</div>
+              <br>
+              <span>Registro creado por el Usuario: {{ item.usuario_creacion }}</span><br>
+              <span *ngIf="item.usuario_modificacion">Registro modificado por: {{ item.usuario_modificacion }}</span>
+            </div>
+          </td>
+          <td class="xs-footer-lista" [hidden]=!bEstado>
+            <div class="xs-hidden">
+              <a href="javascript:void(0)" (click)="editarFila(item)"
+                *ngIf="monitoreo_tabSeg_regAccionesSegMonitoreo_mod" class="btn btn-sm btn-icon">
+                <i class="fa fa-15x">
+                  <img src="assets/img/icons/pencil.svg" alt="editar">
+                </i>
+              </a>
+              <a class="btn btn-sm btn-icon" href="javascript:void(0);"
+                *ngIf="monitoreo_tabSeg_regAccionesSegMonitoreo_eli" (click)="eliminarFila(item)">
+                <i class="fa fa-15x">
+                  <img src="assets/img/icons/trash.svg" alt="eliminar">
+                </i>
+              </a>
+            </div>
+            <div class="xs-display text-right">
+              <span *ngIf="item.nombre_archivo != ''" class="mr-1">
+                <a href="{{ item.ruta + item.nombre_archivo}}" target="_blank" class="btn-icon"  [LinkNube]="item.nombre_archivo" [Ruta]="item.ruta">
+                  <i class="fa fa-file"></i>
+                </a>
+              </span>
+              <a href="javascript:void(0)" (click)="editarFila(item)"
+                *ngIf="monitoreo_tabSeg_regAccionesSegMonitoreo_mod" class="mr-1 btn-icon">
+                <i class="fa fa-pencil"></i>
+              </a>
+              <a class="btn-icon" href="javascript:void(0);" *ngIf="monitoreo_tabSeg_regAccionesSegMonitoreo_eli"
+                (click)="eliminarFila(item)">
+                <i class="fa fa-trash"></i>
+              </a>
+            </div>
+          </td>
+          <td class="text-left xs-hidden">
+            <span>Registro creado por: {{ item.usuario_creacion }}</span><br>
+            <span *ngIf="item.usuario_modificacion">Registro modificado por: {{ item.usuario_modificacion }}</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-12">
+    <nav class="pt-4 pl-3 pull-right">
+      <pagination [totalItems]="totalRegistros" [boundaryLinks]="true" previousText="&lsaquo;" nextText="&rsaquo;"
+        [rotate]="false" firstText="&laquo;" lastText="&raquo;" [itemsPerPage]="numPaginasMostrar"
+        (pageChanged)="cambiarPagina($event)">
+      </pagination>
+    </nav>
+  </div>
+</div>

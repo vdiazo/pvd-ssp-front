@@ -1,0 +1,290 @@
+<div class="modal-header">
+</div>
+<div class="modal-body" style="height: 100%; width: 100%; margin: 0;">
+  <button kendo-button (click)="imprimir(pdf)" class="btn btn-danger mr-1"><i class="fa fa-download"></i> &nbsp;Exportar
+    PDF</button>
+  <!-- <button (click)="ExportToWord()" class="btn btn-primary"><i class="fa fa-download"></i> WORD</button> -->
+  <button class="btn btn-plomo pull-right" id="btnCancelar2" type="button" (click)="closeModal()"><i
+      class="fa fa-close"></i>
+    Cerrar</button>
+  <div id="contentToConvert" class="KendoPDF">
+    <kendo-pdf-export #pdf paperSize="A4" margin="1cm" landscape="true" [scale]="0.6">
+      <h2 class="modal-title" style="text-align:center"><b>ESTADO ECONOMICO - FINANCIERO</b></h2>
+      <label class="col-12" style="text-align:right">(Fecha: {{fecha | date: "dd/MM/yyyy h:mm:ss aa"}})</label><br>
+      <div class="row">
+        <div class="col-6">
+          <div class="row">
+            <label class="col-3">Nro. de Contrato:</label>
+            <div class="col-9">
+              <span>{{datosContrato.c_numcontrato}}</span>
+            </div>
+          </div>
+          <div class="row">
+            <label class="col-3">Categoria:</label>
+            <div class="col-9">
+              <span>{{datosContrato.dcatego}}</span>
+            </div>
+          </div>
+          <div class="row">
+            <label class="col-3">SNIP/CU:</label>
+            <div class="col-9">
+              <span>{{datosProyecto.codigo_snip}}</span>
+            </div>
+          </div>
+          <div class="row">
+            <label class="col-3">PROYECTO:</label>
+            <div class="col-9">
+              <span>{{datosProyecto.nombre_proyecto}}</span>
+            </div>
+          </div>
+          <div class="row">
+            <label class="col-3">Contratista:</label>
+            <div class="col-9">
+              <span>{{datosContrato.proveedor}}</span>
+            </div>
+          </div>
+          <div class="row">
+            <label class="col-3">RUC Contratista:</label>
+            <div class="col-9">
+              <span>{{datosContrato.ruc}}</span>
+            </div>
+          </div>
+          <div class="row">
+            <label class="col-3">Fecha Inicio:</label>
+            <div class="col-9">
+              <span>{{datosProyecto.fecha_inicio_contractual | formatoFecha}}</span>
+            </div>
+          </div>
+          <div class="row">
+            <label class="col-3">Plazo de Ejecución:</label>
+            <div class="col-9">
+              <span>{{datosContrato.n_PlazoEjecucion}} D.C.</span>
+            </div>
+          </div>
+          <div class="row">
+            <label class="col-3">Fecha Termino:</label>
+            <div class="col-9">
+              <span>{{datosProyecto.fecha_termino_contractual | formatoFecha}}</span>
+            </div>
+          </div>
+          <div class="row">
+            <label class="col-3">Administrador de Contrato:</label>
+            <div class="col-9">
+              <span>{{datosProyecto.apellido_paterno_adm}} {{datosProyecto.apellido_materno_adm}},
+                {{datosProyecto.nombre_administrador}}</span>
+            </div>
+          </div>
+          <div class="row">
+            <label class="col-3">Ubicación:</label>
+            <div class="col-9">
+              <span>DIST: {{datosContrato.ddedist}} - PROV: {{datosContrato.ddepro}} - REGION:
+                {{datosContrato.ddepa}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-6">
+          <table class="table table-sm table-borderless table-responsive table-hover">
+            <thead>
+              <th>Monto Contrato</th>
+              <th>Sub Total</th>
+              <th>IGV</th>
+              <th>Total</th>
+            </thead>
+            <tbody>
+              <tr *ngFor="let detalle of detalleMontoContrato">
+                <td class="font-weight-bold" style="text-transform: uppercase;">{{detalle.tipo}}</td>
+                <td>{{detalle.subTotal | formatoNumeroDecimal}}</td>
+                <td>{{detalle.igv | formatoNumeroDecimal}}</td>
+                <td>{{detalle.total | formatoNumeroDecimal}}</td>
+              </tr>
+              <tr class="table-active" *ngFor="let resumen of totalMontoContrato">
+                <td class="font-weight-bold">TOTAL</td>
+                <td class="font-weight-bold">{{resumen.acumuladoSub | formatoNumeroDecimal}}</td>
+                <td class="font-weight-bold">{{resumen.acumuladoIgv | formatoNumeroDecimal}}</td>
+                <td class="font-weight-bold">{{resumen.acumuladoTotal | formatoNumeroDecimal}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <!-- <div class="col-12 scrollContainer" style="width: 1400px; height: 400px; overflow-x:auto"> -->
+        <div class="col-12 scrollContainer">
+          <table class="table table-sm table-bordered table-responsive table-hover">
+            <thead>
+              <tr>
+                <th>Liquid.</th>
+                <th>Fecha</th>
+                <th>Documento</th>
+                <th>C/P</th>
+                <th>Fecha de Pago</th>
+                <th>FF</th>
+                <th>Importe</th>
+                <th>Adelanto</th>
+                <th>V.Bruta</th>
+                <th>Amort.</th>
+                <th>V.Neta</th>
+                <th>IGV</th>
+                <th>Ejecucion</th>
+                <th>Dscto</th>
+                <th>Neto/Pagar</th>
+                <th>Multa</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let valorizacion of listaPagosEfectuados">
+                <td>{{valorizacion.c_numliquidacion}}</td>
+                <td>{{valorizacion.d_fecemision}}</td>
+                <td>{{valorizacion.tipo}} {{valorizacion.c_numdoc_comp}}</td>
+                <td>{{valorizacion.CP != '' ? 'C/P ' + valorizacion.CP: ''}}</td>
+                <td>{{valorizacion.FECPAGO}}</td>
+                <td>{{valorizacion.ENTFIN}}</td>
+                <td>{{valorizacion.COMPROMISO | formatoNumeroDecimal}}</td>
+                <td>{{valorizacion.ADELANTO | formatoNumeroDecimal}}</td>
+                <td>{{valorizacion.VALBRUTA | formatoNumeroDecimal}}</td>
+                <td>{{valorizacion.AMORTIZACION | formatoNumeroDecimal}}</td>
+                <td>{{valorizacion.VALNETO | formatoNumeroDecimal}}</td>
+                <td>{{valorizacion.IGV | formatoNumeroDecimal}}</td>
+                <td>{{valorizacion.TOTAL | formatoNumeroDecimal}}</td>
+                <td>{{valorizacion.DCTO | formatoNumeroDecimal}}</td>
+                <td>{{valorizacion.NETOPAGAR | formatoNumeroDecimal}}</td>
+                <td>{{valorizacion.MULTA | formatoNumeroDecimal}}</td>
+              </tr>
+              <tr class="table-active" *ngFor="let detalle of totalDetallePago">
+                <td class="font-weight-bold" colspan="6">TOTALES</td>
+                <td class="font-weight-bold">{{detalle.acumuladoImporte | formatoNumeroDecimal}}</td>
+                <td class="font-weight-bold">{{detalle.acumuladoAdelanto | formatoNumeroDecimal}}</td>
+                <td class="font-weight-bold">{{detalle.acumuladoValBruta | formatoNumeroDecimal}}</td>
+                <td class="font-weight-bold">{{detalle.acumuladoAmortizacion | formatoNumeroDecimal}}</td>
+                <td colspan="4"></td>
+                <td class="font-weight-bold">{{detalle.acumuladoNetoPagar | formatoNumeroDecimal}}</td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-3">
+          <table class="table table-borderless table-responsive table-hover">
+            <thead>
+              <tr>
+                <th colspan="4">ADICIONALES / DEDUCTIVOS</th>
+              </tr>
+              <tr>
+                <th>Numero</th>
+                <th>Fecha</th>
+                <th>Importe</th>
+                <th>N° Resol.</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let adicional of detalleListaAdicionalDeductivo">
+                <td>{{adicional.tipo + '.'}} {{adicional.c_correlativo}}</td>
+                <td>{{adicional.d_fecresolucion}}</td>
+                <td>{{adicional.n_total_sol | formatoNumeroDecimal}}</td>
+                <td>{{adicional.c_numresolucion}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-2">
+          <table class="table table-borderless table-responsive table-hover">
+            <thead>
+              <tr>
+                <th colspan="3">Adelantos</th>
+              </tr>
+              <tr>
+                <th>Tipo</th>
+                <th>Otorgado</th>
+                <th>Saldo</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let amortizacion of listadoAmortizacionAdelanto">
+                <td>{{amortizacion.tipo}}</td>
+                <td>{{amortizacion.OTORGADO | formatoNumeroDecimal}}</td>
+                <td>{{amortizacion.SALDO | formatoNumeroDecimal}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-2">
+          <table class="table table-borderless table-responsive table-hover">
+            <thead>
+              <tr>
+                <th colspan="2">Ejecucion por F.F.</th>
+              </tr>
+              <tr>
+                <th>F.F.</th>
+                <th>Importe</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let fuente of listadoEjecucionPorFuente">
+                <td>{{fuente.c_codent_fin}}</td>
+                <td>{{fuente.NETOPAGAR | formatoNumeroDecimal}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-2">
+          <table class="table table-borderless table-responsive table-hover">
+            <thead>
+              <tr>
+                <th colspan="2">Saldo</th>
+              </tr>
+              <tr>
+                <th>Avance Financiero</th>
+                <th>{{totalResumenPago.avanceFinanciero | formatoNumeroDecimal}} %</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>TOTAL PAGADO:</td>
+                <td>{{totalResumenPago.totalPagado | formatoNumeroDecimal}}</td>
+              </tr>
+              <tr>
+                <td>SALDO PAGAR:</td>
+                <td>{{totalResumenPago.saldoPagar | formatoNumeroDecimal}}</td>
+              </tr>
+              <tr>
+                <td>SALDO AMORT:</td>
+                <td>{{totalResumenPago.saldoAmortizacion | formatoNumeroDecimal}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-3">
+          <table class="table table-borderless table-responsive table-hover">
+            <thead>
+              <tr>
+                <th colspan="4">Carta Fianza</th>
+              </tr>
+              <tr>
+                <th>Tipo</th>
+                <th>Numero</th>
+                <th>Importe</th>
+                <th>F.Vcto.</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let fianza of detalleListaFianzas">
+                <td>{{fianza.tipo}}</td>
+                <td>{{fianza.c_numcarta}}</td>
+                <td>{{fianza.monto_cf | formatoNumeroDecimal}}</td>
+                <td>{{fianza.d_fecvcmto}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </kendo-pdf-export>
+  </div>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-plomo" id="btnCancelar" type="button" (click)="closeModal()"><i class="fa fa-close"></i>
+    Cerrar</button>
+</div>

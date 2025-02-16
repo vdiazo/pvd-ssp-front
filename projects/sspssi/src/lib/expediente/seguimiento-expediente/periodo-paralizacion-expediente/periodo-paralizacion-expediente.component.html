@@ -1,0 +1,267 @@
+<div class="row form-group">
+  <div class="col-sm-12">
+    <label class="control-label">6.1. Registro de Paralizaciones</label>
+  </div>
+</div>
+<div class="row form-group" *hasClaim="'monitoreo_tabSeg_regAccionesParalizacion_nuevParalizacion_exp_tec_eje_dir'">
+  <div class="col-sm-6" [hidden]=!bEstado>
+    <button type="button" class="btn btn-plomo" (click)="openModalNuevaParalizacion()" id="btnNuevaParalizacion"><i
+        class="fa fa-plus"></i> Nuevo</button>
+  </div>
+  <div class="col-sm-6 text-right">
+    <label class="control-label">Última Actualización:</label> &nbsp;
+    <span>{{ultimaActualizacionParalizacion}}</span>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-sm-12">
+    <table class="table table-hover table-bordered table-responsive table-full-detalle">
+      <thead class="table-active">
+        <tr>
+          <th colspan="2">Acciones</th>
+          <th>Motivo de paralización</th>
+          <th>Fecha de Inicio</th>
+          <th *ngIf="false">Fecha de Termino Sugerido</th>
+          <th>Fecha de Termino</th>
+          <th>Doc.</th>
+          <th [hidden]=!bEstado></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let paralizacion of listParalizaciones">
+          <td class="xs-hidden">
+            <a href="javascript:void(0)"
+              (click)="obtenerDetalleAccionesParalizacion(paralizacion.id_paralizacion_expediente)" class="btn-icon">
+              <i class="fa fa-search fa-15x"></i>
+            </a>
+          </td>
+          <td class="xs-hidden">
+            <span [hidden]=!bEstado
+              *hasClaim="'monitoreo_tabSeg_regAccionesParalizacion_nuevAccionParalizacion_exp_tec_eje_dir'">
+              <a href="javascript:void(0)"
+                (click)="openModalNuevaAccionParalizacion(paralizacion.id_paralizacion_expediente)" class="btn-icon">
+                <i class="fa fa-plus fa-15x"></i>
+              </a>
+            </span>
+          </td>
+          <td class="text-left">
+            <div class="xs-hidden">{{paralizacion.motivo_paralizacion}}</div>
+            <div class="xs-display">
+              <div>
+                <span class="xs-th f-s-8">
+                  <i class="fa fa-calendar"></i> Fecha Inicio - Fecha Término</span>
+              </div>
+              <div class="xs-th f-s-14">
+                {{paralizacion.fecha_inicio | formatoFecha }} - {{paralizacion.fecha_termino | formatoFecha }}
+              </div>
+              <div class="xs-th">
+                Motivo:
+              </div>
+              <div class="text-justify">
+                {{paralizacion.motivo_paralizacion}}
+              </div>
+            </div>
+          </td>
+          <td class="xs-hidden">{{paralizacion.fecha_inicio | formatoFecha }}</td>
+          <td class="xs-hidden">{{paralizacion.fecha_termino | formatoFecha }}</td>
+          <td class="xs-hidden">
+            <div *ngIf="paralizacion.nombre_archivo != '' ; else templateicono">
+              <a href="{{paralizacion.ruta_archivo}}" target="_blank" class="btn-icon" [LinkNube]="paralizacion.nombre_archivo" [Ruta]="paralizacion.ruta_archivo">
+                <i class="fa fa-15x">
+                  <img src="assets/img/icons/file.svg" alt="archivo">
+                </i>
+              </a>
+            </div>
+            <ng-template #templateicono>
+            </ng-template>
+          </td>
+          <td class="icon-group xs-footer-lista xs-text-right" [hidden]=!bEstado>
+            <div class="xs-hidden">
+              <a href="javascript:void(0)" (click)="editarParalizacion(paralizacion)" class="btn btn-sm btn-icon"
+                *hasClaim="'monitoreo_tabSeg_regAccionesParalizacion_editParalizacion_exp_tec_eje_dir'">
+                <i class="fa fa-15x">
+                  <img src="assets/img/icons/pencil.svg" alt="editar">
+                </i>
+              </a>
+              <a href="javascript:void(0)" (click)="eliminarParalizacion(paralizacion.id_paralizacion_expediente)"
+                class="btn btn-sm btn-icon"
+                *hasClaim="'monitoreo_tabSeg_regAccionesParalizacion_eliParalizacion_exp_tec_eje_dir'">
+                <i class="fa fa-15x">
+                  <img src="assets/img/icons/trash.svg" alt="eliminar">
+                </i>
+              </a>
+            </div>
+            <div class="xs-display">
+              <a href="javascript:void(0)"
+                (click)="obtenerDetalleAccionesParalizacion(paralizacion.id_paralizacion_expediente)"
+                class="btn-icon mr-1">
+                <i class="fa fa-search"></i>
+              </a>
+              <a href="javascript:void(0)"
+                (click)="openModalNuevaAccionParalizacion(paralizacion.id_paralizacion_expediente)"
+                class="btn-icon mr-1"
+                *hasClaim="'monitoreo_tabSeg_regAccionesParalizacion_nuevAccionParalizacion_exp_tec_eje_dir'">
+                <i class="fa fa-plus"></i>
+              </a>
+              <a *ngIf="paralizacion.nombre_archivo != ''" href="{{paralizacion.ruta_archivo}}" target="_blank"
+                class="btn-icon mr-1" [LinkNube]="paralizacion.nombre_archivo" [Ruta]="paralizacion.ruta_archivo">
+                <i class="fa fa-file"></i>
+              </a>
+              <a href="javascript:void(0)" (click)="editarParalizacion(paralizacion)" class="btn-icon mr-1"
+                *hasClaim="'monitoreo_tabSeg_regAccionesParalizacion_editParalizacion_exp_tec_eje_dir'">
+                <i class="fa fa-pencil"></i>
+              </a>
+              <a href="javascript:void(0)" (click)="eliminarParalizacion(paralizacion.id_paralizacion_expediente)"
+                class="btn-icon" *hasClaim="'monitoreo_tabSeg_regAccionesParalizacion_eliParalizacion_exp_tec_eje_dir'">
+                <i class="fa fa-trash"></i>
+              </a>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-12">
+    <nav class="pt-4 pl-3 pull-right">
+      <pagination [totalItems]="totalRegistrosParalizacion" [itemsPerPage]="numPaginasMostrar" [boundaryLinks]="true"
+        previousText="&lsaquo;" nextText="&rsaquo;" [rotate]="false" firstText="&laquo;" lastText="&raquo;"
+        [maxSize]="5" (pageChanged)="cambiarPaginaParalizacion($event)">
+      </pagination>
+    </nav>
+  </div>
+</div>
+<div *ngIf="verDetalleAcciones">
+  <div class="row form-group">
+    <div class="col-6">
+      <label class="control-label">6.2. Acciones de seguimiento y monitoreo del periodo de paralizaciones</label>
+    </div>
+    <div class="col-6 text-right">
+      <label class="control-label">Última Actualización:</label> &nbsp;
+      <span>{{ultimaActualizacionAccionParalizacion}}</span>
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-12">
+      <table class="table table-hover table-bordered table-responsive table-full-detalle">
+        <thead>
+          <tr>
+            <!--  <th>Acciones de seguimiento y monitoreo</th> -->
+            <th>Fecha</th>
+            <th>Tipo de Documento</th>
+            <th>Observación</th>
+            <th>Doc.</th>
+            <th [hidden]=!bEstado></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let accionParalizacion of listaAccionesParalizacion">
+            <!--  <td class="text-left">
+                           <div class="xs-hidden">
+                {{accionParalizacion.nombre_accion}}
+              </div>
+            </td> -->
+            <td class="xs-hidden">
+              <div class="xs-display">
+                <div>
+                  <span class="xs-th f-s-8">
+                    <i class="fa fa-calendar"></i> Fecha</span>
+                </div>
+                <div class="xs-th f-s-14">
+                  {{accionParalizacion.fecha_accion | formatoFecha}}
+                </div>
+                <div class="xs-th">
+                  Acción:
+                </div>
+                <!-- <div>
+                      {{accionParalizacion.nombre_accion}}
+                    </div> -->
+                <div class="xs-th">
+                  Tipo de Documento:
+                </div>
+                <div>
+                  {{accionParalizacion.denominacion}}
+                </div>
+                <div class="xs-th">
+                  Observaciones:
+                </div>
+                <div>
+                  {{accionParalizacion.observacion_accion}}
+                </div>
+              </div>
+              {{accionParalizacion.fecha_accion | formatoFecha}}
+            </td>
+            <td class="text-left xs-hidden">{{accionParalizacion.denominacion}}</td>
+            <td class="text-left xs-hidden">{{accionParalizacion.observacion_accion}}</td>
+            <td class="xs-hidden">
+              <div *ngIf="accionParalizacion.nombre_archivo_accion != '' ; else templateicono">
+                <span>
+                  <a href="{{accionParalizacion.ruta_archivo_accion}}" target="_blank" class="btn-icon" [LinkNube]="accionParalizacion.nombre_archivo_accion" [Ruta]="accionParalizacion.ruta_archivo_accion">
+                    <i class="fa fa-15x">
+                      <img src="assets/img/icons/file.svg" alt="archivo">
+                    </i>
+                  </a>
+                </span>
+              </div>
+              <ng-template #templateicono>
+              </ng-template>
+            </td>
+            <td class="icon-group xs-footer-lista xs-text-right" [hidden]=!bEstado>
+              <div class="xs-hidden">
+                <span>
+                  <a href="javascript:void(0)" (click)="editarAccionParalizacion(accionParalizacion)"
+                    class="btn btn-sm btn-icon"
+                    *hasClaim="'monitoreo_tabSeg_regAccionesParalizacion_editAccionParalizacion_exp_tec_eje_dir'">
+                    <i class="fa fa-15x">
+                      <img src="assets/img/icons/pencil.svg" alt="editar">
+                    </i>
+                  </a>
+                </span>
+                <span>
+                  <a href="javascript:void(0)"
+                    (click)="eliminarAccionParalizacion(accionParalizacion.id_paralizacion_accion_expediente)"
+                    class="btn btn-sm btn-icon"
+                    *hasClaim="'monitoreo_tabSeg_regAccionesParalizacion_eliAccionParalizacion_exp_tec_eje_dir'">
+                    <i class="fa fa-15x">
+                      <img src="assets/img/icons/trash.svg" alt="eliminar">
+                    </i>
+                  </a>
+                </span>
+              </div>
+              <div class="xs-display">
+                <span>
+                  <a *ngIf="accionParalizacion.ruta_archivo_accion != ''"
+                    href="{{accionParalizacion.ruta_archivo_accion}}" target="_blank" class="btn-icon mr-1" [LinkNube]="accionParalizacion.nombre_archivo_accion" [Ruta]="accionParalizacion.ruta_archivo_accion">
+                    <i class="fa fa-file"></i>
+                  </a>
+                </span>
+                <span>
+                  <a href="javascript:void(0)" (click)="editarAccionParalizacion(accionParalizacion)"
+                    class="btn-icon mr-1"
+                    *hasClaim="'monitoreo_tabSeg_regAccionesParalizacion_editAccionParalizacion_exp_tec_eje_dir'">
+                    <i class="fa fa-pencil"></i>
+                  </a>
+                </span>
+                <span>
+                  <a href="javascript:void(0)"
+                    (click)="eliminarAccionParalizacion(accionParalizacion.id_paralizacion_accion_expediente)"
+                    class="btn-icon mr-1"
+                    *hasClaim="'monitoreo_tabSeg_regAccionesParalizacion_eliAccionParalizacion_exp_tec_eje_dir'">
+                    <i class="fa fa-trash"></i>
+                  </a>
+                </span>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-12">
+      <nav class="pt-4 pl-3 pull-right">
+        <pagination [totalItems]="totalRegistrosParalizacionAccion" [itemsPerPage]="numPaginasMostrarAccionParalizacion"
+          [boundaryLinks]="true" previousText="&lsaquo;" nextText="&rsaquo;" [rotate]="false" firstText="&laquo;"
+          lastText="&raquo;" [maxSize]="5" (pageChanged)="cambiarPaginaAccionParalizacion($event)">
+        </pagination>
+      </nav>
+    </div>
+  </div>
+</div>

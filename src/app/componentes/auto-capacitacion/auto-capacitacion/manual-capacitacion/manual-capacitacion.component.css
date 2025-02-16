@@ -1,0 +1,24 @@
+a{
+    color:#14171c;
+    display: block;
+    padding: 5px 20px 5px 20px;
+
+    font-weight: 600;
+}
+a:hover{
+    background: rgb(242, 243, 245);
+    text-decoration: none;
+}
+span{
+    height: 26px;
+    font-size: 11px;
+    display: inline-flex;
+    align-items: center;
+    color:#a1a7b3;
+    font-weight: normal;
+    
+}
+
+.material-icons{
+    font-size: 18px;
+}

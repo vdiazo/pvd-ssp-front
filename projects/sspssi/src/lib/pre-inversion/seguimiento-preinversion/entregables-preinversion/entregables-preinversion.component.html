@@ -1,0 +1,78 @@
+<div class="row form-group">
+  <div class="col-6" [hidden]=!bEstado>
+    <button class="btn btn-plomo" (click)="nuevoRegistroEntregableEstudio()"
+      *hasClaim="'monitoreo_tabSeg_estudioAvance_nuevInformeAvance_pre_inv_eje_dir'">
+      <i class="fa fa-plus"></i> Nuevo
+    </button>
+  </div>
+  <div class="col-6 text-right">
+    <label dlabels class="control-label">Última Actualización: </label>&nbsp;
+    <span>{{UltimaActualizacion}}</span>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-12 container-scroll">
+    <table class="table table-hover table-bordered table-responsive table-full-detalle">
+      <thead>
+        <tr>
+          <th>ITEM</th>
+          <th>N° ENTREGABLE</th>
+          <th>FECHA DE PRESENTACION</th>
+          <th>FECHA DE CONFORMIDAD</th>
+          <th>DESCRIPCION DEL CONTENIDO</th>
+          <th>MONTO ACUMULADO PAGADO</th>
+          <th>DOC.</th>
+          <th *hasClaim="'monitoreo_tabSeg_estudioAvance_editInformeAvance_pre_inv_eje_dir'">ACCIONES</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let avance of lstAvanceInformePreinversion">
+          <td>{{avance.descripcion_contrato}}</td>
+          <td>{{avance.numero_entregable}}</td>
+          <td>{{avance.fecha_presentacion | date: 'dd/MM/yyyy'}}</td>
+          <td>{{avance.fecha_conformidad | date: 'dd/MM/yyyy'}}</td>
+          <td>{{avance.descripcion_contenido}}</td>
+          <td>{{avance.monto_pagado | currency: 'S/ '}}</td>
+          <td>
+            <div *ngIf="avance.documento_conformidad != '' ; else templateicono">
+              <a href="{{avance.ruta_documento_conformidad}}" target="_blank" class="btn-icon" [LinkNube]="avance.documento_conformidad" [Ruta]="avance.ruta_documento_conformidad">
+                <i class="fa fa-15x">
+                  <img src="assets/img/icons/file.svg" alt="archivo">
+                </i>
+              </a>
+            </div>
+            <ng-template #templateicono>
+            </ng-template>
+          </td>
+          <td *hasClaim="'monitoreo_tabSeg_estudioAvance_editInformeAvance_pre_inv_eje_dir'">
+            <a href="javascript:void(0)" (click)="modificarEntregableEstudio(avance)" class="btn btn-sm btn-icon">
+              <i class="fa fa-15x">
+                <img src="assets/img/icons/pencil.svg" alt="editar">
+              </i>
+            </a>
+            <a href="javascript:void(0)" (click)="anularAvanceInformeEstudio(avance.id_avance_informe)"
+              class="btn btn-sm btn-icon">
+              <i class="fa fa-15x">
+                <img src="assets/img/icons/trash.svg" alt="eliminar">
+              </i>
+            </a>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr class="table-active">
+          <td colspan="5" class="text-right"><strong>Total Acumulado Pagado:</strong></td>
+          <td colspan="2"><strong>{{totalAcumuladoPagado | currency: 'S/ '}}</strong></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+  <div class="col-12">
+    <nav class="pt-4 pl-3 pull-right">
+      <pagination [totalItems]="totalRegistros" [boundaryLinks]="true" previousText="&lsaquo;" nextText="&rsaquo;"
+        [rotate]="false" firstText="&laquo;" lastText="&raquo;" [itemsPerPage]="itemsPerPage"
+        (pageChanged)="cambiarPagina($event)">
+      </pagination>
+    </nav>
+  </div>
+</div>

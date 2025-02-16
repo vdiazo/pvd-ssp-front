@@ -1,0 +1,130 @@
+<div class="modal-header">
+  <h4 class="modal-title" [hidden] ="!cambiarEditar">Nuevo Usuario</h4>
+  <h4 class="modal-title" [hidden] ="cambiarEditar">Editar Usuario</h4>
+  <p class="pl-4 pr-4" [hidden] ="!cambiarEditar">Formulario para el registro de usuario</p>
+  <p class="pl-4 pr-4" [hidden] ="cambiarEditar">Formulario para la edición de usuario</p>
+</div>
+<div class="modal-body">
+  <form (ngSubmit)="administrarTramo();" #usuarioGrabarForm="ngForm" [hidden] ="!cambiarEditar">
+  <div class="row form-group">
+    <label dlabels class="col-md-2 control-label">Usuario:</label>
+    <div class="col-md-10">
+      <input dTextBox class="form-control" type='text' #usuario="ngModel" required placeholder="" name="usuario" placeholder="Ingrese usuario de logueo" [(ngModel)]="entidadModal.usuario" />
+      <div [hidden]="usuario.valid || usuario.pristine" class="alert alert-danger">
+        El usuario es obligatorio
+      </div>
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-md-2">
+      <label dlabels class="control-label">Nombre</label>
+    </div>
+    <div class="col-md-10">
+      <input dTextBox class="form-control" type='text' name="nombre" placeholder="Ingrese nombre del usuario" [(ngModel)]="entidadModal.nombre"/>
+    </div>
+  </div>  
+  <div class="row form-group">
+    <div class="col-md-2">
+      <label dlabels class="control-label">Correo</label>
+    </div>
+    <div class="col-md-10">
+      <input dTextBox class="form-control" type='email' name="correo" placeholder="Ingrese correo del usuario" [(ngModel)]="entidadModal.correo"/>
+    </div>
+  </div>  
+  <div class="row form-group">
+    <div class="col-md-2">
+      <label dlabels class="control-label">DNI</label>
+    </div>
+    <div class="col-md-10">
+      <input dTextBox class="form-control" maxlength="8" type='text' name="dni" (keypress)="this.funciones.IsNumberKey($event)" placeholder="Ingrese DNI del usuario" [(ngModel)]="entidadModal.dni"/>
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-md-2">
+      <label dlabels class="control-label">Celular</label>
+    </div>
+    <div class="col-md-10">
+      <input dTextBox class="form-control" type='text' name="txtCelular" (keypress)="this.funciones.IsNumberKey($event)" placeholder="Ingrese celular del usuario" [(ngModel)]="entidadModal.celular"/>
+    </div>
+  </div>
+  <div class="row form-group">
+      <div class="col-md-2">
+        <label dlabels class="control-label">Área</label>
+      </div>
+      <div class="col-md-10">
+        <ng-select [items]="areas"
+          placeholder="Seleccione una Área"
+            bindLabel="nombre_area"
+            bindValue="id_area"
+            [(ngModel)]="entidadModal.codArea"
+            name="codArea">
+          </ng-select>
+      </div>
+    </div>
+  <div class="modal-footer">
+  <button class="btn btn-danger" type="submit" id="btnGuardar" [disabled]="!usuarioGrabarForm.form.valid"><i class="fa fa-save"></i> Guardar</button>
+  <button class="btn btn-plomo" id="btnCancelar" type="button" (click)="closeModal()"><i class="fa fa-arrow-left"></i> Cancelar</button>
+  </div>
+  </form>
+  <form (ngSubmit)="administrarTramo();" #usuarioEditarForm="ngForm" [hidden] ="cambiarEditar">
+    <div class="row form-group">
+      <label dlabels class="col-md-2 control-label">Usuario:</label>
+      <div class="col-md-10">
+        <input dTextBox class="form-control" type='text' #usuario="ngModel" required disabled placeholder="" name="usuario" placeholder="Ingrese usuario de red" [(ngModel)]="entidadModal.usuario" />
+        <div [hidden]="usuario.valid || usuario.pristine" class="alert alert-danger">
+          El usuario es obligatorio
+        </div>
+      </div>
+    </div>
+    <div class="row form-group">
+      <div class="col-md-2">
+        <label dlabels class="control-label">Nombre</label>
+      </div>
+      <div class="col-md-10">
+        <input dTextBox class="form-control" type='text' name="nombre" placeholder="Ingrese nombre del usuario" [(ngModel)]="entidadModal.nombre"/>
+      </div>
+    </div>  
+    <div class="row form-group">
+      <div class="col-md-2">
+        <label dlabels class="control-label">Correo</label>
+      </div>
+      <div class="col-md-10">
+        <input dTextBox class="form-control" type='email' name="correo" placeholder="Ingrese correo del usuario" [(ngModel)]="entidadModal.correo"/>
+      </div>
+    </div>  
+    <div class="row form-group">
+      <div class="col-md-2">
+        <label dlabels class="control-label">DNI</label>
+      </div>
+      <div class="col-md-10">
+        <input dTextBox class="form-control" maxlength="8" type='text' name="dni" (keypress)="this.funciones.IsNumberKey($event)" placeholder="Ingrese DNI del usuario" [(ngModel)]="entidadModal.dni"/>
+      </div>
+    </div>
+    <div class="row form-group">
+      <div class="col-md-2">
+        <label dlabels class="control-label">Celular</label>
+      </div>
+      <div class="col-md-10">
+        <input dTextBox class="form-control" type='text' name="txtCelular" (keypress)="this.funciones.IsNumberKey($event)" placeholder="Ingrese celular del usuario" [(ngModel)]="entidadModal.celular"/>
+      </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-md-2">
+          <label dlabels class="control-label">Área</label>
+        </div>
+        <div class="col-md-10">
+          <ng-select [items]="areas"
+            placeholder="Seleccione una Área"
+              bindLabel="nombre_area"
+              bindValue="id_area"
+              [(ngModel)]="entidadModal.codArea"
+              name="codArea">
+            </ng-select>
+        </div>
+      </div>
+    <div class="modal-footer">
+    <button class="btn btn-danger" type="submit" id="btnGuardar" [disabled]="!usuarioEditarForm.form.valid"><i class="fa fa-save"></i> Guardar</button>
+    <button class="btn btn-plomo" id="btnCancelar" type="button" (click)="closeModal()"><i class="fa fa-arrow-left"></i> Cancelar</button>
+    </div>
+  </form>
+</div>

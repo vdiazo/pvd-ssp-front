@@ -1,0 +1,146 @@
+<div class="row form-group" *hasClaim="'monitoreo_tabSeg_regCronograma_nuevCronograma_exp_tec_eje_dir'">
+  <div class="col-6" [hidden]=!bEstado>
+    <button class="btn btn-plomo" (click)="nuevoRegistroCronogramaExpTec()">
+      <i class="fa fa-plus"></i> Nuevo
+    </button>
+  </div>
+  <div class="col-6 text-right">
+    <label dlabels class="control-label">Última Actualización: </label>&nbsp;
+    <span>{{UltimaActualizacionCronograma}}</span>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-12 container-scroll">
+    <table class="table table-hover table-bordered table-responsive table-full-detalle">
+      <thead class="table-active">
+        <tr>
+          <th>Detalle Cronograma</th>
+          <th>Doc. Aprobacion</th>
+          <th>Fecha Inicio</th>
+          <th>Fecha Fin</th>
+          <th [hidden]=!bEstado></th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let item of listaCronogramaEntregable; let i = index">
+        <tr>
+          <td class="text-center">
+            <div class="xs-hidden">
+              <span class="btnTramo btn-dark" (click)="verDetalleCronograma(item.id_cronograma_expediente)"
+                *ngIf="!verDetalle && !item.id_cronograma_expediente==codigoEditar"><i class="fa fa-chevron-down"></i>
+                Ver Detalle
+              </span>
+              <span class="btnTramo btn-success" (click)="verDetalleCronograma(item.id_cronograma_expediente)"
+                *ngIf="verDetalle && item.id_cronograma_expediente==codigoEditar"><i class="fa fa-chevron-up"></i>
+                Ocultar Detalle
+              </span>
+            </div>
+          </td>
+          <td class="text-center xs-hidden">{{item.denominacion}}</td>
+          <td class="text-center xs-hidden">{{item.fecha_inicio_contractual | formatoFecha}}</td>
+          <td class="text-center xs-hidden">{{item.fecha_termino_contractual | formatoFecha}}</td>
+          <td colspan="2" class="xs-footer-lista" [hidden]=!bEstado>
+            <div class="xs-hidden pre-wrap">
+              <span *hasClaim="'monitoreo_tabSeg_regCronograma_editCronograma_exp_tec_eje_dir'">
+                <a class="btn btn-sm btn-icon mr-1s" href="javascript:void(0);" (click)="editarFilaCronograma(item)">
+                  <i class="fa fa-15x">
+                    <img src="assets/img/icons/pencil.svg" alt="editar">
+                  </i>
+                </a>
+              </span>
+              <span *hasClaim="'monitoreo_tabSeg_regCronograma_eliCronograma_exp_tec_eje_dir'">
+                <a class="btn btn-sm btn-icon" href="javascript:void(0);" (click)="anularFilaCronograma(item)">
+                  <i class="fa fa-15x">
+                    <img src="assets/img/icons/trash.svg" alt="eliminar">
+                  </i>
+                </a>
+              </span>
+            </div>
+            <div class="xs-display xs-text-right">
+              <a class="btn-icon mr-1" href="javascript:void(0);" (click)="editarFilaCronograma(item)"
+                *hasClaim="'monitoreo_tabSeg_regCronograma_editCronograma_exp_tec_eje_dir'">
+                <i class="fa fa-pencil"></i>
+              </a>
+              <a class="btn-icon" href="javascript:void(0);" (click)="eliminarFilaCronograma(item)"
+                *hasClaim="'monitoreo_tabSeg_regCronograma_eliCronograma_exp_tec_eje_dir'">
+                <i class="fa fa-trash"></i>
+              </a>
+            </div>
+            <div class="xs-display">
+              <div class="xs-th f-s-13">Doc. Aprobación:</div>
+              <span>{{item.denominacion }}</span>
+              <div>
+                <div class="xs-th f-s-13"><i class="fa fa-calendar"></i> Periodo: </div>
+                <span>{{item.fecha_inicio_contractual | formatoFecha}} -
+                  {{item.fecha_termino_contractual | formatoFecha}}</span>
+              </div>
+              <div>
+                <span class="btnTramo btn-dark" (click)="verDetalleCronograma(item.id_cronograma_expediente)"
+                  *ngIf="!verDetalle && !item.id_cronograma_expediente==codigoEditar"><i class="fa fa-chevron-down"></i>
+                  Ver Detalle
+                </span>
+                <span class="btnTramo btn-success" (click)="verDetalleCronograma(item.id_cronograma_expediente)"
+                  *ngIf="verDetalle && item.id_cronograma_expediente==codigoEditar"><i class="fa fa-chevron-up"></i>
+                  Ocultar Detalle
+                </span>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr *ngIf="editarFila && item.id_cronograma_expediente == codigoEditar" class="xs-grid-detalle">
+          <td colspan="8" align="center" style="background-color: #EAEAE8;">
+            <table class="table table-hover table-responsive table-bordered" style="width: 95%">
+              <thead>
+                <th>N° Informe</th>
+                <th>Componente(s)</th>
+                <th>Fecha de entrega probable</th>
+                <th>Porcentaje (%)</th>
+              </thead>
+              <tbody>
+                <tr *ngFor="let informe of item.informe; let j = index">
+                  <td>
+                    <span class="xs-display xs-th f-s-13">Nro de Informe:</span> {{j+1}}
+                  </td>
+                  <td>
+                    <span class="xs-display">Componente(s): </span>
+                    <table class="table table-responsive table-borderless">
+                      <tbody>
+                        <tr *ngFor="let componente of informe.componente">
+                          <td class="xs-hidden" style="width: 21%;">{{componente.nombre_componente}}</td>
+                          <td class="xs-display">{{componente.nombre_componente}}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <div class="xs-display"><i class="fa fa-calendar"></i> Fecha de Entrega probable:
+                      {{sumarDiasFecha(item.fecha_inicio_contractual, informe.plazo_entrega) | formatoFecha}}</div>
+                    <div class="xs-display">Porcentaje de avance: {{informe.porcentaje}} %</div>
+                  </td>
+                  <td class="text-center xs-hidden" style="width: 33%;">
+                    {{sumarDiasFecha(item.fecha_inicio_contractual, informe.plazo_entrega) | formatoFecha}}
+                  </td>
+                  <td class="text-center xs-hidden" style="width: 33%;">{{informe.porcentaje}}</td>
+                </tr>
+              </tbody>
+              <tfoot style="background-color: rgb(240, 240, 240);">
+                <tr>
+                  <td colspan="3" class="xs-hidden"><b>AVANCE PROGRAMADO TOTAL</b> </td>
+                  <td>
+                    <div class="xs-display">Avance programado total : <b>{{ item.totalAvanceProgramado }} %</b></div>
+                    <div class="text-center xs-hidden"><b>{{ item.totalAvanceProgramado }} %</b></div>
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-12">
+    <nav class="pt-4 pl-3 pull-right">
+      <pagination [totalItems]="totalRegistro" [boundaryLinks]="true" previousText="&lsaquo;" nextText="&rsaquo;"
+        [rotate]="false" firstText="&laquo;" lastText="&raquo;" [maxSize]="5" [itemsPerPage]="5"
+        (pageChanged)="cambiarPaginaCronogramaEntregable($event)">
+      </pagination>
+    </nav>
+  </div>
+</div>

@@ -1,0 +1,13 @@
+@font-face {
+    font-family: 'Roboto';
+    src: url(../../../assets/fonts/RobotoTTF/Roboto-Regular.ttf);
+  }
+
+
+kendo-pdf-export{
+    font-family: 'Roboto';
+}
+
+kendo-pdf-export table{
+  border-collapse: collapse;
+}

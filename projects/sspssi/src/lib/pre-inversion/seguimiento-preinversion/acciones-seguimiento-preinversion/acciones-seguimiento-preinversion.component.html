@@ -1,0 +1,70 @@
+<div class="row form-group">
+  <div class="col-6" [hidden]=!bEstado>
+    <button class="btn btn-plomo" (click)="nuevoRegistroAccionMonitoreoEstudio()"
+      *hasClaim="'monitoreo_tabSeg_regAccionesSegMonitoreo_nuevAccion_pre_inv_eje_dir'">
+      <i class="fa fa-plus"></i> Nuevo
+    </button>
+  </div>
+  <div class="col-6 text-right">
+    <label dlabels class="control-label">Última Actualización: </label>&nbsp;
+    <span>{{UltimaActualizacion}}</span>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-12 container-scroll">
+    <table class="table table-hover table-bordered table-responsive table-full-detalle">
+      <thead>
+        <tr>
+          <th>NRO.</th>
+          <th>ACCION REALIZADA</th>
+          <th>FECHA</th>
+          <th>DESCRIPCION Y/O COMENTARIOS</th>
+          <th>TIPO DE DOCUMENTO</th>
+          <th>DOC.</th>
+          <th *hasClaim="'monitoreo_tabSeg_regAccionesSegMonitoreo_editAccion_pre_inv_eje_dir'">ACCIONES</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let accion of lstAccionMonitoreoPreinversion; index as i;">
+          <td>{{i+1}}</td>
+          <td>{{accion.descripcion_accion_seguimiento}}</td>
+          <td>{{accion.fecha_accion_seguimiento | date: 'dd/MM/yyyy'}}</td>
+          <td>{{accion.comentario}}</td>
+          <td>{{accion.descripcion_tipo_documento}}</td>
+          <td>
+            <div *ngIf="accion.documento_accion_monitoreo != null ; else templateicono">
+              <a href="{{accion.ruta_documento_accion_monitoreo}}" target="_blank" class="btn-icon" [LinkNube]="accion.documento_accion_monitoreo" [Ruta]="accion.ruta_documento_accion_monitoreo">
+                <i class="fa fa-15x">
+                  <img src="assets/img/icons/file.svg" alt="archivo">
+                </i>
+              </a>
+            </div>
+            <ng-template #templateicono>
+            </ng-template>
+          </td>
+          <td *hasClaim="'monitoreo_tabSeg_regAccionesSegMonitoreo_editAccion_pre_inv_eje_dir'">
+            <a href="javascript:void(0)" (click)="modificarAccionMonitoreoEstudio(accion)" class="btn btn-sm btn-icon">
+              <i class="fa fa-15x">
+                <img src="assets/img/icons/pencil.svg" alt="editar">
+              </i>
+            </a>
+            <a href="javascript:void(0)" (click)="anularAccionMonitoreoEstudio(accion.id_accion_monitoreo)"
+              class="btn btn-sm btn-icon">
+              <i class="fa fa-15x">
+                <img src="assets/img/icons/trash.svg" alt="eliminar">
+              </i>
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-12">
+    <nav class="pt-4 pl-3 pull-right">
+      <pagination [totalItems]="totalRegistros" [boundaryLinks]="true" previousText="&lsaquo;" nextText="&rsaquo;"
+        [rotate]="false" firstText="&laquo;" lastText="&raquo;" [itemsPerPage]="itemsPerPage"
+        (pageChanged)="cambiarPagina($event)">
+      </pagination>
+    </nav>
+  </div>
+</div>

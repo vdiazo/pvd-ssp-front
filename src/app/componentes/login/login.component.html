@@ -1,0 +1,95 @@
+<video id="myVideo">
+  <source src="assets/video/video.mp4" type="video/mp4" />
+</video>
+<div class="content">
+  <div class="barra-top bg-danger"></div>
+</div>
+<div class="login-center">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8 text-center mb-4">
+        <h1>Sistema de Seguimiento de Proyectos</h1>
+      </div>
+    </div>
+    <div class="row mt-2 justify-content-center">
+      <div class="col-lg-4">
+        <div class="p-4 login-form">
+          <form #f [formGroup]="formGroup" (ngSubmit)="ngOnLogin()">
+            <input type="text" class="form-control" placeholder="Usuario" formControlName="UserName" autocomplete="off"
+              id="txtUsuario" aria-label="Usuario" />
+            <br>
+            <input type="password" class="form-control" placeholder="Contraseña" formControlName="Password"
+              autocomplete="new-password" id="txtClave" aria-label="Contraseña" />
+            <div class="row mt-2">
+              <div class="col-6" id="botonLogin">
+                <button type="submit" class="btn btn-danger form-control">Iniciar</button>
+              </div>
+              <div class="col-6">
+                <div class="mensaje mb-0 c-red" [innerHTML]="htmlStr"></div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="p-4 login-panel-links">
+          <div>
+            <div class="d-inline-flex align-items"><i class="icon icon-obra"></i><span class="ml-4">Obras</span></div>
+          </div>
+          <div class="mt-2 xs-mt-0">
+            <div class="d-inline-flex align-items"><i class="icon icon-transferencia"></i><span
+                class="ml-4">Transferencias</span></div>
+          </div>
+          <div class="mt-2 xs-mt-0">
+            <div class="d-inline-flex align-items"><i class="icon icon-gestion"></i><span class="ml-4">Gestión</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-2 justify-content-center">
+      <div class="col-lg-8 text-center f-s-12">Ministerio de Transportes y Comunicaciones - Oficina General de
+        Tecnología de
+        la Información<br>Todos los derechos reservados © 2018
+        <br><br><img src="assets/img/logo-mtc.png" width="150" alt="mtc" />
+      </div>
+    </div>
+    <div class="text-center">
+      <div id="messageCompatibility">
+        <div class="mb-2 mt-4">
+          Se recomienda utilizar los siguientes navegadores:
+        </div>
+        <div>
+          <a href="https://www.google.com/intl/es_ALL/chrome/" target="_blank" title="Chrome"><img
+              src="assets/img/icons/chrome.svg" alt="" /></a>
+          <a href="https://www.mozilla.org/es-ES/firefox/new/" target="_blank" title="Mozilla"><img
+              src="assets/img/icons/mozilla.svg" alt="" /></a>
+          <a href="https://www.opera.com/es-419" target="_blank" title="Opera"><img src="assets/img/icons/opera.svg"
+              alt="" /></a>
+          <a href="https://www.apple.com/la/safari/" target="_blank" title="Safari"><img
+              src="assets/img/icons/safari.svg" alt="" /></a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<ng-template #templateSeleccionarSistema>
+  <div class="modal-header bg-magenta c-white">
+    <h4 class="modal-title pull-left">Cambiar Contraseña</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row form-group">
+      <div class="col-md-6 col-sm-12" *ngFor="let item of ListadoSistemas">
+
+        <div (click)="SeleccionarSistema(item.id_modulo)" class="card">
+          <div class="text-center title">{{item.codigo_modulo == 'ssi' ? 'SSP': item.codigo_modulo}}</div>
+          <div class="text-center">{{item.nombre_modulo}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

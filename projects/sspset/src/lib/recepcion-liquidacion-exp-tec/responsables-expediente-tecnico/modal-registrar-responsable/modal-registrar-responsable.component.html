@@ -1,0 +1,267 @@
+<div class="modal-header bg-magenta c-white">
+  <div class="modal-title">
+    <h4>Registro de Responsables</h4>
+  </div>
+  <!--<button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>-->
+</div>
+
+<div class="modal-body">
+  <form [formGroup]="formUsuario" (ngSubmit)="guardar()" autocomplete="off" enctype="multipart/form-data">
+    <accordion class="acordion-normal">
+      <div class="row">
+        <div class="col-12">
+          <accordion-group [isOpen]="true">
+            <span class="btn btn-link btn-block clearfix" accordion-heading>
+              <div class="pull-left float-left">1. Datos del Responsable del Proyecto</div>
+              <span class="badge float-right pull-right">
+                <i class="fa fa-circle-o"></i>
+              </span>
+            </span>
+            <div class="row">
+              <div class="col-9">
+                <div class="form-group row">
+                  <div class="col-md-5">
+                    <label class="col-form-label">Seleccione una Función (*) :</label>
+                  </div>
+                  <div class="col-md-7">
+                    <select
+                      [ngClass]="{'is-invalid': (formUsuario.get('id_funcion_responsable').touched || formUsuario.get('id_funcion_responsable').dirty) && !formUsuario.get('id_funcion_responsable').valid }"
+                      formControlName="id_funcion_responsable" class="form-control">
+                      <option [ngValue]=null disabled>Seleccione su Función</option>
+                      <option *ngFor="let perfil of lstPerfiles" [ngValue]="perfil.id_resp_expd_tecn_funcion">
+                        {{perfil.funcion}}</option>
+                    </select>
+                    <span class="invalid-feedback">
+                      <span *ngIf="formUsuario.get('id_funcion_responsable').errors?.required">
+                        El Campo Función es obligatorio.
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-9">
+                <div class="row form-group">
+                  <div class="col-sm-12">
+                    <div class="inner-addon right-addon">
+                      <label class="btn mb-0 rounded-left" title="Validar con RENIEC"
+                        (click)="ValidarInformacionReniec()"><i class="icono material-icons">search</i></label>
+                      <input
+                        [ngClass]="{'is-invalid': (formUsuario.get('nro_dni').touched || formUsuario.get('nro_dni').dirty) && !formUsuario.get('nro_dni').valid }"
+                        formControlName="nro_dni" id="nro_dni" placeholder="Número de DNI" type="text" maxlength="8"
+                        class="form-control" (keypress)="funciones.IsNumberKey($event)" OnlyNumber="true"
+                        (ngModelChange)="validarDNI()" [readonly]=!bRegistro />
+                    </div>
+                    <span class="invalid-feedback">
+                      <span *ngIf="formUsuario.get('nro_dni').errors?.required">
+                        El Campo DNI es obligatorio.
+                      </span>
+                    </span>
+                  </div>
+                </div>
+                <div class="row form-group">
+                  <div class="col-sm-12">
+                    <input
+                      [ngClass]="{'is-invalid': (formUsuario.get('apellido_paterno').touched || formUsuario.get('apellido_paterno').dirty) && !formUsuario.get('apellido_paterno').valid }"
+                      formControlName="apellido_paterno" type="text" placeholder="Apellido Paterno" class="form-control"
+                      readonly />
+                    <span class="invalid-feedback">
+                      <span *ngIf="formUsuario.get('apellido_paterno').errors?.required">
+                        El Campo Apellido Paterno es obligatorio.
+                      </span>
+                    </span>
+                  </div>
+                </div>
+                <div class="row form-group">
+                  <div class="col-sm-12">
+                    <input
+                      [ngClass]="{'is-invalid': (formUsuario.get('apellido_materno').touched || formUsuario.get('apellido_materno').dirty) && !formUsuario.get('apellido_materno').valid }"
+                      formControlName="apellido_materno" type="text" placeholder="Apellido Materno" class="form-control"
+                      readonly />
+                    <span class="invalid-feedback">
+                      <span *ngIf="formUsuario.get('apellido_materno').errors?.required">
+                        El Campo ApeMaterno es obligatorio.
+                      </span>
+                    </span>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-12">
+                    <input
+                      [ngClass]="{'is-invalid': (formUsuario.get('nombres').touched || formUsuario.get('nombres').dirty) && !formUsuario.get('nombres').valid }"
+                      formControlName="nombres" type="text" placeholder="Nombres" class="form-control" readonly />
+                    <span class="invalid-feedback">
+                      <span *ngIf="formUsuario.get('nombres').errors?.required">
+                        El Campo Nombres es obligatorio.
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-3">
+                <div style="height: 100%;width:163.43px;border:1px solid rgba(0, 0, 0, 0.2)">
+                  <img id="imgFoto" name="imgFoto" />
+                </div>
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-9">
+                <div class="row form-group">
+                  <div class="col-md-4">
+                    <label class="col-form-label">Es Colegiado:</label>
+                  </div>
+                  <div class="col-md-6">
+                    <select
+                      [ngClass]="{'is-invalid': (formUsuario.get('estado_profesional').touched || formUsuario.get('estado_profesional').dirty) && !formUsuario.get('estado_profesional').valid }"
+                      class="form-control" formControlName="estado_profesional" (change)="setEstadoProfesional()">
+                      <option [ngValue]=null disabled>Seleccione Est.Profesional</option>
+                      <option [ngValue]=1>Si</option>
+                      <option [ngValue]=2>No</option>
+                    </select>
+                    <span class="invalid-feedback">
+                      <span *ngIf="formUsuario.get('estado_profesional').errors?.required">
+                        El Campo Estado de la Colegiatura es obligatorio.
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-row" [hidden]="formUsuario.value.estado_profesional != 1">
+              <div class="form-group col-md-8">
+                <label class="col-form-label">Colegio profesional:</label>
+                <select
+                  [ngClass]="{'is-invalid': (formUsuario.get('id_tipo_colegiatura').touched || formUsuario.get('id_tipo_colegiatura').dirty) && !formUsuario.get('id_tipo_colegiatura').valid }"
+                  formControlName="id_tipo_colegiatura" class="form-control">
+                  <option [ngValue]="null" disabled>Seleccione Col.Profesional</option>
+                  <option *ngFor="let colegio of lstColegio" [ngValue]="colegio.id_colegio_profesional">
+                    {{colegio.descripcion}}</option>
+                </select>
+                <span class="invalid-feedback">
+                  <span *ngIf="formUsuario.get('id_tipo_colegiatura').errors?.required">
+                    El Campo Colegio Profesional es obligatorio.
+                  </span>
+                </span>
+              </div>
+              <div class="form-group col-md-3">
+                <label class="col-form-label">Nro Colegiatura:</label>
+                <input
+                  [ngClass]="{'is-invalid': (formUsuario.get('nro_colegiatura').touched || formUsuario.get('nro_colegiatura').dirty) && !formUsuario.get('nro_colegiatura').valid }"
+                  formControlName="nro_colegiatura" type="text" placeholder="" maxlength="10" class="form-control"
+                  (keypress)="funciones.IsNumberKey($event)" />
+                <span class="invalid-feedback">
+                  <span *ngIf="formUsuario.get('nro_colegiatura').errors?.required">
+                    El Campo Número de Colegiatura es obligatorio.
+                  </span>
+                </span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-9">
+                <div class="row form-group">
+                  <div class="col-md-4">
+                    <label class="col-form-label">Correo Electónico:</label>
+                  </div>
+                  <div class="col-md-6">
+                    <input type="text" maxlength="500" formControlName="valCorreo" id="txtCorreo" class="form-control"
+                      placeholder="ejemplo@mtc.gob.pe"
+                      [ngClass]="{'is-invalid': (formUsuario.get('valCorreo').touched || formUsuario.get('valCorreo').dirty) && !formUsuario.get('valCorreo').valid }" />
+                    <span class="invalid-feedback" style="width: 400px;">
+                      <span *ngIf="formUsuario.get('valCorreo').errors?.email">
+                        Ingrese un correo electrónico válido.
+                      </span>
+                    </span>
+                  </div>
+                  <div class="col-md-2" style="margin-left: -29px">
+                    <button class="btn btn-danger d-inline-flex" type="button"
+                      [disabled]="!formUsuario.get('valCorreo').valid" id="btnAgregarCorreo" (click)="agregarCorreo()">
+                      +</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-5" style="margin-left: 148px; margin-top: -10px">
+                <ul class="correos">
+                  <table class="table table-striped">
+                    <tbody>
+                      <tr *ngFor="let item of lstCorreos;index as s">
+                        <td>{{s +1}}</td>
+                        <td>{{ item }}</td>
+                        <td>
+                          <a style="cursor: pointer;" (click)="eliminarCorreo(s)">
+                            <i class="material-icons" style="vertical-align: bottom;">clear</i>
+                          </a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </ul>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-9">
+                <div class="row form-group">
+                  <div class="col-md-4">
+                    <label class="col-form-label">Teléfono:</label>
+                  </div>
+                  <div class="col-md-6">
+                    <input type="text" maxlength="10" formControlName="valTelefono" id="txtTelefono"
+                      class="form-control" placeholder="Número de teléfono" (keypress)="funciones.IsNumberKey($event)"
+                      [ngClass]="{'is-invalid': (formUsuario.get('valTelefono').touched || formUsuario.get('valTelefono').dirty) && !formUsuario.get('valTelefono').valid }" />
+                    <span class="invalid-feedback" style="width: 400px;">
+                      <span *ngIf="formUsuario.get('valTelefono').errors?.minlength">
+                        Ingrese un Nro de teléfono como mínimo de 7 dígitos.
+                      </span>
+                    </span>
+                  </div>
+                  <div class="col-md-2" style="margin-left: -29px">
+                    <button class="btn btn-danger d-inline-flex" type="button"
+                      [disabled]="!formUsuario.get('valTelefono').valid" id="btnAgregarTelefono"
+                      (click)="agregarTelefono()">
+                      +</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-5" style="margin-left: 148px; margin-top: -10px">
+                <ul class="telefonos">
+                  <table class="table table-striped">
+                    <tbody>
+                      <tr *ngFor="let item of lstTelefonos;index as i">
+                        <td>{{ i+1}}</td>
+                        <td>{{ item }}</td>
+                        <td>
+                          <a style="cursor: pointer;" (click)="eliminarTelefono(i)">
+                            <i class="material-icons" style="vertical-align: bottom;">clear</i>
+                          </a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </ul>
+              </div>
+            </div>
+          </accordion-group>
+        </div>
+      </div>
+    </accordion>
+    <span class="comentario">(*)Campos Obligatorios</span>
+    <div class="modal-footer">
+      <!--<button class="btn btn-danger" type="submit" id="btnGuardar">
+            <i class="fa fa-save"></i> Guardar 2</button>-->
+
+      <button class="btn btn-danger" id="btnGuardar" type="submit">
+        <i class="fa fa-save"></i>Guardar
+      </button>
+      <button class="btn btn-plomo" id="btnCancelar" type="button" (click)="closeModal()">
+        <i class="fa fa-arrow-left"></i> Cancelar</button>
+      <!--<button id="btnCancelar" type="button" (click)="closeModal()" class="btn btn-plomo">Cerrar</button>-->
+    </div>
+  </form>
+</div>

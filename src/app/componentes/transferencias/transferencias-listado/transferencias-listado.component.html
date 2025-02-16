@@ -1,0 +1,132 @@
+<div class="row form-group">
+  <div class="col-sm-3">
+    <input dTextBox class="form-control" type='text' name="txtdispositivo" id="txtdispositivo" placeholder="Ingrese Dispositivo"
+      [(ngModel)]="beTrasferenciaRealizadaRequest.dispositivo" #txtdispositivo="ngModel" />
+  </div>
+  <div class="col-sm-2">
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <label class="btn mb-0 rounded-left" for="fechaDesde"> 
+          <i class="fa fa-calendar"></i>
+        </label>
+      </div>
+      <span class="input-file-txt-max">
+        <i class="fa fa-times-circle f-s-10" (click)="LimpiarFecha(beTrasferenciaRealizadaRequest,'fecha_publicacion_desde')"></i>
+      </span>
+
+      <input dTextBox class="form-control" type='text' name="fechaDesde" id="fechaDesde" placeholder="Desde : dd/mm/aaaa" [(ngModel)]="beTrasferenciaRealizadaRequest.fecha_publicacion_desde"
+        #fechaDesde="ngModel" readonly="readonly" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es', containerClass: 'theme-red' }"
+      />
+    </div>
+  </div>
+  <div class="col-sm-2">
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <label class="btn mb-0 rounded-left" for="fechaHasta">
+          <i class="fa fa-calendar"></i>
+        </label>
+      </div>
+      <span class="input-file-txt-max">
+        <i class="fa fa-times-circle f-s-10" (click)="LimpiarFecha(beTrasferenciaRealizadaRequest,'fecha_publicacion_hasta')"></i>
+      </span>
+      <input dTextBox class="form-control" readonly="readonly" type='text' name="fechaHasta" id="fechaHasta" placeholder="Hasta: dd/mm/aaaa" [(ngModel)]="beTrasferenciaRealizadaRequest.fecha_publicacion_hasta"
+        #fechaHasta="ngModel" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es', containerClass: 'theme-red' }"
+      />
+    </div>
+  </div>
+  <div class="col-sm-2">
+    <button class="btn btn-plomo" (click)="ConsultarTransferencias(beTrasferenciaRealizadaRequest)" type="button" id="btnBuscar">
+      <i class="fa fa-search"></i> Buscar</button>
+  </div>
+</div>
+<table class="table table-hover table-bordered table-responsive table-full-detalle">
+  <thead class="table-danger">
+    <tr>
+      <th colspan="3">
+        Información de la Transferencia
+      </th>
+      <th colspan="2">
+        Proyectos
+      </th>
+      <th rowspan="2"></th>
+      <th rowspan="2"></th>
+    </tr>
+    <tr>
+      <th>Fecha de Publicación</th>
+      <th>Dispositivo de Transferencia</th>
+      <th>Detalle</th>
+      <th>N° de Proyectos</th>
+      <th>Monto Transferido (S/)</th>
+
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let transferencia of listTransferencias">
+      <td>
+        <div class="xs-hidden">
+            {{transferencia.fecha_publicacion | date:'dd/MM/yyyy' }}
+        </div>
+        <div class="xs-display">
+            <div class="xs-th f-s-14"><i class="fa fa-calendar"></i> {{transferencia.fecha_publicacion | date:'dd/MM/yyyy' }}</div>
+            <div class="xs-th">Dispositivo de Transferencia</div>
+            <div>{{transferencia.dispositivo }}</div>
+            <div>
+                <span class="xs-th">N° de Proyectos &nbsp;&nbsp;&nbsp; : </span>
+                <span>{{transferencia.numero_proyecto }}</span>
+            </div>
+            <div>
+                <span class="xs-th">Monto Transferido : </span>
+                <span>{{transferencia.monto | currency:" S/" }}</span>
+            </div>
+        </div>
+      </td>
+      <td class="xs-hidden text-left">{{transferencia.dispositivo }}</td>
+      <td class="xs-hidden">
+        <a href="javascript:void(0)" (click)="verDetalleTransferencia(transferencia)" class="btn-icon">
+          <i class="fa fa-search fa-15x"></i>
+        </a>
+      </td>
+      <td class="xs-hidden text-right">{{transferencia.numero_proyecto }}</td>
+      <td class="xs-hidden text-right">{{transferencia.monto | currency:" S/" }}</td>
+      <td class="xs-footer-lista">
+        <div class="xs-hidden pre-wrap">
+          <span *hasClaim="'financiamiento_transferencia_listTransferencias_eliTransferencia'" class="btn btn-sm btn-opt btn-icon" (click)="anularTransferencia(transferencia)">
+            <i class="fa fa-15x">
+              <img src="assets/img/icons/trash.svg" alt="eliminar">
+            </i>
+          </span>
+        </div>
+      </td>
+      <td class="xs-footer-lista xs-100 xs-text-right pre-wrap">
+          <div class="xs-hidden">
+              <a href="javascript:void(0)" class="btn btn-icon" target="_blank" style="font-size: 35px;" (click)="exportarTransferencia(transferencia)">
+                  <i aria-hidden="true" class="fa fa-15x"><img src="assets/img/icons/excel.svg" alt="exportar excel"></i>
+              </a>
+          </div>
+          <div class="xs-display">
+              <a href="javascript:void(0)" (click)="verDetalleTransferencia(transferencia)" class="btn-icon mr-1">
+                  <i class="fa fa-search"></i>
+                </a>
+
+              <span *hasClaim="'financiamiento_transferencia_listTransferencias_eliTransferencia'" class="btn-icon mr-1" (click)="anularTransferencia(transferencia)">
+                  <i class="fa fa-trash"></i>
+                </span>
+
+              <a href="javascript:void(0)" class="btn-icon" target="_blank" (click)="exportarTransferencia(transferencia)">
+                  <i aria-hidden="true" class="fa icon-excel"></i>
+              </a>
+          </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="row">
+  <div class="col-12 xs-p-0">
+    <nav class="pt-2 pull-right">
+      <pagination [totalItems]="totalRegistrosTransferencia" [itemsPerPage]="num_filas" [boundaryLinks]="true" previousText="&lsaquo;"
+        nextText="&rsaquo;" [rotate]="false" firstText="&laquo;" lastText="&raquo;" [maxSize]="5" (pageChanged)="cambiarPagina($event)">
+      </pagination>
+    </nav>
+  </div>
+</div>

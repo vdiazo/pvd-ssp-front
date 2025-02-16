@@ -1,0 +1,112 @@
+<div class="container-fluid">
+  <div class="title-block">
+    <p class="page-title">Unidades Ejecutoras</p>
+  </div>
+</div>
+
+<div class="container-fluid">
+  <div class="card">
+    <div class="card-body">
+      <div class="row form-group">
+        <div class="col-sm-2">
+          <label class="control-label">
+            Unidad Ejecutora
+          </label>
+        </div>
+        <div class="col-sm-6">
+          <input class="form-control mayuscula" [(ngModel)]="selectedValueMunicipalidad" [typeahead]="UnidadesEjecutoras" typeaheadOptionField="nombre_municipalidad">
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-2">
+          <label class="control-label">
+            Región
+          </label>
+        </div>
+        <div class="col-sm-4">
+          <input class="form-control mayuscula" [(ngModel)]="selectedValueDepartamento" [typeahead]="Departamentos" typeaheadOptionField="departamento">
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-2">
+          <label class="control-label">
+            Nombres y Apellidos
+          </label>
+        </div>
+        <div class="col-sm-4">
+          <input class="form-control mayuscula" id="txtNA">
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-4">
+          <button class="btn btn-plomo mr-1" type="button" id="btnBuscar">
+            <i class="fa fa-search"></i> Buscar
+          </button>
+          <button class="btn" type="button" id="btnLimpiar">
+            <i class="icon icon-limpiar"></i> Limpiar
+          </button>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-12">
+          <label class="control-label">
+            Cristerios de Busqueda: {{ filtros }}
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid">
+  <div class="card card-principal">
+    <div class="card-body">
+      Numero de Registros:
+      <span [ngPlural]="nroRegistros">
+        <ng-template ngPluralCase="=0">No se encontraron registros</ng-template>
+        <ng-template ngPluralCase="=1">1 Registro encontrado</ng-template>
+        <ng-template ngPluralCase="other">{{nroRegistros}} registros encontrados</ng-template>
+      </span>
+      <p></p>
+      <div class="row form-group">
+        <div class="col-12 text-right">
+          <a href="javascript:void(0)" class="btn btn-exportar" target="_blank" (click)="exportarFormatoExcel()" [hidden]="nroRegistros == 0">
+            <i class="icon icon-excel"></i> Exportar
+          </a>
+        </div>
+      </div>
+      <table class="table table-hover table-responsive table-normal">
+        <thead>
+          <tr>
+            <th>Nombres y Apellidos</th>
+            <th>Correo</th>
+            <th>Celular</th>
+            <th>Gerencia u Oficina Responsable</th>
+            <th>Unidad Ejecutora</th>
+            <th>Región</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let campos of detalleUsuario">
+            <td class="xs-hidden text-left">{{campos.nombre_usuario}}</td>
+            <td class="xs-hidden text-left">{{campos.correo_electronico}}</td>
+            <td class="xs-hidden text-left">{{campos.celular}}</td>
+            <td class="xs-hidden text-left">{{campos.nombre_area}}</td>
+            <td class="xs-hidden text-left">{{campos.nombre_municipalidad}}</td>
+            <td class="xs-hidden text-left">{{campos.departamento}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="row">
+      <div class="col-12 xs-p-0">
+        <nav class="pt-2 pull-right">
+          <pagination [totalItems]="totalRegistros" [itemsPerPage]="num_filas" [boundaryLinks]="true" previousText="&lsaquo;" nextText="&rsaquo;"
+            [rotate]="false" firstText="&laquo;" lastText="&raquo;" [maxSize]="5" (pageChanged)="cambiarPagina($event)">
+          </pagination>
+        </nav>
+      </div>
+    </div>
+  </div>
+</div>

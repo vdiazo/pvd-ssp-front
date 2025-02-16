@@ -1,0 +1,121 @@
+<div class="">
+    <div class="modal-header">
+      <h4 class="modal-title">{{Title}}</h4>
+      <p class="pl-4 pr-4">{{TitleDescription}}</p>
+    </div>
+    <div class="modal-body xs-m-0">
+      <ng-container *ngIf="ACCION==1">
+          <form [formGroup]="formAgregarMeta" (ngSubmit)="RegistrarMeta()" #FormularioRegistroMetas="ngForm">
+          <div class="form-group row">
+              <label class="col-sm-2 col-form-label">Componente</label>
+              <div class="col-sm-10">
+                  <ng-select id="id_meta_componente" [items]="lstComponentes.meta_componente" placeholder="Seleccione Meta" bindLabel="nombre" bindValue="id_meta_componente"
+                      notFoundText="no se ha encontrado ningún item" (change)="ElegirMeta($event)" formControlName="id_meta_componente">
+                  </ng-select>
+              </div>
+          </div>
+          <div class="form-group row" *ngIf="showTipoIntervencion">
+              <label class="col-sm-2 col-form-label">Tipo de Intervención</label>
+              <div class="col-sm-10">
+                  <ng-select id="id_tipo_intervencion" [items]="lastTipoIntervencion" placeholder="Seleccione Tipo de Intervención" bindLabel="nombre"
+                      bindValue="id_tipo_intervencion" notFoundText="no se ha encontrado ningún item" (change)="ElegirTipoIntervencion($event)"
+                      formControlName="id_tipo_intervencion">
+                  </ng-select>
+              </div>
+          </div>
+          <div class="form-group row" *ngIf="showTipoSubIntervencion">
+              <label class="col-sm-2 col-form-label">Sub Tipo Intervencion</label>
+              <div class="col-sm-10">
+                  <ng-select id="id_sub_tipo_intervencion" [items]="lastSubTipoIntervencion" placeholder="Seleccione Sub Tipo de Intervención" bindLabel="nombre"
+                      bindValue="id_tipo_intervencion" notFoundText="no se ha encontrado ningún item" (change)="ElegirTipoSubIntervencion($event)"
+                      formControlName="id_sub_tipo_intervencion">
+                  </ng-select>
+              </div>
+          </div>
+          <div class="form-group row" *ngIf="showOtros">
+              <label class="col-sm-2 col-form-label">Descripción otros</label>
+              <div class="col-sm-10">
+                  <input id="descripcionOtros" type="text" class="form-control" formControlName="otros">
+              </div>
+          </div>
+          <div class="form-group row" *ngIf="showCantidad">
+              <label class="col-sm-2 col-form-label">Cantidad</label>
+              <div class="col-sm-7">
+                  <input id="cantidad" type="text" class="form-control" [textMask]="{mask: funciones.currencyMask}" formControlName="cantidad">
+              </div>
+              <div class="col-sm-3">
+                      <input id="unidad" type="text" class="form-control" formControlName="unidad" readonly="true">
+                  </div>
+             
+          </div>
+          <!-- <div class="form-group row">
+              <div class="col-12">
+                  <button class="btn btn-magenta-outlined d-flex" type="submit"><i class="material-icons v-m">save</i>Guardar</button>
+              </div>
+          </div> -->
+      </form>
+      </ng-container>
+      <ng-container *ngIf="ACCION==3">
+        <button class="btn btn-plomo mb-4" (click)="ModalAbrirNuevoRegistro()"><i class="fa fa-plus"></i> Nueva Meta</button>
+
+        <table class="table table-hover table-bordered table-responsive">
+          <thead>
+            <tr>
+                <th>Componente</th>
+                <th>Tipo de Intervención</th>
+                <th>Sub Tipo de Intervención</th>
+                <th>Descripción Otros</th>
+                <th>Cantidad</th>
+                <th>Unidad</th>
+                <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of ListaMetas.proyecto">
+                <td class="xs-hidden">{{item.nombre_meta_componente}}</td>
+                <td class="xs-hidden">{{item.nombre_tipo_intervencion}}</td>
+                <td class="xs-hidden">{{item.nombre_tipo_intervencion_secundario}}</td>
+                <td class="xs-hidden">{{item.descripcion}}</td>
+                <td class="xs-hidden">{{item.cantidad}}</td>
+                <td class="xs-hidden">{{item.nombre_unidad_medida}}</td>
+                <td class="xs-p-0">
+                    <div class="xs-hidden">
+                      <a class="btn-icon d-inline-block" href="javascript:void(0)" tooltip="Eliminar" (click)="AnularMeta(item.id_meta)"><i class="fa fa-15x">
+                        <img  src="assets/img/icons/trash.svg"></i>
+                      </a></div>
+
+                      <div class="xs-display mb-3 shadow-app"><div class="p-4"><div>
+                        <span class="xs-th">Componentes</span>&nbsp;&nbsp;&nbsp; 
+                        <div class="text-justify"> {{ item.nombre_meta_componente}} </div>
+                        <span class="xs-th">Tipo de Intervención</span>&nbsp;&nbsp;&nbsp; 
+                        <div class="text-justify"> {{ item.nombre_tipo_intervencion}} </div>
+                        <span class="xs-th">Sub Tipo de Intervención</span>&nbsp;&nbsp;&nbsp; 
+                        <div class="text-justify"> {{ item.nombre_tipo_intervencion_secundario}} </div>
+                        <span class="xs-th">Cantidad</span>&nbsp;&nbsp;&nbsp; 
+                        <div class="text-justify"> {{ item.cantidad}} <span class="text-lowercase">{{ item.nombre_unidad_medida}}</span></div>
+                        <hr class="mt-2 mb-2"></div>
+                        <div>
+                            <span class="xs-th">Descripción Otros:</span>&nbsp;&nbsp;
+                            <span> {{ item.descripcion}}</span>
+                          </div></div>
+                          <div class="xs-footer-lista xs-text-right p-2">
+                              <div class="xs-display">
+                                <span>
+                                  <a href="javascript:void(0)" class="btn-icon" tooltip="Eliminar" (click)="AnularMeta(item.id_meta)">
+                                    <i class="fa fa-trash"></i>
+                                  </a>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                </td>
+            </tr>
+          </tbody>
+        </table>
+      </ng-container>
+    </div>
+    <div class="modal-footer">
+        <button *ngIf="ACCION==1" class="btn btn-danger" (click)="Registrar()"><i class="fa fa-save"></i> Guardar</button>
+        <button class="btn btn-plomo"(click)="Cerrar()"><i class="fa fa-arrow-left"></i> Cancelar</button>
+        </div>
+    </div>

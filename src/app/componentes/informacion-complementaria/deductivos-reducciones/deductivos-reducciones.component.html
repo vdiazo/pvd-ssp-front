@@ -1,0 +1,111 @@
+<div class="row form-group" *hasClaim="'monitoreo_tabInfComplementaria_nuevDeductivoReducciones'">
+  <div class="col-6" [hidden]=!bEstado>
+    <button class="btn btn-plomo" (click)="nuevoDeductivoReduccion()">
+      <i class="fa fa-plus"></i> Nuevo
+    </button>
+  </div>
+  <div class="col-6 text-right">
+      <label dlabels class="control-label">Última Actualización:</label>&nbsp;
+      <span>{{UltimaActualizacion}}</span>      
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-12 container-scroll">
+    <table class="table table-hover table-bordered table-responsive table-full-detalle">
+      <thead class="table-active">
+        <tr>
+          <th *ngIf="false">id_deductivo_reduccion_obra</th>
+          <th *ngIf="false">id_seguimiento_monitoreo_obra</th>
+          <th>Monto Presupuesto</th>
+          <th>Resolución Aprobación</th>
+          <th>Resolución Fecha</th>
+          <th>% Incidencia</th>
+          <th>Concepto</th>
+          <th>Observaciones</th>
+          <th>Doc.</th>
+          <th [hidden]=!bEstado></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let deductivoReduccion of listDeductivoReduccion">
+          <td *ngIf="false">{{deductivoReduccion.id_deductivo_reduccion_obra}}</td>
+          <td *ngIf="false">{{deductivoReduccion.id_seguimiento_monitoreo_obra}}</td>
+          <td class="xs-hidden text-right">{{deductivoReduccion.monto_presupuesto | formatoMoneda}}</td>
+          <td class="xs-hidden text-left">{{deductivoReduccion.resolucion_aprobacion}}</td>
+          <td class="xs-hidden">{{deductivoReduccion.resolucion_fecha | formatoFecha}}</td>
+          <td class="xs-hidden text-right">{{deductivoReduccion.incidencia}}</td>
+          <td class="xs-hidden text-left">{{deductivoReduccion.concepto}}</td>
+          <td class="text-left">
+            <div class="xs-hidden ">
+              {{deductivoReduccion.observacion}}
+            </div>
+            <div class="xs-display">
+              <div><span class="xs-th">Resolución Fecha &nbsp;; : </span><span>{{deductivoReduccion.resolucion_fecha | formatoFecha}}</span></div>
+              <div><span class="xs-th">Monto Presupuesto : </span><span>{{deductivoReduccion.monto_presupuesto | formatoMoneda}}</span></div>
+              <div><span class="xs-th">Resolución Aprobación : </span><span>{{deductivoReduccion.resolucion_aprobacion}}</span></div>
+              <div><span class="xs-th">% Incidencia : </span><span>{{deductivoReduccion.incidencia}}</span></div>
+              <div><span class="xs-th">Concepto : </span></div>
+              <div>{{deductivoReduccion.concepto}}</div>
+              <div><span class="xs-th">Observaciones : </span></div>
+              <div>{{deductivoReduccion.observacion}}</div>
+              
+            </div>
+          </td>
+          <td>
+            <div class="xs-hidden">
+              <div *ngIf="deductivoReduccion.nombre_archivo != '' ; else templateicono">
+                <a href="{{deductivoReduccion.ruta_archivo}}" target="_blank" class="btn-icon" [LinkNube]="deductivoReduccion.nombre_archivo" [Ruta]="deductivoReduccion.ruta_archivo">
+                  <i class="fa fa-15x">
+                    <img src="assets/img/icons/file.svg" alt="archivo">
+                  </i>
+                </a>
+              </div>
+              <ng-template #templateicono>
+              </ng-template>
+            </div>
+          </td>
+          <td class="xs-footer-lista xs-text-right" [hidden]=!bEstado>
+            <div class="xs-hidden pre-wrap" *ngIf="!(i > 0 || paginaActiva!=0)">
+              <a href="javascript:void(0)" (click)="editarDeductivoReduccion(deductivoReduccion)" class="btn btn-sm btn-icon" *hasClaim="'monitoreo_tabInfComplementaria_editDeductivoReducciones'">
+                <i class="fa fa-15x">
+                  <img src="assets/img/icons/pencil.svg" alt="editar">
+                </i>
+              </a>
+              <a href="javascript:void(0)" (click)="eliminarDeductivoReduccion(deductivoReduccion)" class="btn btn-sm btn-icon" *hasClaim="'monitoreo_tabInfComplementaria_eliDeductivoReducciones'">
+                <i class="fa fa-15x">
+                  <img src="assets/img/icons/trash.svg" alt="eliminar">
+                </i>
+              </a>
+            </div>
+            <div class="xs-display" *ngIf="!(i > 0 || paginaActiva!=0)">
+
+              <ng-container *ngIf="deductivoReduccion.nombre_archivo != ''">
+                <a class="btn-icon mr-1" href="#" target="_blank" [LinkNube]="deductivoReduccion.nombre_archivo" [Ruta]="deductivoReduccion.ruta_archivo">
+                  <i class="fa fa-file"></i>
+                </a>
+              </ng-container>
+
+              <a href="javascript:void(0)" (click)="editarDeductivoReduccion(deductivoReduccion)" class="btn-icon mr-1" *hasClaim="'monitoreo_tabInfComplementaria_editDeductivoReducciones'">
+                <i class="fa fa-pencil"></i>
+              </a>
+              <a href="javascript:void(0)" (click)="eliminarDeductivoReduccion(deductivoReduccion)" class="btn-icon" *hasClaim="'monitoreo_tabInfComplementaria_eliDeductivoReducciones'">
+                <i class="fa fa-trash"></i>
+              </a>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-12">
+    <nav class="pt-4 pl-3 pull-right">
+      <pagination [totalItems]="totalRegistros" [itemsPerPage]="numPaginasMostrar" [boundaryLinks]="true" previousText="&lsaquo;"
+        nextText="&rsaquo;" [rotate]="false" firstText="&laquo;" lastText="&raquo;" [maxSize]="5" (pageChanged)="cambiarPagina($event)">
+      </pagination>
+    </nav>
+  </div>
+  <div class="col-4">Total Deductivos: {{((montoTotal)? montoTotal:"0") | formatoMoneda}}</div>
+  <div class="col-4">
+    <span class="comentario"> Nota: Los deductivos harán variar el avance de la obra.</span>
+  </div>
+</div>

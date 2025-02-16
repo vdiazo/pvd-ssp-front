@@ -1,0 +1,130 @@
+<div class="tab-content" id="nav-tabContent">
+  <div class="tab-pane fade show active jumbotron container-fluid pt-4" id="nav-home" role="tabpanel"
+    aria-labelledby="nav-home-tab">
+    <accordion>
+      <div *ngIf="id_seguimientoMonitoreoObra"></div>
+      <div class="row">
+        <div class="col-12">
+          <accordion-group [isOpen]="isOpen" [panelClass]="separator"
+            *hasClaim="'monitoreo_tabSeg_infObra_listInfObra_eje_dir'">
+            <button class="btn btn-link btn-block clearfix" accordion-heading>
+              <div class="pull-left float-left">1. Información de obra</div>
+              <span class="badge float-right pull-right">
+                <i class="fa fa-circle-o"></i>
+              </span>
+            </button>
+            <ssi-informacion-obra [idSeguimientoMonitoreoObra]="idSeguimientoMonitoreo" [idFase]="idFase"
+              [idTramo]="idTramo" [bEstado]=true (eventInformacionObra)="setIdSegMonitoreo($event)">
+            </ssi-informacion-obra>
+          </accordion-group>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <accordion-group [panelClass]="separator" *hasClaim="'monitoreo_tabSeg_divResponsable_eje_dir'">
+            <button class="btn btn-link btn-block clearfix" accordion-heading>
+              <div class="pull-left float-left">2. Responsables</div>
+              <span class="badge float-right pull-right">
+                <i class="fa fa-circle-o"></i>
+              </span>
+            </button>
+            <ssi-asignacion-responsable *ngIf="divSegMonitoreo" [idSeguimientoMonitoreoObra]="idSeguimientoMonitoreo"
+              [fecha_inicio_contractual]="fecha_inicio_contractual" [bEstado]=true>
+            </ssi-asignacion-responsable>
+          </accordion-group>
+        </div>
+      </div>
+      <div class=" row">
+        <div class="col-12">
+          <accordion-group [panelClass]="separator" *hasClaim="'monitoreo_tabSeg_regCronograma_listCronograma_eje_dir'">
+            <button class="btn btn-link btn-block clearfix" accordion-heading>
+              <div class="pull-left float-left">3. Programación de Cronograma Valorización de Ejecución de Obra
+              </div>
+              <span class="badge float-right pull-right">
+                <i class="fa fa-circle-o"></i>
+              </span>
+            </button>
+            <ssi-cronograma *ngIf="divSegMonitoreo" [idSeguimientoMonitoreoObra]="idSeguimientoMonitoreo" [bEstado]=true
+              [guid]="guid" [fecha_inicio_contractual]="fecha_inicio_contractual"
+              (ActualizarGrafico)="ActualizarGrafico_()"></ssi-cronograma>
+          </accordion-group>
+        </div>
+      </div>
+      <div class=" row">
+        <div class="col-12">
+          <accordion-group [panelClass]="separator" *hasClaim="'monitoreo_tabSeg_regCronograma_listCronograma_eje_dir'">
+            <button class="btn btn-link btn-block clearfix" accordion-heading>
+              <div class="pull-left float-left">4. Programación Financiera del Proyecto
+              </div>
+              <span class="badge float-right pull-right">
+                <i class="fa fa-circle-o"></i>
+              </span>
+            </button>
+            <ssi-cronograma-financiero *ngIf="divSegMonitoreo" [idSeguimientoMonitoreoObra]="idSeguimientoMonitoreo"
+              [bEstado]=true></ssi-cronograma-financiero>
+          </accordion-group>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <accordion-group [panelClass]="separator"
+            *hasClaim="'monitoreo_tabSeg_obraValorizaciones_listObraValorizaciones_eje_dir'">
+            <button class="btn btn-link btn-block clearfix" accordion-heading>
+              <div class="pull-left float-left">5. Avance de obra según valorizaciones</div>
+              <span class="badge float-right pull-right">
+                <i class="fa fa-circle-o"></i>
+              </span>
+            </button>
+            <ssi-valorizaciones *ngIf="divSegMonitoreo" [idSeguimientoMonitoreoObra]="idSeguimientoMonitoreo"
+              [snip]="snip" [bEstado]=true (ActualizarGrafico)="ActualizarGrafico_()"></ssi-valorizaciones>
+            <br>
+            <a *ngIf="divSegMonitoreo" class="btn btn btn-warning text-white" role="button"
+              aria-controls="graficoAvance" (click)="mostrar_();">
+              <i class="fa fa-line-chart"></i> Ver grafico comparativo
+            </a>
+            <p></p>
+            <div class="collapse" id="graficoAvance">
+              <ssi-comparativo-avance [idSeguimientoMonitoreoObra]="idSeguimientoMonitoreo" [bEstado]=true
+                [guid]="guid"></ssi-comparativo-avance>
+            </div>
+          </accordion-group>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <accordion-group [panelClass]="separator"
+            *hasClaim="'monitoreo_tabSeg_divAccionSeguimientoMonitoreo_eje_dir'">
+            <button class="btn btn-link btn-block clearfix" accordion-heading>
+              <div class="pull-left float-left">5. Acciones de Seguimiento y Monitoreo - PVD</div>
+              <span class="badge float-right pull-right">
+                <i class="fa fa-circle-o"></i>
+              </span>
+            </button>
+            <ssi-acciones-seguimiento-monitoreo [idSeguimientoMonitoreoObra]="idSeguimientoMonitoreo" [bEstado]=true
+              [idFase]="idFase" tipoPerfil="PVD">
+            </ssi-acciones-seguimiento-monitoreo>
+          </accordion-group>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <accordion-group [panelClass]="separator" *hasClaim="'monitoreo_tabSeg_divPeriodoParalizacion_PVD_eje_dir'">
+            <button class="btn btn-link btn-block clearfix" accordion-heading>
+              <div class="pull-left float-left">6. Acciones de Seguimiento y Monitoreo del periodo de
+                paralización - PVD
+              </div>
+              <span class="badge float-right pull-right">
+                <i class="fa fa-circle-o"></i>
+              </span>
+            </button>
+            <div *ngIf=divSegMonitoreo class="group-box">
+              <ssi-periodo-paralizacion [idSeguimientoMonitoreoObra]="idSeguimientoMonitoreo" tipoPerfil="PVD"
+                [bEstado]=true>
+              </ssi-periodo-paralizacion>
+            </div>
+          </accordion-group>
+        </div>
+      </div>
+    </accordion>
+  </div>
+</div>

@@ -1,0 +1,14 @@
+<carousel (activeSlideChange)="log($event)" [interval]="false">
+    <slide *ngFor="let slide of listaImagenes; let index=index">
+      <img [src]="slide.ruta_archivo" alt="image slide" style="display: block; width: 100%;">
+    </slide>
+  </carousel>
+  <br/>
+  <div class="modal-footer">
+      <div class="custom-control custom-checkbox" *hasClaim="'galeria_chkImagen_ayudaMemoria_exp_tec'">
+          <input type="checkbox" [(ngModel)]="isChecked" (change)="checkValue(isChecked)" class="custom-control-input" id="defaultUnchecked">
+          <label class="custom-control-label" for="defaultUnchecked">Incluir en Ayuda Memoria</label>
+      </div>
+      <a href="" id="lnkArchivo" target="_blank" class="btn btn-danger">Descargar</a>
+      <button class="btn btn-plomo" id="btnCancelar" type="button" (click)="closeModal()">Cerrar</button>
+  </div>

@@ -1,0 +1,46 @@
+  <div class="modal-header">
+    <h4 class="modal-title" [hidden] ="!cambiarEditar">Nuevo Perfil</h4>
+    <h4 class="modal-title" [hidden] ="cambiarEditar">Editar Perfil</h4>
+    <p class="pl-4 pr-4" [hidden] ="!cambiarEditar">Formulario para el registro de perfil</p>
+    <p class="pl-4 pr-4" [hidden] ="cambiarEditar">Formulario para la edición de perfil</p>
+  </div>
+  <div class="modal-body">
+    <form (ngSubmit)="administrarPerfil();" #PerfilGrabarForm="ngForm" [hidden] ="!cambiarEditar">
+      <div class="row form-group">
+        <label dlabels class="col-md-2 control-label">Nombre Perfil:</label>
+        <div class="col-md-10">
+          <input dTextBox class="form-control" type='text' #nombre_perfil="ngModel" required name="nombre_perfil" placeholder="Ingrese el nombre del perfil" [(ngModel)]="entidadModal.nombre_perfil" />
+          <div [hidden]="nombre_perfil.valid || nombre_perfil.pristine" class="alert alert-danger">
+            El nombre del perfil es obligatorio
+          </div>
+        </div>
+      </div>
+      <div class="col-12 row-treeview2">
+          <input type="checkbox" class="col-1" [(ngModel)]="entidadModal.filtro_general" name="filtro_general" id="idFiltroGeneralGrabar" /> 
+          <label class="control-label col-11" style="font-size: 11px;" for="idFiltroGeneralGrabar">Aplicar Filtros</label>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-danger" type="submit" id="btnGuardar" [disabled]="!PerfilGrabarForm.form.valid"><i class="fa fa-save"></i> Guardar</button>
+        <button class="btn btn-plomo" id="btnCancelar" type="button" (click)="closeModal()"><i class="fa fa-arrow-left"></i> Cancelar</button>
+      </div>
+    </form>
+    <form (ngSubmit)="administrarPerfil();" #PerfilEditarForm="ngForm" [hidden] ="cambiarEditar">
+      <div class="row form-group">
+        <label dlabels class="col-md-2 control-label">Nombre Menu:</label>
+        <div class="col-md-10">
+          <input dTextBox class="form-control" type='text' #nombre_perfil="ngModel" required name="nombre_perfil" placeholder="Ingrese el nombre del perfil" [(ngModel)]="entidadModal.nombre_perfil" />
+          <div [hidden]="nombre_perfil.valid || nombre_perfil.pristine" class="alert alert-danger">
+            El nombre del perfil es obligatorio
+          </div>
+        </div>
+      </div>
+      <div class="col-12 row-treeview2">
+          <input type="checkbox" class="col-1" [(ngModel)]="entidadModal.filtro_general" name="filtro_general" id="idFiltroGeneralEditar" /> 
+          <label class="control-label col-11" style="font-size: 11px;" for="idFiltroGeneralEditar">Aplicar Filtros</label>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-danger" type="submit" id="btnGuardar" [disabled]="!PerfilEditarForm.form.valid"><i class="fa fa-save"></i> Guardar</button>
+        <button class="btn btn-plomo" id="btnCancelar" type="button" (click)="closeModal()"><i class="fa fa-arrow-left"></i> Cancelar</button>
+      </div>
+    </form>
+  </div>

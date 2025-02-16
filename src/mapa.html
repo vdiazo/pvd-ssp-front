@@ -1,0 +1,276 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="description" content="Sistema de seguimiento de Proyectos - PVD">
+    <meta name="author" content="César Ortiz">
+    <title></title>
+    <link href="js/assets/leaftlet/leaflet.css" rel="stylesheet" />
+    <link href="js/app/css/custom.css?v=0.0.1" rel="stylesheet" />
+    <script src="js/assets/wkx/dist/wkx.min.js"></script>
+    <script src="js/assets/leaftlet/leaflet.js"></script>
+    <script src="js/assets/leaftlet/Leaflet.Control.Custom.js"></script>
+    <script src="js/assets/linq/linq.js"></script>
+    <script src="js/assets/jquery/3.2.1/jquery-3.2.1.min.js"></script>
+</head>
+<body>
+    <div id="map" class="app-mapa"><div id="verEnMapa-title" style="font-size:11px;"></div></div>
+
+    <script>
+function getParameterByName(name) {name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),results = regex.exec(location.search);return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));}
+function decimalAdjust(type, value, exp) {
+    // Si el exp no está definido o es cero...
+    if (typeof exp === 'undefined' || +exp === 0) {
+      return Math[type](value);
+    }
+    value = +value;
+    exp = +exp;
+    // Si el valor no es un número o el exp no es un entero...
+    if (isNaN(value) || !(typeof exp === 'number' && exp % 1 === 0)) {
+      return NaN;
+    }
+    // Shift
+    value = value.toString().split('e');
+    value = Math[type](+(value[0] + 'e' + (value[1] ? (+value[1] - exp) : -exp)));
+    // Shift back
+    value = value.toString().split('e');
+    return +(value[0] + 'e' + (value[1] ? (+value[1] + exp) : exp));
+  }
+
+  // Decimal round
+  if (!Math.round10) {
+    Math.round10 = function(value, exp) {
+      return decimalAdjust('round', value, exp);
+    };
+  }
+  // Decimal floor
+  if (!Math.floor10) {
+    Math.floor10 = function(value, exp) {
+      return decimalAdjust('floor', value, exp);
+    };
+  }
+  // Decimal ceil
+  if (!Math.ceil10) {
+    Math.ceil10 = function(value, exp) {
+      return decimalAdjust('ceil', value, exp);
+    };
+  }
+
+        let Settings = { API_ENDPOINT: getParameterByName("url_api") };
+        let info=[];
+        VerEnMapa({id_tipo_fase: 1})
+        function VerEnMapa(obj) {
+            var map = L.map('map').setView([-12.047511, -77.056026], 13);
+            var InfoGeneral = { descripcion_infraestructura: '', nombre_intervencion: '', snip: '', tipo_administracion: '', };
+            var $PVN_PALETA_VIAS = { 0: '#ffffff', 1: '#f44336', 2: '#607D8B', 3: '#00BCD4', 4: '#795548', 9: '#3f51b5', 11: '#9c27b0' };
+
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors' }).addTo(map);
+			let titulo = '';
+            $.ajax({
+                type: 'GET',
+                url: Settings.API_ENDPOINT + 'api/listarTramoGeografico?intIdTramo='+getParameterByName("idTramo"),
+                dataType: "json",
+                headers: { "Authorization": 'Bearer ' + sessionStorage.getItem("token") },
+                success: function (data) {
+                    var entidadGeografica = data;
+                    let wkx = require('wkx');
+                    let Buffer = require('buffer').Buffer;
+                    var twkbBuffer = [];
+                    var geojsonFeaturePolygon = [];
+                    let geometry;
+                    
+                    $.each(entidadGeografica, function (key, item) {
+
+                        twkbBuffer = new Buffer((item.geometria).substring(2, item.geometria.lenght), 'hex');
+                        geometry = wkx.Geometry.parseTwkb(twkbBuffer);
+                        let geo=geometry.toGeoJSON();
+                        geojsonFeaturePolygon.push({
+                            type: "Feature",
+                            properties: {
+							cod_snip:item.cod_snip,
+							cod_unificado:item.cod_unificado,
+							codigo_clasificador_ruta:item.codigo_clasificador_ruta,
+							codigo_provisional_ruta:item.codigo_provisional_ruta,
+							descripcion_provisional:"",
+							longitud:item.longitud,
+							nombre_camino:item.nombre_camino,
+							nombre_proyecto:item.nombre_proyecto,
+							nombre_tramo:item.nombre_tramo
+                            },
+                            geometry:geo
+                        });
+                    });
+                    var DistanciaCarreteras = Enumerable.From(geojsonFeaturePolygon)
+                    .Where(function (x) { return (x.geometry.type == 'LineString' || x.geometry.type=='MultiLineString') })
+                    .Select(function (x) { return x.properties.longitud })
+                    .Sum();
+
+                    var DistanciaPuentes = Enumerable.From(geojsonFeaturePolygon)
+                    .Where(function (x) { return x.geometry.type == 'Point' || x.geometry.type == 'MultiPoint' })
+                    .Select(function (x) { return x.properties.longitud })
+                    .Sum();
+
+                    if (obj.id_tipo_fase == 1) {
+                        var leyenda = '<div style="background:#ffffff; width:250px;padding:10px;box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3); border-radius:2px;"><div><span class="f-w-600">Leyenda</span></div><hr class="mt-1 mb-1">';
+
+                        if(
+                            (Enumerable.From(geojsonFeaturePolygon)
+                            .Where(function (x) { return (x.geometry.type == 'LineString' || x.geometry.type=='MultiLineString') })
+                            .Select(function (x) { return x.properties.longitud }).Count()
+                            )>0
+                        ){
+                            leyenda += '<div class="row align-items-center"><div class="col-4"><div style="border-top:solid 3px ' + $PVN_PALETA_VIAS[1] + '"></div></div><div class="col-8 pl-0"> Carreteras  <span style="font-size:10px;">(' + Math.round10(DistanciaCarreteras, -2) + ' Km.)</span></div></div>';
+                        }
+                        if(
+                            (Enumerable.From(geojsonFeaturePolygon)
+                            .Where(function (x) { return x.geometry.type == 'Point' || x.geometry.type == 'MultiPoint'})
+                            .Select(function (x) { return x.properties.longitud }).Count()
+                            )>0
+                        ){
+                            leyenda += '<div class="row align-items-center"><div class="col-4" style="text-align:center;"><img src="./assets/img/icons/marker-bridge.png" class="" alt="" tabindex="0" style="width: 16px;"></div><div class="col-8 pl-0"> Puentes <span style="font-size:10px;">(' + Math.round10(DistanciaPuentes, -2)  + ' m.)</span></div></div>';
+                        }
+
+
+                        
+
+                        leyenda += '</div>';
+                        L.control.custom({
+                            position: 'bottomleft',
+                            content: leyenda,
+                            //classes: 'btn-group-vertical btn-group-sm',
+                            style:
+                            {
+                                margin: '10px',
+                                padding: '0px 0 0 0',
+                                cursor: 'pointer',
+                            }
+                        })
+                        .addTo(map);
+                    }
+                    var layer = L.geoJSON(geojsonFeaturePolygon, {
+                        onEachFeature: onEachFeature,
+                        pointToLayer: function (feature, latlng) {
+                            if (geometry.hasOwnProperty('x')) {
+                                //return L.marker(latlng);
+                                return L.marker(latlng, {
+                                    icon:
+                                        new L.icon({
+                                            iconUrl: "./assets/img/icons/marker-bridge.png",
+                                            iconSize: [32, 39],
+                                            iconAnchor: [16, 38],
+                                            popupAnchor: [0, -22]
+                                        })
+                                }).bindPopup();
+                            } else {
+                                if (geometry.hasOwnProperty('points')) {
+                                    if (geometry.points.length <= 30) {
+
+                                        return L.marker(latlng, {
+                                            icon:
+                                                new L.icon({
+                                                    iconUrl: "./assets/img/icons/marker-bridge.png",
+                                                    iconSize: [50, 82]
+                                                })
+                                        }).on('click', function(){});
+
+
+
+                                        // return L.marker(latlng);
+                                    }
+                                }
+                                return L.circleMarker(latlng, { radius: 3 });
+                            }
+
+                        },
+                        style: { "color": "#f74e4e", "opacity": 1, "weight": 8 }//4264fb//f74e4e
+                    }).addTo(map);
+                    map.fitBounds(layer.getBounds());
+
+
+                }
+            });
+
+            function onEachFeature(feature, layer) {
+			if(titulo==''){
+					titulo += '<div class="text-right"><span class="f-w-600">'+ feature.properties.nombre_proyecto + '</span></div>';
+					
+					if(feature.properties.nombre_proyecto != feature.properties.nombre_tramo){
+						titulo += '<div class="text-right" style="font-size:10px;padding-top:5px;">' + feature.properties.nombre_tramo + '</div>';
+					}
+					titulo += '<div class="text-right" style="font-size:10px;padding-top:5px;"><span class="f-w-600"> SNIP : </span>'+ feature.properties.cod_snip +'<span class="f-w-600"> &nbsp&nbsp&nbspC.U : </span>'+ feature.properties.cod_unificado + '</div>';
+
+                    $("#verEnMapa-title").html(titulo);
+			}
+
+                if (obj.id_tipo_fase == 1) { //CARRETERA ; VIA
+                    try {
+                        layer.setStyle({ color: $PVN_PALETA_VIAS[1] });
+                        layer.on(
+                            {
+                                mouseover: function () { layer.setStyle({ weight: 12 }) },
+                                click: function () {
+                                    if (feature.properties) {
+                                        var det = feature.properties;
+                                        var html = '';
+                                        html += '<div class="" style="margin: -14px -20px 5px -20px;"><span class="f-w-600" style="width: 100%;min-height: 33px;color: #ffffff;background-color: ' + $PVN_PALETA_VIAS[1] + ';display: inline-block;border-radius: 2px;padding: 8px 15px;">' + det.nombre_tramo + '</span></div>';
+                                        html += '<div class="row pt-1"><div class="col-5"><span class="f-w-600">C.U</span></div><div class="col-7">' + det.cod_unificado + '</div></div>';
+                                        html += '<div class="row pt-1"><div class="col-5"><span class="f-w-600">SNIP</span></div><div class="col-7">' + det.cod_snip + '</div></div>';
+                                        html += '<div class="row pt-1"><div class="col-5"><span class="f-w-600">Longitud</span></div><div class="col-7">' + det.longitud + ' km </div></div>';
+										
+										if(det.codigo_clasificador_ruta!=''){
+											html += '<div class="row pt-1"><div class="col-5"><span class="f-w-600">Código clasificador</span></div><div class="col-7">' + det.codigo_clasificador_ruta + '</div></div>';
+											html += '<div class="row pt-1"><div class="col-5"><span class="f-w-600">Nombre de Ruta</span></div><div class="col-7">' + det.nombre_camino + '</div></div>';
+										}
+										else{
+											html += '<div class="row pt-1"><div class="col-5"><span class="f-w-600">Código provicional</span></div><div class="col-7">' + det.codigo_provisional_ruta + '</div></div>';
+											html += '<div class="row pt-1"><div class="col-5"><span class="f-w-600">Descripción</span></div><div class="col-7">' + det.descripcion_provisional + '</div></div>';
+										}
+										
+
+										layer.bindPopup(html).openPopup().addTo(map);
+                                    }
+                                },
+                                mouseout: function () { layer.setStyle({ weight: 8 }) }
+                            }
+                        );
+                    }
+                    catch (e) {
+						//PUENTES
+                        layer.on(
+                            {
+                                click: function () {
+                                    if (feature.properties) {
+                                        var det = feature.properties;
+                                        var html = '';
+                                        //html += '<div class="row"><div class="col-12"><span class="f-w-600">' + det.puente_nombre + '</span></div></div><hr class="m-2">';
+                                        html += '<div class="" style="margin: -14px -20px 5px -20px;"><span class="f-w-600" style="width: 100%;min-height: 33px;color: #ffffff;background-color:#3f60f3;display: inline-block;border-radius: 2px;padding: 8px 15px;">' + det.puente_nombre + '</span></div>';
+                                           
+                                        html += '<div class="row pt-1"><div class="col-5"><span class="f-w-600">C.U</span></div><div class="col-7">' + det.cod_unificado + '</div></div>';
+                                        html += '<div class="row pt-1"><div class="col-5"><span class="f-w-600">SNIP</span></div><div class="col-7">' + det.cod_snip + '</div></div>';
+                                        html += '<div class="row pt-1"><div class="col-5"><span class="f-w-600">Longitud</span></div><div class="col-7">' + det.longitud + ' m </div></div>';
+										
+										if(det.codigo_clasificador_ruta!=''){
+											html += '<div class="row pt-1"><div class="col-5"><span class="f-w-600">Código clasificador</span></div><div class="col-7">' + det.codigo_clasificador_ruta + '</div></div>';
+											html += '<div class="row pt-1"><div class="col-5"><span class="f-w-600">Nombre de Ruta</span></div><div class="col-7">' + det.nombre_camino + '</div></div>';
+										}
+										else{
+											html += '<div class="row pt-1"><div class="col-5"><span class="f-w-600">Código provicional</span></div><div class="col-7">' + det.codigo_provisional_ruta + '</div></div>';
+											html += '<div class="row pt-1"><div class="col-5"><span class="f-w-600">Descripción</span></div><div class="col-7">' + det.descripcion_provisional + '</div></div>';
+										}
+										
+										layer.bindPopup(html).openPopup();
+                                    }
+                                }
+                            }
+                          );
+                       // layer.setStyle({ color: "#ffffff" })
+                    }
+                }
+            }
+
+        }
+    </script>
+</body>
+</html>

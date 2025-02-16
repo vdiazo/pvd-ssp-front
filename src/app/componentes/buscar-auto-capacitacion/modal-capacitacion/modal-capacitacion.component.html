@@ -1,0 +1,188 @@
+<div class="modal-header">
+    <h4 class="modal-title" [hidden] ="!cambiarEditar">Nuevo Auto Capacitación</h4>
+    <h4 class="modal-title" [hidden] ="cambiarEditar">Editar Auto Capacitación</h4>
+    <p class="pl-4 pr-4" [hidden] ="!cambiarEditar">Formulario para el registro de la Auto Capacitación</p>
+    <p class="pl-4 pr-4" [hidden] ="cambiarEditar">Formulario para la edición de la Auto Capacitación</p>
+</div>
+<div class="modal-body">
+    <form (ngSubmit)="administrarCapacitacion();" #CapacitacionGrabarForm="ngForm" [hidden] ="!cambiarEditar">
+        <div class="row form-group">
+            <label dlabels class="col-md-4 control-label">Tipo:</label>
+            <div class="col-md-8">
+              <ng-select [items]="listTipoCapacitacion"
+                  placeholder="Seleccione Tipo"
+                  bindLabel="denominacion"
+                  bindValue="id_tipo_capacitacion"
+                  [(ngModel)]="entidadModal.id_tipo_capacitacion"
+                  (change)="SeleccionarArchivo($event)"
+                  #id_tipo_capacitacion="ngModel" required
+                  name="nombre_manual">
+              </ng-select>
+              <div [hidden]="id_tipo_capacitacion.valid || id_tipo_capacitacion.pristine" class="alert alert-danger">
+                El nombre del manual es obligatorio
+              </div>
+            </div>
+            
+      </div>
+      <div class="row form-group">
+        <label dlabels class="col-md-4 control-label">Descripción:</label>
+        <div class="col-md-8">
+          <input dTextBox class="form-control" type='text' #denominacion="ngModel" required name="denominacion" placeholder="Ingrese la descripción de la capacitación" [(ngModel)]="entidadModal.denominacion" />
+          <div [hidden]="denominacion.valid || denominacion.pristine" class="alert alert-danger">
+            El nombre del manual es obligatorio
+          </div>
+        </div>
+        
+      </div>
+      <!--<div class="row form-group" *ngIf="esVideo">
+        <label dlabels class="col-md-4 control-label">Subir Foto:</label>
+        <div class="col-md-8">
+            <app-input-file idComp="filevideo" (onChange)="fileChangeEventFotoVideo($event)" IdTipoArchivo="{{IdTipoArchivoFoto}}" class="input-group" Extensiones=".jpeg,.png,.jpg"
+            ></app-input-file>
+        </div>
+      </div>-->
+      <div class="row form-group">
+          <label dlabels class="col-md-4 control-label">Descripción Archivo:</label>
+          <div class="col-md-8">
+              <input type="text" class="form-control" name="descripcionArchivo" placeholder="Ingrese la descripción del archivo">
+          </div>
+      </div>
+      <div class="row form-group">
+          <div class="col-sm-4">
+            <label dlabels class="control-label">Subir archivos:</label>
+          </div>
+          <div class="col-sm-8" >
+            <!--<app-input-file-listado idComp="fileCapacitacionmodal" (onChange)="fileChangeEvent($event)" class="input-group"></app-input-file-listado>-->
+            <app-input-file idComp="fileCapacitacionmodal" (onChange)="fileChangeEvent($event)" IdTipoArchivo="{{IdTipoArchivo}}" class="input-group" Extensiones="{{tipoArchivoSave}}"></app-input-file>
+          </div>
+      </div>
+      <div class="row form-group">
+          <div class="col-sm-12">
+            <accordion>
+              <accordion-group [isOpen]="true">
+                <span class="btn btn-link btn-block clearfix" accordion-heading>
+                  <div class="pull-left float-left">Listado de Archivos</div>
+                  <span class="badge float-right pull-right">
+                    <i class="fa fa-circle-o"></i>
+                  </span>
+                </span>
+                <mat-list>
+                  <mat-list-item *ngFor="let shoe of listArchivosSeleccionados">
+                    <mat-icon mat-list-icon>folder_open</mat-icon>
+                    <h4 mat-line>{{shoe.nombre_archivo}}</h4>
+                    <span>{{shoe.denominacion}}</span>
+                    <a style="cursor: pointer;" [hidden]="activarTransferencia" (click)="eliminarArchivoSeleccionado(shoe)">
+                        <i class="fa fa-15x"> <img src="assets/img/icons/trash.svg" alt="eliminar"/></i>
+                    </a>
+                    <a style="cursor: pointer;" href="{{shoe.ruta}}" target="_blank" [hidden]="!activarTransferencia" (click)="verArchivoSeleccionado(shoe)" [LinkNube]="shoe.nombre_archivo" [Ruta]="shoe.ruta_archivo">
+                        <i class="material-icons">
+                            archive
+                        </i>
+                    </a>
+                  </mat-list-item>
+                </mat-list>
+              </accordion-group>
+            </accordion>
+          </div>
+      </div>
+      
+         
+      <div class="modal-footer">
+        <button class="btn btn-danger" type="submit" id="btnGuardar" [disabled]="!CapacitacionGrabarForm.form.valid"><i class="fa fa-save"></i> Guardar</button>
+        <button class="btn btn-plomo" id="btnCancelar" type="button" (click)="closeModal()"><i class="fa fa-arrow-left"></i> Cancelar</button>
+      </div>
+    </form>
+
+
+
+
+
+
+    <form (ngSubmit)="administrarCapacitacion();" #CapacitacionEditarForm="ngForm" [hidden] ="cambiarEditar">
+        <div class="row form-group">
+            <label dlabels class="col-md-4 control-label">Tipo:</label>
+            <div class="col-md-8">
+              <ng-select [items]="listTipoCapacitacion"
+                  placeholder="Seleccione Tipo"
+                  bindLabel="denominacion"
+                  bindValue="id_tipo_capacitacion"
+                  [(ngModel)]="entidadModal.id_tipo_capacitacion"
+                  #id_tipo_capacitacion="ngModel" required
+                  name="nombre_manual"
+                  [disabled]="true">
+              </ng-select>
+              <div [hidden]="id_tipo_capacitacion.valid || id_tipo_capacitacion.pristine" class="alert alert-danger">
+                El nombre del manual es obligatorio
+              </div>
+            </div>
+            
+      </div>
+      <div class="row form-group">
+        <label dlabels class="col-md-4 control-label">Descripción:</label>
+        <div class="col-md-8">
+          <input dTextBox class="form-control" type='text' #denominacion="ngModel" required name="denominacion" placeholder="Ingrese el nombre del manual" [(ngModel)]="entidadModal.denominacion"/>
+          <div [hidden]="denominacion.valid || denominacion.pristine" class="alert alert-danger">
+            El nombre del manual es obligatorio
+          </div>
+        </div>
+        
+      </div>
+      
+      <!--<div class="row form-group" *ngIf="esVideo">
+        <label dlabels class="col-md-4 control-label">Subir Foto:</label>
+        <div class="col-md-8">
+            <app-input-file idComp="filevideo" (onChange)="fileChangeEventFotoVideo($event)" IdTipoArchivo="{{IdTipoArchivo}}" class="input-group" Extensiones=".jpeg,.png,.jpg"
+            Value="{{entidadModal.nombre_archivo}}"></app-input-file>
+        </div>
+      </div>-->
+      <div class="row form-group">
+          <label dlabels class="col-md-4 control-label">Descripción Archivo:</label>
+          <div class="col-md-8">
+              <input type="text" class="form-control" name="descripcionArchivo" placeholder="Ingrese la descripcion del archivo">
+          </div>
+      </div>
+      <div class="row form-group">
+          <div class="col-sm-4">
+            <label dlabels class="control-label">Subir archivos:</label>
+          </div>
+          <div class="col-sm-8" >
+            <app-input-file idComp="fileCapacitacionmodal" (onChange)="fileChangeEvent($event)" IdTipoArchivo="{{IdTipoArchivo}}" class="input-group" Extensiones=".pdf, .mp4"></app-input-file>
+          </div>
+      </div>  
+      
+      <div class="row form-group">
+          <div class="col-sm-12">
+            <accordion>
+              <accordion-group [isOpen]="true">
+                <span class="btn btn-link btn-block clearfix" accordion-heading>
+                  <div class="pull-left float-left">Listado de Archivos</div>
+                  <span class="badge float-right pull-right">
+                    <i class="fa fa-circle-o"></i>
+                  </span>
+                </span>
+                <mat-list>
+                  <mat-list-item *ngFor="let shoe of listArchivosSeleccionados">
+                    <mat-icon mat-list-icon>folder_open</mat-icon>
+                    <h4 mat-line>{{shoe.nombre_archivo}}</h4>
+                    <span>{{shoe.denominacion}}</span>
+                    <a style="cursor: pointer;" [hidden]="activarTransferencia" (click)="eliminarArchivoSeleccionado(shoe)">
+                        <i class="fa fa-15x"> <img src="assets/img/icons/trash.svg" alt="eliminar"/></i>
+                    </a>
+                    <a style="cursor: pointer;" href="{{shoe.ruta_archivo}}" target="_blank" [LinkNube]="shoe.nombre_archivo" [Ruta]="shoe.ruta_archivo">
+                        <i class="material-icons">
+                            archive
+                        </i>
+                    </a>
+                  </mat-list-item>
+                </mat-list>
+              </accordion-group>
+            </accordion>
+          </div>
+      </div>
+              
+      <div class="modal-footer">
+        <button class="btn btn-danger" type="submit" id="btnGuardar" [disabled]="!CapacitacionEditarForm.form.valid"><i class="fa fa-save"></i> Guardar</button>
+        <button class="btn btn-plomo" id="btnCancelar" type="button" (click)="closeModal()"><i class="fa fa-arrow-left"></i> Cancelar</button>
+      </div>
+    </form>
+  </div>

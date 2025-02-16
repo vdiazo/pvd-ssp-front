@@ -1,0 +1,37 @@
+<div class="tab-content" id="nav-tabContent">
+  <div class="tab-pane fade show active jumbotron container-fluid pt-4" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+    <accordion>
+      <div class="row" *hasClaim="'monitoreo_tabInfComplementaria_lisPptoAdicional_eje_dir'">
+        <div class="col-12">
+          <accordion-group>
+            <button class="btn btn-link btn-block clearfix" accordion-heading>
+              <div class="pull-left float-left">1. Información de Presupuesto Adicional</div>
+              <span class="badge float-right pull-right">
+                <i class="fa fa-circle-o"></i>
+              </span>
+            </button>
+            <app-presupuesto-adicional [idSeguimientoMonitoreoObra]="idSeguimientoMonitoreo" [bEstado]=true></app-presupuesto-adicional>
+          </accordion-group>
+        </div>
+      </div>
+      <div class="row" *hasClaim="'monitoreo_tabInfComplementaria_lisDeductivoReducciones_eje_dir'">
+        <div class="col-12">
+          <accordion-group>
+            <button class="btn btn-link btn-block clearfix" accordion-heading>
+              <div class="pull-left float-left">2. Información de Deductivos y Reducciones</div>
+              <span class="badge float-right pull-right">
+                <i class="fa fa-circle-o"></i>
+              </span>
+            </button>
+            <app-deductivos-reducciones [idSeguimientoMonitoreoObra]="idSeguimientoMonitoreo" [bEstado]=true></app-deductivos-reducciones>
+          </accordion-group>
+        </div>
+      </div>
+    </accordion>
+  </div>
+</div>
+<div class="card">
+  <div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog"></div>
+  </div>
+</div>

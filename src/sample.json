@@ -1,0 +1,59 @@
+{
+    "id_convenio": 0,
+    "fecha_firma": "2019-02-01",
+    "fecha_vigencia": "2019-02-01",
+    "id_documento_compromiso": 1,
+    "id_fuente_financiamiento": 1,
+    "id_tipo_infraestructura": 1,
+    "id_tipo_via": 2,
+    "id_unidad_medida": 2,
+    "longitud": 123,
+    "monto": 123456,
+    "siglas": "123456",
+    "usuario_creacion": "cortiz",
+    "nombre_archivo": "CONVENIO_20190218100914.txt",
+    "_BE_Tm_Ssppvd_Proyecto": {
+      "id_proyecto": 542,
+      "cod_snip": 4743,
+      "cod_unificado": 2029684,
+      "nombre_proyecto": "MEJORAMIENTO DE LA CARRETERA YANAHUANCA - CERRO DE PASCO",
+      "activo": true,
+      "usuario_creacion": "cortiz",
+      "ListBE_Tm_Ssppvd_Tramo": [
+        {
+          "id_tramo": 0,
+          "nombre_tramo": "tramo01",
+          "descripcion_tramo": "tramo01",
+          "activo": true,
+          "usuario_creacion": "cortiz",
+          "usuario_modificacion": "cortiz",
+          "_BE_Tm_Ssppvd_Fase": {
+            "id_tipo_fase": 4,
+            "usuario_creacion": "cortiz",
+            "_BE_Td_Ssppvd_Fase_Convenio": {
+              "id_municipalidad": 362,
+              "id_ejecutora": 0,
+              "usuario_creacion": "cortiz"
+            }
+          }
+        },
+        {
+          "id_tramo": 0,
+          "nombre_tramo": "tramo02",
+          "descripcion_tramo": "tramo02",
+          "activo": true,
+          "usuario_creacion": "cortiz",
+          "usuario_modificacion": "cortiz",
+          "_BE_Tm_Ssppvd_Fase": {
+            "id_tipo_fase": 3,
+            "usuario_creacion": "cortiz",
+            "_BE_Td_Ssppvd_Fase_Convenio": {
+              "id_municipalidad": 362,
+              "id_ejecutora": 0,
+              "usuario_creacion": "cortiz"
+            }
+          }
+        }
+      ]
+    }
+  }

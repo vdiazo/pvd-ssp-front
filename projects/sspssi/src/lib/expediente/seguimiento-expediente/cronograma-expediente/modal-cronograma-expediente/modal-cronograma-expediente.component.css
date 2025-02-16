@@ -1,0 +1,15 @@
+@media (min-width: 992px) {
+  .modal-dialog {
+    max-width: 800px !important;
+  }
+}
+@media (min-width: 576px) {
+  .modal-dialog {
+    max-width: 500px;
+    margin: 1.75rem auto;
+  }
+}
+.comentario {
+  font-size: 11px;
+  color: red;
+}

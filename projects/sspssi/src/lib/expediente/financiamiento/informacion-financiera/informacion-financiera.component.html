@@ -1,0 +1,184 @@
+<div class="row">
+  <div class="col-sm-12">
+    <label class="control-label" dlabels="">3.2. Según devengado por mes</label>
+  </div>
+  <div class="col-12 container-scroll">
+    <table class="table table-hover table-responsive table-full-detalle lastTD">
+      <thead>
+        <tr>
+          <th rowspan="2">Año</th>
+          <th rowspan="2">Pia</th>
+          <th rowspan="2">Pim</th>
+          <th rowspan="2">Compromiso Anual</th>
+          <th rowspan="2">Certificación</th>
+          <th colspan="12">Devengado Mensualizado</th>
+          <th rowspan="2">Deven.</th>
+        </tr>
+        <tr>
+          <th>Enero</th>
+          <th>Febrero</th>
+          <th>Marzo</th>
+          <th>Abril</th>
+          <th>Mayo</th>
+          <th>Junio</th>
+          <th>Julio</th>
+          <th>Agosto</th>
+          <th>Setiembre</th>
+          <th>Octubre</th>
+          <th>Noviembre</th>
+          <th>Diciembre</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor='let informacion of infoFinanciera'>
+          <td class="xs-hidden">{{informacion.anio}}</td>
+          <td class="text-right xs-hidden">{{informacion.pia | currency:" S/"}}</td>
+          <td class="text-right xs-hidden">{{informacion.pim | currency:" S/"}}</td>
+          <td class="text-right xs-hidden">{{informacion.compromisoanual | currency:" S/"}}</td>
+          <td class="text-right xs-hidden">{{informacion.certificadoanual | currency:" S/"}}</td>
+          <td class="text-right xs-hidden">{{informacion.ene | currency:" S/"}}</td>
+          <td class="text-right xs-hidden">{{informacion.feb | currency:" S/"}}</td>
+          <td class="text-right xs-hidden">{{informacion.mar | currency:" S/"}}</td>
+          <td class="text-right xs-hidden">{{informacion.abr | currency:" S/"}}</td>
+          <td class="text-right xs-hidden">{{informacion.may | currency:" S/"}}</td>
+          <td class="text-right xs-hidden">{{informacion.jun | currency:" S/"}}</td>
+          <td class="text-right xs-hidden">{{informacion.jul | currency:" S/"}}</td>
+          <td class="text-right xs-hidden">{{informacion.ago | currency:" S/"}}</td>
+          <td class="text-right xs-hidden">{{informacion.set | currency:" S/"}}</td>
+          <td class="text-right xs-hidden">{{informacion.oct | currency:" S/"}}</td>
+          <td class="text-right xs-hidden">{{informacion.nov | currency:" S/"}}</td>
+          <td class="text-right xs-hidden">{{informacion.dic | currency:" S/"}}</td>
+
+          <td>
+            <div class="text-right xs-hidden">
+              {{informacion.dev | currency:" S/"}}
+            </div>
+            <div class="xs-display text-left">
+              <div class="xs-th f-s-13">{{informacion.anio}}</div>
+              <div class="xs-th">PIA</div>
+              <div>{{informacion.pia | currency:" S/"}}</div>
+              <div class="xs-th">PIM</div>
+              <div>{{informacion.pim | currency:" S/"}}</div>
+              <div class="xs-th">Comp. Anual.</div>
+              <div>{{informacion.compromisoanual | currency:" S/"}}</div>
+              <div class="xs-th">Cert. Anual.</div>
+              <div>{{informacion.certificadoanual | currency:" S/"}}</div>
+              <div class="row">
+                <div class="col-6 p-0">
+                  <span class="xs-th">Ene.</span> {{informacion.ene | currency:" S/"}}</div>
+                <div class="col-6 p-0">
+                  <span class="xs-th">Jul.</span>{{informacion.jul | currency:" S/"}}</div>
+              </div>
+              <div class="row">
+                <div class="col-6 p-0">
+                  <span class="xs-th">Feb.</span>{{informacion.feb | currency:" S/"}}</div>
+                <div class="col-6 p-0">
+                  <span class="xs-th">Ago.</span>{{informacion.ago | currency:" S/"}}</div>
+              </div>
+              <div class="row">
+                <div class="col-6 p-0">
+                  <span class="xs-th">Mar.</span>{{informacion.mar | currency:" "}}</div>
+                <div class="col-6 p-0">
+                  <span class="xs-th">Set.</span>{{informacion.set | currency:" S/"}}</div>
+              </div>
+              <div class="row">
+                <div class="col-6 p-0">
+                  <span class="xs-th">Abr.</span>{{informacion.abr | currency:" S/"}}</div>
+                <div class="col-6 p-0">
+                  <span class="xs-th">Oct.</span>{{informacion.oct | currency:" S/"}}</div>
+              </div>
+              <div class="row">
+                <div class="col-6 p-0">
+                  <span class="xs-th">May.</span>{{informacion.may | currency:" S/"}}</div>
+                <div class="col-6 p-0">
+                  <span class="xs-th">Nov.</span>{{informacion.nov | currency:" S/"}}</div>
+              </div>
+              <div class="row">
+                <div class="col-6 p-0">
+                  <span class="xs-th">Jun.</span>{{informacion.jun | currency:" S/"}}</div>
+                <div class="col-6 p-0">
+                  <span class="xs-th">Dic.</span>{{informacion.dic | currency:" S/"}}</div>
+              </div>
+              <div class="xs-th">Deven.</div>
+              <div>{{informacion.dev | currency:" S/"}}</div>
+            </div>
+          </td>
+        </tr>
+        <tr *ngFor='let informacionTotal of infoFinancieraBody'>
+          <td class="xs-hidden">{{informacionTotal.anio}}</td>
+          <td class="xs-hidden">{{informacionTotal.pia | currency:" S/"}}</td>
+          <td class="xs-hidden">{{informacionTotal.pim | currency:" S/"}}</td>
+          <td class="xs-hidden">{{informacionTotal.compromisoanual | currency:" S/"}}</td>
+          <td class="xs-hidden">{{informacionTotal.certificadoanual | currency:" S/"}}</td>
+          <td class="xs-hidden">{{informacionTotal.ene | currency:" S/"}}</td>
+          <td class="xs-hidden">{{informacionTotal.feb | currency:" S/"}}</td>
+          <td class="xs-hidden">{{informacionTotal.mar | currency:" S/"}}</td>
+          <td class="xs-hidden">{{informacionTotal.abr | currency:" S/"}}</td>
+          <td class="xs-hidden">{{informacionTotal.may | currency:" S/"}}</td>
+          <td class="xs-hidden">{{informacionTotal.jun | currency:" S/"}}</td>
+          <td class="xs-hidden">{{informacionTotal.jul | currency:" S/"}}</td>
+          <td class="xs-hidden">{{informacionTotal.ago | currency:" S/"}}</td>
+          <td class="xs-hidden">{{informacionTotal.set | currency:" S/"}}</td>
+          <td class="xs-hidden">{{informacionTotal.oct | currency:" S/"}}</td>
+          <td class="xs-hidden">{{informacionTotal.nov | currency:" S/"}}</td>
+          <td class="xs-hidden">{{informacionTotal.dic | currency:" S/"}}</td>
+          <td>
+            <div class="xs-hidden">{{informacionTotal.dev | currency:" S/"}}</div>
+            <div class="xs-display f-w-4">
+              <div class="xs-th f-s-13">TOTAL</div>
+              <div class="xs-th">PIA</div>
+              <div>{{informacionTotal.pia | currency:" S/"}}</div>
+              <div class="xs-th">PIM</div>
+              <div>{{informacionTotal.pim | currency:" S/"}}</div>
+              <div class="col-6 p-0">
+                <span class="xs-th">Comp. Anual. </span>{{informacionTotal.compromisoanual | currency:" S/"}}
+              </div>
+              <div class="col-6 p-0">
+                <span class="xs-th">Certificación </span>{{informacionTotal.certificadoanual | currency:" S/"}}
+              </div>
+              <div class="row">
+                <div class="col-6 p-0">
+                  <span class="xs-th">Ene. </span>{{informacionTotal.ene | currency:" S/"}}</div>
+                <div class="col-6 p-0">
+                  <span class="xs-th">Jul. </span>{{informacionTotal.jul | currency:" S/"}}</div>
+                <div class="col-6 p-0">
+                  <span class="xs-th">Feb. </span>{{informacionTotal.feb | currency:" S/"}}</div>
+                <div class="col-6 p-0">
+                  <span class="xs-th">Ago. </span>{{informacionTotal.ago | currency:" S/"}}</div>
+                <div class="col-6 p-0">
+                  <span class="xs-th">Mar. </span>{{informacionTotal.mar | currency:" S/"}}</div>
+                <div class="col-6 p-0">
+                  <span class="xs-th">Set. </span>{{informacionTotal.set | currency:" S/"}}</div>
+                <div class="col-6 p-0">
+                  <span class="xs-th">Abr. </span>{{informacionTotal.abr | currency:" S/"}}</div>
+                <div class="col-6 p-0">
+                  <span class="xs-th">Oct. </span>{{informacionTotal.oct | currency:" S/"}}</div>
+                <div class="col-6 p-0">
+                  <span class="xs-th">May. </span>{{informacionTotal.may | currency:" S/"}}</div>
+                <div class="col-6 p-0">
+                  <span class="xs-th">Nov. </span>{{informacionTotal.nov | currency:" S/"}}</div>
+                <div class="col-6 p-0">
+                  <span class="xs-th">Jun. </span>{{informacionTotal.jun | currency:" S/"}}</div>
+                <div class="col-6 p-0">
+                  <span class="xs-th">Dic. </span>{{informacionTotal.dic | currency:" S/"}}
+                </div>
+                <div class="xs-th">Deven.</div>
+                <div>{{informacionTotal.dev | currency:" S/"}}</div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="row">
+  <div class="col-12">
+    <nav class="pt-4 pl-3 pull-right">
+      <pagination [totalItems]="totalRegistros" [itemsPerPage]="numPaginasMostrar" [boundaryLinks]="true"
+        previousText="&lsaquo;" nextText="&rsaquo;" [rotate]="false" firstText="&laquo;" lastText="&raquo;"
+        [maxSize]="5" (pageChanged)="cambiarPagina($event)">
+      </pagination>
+    </nav>
+  </div>
+</div>

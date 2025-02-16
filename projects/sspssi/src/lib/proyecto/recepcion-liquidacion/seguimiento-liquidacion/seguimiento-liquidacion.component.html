@@ -1,0 +1,141 @@
+<div class="card-header">
+    <h4 class="modal-title">2.1. Seguimiento al Proceso de Liquidación</h4>
+</div>
+<div class="group-box">
+    <div class="row form-group" *hasClaim="'monitoreo_tabRYL_LiqSeg_regLiquidacion_eje_dir'">
+        <div class="col-6" [hidden]=!bEstado>
+            <button type="button" id="btnNuevoRegistro" class="btn pull-left ml-1 btn-plomo" [hidden]="ocultarNuevo" (click)="modalAgregarLiquidacion()">
+                <i class="fa fa-plus"></i> Nuevo</button>
+        </div>
+        <div class="col-6 text-right">
+            <label dlabels class="control-label">Última Actualización:</label> &nbsp;
+            <span>{{UltimaActualizacion}}</span>
+        </div>
+    </div>
+    <table class="table table-hover table-bordered table-responsive table-full-detalle">
+        <thead class="table-danger">
+            <tr>
+                <th>Estado de Liquidación</th>
+                <th>Fecha</th>
+                <th>Tipo de documento</th>
+                <th>Observaciones</th>
+                <th>Documento</th>
+                <th [hidden]=!bEstado></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let campo of arregloLiquidacion">
+                <td class="xs-hidden text-left">{{campo.nombre_estado_liquidacion}}</td>
+                <td class="xs-hidden">{{campo.fecha_seguimiento }}</td>
+                <td class="xs-hidden text-left">{{campo.nombre_tipo_documento_liquidacion }}</td>
+                <td class="xs-hidden text-left">{{campo.observaciones }}</td>
+                <td>
+                    <div *hasClaim="'monitoreo_tabRYL_LiqSeg_listSegLiquidacion_verArchivo_eje_dir'" class="xs-hidden">
+                        <div *ngIf="campo.nombre_archivo_seguimiento != '' ; else templateicono">
+                            <a href="{{campo.nombre_archivo_seguimiento}}" target="_blank" class="btn-icon" [LinkNube]="campo.archivo_seguimiento" [Ruta]="campo.ruta_archivo_seguimiento">
+                                <i class="fa fa-15x">
+                                    <img src="assets/img/icons/file.svg" alt="archivo">
+                                </i>
+                            </a>
+                        </div>
+                        <ng-template #templateicono>
+                        </ng-template>
+                    </div>
+                    <div class="xs-display">
+                        <div class="xs-th f-s-13">{{campo.fecha_seguimiento }}</div>
+                        <div>
+                            <span class="xs-th">Estado de Liquidación: </span>{{campo.nombre_estado_liquidacion}}</div>
+                        <div>
+                            <span class="xs-th">Tipo de Documento&nbsp;&nbsp;&nbsp;&nbsp;: </span>{{campo.nombre_tipo_documento_liquidacion }}</div>
+                        <div class="xs-th">Observaciones&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</div>
+                        <div>{{campo.observaciones }}</div>
+                    </div>
+                </td>
+                <td width="100" class="xs-footer-lista xs-100 xs-text-right pre-wrap" [hidden]=!bEstado>
+                    <div class="xs-hidden">
+                        <span *hasClaim="'monitoreo_tabRYL_LiqSeg_listSegLiquidacion_modLiquidacion_eje_dir'" class="btn btn-sm btn-opt btn-icon" (click)="modalEditarLiquidacion(campo)">
+                            <i class="fa fa-15x">
+                                <img src="assets/img/icons/pencil.svg" alt="editar">
+                            </i>
+                        </span>
+                        <span *hasClaim="'monitoreo_tabRYL_LiqSeg_listSegLiquidacion_eliLiquidacion_eje_dir'" class="btn btn-sm btn-opt btn-icon" (click)="mostrarAlerta(campo.id_liquidacion_seguimiento)">
+                            <i class="fa fa-15x">
+                                <img src="assets/img/icons/trash.svg" alt="eliminar">
+                            </i>
+                        </span>
+                    </div>
+                    <div class="xs-display">
+                        <span *hasClaim="'monitoreo_tabRYL_LiqSeg_listSegLiquidacion_verArchivo_eje_dir'">
+                            <a *ngIf="campo.nombre_archivo_seguimiento != ''" href="{{campo.nombre_archivo_seguimiento}}" target="_blank" class="btn-icon mr-1" [LinkNube]="campo.archivo_seguimiento" [Ruta]="campo.ruta_archivo_seguimiento">
+                                <i class="fa fa-file"></i>
+                            </a>
+                        </span>
+                        <span *hasClaim="'monitoreo_tabRYL_LiqSeg_listSegLiquidacion_modLiquidacion_eje_dir'" class="btn-icon mr-1" (click)="modalEditarLiquidacion(campo)">
+                            <i class="fa fa-pencil"></i>
+                        </span>
+                        <span *hasClaim="'monitoreo_tabRYL_LiqSeg_listSegLiquidacion_eliLiquidacion_eje_dir'" class="btn-icon" (click)="mostrarAlerta(campo.id_liquidacion_seguimiento)">
+                            <i class="fa fa-trash"></i>
+                        </span>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="row">
+        <div class="col-12 xs-p-0">
+            <nav class="pt-2 pull-right">
+                <pagination [totalItems]="totalRegistroLiquidacion" [itemsPerPage]="numPaginasMostrar" [(ngModel)]="paginaActual" [boundaryLinks]="true"
+                    previousText="&lsaquo;" nextText="&rsaquo;" [rotate]="false" firstText="&laquo;" lastText="&raquo;" [maxSize]="5"
+                    (pageChanged)="cambiarPagina($event)">
+                </pagination>
+            </nav>
+        </div>
+    </div>
+</div>
+<div *hasClaim="'monitoreo_tabRYL_LiqInfo_verInformacion_eje_dir'" class="card-header">
+    <h4 class="modal-title">2.2. Información de Liquidación</h4>
+</div>
+<div *hasClaim="'monitoreo_tabRYL_LiqInfo_verInformacion_eje_dir'" class="group-box">
+    <div class="row form-group">
+        <div class="col-12" *ngFor="let detalle of arregloDetalle">
+            <div class="col-12">
+                <hr>
+            </div>
+            <div class="col-12 table-full-detalle">
+                <div class="f-w-6">RESOLUCIÓN DE LIQUIDACIÓN DE OBRA</div>
+                <div class="f-w-6 f-s-14">{{detalle.resolucion_liquidacion_obra}}
+                    <span *hasClaim="'monitoreo_tabRYL_LiqInfo_verInformacion_verArchivoObra_eje_dir'">
+                        <a *ngIf="detalle.nombre_archivo_liquidacion_obra != ''" href="{{detalle.nombre_archivo_liquidacion_obra}}"
+                            target="_blank" class="btn-icon" [LinkNube]="detalle.nombre_archivo_liquidacion_obra" [Ruta]="detalle.ruta_archivo_liquidacion_obra">
+                            <i class="fa fa-file">
+                            </i>
+                        </a>
+                    </span>
+                </div>
+                <div class="f-w-6">FECHA</div>
+                <div> {{detalle.fecha_liquidacion_obra}}</div>
+                <div class="f-w-6">MONTO DE LIQ.</div>
+                <div>{{detalle.monto_liquidacion_obra | currency:" S/ "}}</div>
+            </div>
+            <div class="col-12">
+                <hr>
+            </div>
+            <div class="col-12 table-full-detalle">
+                <div class="f-w-6">RESOLUCIÓN DE LIQUIDACIÓN DE SUPERVISIÓN</div>
+                <div class="f-w-6 f-s-14">{{detalle.resolucion_liquidacion_supervicion}}
+                    <span *hasClaim="'monitoreo_tabRYL_LiqInfo_verInformacion_verArchivoSupervision_eje_dir'">
+                        <a *ngIf="detalle.nombre_archivo_liquidacion_supervicion != ''" href="{{detalle.nombre_archivo_liquidacion_supervicion}}"
+                            target="_blank" class="btn-icon" [LinkNube]="detalle.nombre_archivo_liquidacion_supervicion" [Ruta]="detalle.ruta_archivo_liquidacion_supervicion">
+                            <i class="fa fa-file">
+                            </i>
+                        </a>
+                    </span>
+                </div>
+                <div class="f-w-6">FECHA</div>
+                <div> {{detalle.fecha_liquidacion_supervicion}}</div>
+                <div class="f-w-6">MONTO DE LIQ.</div>
+                <div>{{detalle.monto_liquidacion_supervicion | currency:" S/ "}}</div>
+            </div>
+        </div>
+    </div>
+</div>

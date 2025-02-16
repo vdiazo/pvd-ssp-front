@@ -1,0 +1,180 @@
+<div class="modal-header">
+  <h4 class="modal-title">Nueva Registro de metas - Expediente Técnico</h4>
+  <p class="pb-2 pl-4 pr-4">Registro de metas - Expediente Técnico</p>
+</div>
+<div class="modal-body">
+  <div class="group-box">
+    <form [formGroup]="formRegistroMetasExpediente" (ngSubmit)="registrarMetasExpediente()">
+      <div class="form-row d-flex align-items-center">
+        <div class="form-group col-md-6">
+          <label for="">Tipo Infraestructura (*)</label>
+          <ng-select [items]="listaTipoInfraestructura" bindLabel="nombre_tipo_infraestructura"
+            bindValue="id_tipo_infraestructura" formControlName="id_tipo_infraestructura" placeholder="Seleccione"
+            [ngClass]="{'is-invalid': (formRegistroMetasExpediente.get('id_tipo_infraestructura').touched || formRegistroMetasExpediente.get('id_tipo_infraestructura').pristine) && !formRegistroMetasExpediente.get('id_tipo_infraestructura').valid }">
+          </ng-select>
+          <span
+            [hidden]="formRegistroMetasExpediente.get('id_tipo_infraestructura').valid || formRegistroMetasExpediente.get('id_tipo_infraestructura').pristine"
+            class="invalid-tooltip">
+            <span *ngIf="formRegistroMetasExpediente.get('id_tipo_infraestructura').errors?.required">
+              Tipo de infraestructura es obligatorio.
+            </span>
+          </span>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="">Tipo de Via (*)</label>
+          <ng-select [items]="listaTipoVia" bindLabel="nombre_tipo_via" bindValue="id_tipo_via"
+            formControlName="id_tipo_via" placeholder="Seleccione"
+            [ngClass]="{'is-invalid': (formRegistroMetasExpediente.get('id_tipo_via').touched || formRegistroMetasExpediente.get('id_tipo_via').dirty) && !formRegistroMetasExpediente.get('id_tipo_via').valid }">
+          </ng-select>
+          <span
+            [hidden]="formRegistroMetasExpediente.get('id_tipo_via').valid || formRegistroMetasExpediente.get('id_tipo_via').pristine"
+            class="invalid-tooltip">
+            <span *ngIf="formRegistroMetasExpediente.get('id_tipo_via').errors?.required">
+              Tipo de Via es obligatorio.
+            </span>
+          </span>
+        </div>
+      </div>
+      <div class="form-row d-flex align-items-center">
+        <div class="form-group col-md-6">
+          <label for="">Unidad de Medida (*)</label>
+          <ng-select [items]="listaUnidadMedida" bindLabel="nombre_unidad_medida" bindValue="id_unidad_medida"
+            formControlName="id_unidad_medida" placeholder="Seleccione"
+            [ngClass]="{'is-invalid': (formRegistroMetasExpediente.get('id_unidad_medida').touched || formRegistroMetasExpediente.get('id_unidad_medida').dirty) && !formRegistroMetasExpediente.get('id_unidad_medida').valid }">
+          </ng-select>
+          <span
+            [hidden]="formRegistroMetasExpediente.get('id_unidad_medida').valid || formRegistroMetasExpediente.get('id_unidad_medida').pristine"
+            class="invalid-tooltip">
+            <span *ngIf="formRegistroMetasExpediente.get('id_unidad_medida').errors?.required">
+              Unidad de medida es obligatorio.
+            </span>
+          </span>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="">Longitud (*)</label>
+          <input class="form-control" [textMask]="{mask: funciones.currencyMask}" type='text' name="numLongitud"
+            placeholder="Longitud" formControlName="longitud"
+            [ngClass]="{'is-invalid': (formRegistroMetasExpediente.get('longitud').touched || formRegistroMetasExpediente.get('longitud').dirty) && !formRegistroMetasExpediente.get('longitud').valid }" />
+          <span
+            [hidden]="formRegistroMetasExpediente.get('longitud').valid || formRegistroMetasExpediente.get('longitud').pristine"
+            class="invalid-tooltip">
+            <span *ngIf="formRegistroMetasExpediente.get('longitud').errors?.required">
+              Longitud es obligatorio.
+            </span>
+          </span>
+        </div>
+      </div>
+      <div class="form-row d-flex align-items-center">
+        <div class="form-group col-md-6">
+          <label for="">Plazo de Ejecución (D.C.) (*)</label>
+          <input class="form-control" [textMask]="{mask: funciones.currencyMask}" type='text' name="plazo_ejecucion"
+            placeholder="Plazo de ejecucion" formControlName="plazo_ejecucion"
+            [ngClass]="{'is-invalid': (formRegistroMetasExpediente.get('plazo_ejecucion').touched || formRegistroMetasExpediente.get('plazo_ejecucion').dirty) && !formRegistroMetasExpediente.get('plazo_ejecucion').valid }" />
+          <span
+            [hidden]="formRegistroMetasExpediente.get('plazo_ejecucion').valid || formRegistroMetasExpediente.get('plazo_ejecucion').pristine"
+            class="invalid-tooltip">
+            <span *ngIf="formRegistroMetasExpediente.get('plazo_ejecucion').errors?.required">
+              Plazo de ejecución es obligatorio.
+            </span>
+          </span>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="">Ancho de la Via (m.)</label>
+          <input class="form-control" type='number' min="0" name="ancho_infraestructura" placeholder="Ancho de la Via"
+            formControlName="ancho_infraestructura" />
+        </div>
+      </div>
+      <div class="form-row d-flex align-items-center">
+        <div class="form-group col-md-6">
+          <label for="">Codigo(s) de Ruta</label>
+          <input class="form-control" type='text' name="codigo_ruta" placeholder="Codigo(s) de ruta"
+            formControlName="codigo_ruta" />
+        </div>
+        <div class="form-group col-md-6">
+          <label for="">Numero de carriles</label>
+          <input class="form-control" type='number' name="num_carriles" min="0" placeholder="Num. de carriles"
+            formControlName="num_carriles" />
+        </div>
+      </div>
+      <div class="form-row d-flex align-items-center">
+        <div class="form-group col-md-12">
+          <label for="">Descripción</label>
+          <textarea class="form-control" name="observacion" formControlName="observacion" id="observacion" rows="4"
+            placeholder="Ingrese una breve descripción del proyecto"></textarea>
+        </div>
+      </div>
+      <!-- <hr>
+      <div class="form-row">
+        <div><b>METAS DEL PROYECTO / OBRAS DE ARTE - OBRAS DE DRENAJE</b></div>
+        <br><br>
+      </div>
+      <div class="form-row d-flex align-items-center">
+        <div class="form-group col-md-3">
+          <label for="">Obras de Arte</label>
+          <input class="form-control" type='text' name="codigo_ruta" placeholder="Codigo(s) de ruta"
+            formControlName="codigo_ruta" />
+        </div>
+        <div class="form-group col-md-3">
+          <label for="">Cantidad</label>
+          <input class="form-control" type='number' name="num_carriles" min="0" placeholder="Num. de carriles"
+            formControlName="num_carriles" />
+        </div>
+        <div class="form-group col-md-3">
+          <label for="">Material</label>
+          <input class="form-control" type='text' name="num_carriles" min="0" placeholder="Num. de carriles"
+            formControlName="num_carriles" />
+        </div>
+        <div class="col-md-3 text-center align-self-center">
+          <button class="btn btn-danger" type="button" (click)="agregarMetas()"><i class="fa fa-plus"></i>
+            &nbsp;Agregar</button>
+        </div>
+      </div> -->
+      <!-- <div class="row">
+        <table class="table table-bordered table-responsive">
+          <thead>
+            <tr>
+              <th>Descripcion</th>
+              <th>Material</th>
+              <th>Cantidad</th>
+              <th>Unidad</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of listaMetasRegistro; index as i">
+              <td>{{item.descripcion}}</td>
+              <td>{{item.material}}</td>
+              <td>{{item.cantidad}}</td>
+              <td>{{item.unidad}}</td>
+              <td class="xs-hidden pre-wrap" style="width: 10px">
+                <span *hasClaim="'monitoreo_tabSeg_regCronograma_editCronograma_eje_dir'">
+                  <a class="btn btn-sm btn-icon mr-1s" href="javascript:void(0);" (click)="editarMeta(item)">
+                    <i class="fa fa-15x">
+                      <img src="assets/img/icons/pencil.svg" alt="editar">
+                    </i>
+                  </a>
+                </span>
+                <span *hasClaim="'monitoreo_tabSeg_regCronograma_eliCronograma_eje_dir'">
+                  <a class="btn btn-sm btn-icon" href="javascript:void(0);" (click)="anularMeta(i)">
+                    <i class="fa fa-15x">
+                      <img src="assets/img/icons/trash.svg" alt="eliminar">
+                    </i>
+                  </a>
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div> -->
+      <span class="comentario">(*)Campos Obligatorios</span>
+      <div class="modal-footer">
+        <button class="btn btn-danger" type="submit" [disabled]="formRegistroMetasExpediente.invalid"><i
+            class="fa fa-save"></i> Guardar</button>
+        <button class="btn btn-plomo" type="button" (click)="closeModal()"><i class="fa fa-arrow-left"></i>
+          Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- {{formRegistroMetasExpediente.value | json}} -->

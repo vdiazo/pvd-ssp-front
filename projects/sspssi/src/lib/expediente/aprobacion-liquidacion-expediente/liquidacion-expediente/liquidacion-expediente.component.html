@@ -1,0 +1,110 @@
+<div class="row form-group" *hasClaim="'monitoreo_tabRYL_regLiquidacionExp_verEstadoFinanciero_exp_tec_eje_dir'">
+  <label class="col-sm-12 control-label text-left">2.1. Reporte Economico Financiero</label>
+  <div class="col-sm-6">
+    <button class="btn pull-left ml-1 btn-danger" type="button" (click)="obtenerInformacionSigatEstadoFinanciero()">
+      <i class="fa fa-university"></i> Ver Reporte Financiero
+    </button>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-sm-12">
+    <label class="control-label">2.2. Registro de Liquidación de Servicio de Consultoria</label>
+  </div>
+</div>
+<div class="row form-group" *hasClaim="'monitoreo_tabRYL_regLiquidacionExp_nuevLiquidacion_exp_tec_eje_dir'">
+  <div class="col-6" [hidden]=!bEstado>
+    <button class="btn pull-left btn-plomo" type="button" (click)="nuevaLiquidacionExpediente()"
+      [hidden]="existeLiquidacion">
+      <i class="fa fa-plus"></i> Nuevo
+    </button>
+  </div>
+  <div class="col-6 text-right">
+    <label dlabels class="control-label">Última Actualización:</label>&nbsp;
+    <span>{{ultimaActualizacionAprobacionLiquidacion}}</span>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-12 container-scroll">
+    <table class="table table-hover table-bordered table-responsive table-full-detalle">
+      <thead class="table-danger">
+        <tr>
+          <th>Nro. Resolucion Liquidacion</th>
+          <th>Fecha Resolucion</th>
+          <th>Observaciones</th>
+          <th>Documento</th>
+          <th [hidden]=!bEstado></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of listaLiquidacionExpediente">
+          <td class="xs-hidden text-center">{{item.resolucion_liquidacion_expediente}}</td>
+          <td class="xs-hidden text-center">{{item.fecha_liquidacion_resolucion_expediente | formatoFecha}}</td>
+          <td class="xs-hidden text-center">{{item.observacion}}</td>
+          <td>
+            <div class="xs-hidden">
+              <div *ngIf="item.nombre_archivo_liquidacion_expediente != '' ; else templateicono">
+                <a href="{{item.ruta_archivo_liquidacion_expediente}}" target="_blank" class="btn-icon" [LinkNube]="item.nombre_archivo_liquidacion_expediente" [Ruta]="item.ruta_archivo_liquidacion_expediente">
+                  <i class="fa fa-15x">
+                    <img src="assets/img/icons/file.svg" alt="archivo">
+                  </i>
+                </a>
+              </div>
+              <ng-template #templateicono>
+              </ng-template>
+            </div>
+            <div class="xs-display">
+              <div class="xs-th f-s-13">Nro. Resolucion:</div>
+              <div>{{item.resolucion_liquidacion_expediente }}</div>
+              <div>
+                <span class="xs-th">Fecha Resolucion Liquidación:
+                </span>{{item.fecha_liquidacion_resolucion_expediente}}</div>
+              <div class="xs-th">Observaciones&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</div>
+              <div>{{item.observacion }}</div>
+            </div>
+          </td>
+          <td width="100" class="xs-footer-lista xs-100 xs-text-right pre-wrap" [hidden]=!bEstado>
+            <div class="xs-hidden">
+              <span *hasClaim="'monitoreo_tabRYL_regLiquidacionExp_editLiquidacion_exp_tec_eje_dir'"
+                class="btn btn-sm btn-opt btn-icon" (click)="modalEditarLiquidacion(item)">
+                <i class="fa fa-15x">
+                  <img src="assets/img/icons/pencil.svg" alt="editar">
+                </i>
+              </span>
+              <span *hasClaim="'monitoreo_tabRYL_regLiquidacionExp_eliLiquidacion_exp_tec_eje_dir'"
+                class="btn btn-sm btn-opt btn-icon"
+                (click)="anularLiquidacion(item.id_liquidacion_seguimiento_expediente)">
+                <i class="fa fa-15x">
+                  <img src="assets/img/icons/trash.svg" alt="eliminar">
+                </i>
+              </span>
+            </div>
+            <div class="xs-display">
+              <span>
+                <a *ngIf="item.nombre_archivo_liquidacion_expediente != ''"
+                  href="{{item.ruta_archivo_liquidacion_expediente}}" target="_blank" class="btn-icon mr-1" [LinkNube]="item.nombre_archivo_liquidacion_expediente" [Ruta]="item.ruta_archivo_liquidacion_expediente">
+                  <i class="fa fa-file"></i>
+                </a>
+              </span>
+              <span *hasClaim="'monitoreo_tabRYL_regLiquidacionExp_editLiquidacion_exp_tec_eje_dir'"
+                class="btn-icon mr-1" (click)="modalEditarLiquidacion(item)">
+                <i class="fa fa-pencil"></i>
+              </span>
+              <span *hasClaim="'monitoreo_tabRYL_regLiquidacionExp_eliLiquidacion_exp_tec_eje_dir'" class="btn-icon"
+                (click)="anularLiquidacion(item.id_liquidacion_seguimiento)">
+                <i class="fa fa-trash"></i>
+              </span>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-12">
+    <nav class="pt-4 pl-3 pull-right">
+      <pagination [totalItems]="totalRegistros" [boundaryLinks]="true" previousText="&lsaquo;" nextText="&rsaquo;"
+        [rotate]="false" firstText="&laquo;" lastText="&raquo;" [itemsPerPage]="numPaginasMostrar"
+        (pageChanged)="cambiarPagina($event)">
+      </pagination>
+    </nav>
+  </div>
+</div>

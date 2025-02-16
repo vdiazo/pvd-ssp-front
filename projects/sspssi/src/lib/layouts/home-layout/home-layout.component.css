@@ -1,0 +1,540 @@
+.list-unstyled.components{
+    margin-top: 0 !important;
+}
+.container-componentes{
+    margin-top: 58px;
+}
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #f1f1f1;
+}
+
+p {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.1em;
+    font-weight: 300;
+    line-height: 1.7em;
+    color: #999;
+}
+.app-logo{
+    display: flex;
+    font-size: 36px;
+    align-items: center;
+    padding: 0 10px;
+}
+.app-footer{
+    padding: 30px 0;
+    color: #757575;
+}
+a,
+a:hover,
+a:focus {
+    color: inherit;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+.img-logo-head{
+    height: 40px;
+    margin-top: 3px;
+}
+.navbar {
+    padding: 15px 10px;
+    background: #db4437;
+    border: none;
+    border-radius: 0;
+    margin-bottom: 40px;
+    font-size: 14px;
+    color:#ffffff;
+    box-shadow: 0 0px 10px rgba(0,0,0,0.1);
+}
+/*  #db4437 */
+
+.navbar-btn {
+    box-shadow: none;
+    outline: none !important;
+    border: none;
+}
+
+.line {
+    width: 100%;
+    height: 1px;
+    border-bottom: 1px dashed #ddd;
+    margin: 40px 0;
+}
+.logo-footer-mtc{
+    padding: 20px;
+    opacity: 0.5;
+    position: fixed;
+    /* width: 220px; */
+    bottom: 0;
+    color: #485d6e;
+    font-size: 11px;
+    text-align: center
+}
+
+#sidebar .logo-footer-mtc{
+    font-size: 0;
+    width: 50px;
+    opacity: 0;
+    transition: all ease-in-out 0.1s;
+}
+#sidebar:hover .logo-footer-mtc{
+    width: 220px;
+    font-size: 11px;
+    opacity: 1;
+}
+
+/* ---------------------------------------------------
+    SIDEBAR STYLE
+----------------------------------------------------- */
+
+.wrapper {
+    display: flex;
+    width: 100%;
+}
+
+#sidebar {
+    /* width: 250px; */
+    position: fixed;
+    top: 58px;
+    left: 0;
+    /* height: calc(100vh - 58px); */
+    height: calc( 100vh - 58px );
+    z-index: 1031;
+    color: #212121;
+    transition: all cubic-bezier(0.55, 0.06, 0.68, 0.19) 0.35s;
+    background: #ffffff;
+    /* margin-left: -192px; */
+    transition: all .15s ease-in-out;
+}
+#sidebar:hover {
+box-shadow: 0 0 40px rgba(0, 0, 0, 0.2);
+}
+#sidebar ul li{
+    position: relative;
+}
+/* #sidebar ul li:first-child {
+    height: 58px;
+} */
+#sidebar ul li:first-child a span:nth-child(2) {
+   opacity: 1;
+   transition: all ease-in-out .15s;
+}
+#sidebar:hover ul li:first-child a span:nth-child(2) {
+    opacity: 0.8;
+}
+#sidebar ul li {
+    padding-left: 0;
+}
+#sidebar ul ul li:first-child {
+    height: auto;
+}
+#sidebar ul ul {
+    padding-left: 0;
+}
+
+#sidebar ul ul a{
+    padding-left: 10px !important;
+    font-size: 16px !important;
+}
+#sidebar ul ul li a {
+    background-color: #FAFAFA;
+}
+#sidebar ul ul li a:after {
+    content: 'i';
+    font-size: 1px;
+    position: absolute;
+    height: 100%;
+    width: 5px;
+    background-color: #E0E0E0;
+    right: 0;
+    top: 0;
+}
+
+#sidebar ul ul ul li a {
+    background-color: #485d6e;
+}
+#black-panel{
+    width: 100%;
+    height: 100%;
+    background-color: #000000;
+    position: fixed;
+    z-index: 2;
+    display: none;
+    opacity: 0;
+    transition: all ease 2s;
+}
+#sidebar ul li.active > a, a[aria-expanded="true"] > span:nth-child(2){
+    color:#212121 !important;
+}
+#sidebar.active {
+    margin-left: 0px;
+}
+#black-panel.active{
+    display: block;
+    /* opacity: 0.3; */
+}
+.navbar {
+    padding: 5px 10px;}
+#sidebar .sidebar-header {
+    color: #212121;
+    background: rgba(0,0,0,0.1);
+    padding: 15px 20px;
+    height: 58px;
+}
+#sidebar .sidebar-header h3{
+    margin: 0;
+    font-weight: 400;
+    font-size: 1.4rem;
+}
+#sidebar .sidebar-header h3 span{
+    font-size: 0.5rem;
+    line-height: 0.5rem;
+    position: absolute;
+    top: 17px;
+    padding: 0 10px;
+}
+#sidebar .sidebar-header h3 button{
+    float: right;
+    right: 10px;
+    top: 6px;
+    position: absolute;
+
+    background-color: transparent !important;
+    border-radius: 0;
+    color: #FFFFFF;
+    font-size: 30px;
+    padding: 0;
+    width: 40px;
+    text-align: center;
+
+
+}
+#sidebarCollapse{
+    background-color: transparent !important;
+    border-radius: 0;
+    color: #ffffff;
+    font-size: 30px !important;
+    padding: 0;
+    width: 40px;
+    text-align: center;
+}
+
+#sidebar .sidebar-header h3.active button{
+    right: 10px;
+    display: block;
+}
+#sidebar .sidebar-header h3.active span{
+    display: none;
+}
+.bg{
+    /* background-image: url(../../../../assets/img/bg-login.jpg); */
+    height: 100vh;
+    filter: blur(5px);
+    background-position: top;
+    background-size: cover;
+    background-attachment: fixed;
+    position: fixed;
+    width: 100%;
+    z-index: 0;
+}
+
+
+#nav-top .sidebar-header h3{
+    margin: 0;
+    font-weight: 400;
+    font-size: 1.4rem;
+    position: absolute;
+    width: 230px;
+    display: inline-block;
+}
+#nav-top .sidebar-header h3 span{
+    width: 130px;
+    font-size: 0.5rem;
+    line-height: 0.5rem;
+    top: 17px;
+    padding: 0 10px;
+}
+#sidebar ul.components {
+    padding: 20px 0;
+    margin-top: 58px;
+}
+
+#sidebar ul p {
+    color: #fff;
+    padding: 10px;
+}
+
+#sidebar ul li a {
+    font-size: 16px;
+    display: block;
+    /* alineacion vertical */
+    align-items: center;
+    min-height: 50px;
+    padding: 5px 10px 5px 10px;
+    color:gray;
+}
+
+#sidebar ul li a.active-link > span:first-child, #sidebar ul li a.active-link > span:nth-child(2){
+    color: #db4437;
+}
+
+
+#sidebar ul li a > span:first-child {
+
+
+    width: 40px;
+    height: 40px;;
+    float: left;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color:inherit;
+}
+#sidebar ul li a > span:nth-child(2) {
+    width: 0;
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 40px;
+    height: 40px;
+    transition: all .15s ease-in-out;
+    overflow: hidden;
+}
+#sidebar:hover ul li a > span:nth-child(2) {
+    width: 160px;
+}
+
+/* #sidebar ul li a:hover > span:nth-child(1){
+    color: #ffffff;
+} */
+#sidebar ul li a:hover{
+    color: #202124;
+}
+
+#sidebar ul li.active>a, a[aria-expanded="true"] > span:nth-child(2) {
+    color: #fff;
+}
+
+a[data-toggle="collapse"] {
+    position: relative;
+}
+.foto-usuario{
+    height: 32px;
+    top: -5px;
+}
+.list-unstyled .dropdown-toggle::after {
+    display: block;
+    position: absolute;
+    top: 50%;
+    right: 60px;
+    transform: translateY(-50%);
+
+    display: inline-block;
+    width: 0;
+    height: auto;
+    margin-left: .255em;
+    vertical-align: .255em;
+    content: "\e902";
+    border-top: 0 solid;
+    border-right: 1em solid transparent;
+    border-bottom: 0;
+    border-left: .3em solid transparent;
+    font-family: 'icomoon' !important;
+}
+
+ul ul a {
+    font-size: 0.9em !important;
+    padding-left: 30px !important;
+    background: #6d7fcc;
+}
+
+ul.CTAs {
+    padding: 20px;
+}
+
+ul.CTAs a {
+    text-align: center;
+    font-size: 0.9em !important;
+    display: block;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+
+a.download {
+    background: #fff;
+    color: #7386D5;
+}
+
+a.article,
+a.article:hover {
+    background: #6d7fcc !important;
+    color: #fff !important;
+}
+
+/* ---------------------------------------------------
+    CONTENT STYLE
+----------------------------------------------------- */
+#nav-top{
+    transition: all 0.3s;
+
+}
+#content {
+    width: calc(100% - 58px);
+    min-height: 100%;
+    transition: all 0.3s;
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: #f1f1f1;
+}
+/*
+#content.active {
+    width: calc(100% - 58px);
+}
+#nav-top.active{
+    width: calc(100% - 58px);
+    margin-left: 58px;
+} */
+#logoAppSidebar{
+    transition: all 0.3s;
+    font-family: Arial;
+    font-size: 18px;
+    margin: 0;
+    letter-spacing: -1px;
+    width: 130px;
+    text-align: center;
+    height: 44px;
+    padding-top: 5px;
+    color:#fff;
+}
+#logoAppSidebar span{
+    display: block;
+    font-size: 6px;
+    letter-spacing: 0;
+}
+
+#logoAppNavBar{
+    opacity: 0;
+    transition: all 0.3s;
+}
+#logoAppNavBar.active{
+    opacity: 1;
+}
+/* ---------------------------------------------------
+    MEDIAQUERIES
+----------------------------------------------------- */
+#sidebar.active ul li a {
+    padding: 5px 10px 5px 10px
+}
+#sidebarCollapse.active{
+    display: none;
+}
+a.nav-link{
+    color: #ffffff;
+}
+#sidebar .list-unstyled .dropdown-toggle:after{
+    right: -20px;
+}
+#sidebar:hover .list-unstyled .dropdown-toggle:after{
+    right: 20px;
+}
+#sidebar a[aria-expanded="true"] span.dropdown-toggle:after{
+    content: "\e905";
+}
+
+
+@media (max-width: 768px) {
+    .app-logo{
+        padding: 0;
+        font-size: 30px;
+    }
+    #sidebar {
+        margin-left: -250px;
+    }
+    #sidebar.active {
+        margin-left: 0;
+    }
+    #content {
+        width: 100%;
+    }
+    #sidebarCollapse span {
+        display: none;
+    }
+    #nav-top {
+        margin-left: 0;
+        width: 100%;
+        transition: all 0.3s;
+    }
+
+    #sidebar .sidebar-header h3.active button, #sidebar .sidebar-header h3 button{
+        display: block;
+    }
+    #sidebar .sidebar-header h3.active button{
+        margin-right: 0px;
+        display: block;
+    }
+    #sidebar .sidebar-header h3 button{
+        margin-right: -10px;
+        display: block;
+    }
+    #sidebar .sidebar-header h3 span{
+        display: none;
+    }
+    #sidebar ul li a > span:nth-child(2) {
+        width: 160px;
+    }
+}
+@media (max-width: 575.98px) {
+    #sidebarCollapse{
+        display: block;
+    }
+    #sidebarCollapse2{
+        display: block;
+    }
+    .img-logo-head{
+        display: none;
+    }
+    #logoAppSidebar{
+        display: none;
+    }
+    .jumbotron, .container-fluid {
+        padding-left: 0;
+        padding-right: 0;
+    }
+    .row {
+        margin-right: 0 !important;
+        margin-left:  0 !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .modal .modal-content {
+        box-shadow: none;
+    }
+    .modal-dialog {
+        min-width: 700px !important;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .modal-dialog {
+        min-width: 300px !important;
+        margin: 1.75rem auto;
+    }
+    .txtUsuario{
+        width: 160px;
+    }
+}
+
+
+@media (min-width: 992px) {
+    .modal-dialog {
+        min-width: 800px !important;
+     }
+}
+
+@media (min-width: 1200px) {
+    .modal-dialog {
+        min-width: 1024px !important;
+    }
+}

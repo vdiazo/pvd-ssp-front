@@ -1,0 +1,54 @@
+<div class="modal-header">
+  <h4 class="modal-title">EDITAR GARANTIA </h4>
+</div>
+<div class="modal-body">
+  <div class="group-box">
+    <form (ngSubmit)="administrarGarantia(model);" #garantiaForm="ngForm">
+      <div class="row form-group">
+        <div class="col-sm-2">
+          <label dlabels class="control-label" for="txtfechainicio">Fecha Inicio:</label>
+        </div>
+        <div class="col-sm-2">
+          <input dTextBox class="form-control" readonly="readonly" type='text' name="txtfechainicio" id="txtfechainicio" placeholder="dd/mm/aaaa"
+            [(ngModel)]="model.fecha_inicio" #txtfechainicio="ngModel" bsDatepicker required [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es', containerClass: 'theme-red' }">
+          <div [hidden]="txtfechainicio.valid || txtfechainicio.pristine" class="alert alert-danger">
+            Fecha de Inicio es obligatoria
+          </div>
+        </div>
+        <div class="col-sm-2">
+          <label dlabels class="control-label" for="txtfechatermino">Fecha Término:</label>
+        </div>
+        <div class="col-sm-2">
+          <input dTextBox class="form-control" readonly="readonly" type='text' name="txtfechatermino" id="txtfechatermino" placeholder="dd/mm/aaaa"
+            [(ngModel)]="model.fecha_termino" #txtfechatermino="ngModel" bsDatepicker required [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es', containerClass: 'theme-red' }">
+          <div [hidden]="txtfechatermino.valid || txtfechatermino.pristine" class="alert alert-danger">
+            Fecha de Término es obligatoria
+          </div>
+        </div>
+        <div class="col-md-2">
+            <label dlabels class="control-label">Monto</label>
+          </div>
+          <div class="col-md-2">
+            <input 
+            class="form-control" 
+            maxlength="21" 
+            [textMask]="{mask: funciones.currencyMask}"  
+            type='text' 
+            id="numMonto" 
+            name="numMonto" 
+            #numMonto="ngModel" 
+            required placeholder="Monto Garantía" 
+            [(ngModel)]="model.monto_garantia" />
+            <div [hidden]="numMonto.valid || numMonto.pristine" class="alert alert-danger">
+                Monto de la Garantía es obligatorio
+            </div>
+          </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="submit" id="btnGuardar" [disabled]="!garantiaForm.form.valid" class="btn btn-danger"> Guardar</button>
+        <button  id="btnCancelar" type="button" (click)="closeModal()" class="btn btn-plomo">Cerrar</button>
+      </div>
+    </form>
+  </div>
+</div>

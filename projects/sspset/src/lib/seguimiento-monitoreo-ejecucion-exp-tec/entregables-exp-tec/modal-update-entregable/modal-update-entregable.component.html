@@ -1,0 +1,96 @@
+<div class="modal-header">
+  <h4 class="modal-title">Edición de la Programación de Entregables</h4>
+  <p class="pb-2 pl-4 pr-4">Edición de una programación valorizado de Ejecución de Expediente Técnico</p>
+</div>
+
+<div class="modal-body">
+  <div class="group-box">
+    <form (ngSubmit)="grabar()" [formGroup]="entregableForm">
+      <div class="row form-group">
+        <div class="col-sm-6">
+          <label class="control-label">Número de Entregables (*):</label>
+        </div>
+        <div class="col-sm-6">
+            <input dTextBox class="form-control" type='number' maxlength="10" name="num_entregable" id="num_entregable" placeholder="Ingrese número de entregables"
+            (keypress)="funciones.IsNumberKey($event)" formControlName="num_entregable"
+            readonly/>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-6">
+          <label class="control-label">Documento que Aprueba:</label>
+        </div>
+        
+        <div class="col-sm-6">
+          <input type="text" class="form-control" value="{{Entregable.tipo_entregable}}" readonly>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-6">
+          <label class="control-label" for="fecha_aprobación">Fecha de Aprobación (*):</label>
+        </div>
+        <div class="col-sm-6">
+          <input type='text' class="form-control" name="fecha_aprobacion" id="fecha_aprobacion" placeholder="dd/mm/aaaa" bsDatepicker
+            [minDate]="fecha_inicio_contractual" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es', containerClass: 'theme-red' }"
+            readonly="readonly" formControlName="fecha_aprobacion" [maxDate]="fechaDesignaconMax" />
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-6">
+          <label class="control-label">Subir Documento Contrato/Informe/Oficio/Otros (*):</label>
+        </div>
+        <div class="col-sm-6">
+          <set-input-file idComp="fileInsert" (onChange)="fileChangeEvent($event)" class="input-group" IdTipoArchivo="{{tipoArchivo}}" Value="{{Entregable.nombre_archivo}}"></set-input-file>
+        </div>
+      </div>
+      <div class="row form-group">
+          <div class="col-sm-6">
+            <label class="control-label">Subir Plan de Trabajo:</label>
+          </div>
+          <div class="col-sm-6">
+            <set-input-file idComp="fileInsertPlanTrabajo" (onChange)="fileChangeEventPlanTrabajo($event)" class="input-group" IdTipoArchivo="{{tipoArchivoPlanTrabajo}}" Value="{{Entregable.plan_archivo}}"></set-input-file>
+          </div>
+      </div>
+
+
+      <table class="table table-hover table-bordered table-responsive table-full-detalle">
+        <thead>
+          <th>ITEM</th>
+          <th>N° Entregables</th>
+          <th>Descripción de contenido</th>
+          <th>Plazo de Entrega (N° Días)</th>
+          <th>Monto S/. </th>
+        </thead>
+        <tbody formArrayName="detalle_entregable" *ngFor="let item of getEntregable.controls; let i = index">
+          <tr [formGroupName]="i">
+            <td class="xs-hidden">{{ i + 1 }}</td>
+            <td>
+              <input type="text" class="form-control" formControlName="concepto" readonly/>
+            </td>
+            <td>
+                <div class="xs-th">Descripción de contenido :</div>
+                <input type="text" class="form-control" formControlName="descripcion"/>
+            </td>
+            <td>
+                <div class="xs-th">Plazo de Entrega (N° Días) :</div>
+                <input type="number" (keypress)="funciones.IsNumberKey($event)" class="form-control" formControlName="plazo_dias"/>
+            </td>
+            <td>
+                <div class="xs-th">Monto S/. :</div>
+                <input type="text" id="{{ 'monto' + i }}" [textMask]="{mask: funciones.currencyMask}" class="form-control" formControlName="monto"/>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <br>
+      <span class="comentario">(*)Campos Obligatorios</span>
+      <div class="modal-footer">
+        <button type="submit" id="btnGuardar" class="btn btn-danger" [disabled]="!esValidoSumaMontosAvanceProgramado" [hidden]=bMostrar>Guardar</button>
+        <button class="btn btn-danger" type="button" [hidden]=!bMostrar>
+          <i class="fa fa-save"></i> ....Procesando</button>
+        <button class="btn btn-plomo" id="btnCancelar" type="button" (click)="closeModal()">Cerrar</button>
+      </div>
+    </form>
+  </div>
+</div>
+

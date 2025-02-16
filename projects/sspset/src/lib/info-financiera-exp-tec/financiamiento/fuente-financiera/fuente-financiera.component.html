@@ -1,0 +1,58 @@
+<label class="control-label" dlabels="">
+    3.1. Según fuente de financiamiento</label>
+  <table class="table table-hover table-responsive table-full-detalle lastTD">
+    <thead>
+      <tr>
+        <th>Fuente de Financiamiento</th>
+        <th>Año</th>
+        <th>PIM</th>
+        <th>Devengado</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor='let financiera of fteFinanciera'>
+        <td class="text-left xs-hidden">{{financiera.fuentefinanciera}}</td>
+        <td class="xs-hidden">{{financiera.anio}}</td>
+        <td class="text-right xs-hidden">{{financiera.montopim | currency:" S/"}}</td>
+        <td class="text-right xs-text-left">
+          <div class="xs-hidden">{{financiera.montodev | currency:" S/"}}</div>
+          <div class="xs-display text-left">
+            <div class="xs-th">Fuente de Financiamiento</div>
+            {{financiera.fuentefinanciera}}
+            <div class="xs-th">Año</div>
+            {{financiera.anio}}
+            <div class="row">
+              <div class="col-6 p-0">
+                <div class="xs-th">PIM</div>
+                {{financiera.montopim | currency:" S/"}}
+              </div>
+              <div class="col-6 p-0">
+                <div class="xs-th">Devengado</div>
+                {{financiera.montodev | currency:" S/"}}
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr *ngFor='let financieraTotal of infoFteFinancieraBody'>
+        <td colspan="2">{{financieraTotal.anio}}</td>
+        <td class="text-right">
+          <div class="xs-hidden">{{financieraTotal.montopim | currency:" S/"}}</div>
+          <div class="xs-display text-left">PIM&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : {{financieraTotal.montopim | currency:" S/"}}</div>
+        </td>
+        <td class="text-right">
+          <div class="xs-hidden">{{financieraTotal.montodev | currency:" S/"}}</div>
+          <div class="xs-display text-left">Devengado : {{financieraTotal.montodev | currency:" S/"}}</div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="row">
+    <div class="col-12 xs-p-0">
+      <nav class="pt-4 pl-3 pull-right">
+        <pagination [totalItems]="totalRegistros" [itemsPerPage]="numPaginasMostrar" [boundaryLinks]="true" previousText="&lsaquo;"
+          nextText="&rsaquo;" [rotate]="false" firstText="&laquo;" lastText="&raquo;" [maxSize]="5" (pageChanged)="cambiarPagina($event)">
+        </pagination>
+      </nav>
+    </div>
+  </div>

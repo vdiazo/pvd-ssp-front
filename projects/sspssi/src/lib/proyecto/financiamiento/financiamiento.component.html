@@ -1,0 +1,72 @@
+<div class="tab-content" id="nav-tabContent">
+  <div class="tab-pane fade show active jumbotron container-fluid pt-4" id="nav-home" role="tabpanel"
+    aria-labelledby="nav-home-tab">
+    <accordion>
+      <div class="row">
+        <div class="col-12">
+          <accordion-group [isOpen]=true [panelClass]="separator">
+            <button class="btn btn-link btn-block clearfix" accordion-heading>
+              <div class="pull-left float-left">1. Costo del proyecto</div>
+              <span class="badge float-right pull-right">
+                <i class="fa fa-circle-o"></i>
+              </span>
+            </button>
+            <ssi-costo-proyecto *ngIf="_BE_Snip" [listCostoProyecto]="_BE_Snip"></ssi-costo-proyecto>
+            <div class="mt-2">Fuente | <span class="c-dark-blue">Sistema de Seguimiento de Inversiones (SSI)</span>
+            </div>
+          </accordion-group>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <accordion-group [isOpen]=false [panelClass]="separator">
+            <button class="btn btn-link btn-block clearfix" accordion-heading>
+              <div class="pull-left float-left">2. Convenio(s) / Adenda / Decreto de Urgencia</div>
+              <span class="badge float-right pull-right">
+                <i class="fa fa-circle-o"></i>
+              </span>
+            </button>
+            <ssi-lista-convenio></ssi-lista-convenio>
+          </accordion-group>
+        </div>
+      </div>
+      <!-- <div class="row">
+        <div class="col-12">
+          <accordion-group [isOpen]=false [panelClass]="separator">
+            <button class="btn btn-link btn-block clearfix" accordion-heading>
+              <div class="pull-left float-left">3. Montos Totales transferidos por el MTC</div>
+              <span class="badge float-right pull-right">
+                <i class="fa fa-circle-o"></i>
+              </span>
+            </button>
+            <app-monto-transferido></app-monto-transferido>
+          </accordion-group>
+        </div>
+      </div> -->
+      <div class="row">
+        <div class="col-12">
+          <accordion-group [isOpen]=false [panelClass]="separator">
+            <button class="btn btn-link btn-block clearfix" accordion-heading>
+              <div class="pull-left float-left">3. Seguimiento financiero según (SSI)</div>
+              <span class="badge float-right pull-right">
+                <i class="fa fa-circle-o"></i>
+              </span>
+            </button>
+            <!-- <ssi-fuente-financiera *ngIf="fteFinanciera" [listFteFinanciera]="fteFinanciera"></ssi-fuente-financiera>
+            <div>Fuente | <span class="c-dark-blue">Sistema de Seguimiento de Inversiones (SSI) - Consulta
+                Amigable</span></div>
+
+            <hr>
+            <ssi-informacion-financiera *ngIf="infoFinanciera" [listInfoFinanciera]="infoFinanciera">
+            </ssi-informacion-financiera> -->
+            <ng-container class="row form-group" *ngFor="let detalle of infoFinanciera">
+              <ssi-fuente-financiera [listInfoFinanciera]="detalle"></ssi-fuente-financiera>
+            </ng-container>
+            <div>Fuente | <span class="c-dark-blue">Sistema de Seguimiento de Inversiones (SSI) - Consulta
+                Amigable</span></div>
+          </accordion-group>
+        </div>
+      </div>
+    </accordion>
+  </div>
+</div>

@@ -1,0 +1,153 @@
+<div class="row form-group" *hasClaim="'monitoreo_tabSel_bieyser_regComentario'">
+  <div *ngIf="seleccionTodo" class="col-sm-12 xs-p-0" style="text-align: right;">
+    <button class="btn btn-danger" type="button" id="btnGuardarEstadoMasivo" (click)="guardarEstadoMasivo()">
+      Guardar</button>
+  </div>
+</div>
+
+
+<table class="table table-hover table-bordered table-responsive table-full-detalle" border="1">
+  <thead class="table-active">
+    <tr>
+      <th>Tipo de Selección</th>
+      <th>Nomenclatura</th>
+      <th>Fecha de Publicación</th>
+      <th>Decripción</th>
+      <th>Estado del Proceso</th>
+      <th>Fecha</th>
+      <th>Valor Referencial</th>
+      <th *hasClaim="'monitoreo_tabSel_bieyser_verResultados'">Ver Resultados</th>
+      <th>Cronograma</th>
+      <th>El proceso, corresponde al proyecto</th>
+      <th style="width: 20%;">Comentarios</th>
+      <th *hasClaim="'monitoreo_tabSel_bieyser_regComentario'" class="row-seleccionable " style="width: 30px;">
+        <input type="checkbox" [checked]="seleccionTodo" (change)="seleccionarTodosLosRegistros($event)"
+          id="checkallContratacion" />
+        <label for="checkallContratacion"></label>
+      </th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let procesoSelec of lstProcesoSeleccion; index as s">
+      <td class="text-left xs-hidden">{{procesoSelec.tipo_seleccion}}</td>
+      <td class="text-left xs-hidden">{{procesoSelec.nomenclatura}}</td>
+      <td class="xs-hidden">{{procesoSelec.fecha_publicacion}}</td>
+      <td class="text-left xs-hidden">{{procesoSelec.descripcion}}</td>
+      <td class="text-left xs-hidden">{{procesoSelec.estado_proceso}}</td>
+      <td class="xs-hidden">{{procesoSelec.fecha}}</td>
+      <td class="text-right xs-hidden">
+        {{((procesoSelec.valor_referencial) ? (procesoSelec.valor_referencial) :"") | currency:" S/" }}
+      </td>
+      <td *hasClaim="'monitoreo_tabSel_bieyser_verResultados'" class="xs-hidden">
+        <a href="javascript:void(0)" class="btn btn-sm btn-icon" (click)="openModalVerResultados(procesoSelec)">
+          <i class="fa fa-15x">
+            <img src="assets/img/icons/checklist.svg" alt="resultados">
+          </i>
+        </a>
+      </td>
+      <td class="xs-hidden">
+        <a href="javascript:void(0)" class="btn btn-sm btn-icon"
+          (click)="openModalListCrono(procesoSelec.identificador)">
+          <i class="fa fa-15x"><img src="assets/img/icons/calendar.svg" alt="cronograma"></i>
+        </a>
+      </td>
+      <td>
+        <div class="xs-display">
+          <div class="xs-th f-s-14">{{procesoSelec.nomenclatura}}</div>
+          <div>
+            <span class="xs-th"> Tipo de selección: </span>
+            <span> {{procesoSelec.tipo_seleccion}}</span>
+          </div>
+          <div>
+            <span class="xs-th"> Fecha de publicación: </span>
+            <span> {{procesoSelec.fecha_publicacion}} </span>
+          </div>
+          <div>
+            <span class="xs-th"> Estado: </span>
+            <span> {{procesoSelec.estado_proceso}} </span>
+            <span>
+              <i class="fa fa-calendar"></i> {{procesoSelec.fecha}} </span>
+          </div>
+          <div>
+            <span class="xs-th"> Valor referencial: </span>
+            <span> {{((procesoSelec.valor_referencial) ? (procesoSelec.valor_referencial) :"") | currency:" S/" }}
+            </span>
+          </div>
+          <div class="xs-th">Descripción:</div>
+          <div>{{procesoSelec.descripcion}}</div>
+          <div class="xs-th">El proceso, corresponde al proyecto:</div>
+        </div>
+        <ui-switch size="small" [disabled]="!habilitar" [checked]="setearEstadoCorrespondeProyecto(s)"
+          (change)="procesoCorrespondeProyecto($event,s)"></ui-switch>
+      </td>
+      <td class="text-left">
+        <textarea *ngIf="mostrarTextBoxComentario(s)" rows="3" dTextBox maxlength="2000" class="form-control"
+          name="txtComentario" [(ngModel)]="procesoSelec.comentario"></textarea>
+        <label dlabels class="control-label"
+          *ngIf="mostrarLabelComentario(s)">{{procesoSelec.comentario}}&nbsp;&nbsp;</label>
+        <span style="font-size: 8px;">Actualización: {{ (procesoSelec.fecha_modificacion) ? (procesoSelec.fecha_modificacion | date:'dd/MM/yyyy hh:mm:ss')
+          :"" }} </span>
+      </td>
+      <td class="xs-hidden row-seleccionable" *hasClaim="'monitoreo_tabSel_bieyser_regComentario'">
+        <input type="checkbox" *ngIf="seleccionTodo" [checked]="mostrarSeleccionIndividual(s)"
+          (change)="seleccionIndividual($event,s)" id="chkSeleccion{{s}}" />
+        <label for="chkSeleccion{{s}}"></label>
+      </td>
+      <td class="xs-footer-lista xs-text-right">
+        <div class="xs-hidden">
+          <span *hasClaim="'monitoreo_tabSel_bieyser_modComentario'">
+            <a href="javascript:void(0)" *ngIf="mostrarBotonEditar(s) && !seleccionTodo" class="btn btn-sm btn-icon"
+              (click)="editarComentario(s)">
+              <i class="fa fa-15x">
+                <img src="assets/img/icons/pencil.svg" alt="editar">
+              </i>
+            </a>
+          </span>
+          <span *hasClaim="'monitoreo_tabSel_bieyser_regComentario'">
+            <a href="javascript:void(0)" *ngIf="mostrarBotonGuardar(s) && !seleccionTodo" class="btn btn-sm btn-icon"
+              (click)="grabarComentario(procesoSelec,s)">
+              <i class="fa fa-15x">
+                <img src="assets/img/icons/save.svg" alt="guardar">
+              </i>
+            </a>
+          </span>
+        </div>
+        <div class="xs-display">
+          <a *hasClaim="'monitoreo_tabSel_bieyser_verResultados'" href="javascript:void(0)" class="btn-icon mr-1"
+            (click)="openModalVerResultados(procesoSelec)">
+            <i class="fa icon-checklist"></i>
+          </a>
+          <a href="javascript:void(0)" class="btn-icon mr-1" (click)="openModalListCrono(procesoSelec.identificador)">
+            <i class="fa fa-calendar"></i>
+          </a>
+          <span *hasClaim="'monitoreo_tabSel_bieyser_modComentario'">
+            <a href="javascript:void(0)" *ngIf="mostrarBotonEditar(s) && !seleccionTodo" class="btn-icon mr-1"
+              (click)="editarComentario(s)">
+              <i class="fa fa-pencil"></i>
+            </a>
+          </span>
+          <span *hasClaim="'monitoreo_tabSel_bieyser_regComentario'">
+            <a href="javascript:void(0)" *ngIf="mostrarBotonGuardar(s) && !seleccionTodo" class="btn-icon"
+              (click)="grabarComentario(procesoSelec,s)">
+              <i class="fa fa-save"></i>
+            </a>
+          </span>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="row">
+  <div class="col-12 col-12 xs-p-0">
+    <nav class="pt-2 pull-right">
+      <pagination [totalItems]="totalRegistros" [itemsPerPage]="5" [boundaryLinks]="true" previousText="&lsaquo;"
+        nextText="&rsaquo;" [rotate]="false" firstText="&laquo;" lastText="&raquo;" [maxSize]="5"
+        (pageChanged)="cambiarPagina($event)">
+      </pagination>
+    </nav>
+  </div>
+</div>
+<div *ngIf="lstProcesoSeleccion.length>0" class="mt-2">Fuente | <span class="c-dark-blue">Organismo Supervisor de las
+    Contrataciones del Estado (OSCE)</span></div>

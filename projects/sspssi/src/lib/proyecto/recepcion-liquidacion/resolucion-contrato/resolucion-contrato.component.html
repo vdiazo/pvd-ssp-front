@@ -1,0 +1,92 @@
+<div class="tab-content" id="nav-tabContent">
+  <div class="tab-pane fade show active jumbotron container-fluid pt-4" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+    <accordion>
+      <div class="row" *hasClaim="'monitoreo_tabRYL_ResContrato_listResContrato_eje_dir'">
+        <div class="col-12">
+          <accordion-group [isOpen]="true">
+            <button class="btn btn-link btn-block clearfix" accordion-heading>
+              <div class="pull-left float-left">1. Resolución de Contrato</div>
+              <span class="badge float-right pull-right">
+                <i class="fa fa-circle-o"></i>
+              </span>
+            </button>
+            <div class="row form-group" *hasClaim="'monitoreo_tabRYL_ResContrato_regResContrato_eje_dir'" [hidden]="btnNuevo">
+              <div class="col-sm-6">
+                <button class="btn btn-plomo" type="button" id="btnNuevaResolucionContrato" (click)="opnNuevaResolucionContrato()">
+                  <i class="fa fa-plus"></i> Nuevo</button>
+              </div>
+            </div>
+            <table class="table table-hover table-bordered table-responsive table-full-detalle">
+              <thead class="table-danger">
+                <tr>
+                  <th [hidden]="true">id_resolucion_contrato</th>
+                  <th [hidden]="true">id_seguimiento_monitoreo_obra</th>
+                  <th [hidden]="true">id_fase</th>
+                  <th [hidden]="true">id_tipo_documento</th>
+                  <th>Fecha</th>
+                  <th>Descripción y/o comentarios</th>
+                  <th>Tipo de documento</th>
+                  <th>Documento</th>
+                  <th>Ver histórico</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let resolucion of listResolucionContrato">
+                  <td [hidden]="true">{{resolucion.id_resolucion_contrato}}</td>
+                  <td [hidden]="true">{{resolucion.id_seguimiento_monitoreo_obra}}</td>
+                  <td [hidden]="true">{{resolucion.id_fase}}</td>
+                  <td [hidden]="true">{{resolucion.id_tipo_documento}}</td>
+                  <td class="xs-hidden">{{resolucion.fecha_emision_documento}}</td>
+                  <td class="xs-hidden text-left">{{resolucion.descripcion}}</td>
+                  <td class="xs-hidden">{{resolucion.nombre_tipo_documento}}</td>
+                  <td>
+                    <div class="xs-hidden" *hasClaim="'monitoreo_tabRYL_ResContrato_listResContrato_histResContrato_eje_dir'">
+                      <a *ngIf="resolucion.nombre_archivo != ''" href="{{resolucion.ruta_archivo}}" target="_blank" class="btn-icon">
+                        <i class="fa fa-15x">
+                          <img src="assets/img/icons/file.svg" alt="archivo">
+                        </i>
+                      </a>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="xs-hidden">
+                      <span *ngIf="resolucion.id_fase != ''" class="btn btn-sm btn-opt btn-icon" (click)="opnHistorial(resolucion)">
+                        <i class="fa fa-15x">
+                          <img src="assets/img/icons/watch.svg" alt="historial">
+                        </i>
+                      </span>
+                    </div>
+                  </td>
+                  <td class="xs-footer-lista">
+                    <div class="xs-hidden pre-wrap">
+                      <span *hasClaim="'monitoreo_tabRYL_ResContrato_listResContrato_modResContrato_eje_dir'" class="btn btn-sm btn-opt btn-icon" (click)="editarResolucionContrato(resolucion)">
+                        <i class="fa fa-15x">
+                          <img src="assets/img/icons/pencil.svg" alt="editar">
+                        </i>
+                      </span>
+                      <span *hasClaim="'monitoreo_tabRYL_ResContrato_listResContrato_eliResContrato_eje_dir'" class="btn btn-sm btn-opt btn-icon" (click)="anularResolucionContrato(resolucion)">
+                        <i class="fa fa-15x">
+                          <img src="assets/img/icons/trash.svg" alt="eliminar">
+                        </i>
+                      </span>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="row">
+              <div class="col-12 xs-p-0">
+                <nav class="pt-2 pull-right">
+                  <pagination [totalItems]="totalRegistros" [itemsPerPage]="numPaginasMostrar" [boundaryLinks]="true" previousText="&lsaquo;"
+                    nextText="&rsaquo;" [rotate]="false" firstText="&laquo;" lastText="&raquo;" [maxSize]="5" (pageChanged)="cambiarPagina($event)">
+                  </pagination>
+                </nav>
+              </div>
+            </div>
+          </accordion-group>
+        </div>
+      </div>
+    </accordion>
+  </div>
+</div>

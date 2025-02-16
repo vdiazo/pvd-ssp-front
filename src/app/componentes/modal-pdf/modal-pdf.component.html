@@ -1,0 +1,263 @@
+<div class="modal-header">
+</div>
+<div class="modal-body p-0">
+  <button kendo-button (click)="imprimir(pdf)" class="btn btn-danger mr-1"><i class="fa fa-download"></i>
+    PDF</button>
+  <button (click)="ExportToWord()" class="btn btn-primary"><i class="fa fa-download"></i> WORD</button>
+
+  <button class="btn btn-plomo pull-right" id="btnCancelar2" type="button" (click)="closeModal()"><i
+      class="fa fa-arrow-left"></i>
+    Cancelar</button>
+
+  <div id="contentToConvert" class="KendoPDF">
+    <kendo-pdf-export #pdf paperSize="A4" margin="1cm" [scale]="0.6">
+      <div>
+
+        <table width="100%">
+          <tr>
+            <td style="text-align: center;">
+              <div class="text-center mb-2"><img id="img-0" src="{{rutaLogo}}" style="width:40%;height: 10%;"></div>
+            </td>
+          </tr>
+        </table>
+        <h1 style="text-align:center">AYUDA MEMORIA</h1>
+        <div class="col-12 estiloExportacion" style="text-align:center">({{actual}})</div>
+        <br>
+        <div style="height: 350px; display: none">
+          <div id="map" style="height: 100%;width: 100%;"></div>
+        </div>
+        <br>
+        <div>
+          <table class="table table-bordered" border="1">
+            <tr>
+              <td><label class="control-label">C&Oacute;DIGO SNIP</label></td>
+              <td>{{entidadAyuda.codigo_snip == null ? "SIN INFORMACIÓN" : entidadAyuda.codigo_snip}}</td>
+            </tr>
+            <tr>
+              <td><label class="control-label">C&Oacute;DIGO &Uacute;NICO</label></td>
+              <td>{{entidadAyuda.codigo_unificado == null ? "SIN INFORMACIÓN" :
+                entidadAyuda.codigo_unificado}}</td>
+            </tr>
+            <tr>
+              <td><label class="control-label">NOMBRE PROYECTO</label></td>
+              <td>{{entidadAyuda.nombre_proyecto == null ? "SIN INFORMACIÓN" :
+                entidadAyuda.nombre_proyecto }}</td>
+            </tr>
+            <tr *ngIf="entidadAyuda.nombre_proyecto != entidadAyuda.nombre_tramo; else templateTramo">
+              <td><label class="control-label">TRAMO</label></td>
+              <td>{{entidadAyuda.nombre_tramo == null ? "SIN INFORMACIÓN" : entidadAyuda.nombre_tramo}}
+              </td>
+            </tr>
+            <ng-template #templateTramo></ng-template>
+            <tr>
+              <td><label class="control-label">MONTO DE INVERSIÓN TOTAL</label></td>
+              <td>{{entidadAyuda.monto_inversion == null ? "SIN INFORMACIÓN" :
+                entidadAyuda.monto_inversion | formatoMoneda }} (Fuente - SOSEM AL
+                {{entidadAyuda.fecha_fuente_monto_inversion == null ? "SIN INFORMACIÓN" :
+                entidadAyuda.fecha_fuente_monto_inversion}})</td>
+            </tr>
+            <tr>
+              <td><label class="control-label">BENEFICIARIOS</label></td>
+              <td>{{entidadAyuda.beneficiarios == null ? "SIN INFORMACIÓN" : entidadAyuda.beneficiarios}}
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div>
+          <br>
+          <div class="col-12" style="text-align:center">
+            <h6 style="font-weight: 400 !important">GESTIÓN DE TRANSFERENCIA</h6>
+          </div>
+          <br>
+          <table class="table table-bordered" border="1">
+            <thead>
+              <tr>
+                <th>A&Ntilde;O</th>
+                <th>DISPOSITIVO DE TRANSFERENCIAS</th>
+                <th>MONTO TRANSFERIDO</th>
+              </tr>
+            </thead>
+            <tbody *ngIf="entidadAyuda.gestion_transferencia != null; else templateTrans">
+              <tr *ngFor="let campo of entidadAyuda.gestion_transferencia">
+                <td>{{campo.anio_transferencia}}</td>
+                <td>{{campo.dispositivo_transferencia}}</td>
+                <td style="text-align: right">{{campo.monto_transferido | currency:" S/" }}</td>
+              </tr>
+              <tr>
+                <td colspan="2" style="text-align: center" class="f-w-6">TOTAL</td>
+                <td class="f-w-6" style="text-align: right">{{monto_total | currency:" S/" }}</td>
+              </tr>
+            </tbody>
+            <ng-template #templateTrans>
+              <tr>
+                <td colspan="3" style="text-align: center">SIN INFORMACIÓN</td>
+              </tr>
+            </ng-template>
+          </table><br>
+        </div>
+
+        <div>
+          <table class="table table-bordered" border="1">
+            <tr>
+              <td><label class="control-label">UBICACIÓN</label></td>
+              <td>
+                <ul>
+                  <ng-container *ngIf="entidadAyuda.ubicacion_ruta != null; else templateUbicacionRuta">
+                    <ng-container *ngFor="let campo of entidadAyuda.ubicacion_ruta">
+                      <li *ngIf="campo.tipo_ruta != 'PROVISIONAL'; else templateUbicacionCodProvisional">
+                        Ruta: {{campo.ubicacion_ruta}}</li>
+                      <ng-template #templateUbicacionCodProvisional>
+                        <li>Código Provisional: {{campo.ubicacion_ruta}}</li>
+                      </ng-template>
+                    </ng-container>
+                  </ng-container>
+                  <ng-template #templateUbicacionRuta>
+                    <li>Ruta: SIN INFORMACIÓN.</li>
+                  </ng-template>
+                  <ng-container *ngFor="let ubigeo of entidadAyuda.localizacion">
+                    <li>{{ "Región: " + ubigeo.departamento + " - Provincia: " + ubigeo.provincia + " - Distrito: " +
+                      ubigeo.distrito}}</li>
+                  </ng-container>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td><label class="control-label">UNIDAD EJECUTORA</label></td>
+              <td>{{entidadAyuda.unidad_ejecutora == null ? "SIN INFORMACIÓN" :
+                entidadAyuda.unidad_ejecutora}}</td>
+            </tr>
+            <tr>
+              <td><label class="control-label">CARACTERÍSTICAS TÉCNICAS DEL PROYECTO</label></td>
+              <td>
+                <ul>
+                  <div *ngFor="let campo of entidadAyuda.longitud_tramo">
+                    <li>Longitud del Tramo: {{campo.longitud_tramo}} {{campo.unidad_medida_tramo}}
+                    </li>
+                  </div>
+                  <li>Modalidad de Ejecucción Presupuestal: {{entidadAyuda.modalidad_ejecucion ==
+                    null ? "SIN INFORMACIÓN." : entidadAyuda.modalidad_ejecucion}}</li>
+                  <li *ngFor="let itemMeta of entidadAyuda.metas">
+                    {{
+                    itemMeta.nombre_meta_componente+' '+itemMeta.nombre_tipo_intervencion
+                    }}
+                    {{
+                    itemMeta.nombre_tipo_intervencion_secundario!=null?'
+                    '+itemMeta.nombre_tipo_intervencion_secundario:''
+                    }}
+                    {{
+                    itemMeta.descripcion!=""?' '+itemMeta.descripcion:''
+                    }}
+                    {{
+                    itemMeta.cantidad!=null?' '+(itemMeta.cantidad | currency:" ":true:'1.0'):''
+                    }}
+                    {{
+                    itemMeta.nombre_unidad_medida!=null?' '+itemMeta.nombre_unidad_medida:''
+                    }}
+                  </li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td><label class="control-label">PROCEDIMIENTO DE SELECCIÓN</label></td>
+              <td>
+                <div *ngIf="entidadAyuda.id_modalidad_ejecucion == 2; else templateContrata">
+                  Contratista/Consorcio Obra: {{entidadAyuda.unidad_ejecutora}}
+                </div>
+                <ng-template #templateContrata>
+                  <div *ngIf="entidadAyuda.estado.toLowerCase() == 'contratado';else templateOtrosEstados">
+                    Contratista/Consorcio Obra: {{entidadAyuda.empresa == null ? "SIN INFORMACIÓN."
+                    : entidadAyuda.empresa }}<br>
+                    Fecha Contrato: {{entidadAyuda.fecha_estado == null ||
+                    entidadAyuda.fecha_estado == "" ? "SIN INFORMACIÓN." :
+                    entidadAyuda.fecha_estado}}<br>
+                    <ng-container *ngIf="entidadAyuda.consorcio.length>0"> Consorcio:
+                      <ul>
+                        <div *ngFor="let campo of entidadAyuda.consorcio">
+                          <li>
+                            {{campo.nombre_consorcio}}
+                          </li>
+                        </div>
+                      </ul><br>
+                    </ng-container>
+                  </div>
+                  <ng-template #templateOtrosEstados>
+                    Fecha: {{entidadAyuda.fecha_estado == null || entidadAyuda.fecha_estado == "" ?
+                    "SIN INFORMACIÓN." : entidadAyuda.fecha_estado}}
+                  </ng-template>
+                </ng-template>
+              </td>
+            </tr>
+            <tr>
+              <td><label class="control-label">DATOS DE SEGUIMIENTO A LA EJECUCIÓN OBRA</label></td>
+              <td>
+                Fecha Inicio Plazo Contractual: {{ entidadAyuda.fecha_inicio_contractual == null ? "SIN
+                INFORMACIÓN." : funciones.formatDate(entidadAyuda.fecha_inicio_contractual)}}<br>
+                Plazo de Ejecución Contractual: {{entidadAyuda.plazo_ejecucion == null ? "SIN
+                INFORMACIÓN" : entidadAyuda.plazo_ejecucion}}<br>
+                Fecha Termino Plazo Contractual: {{ entidadAyuda.fecha_termino_contractual == null ?
+                "SIN INFORMACIÓN" : funciones.formatDate(entidadAyuda.fecha_termino_contractual)}}<br>
+                Fecha de Termino de Obra más ampliaciones de plazo: {{
+                entidadAyuda.fecha_term_cont_ampl == null ? "SIN INFORMACIÓN." :
+                funciones.formatDate(entidadAyuda.fecha_term_cont_ampl)}}<br>
+
+                Supervisor:
+                {{
+                entidadAyuda.jefe_supervisor_nombre == null ? "SIN INFORMACIÓN." :
+                entidadAyuda.jefe_supervisor_nombre +' '+ entidadAyuda.jefe_supervisor_apellidos }}<br>
+                Residente de obra: {{
+                entidadAyuda.residente_obra_nombre == null ? "SIN INFORMACIÓN." :
+                entidadAyuda.residente_obra_nombre +' '+entidadAyuda.residente_obra_apellidos}}<br>
+                Inspector: {{
+                entidadAyuda.inspector_nombres == null ? "SIN INFORMACIÓN." :
+                entidadAyuda.inspector_nombres +' '+entidadAyuda.inspector_apellidos}}<br>
+
+                Monto de adelanto directo: {{
+                entidadAyuda.monto_adelanto_directo == null ? "SIN INFORMACIÓN." :
+                (entidadAyuda.monto_adelanto_directo | formatoMoneda)
+                }}<br>
+
+                Avance Programado Acumulado: {{entidadAyuda.avance_programado_acumulado == null ? "SIN
+                INFORMACIÓN." : entidadAyuda.avance_programado_acumulado + "% "}}<br>
+                Avance Físico Acumulado: {{entidadAyuda.avance_fisico_acumulado == null ? "SIN
+                INFORMACIÓN." : entidadAyuda.avance_fisico_acumulado + "%"}}
+              </td>
+            </tr>
+            <tr>
+              <td><label class="control-label">SITUACI&Oacute;N ACTUAL</label></td>
+              <td>ESTADO DE LA OBRA: {{entidadAyuda.estado_tramo == null || entidadAyuda.estado_tramo ==
+                "" ? "SIN INFORMACIÓN" : entidadAyuda.estado_tramo}}.<br>
+                DETALLE DEL ESTADO SITUACIONAL:
+                <div *ngIf="entidadAyuda.situacion_actual != null;else templateSituacionDetalle">
+                  <div *ngFor="let campo of entidadAyuda.situacion_actual">
+                    <div class="ml-2"><strong>{{campo.titulo}}:</strong><br>
+                      &nbsp;&nbsp;{{campo.descripcion}}
+                    </div>
+
+
+                  </div>
+                </div>
+                <ng-template #templateSituacionDetalle>
+                  SIN INFORMACIÓN
+                </ng-template>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <br>
+      <accordion *ngIf="entidadAyuda.fotos">
+        <accordion-group [isOpen]="true" heading="Fotos">
+          <div *ngFor="let foto of entidadAyuda.fotos; let i = index">
+            <h2>Foto {{ i + 1 }} </h2>
+            <img style="max-width: 100%;" src={{foto.ruta_real}} width="574" height="490" />
+            <br>
+          </div>
+        </accordion-group>
+      </accordion>
+    </kendo-pdf-export>
+  </div>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-plomo" id="btnCancelar" type="button" (click)="closeModal()"><i class="fa fa-arrow-left"></i>
+    Cancelar</button>
+</div>

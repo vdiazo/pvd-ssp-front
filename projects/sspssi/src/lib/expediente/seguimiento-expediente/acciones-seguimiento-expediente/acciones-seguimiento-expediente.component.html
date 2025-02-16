@@ -1,0 +1,93 @@
+<div class="row form-group">
+  <div class="col-sm-6" [hidden]=!bEstado>
+    <button class="btn btn-plomo" (click)="nuevoRegistroSeguimientoExp()">
+      <i class="fa fa-plus"></i> Nuevo
+    </button>
+  </div>
+  <div class="col-sm-6 text-right">
+    <label class="control-label">Última Actualización: </label>&nbsp;
+    <span>{{UltimaActualizacion}}</span>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-sm-12 container-scroll">
+    <table class="table table-hover table-bordered table-responsive table-full-detalle">
+      <thead class="table-active">
+        <tr>
+          <th>Nro.</th>
+          <th>Fecha</th>
+          <th>Descripcion y/o Comentarios</th>
+          <th>Tipo de Documento</th>
+          <th>Documento</th>
+          <th [hidden]=!bEstado></th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let accion of listaAccionesSeguimientoExpediente; let i = index">
+        <tr>
+          <td class="xs-hidden">{{i+1}}</td>
+          <td class="xs-hidden">{{accion.fecha | formatoFecha}}</td>
+          <td class="text-left xs-hidden">{{accion.descripcion}}</td>
+          <td class="text-center xs-hidden">{{accion.tipo_documento_detalle_expediente}}</td>
+          <td>
+            <div class="xs-hidden">
+              <div *ngIf="accion.ruta_archivo != '' && accion.nombre_archivo != ''; else templateicono">
+                <a href="{{ accion.ruta_archivo}}" target="_blank" class="btn-icon">
+                  <i class="fa fa-15x">
+                    <img src="assets/img/icons/file.svg" alt="archivo">
+                  </i>
+                </a>
+              </div>
+              <ng-template #templateicono>
+              </ng-template>
+            </div>
+            <div class="xs-display">
+              <div class="xs-th"><i class="fa fa-calendar"></i> {{ accion.fecha | formatoFecha }}</div>
+              <div class="xs-th">Descripción</div>
+              <div>{{ accion.descripcion }}</div>
+              <div class="xs-th">Tipo documento</div>
+              <div>{{ accion.tipo_documento_detalle_expediente }}</div>
+              <br>
+            </div>
+          </td>
+          <td class="xs-footer-lista" [hidden]=!bEstado>
+            <div class="xs-hidden">
+              <a href="javascript:void(0)" (click)="editarFilaAccion(accion)" class="btn btn-sm btn-icon">
+                <i class="fa fa-15x">
+                  <img src="assets/img/icons/pencil.svg" alt="editar">
+                </i>
+              </a>
+              <a class="btn btn-sm btn-icon" href="javascript:void(0);"
+                (click)="eliminarFilaAccion(accion.id_accion_seguimiento_ejecucion_expediente)">
+                <i class="fa fa-15x">
+                  <img src="assets/img/icons/trash.svg" alt="eliminar">
+                </i>
+              </a>
+            </div>
+            <div class="xs-display text-right">
+              <span *ngIf="accion.ruta_archivo != '' && accion.nombre_archivo != ''" class="mr-1">
+                <a href="{{ accion.ruta_archivo}}" target="_blank" class="btn-icon">
+                  <i class="fa fa-file"></i>
+                </a>
+              </span>
+              <a href="javascript:void(0)" (click)="editarFilaAccion(accion)" class="mr-1 btn-icon">
+                <i class="fa fa-pencil"></i>
+              </a>
+              <a class="btn-icon" href="javascript:void(0);"
+                (click)="eliminarFilaAccion(accion.id_accion_seguimiento_ejecucion_expediente)">
+                <i class="fa fa-trash"></i>
+              </a>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-12">
+    <nav class="pt-4 pl-3 pull-right">
+      <pagination [totalItems]="totalRegistros" [boundaryLinks]="true" previousText="&lsaquo;" nextText="&rsaquo;"
+        [rotate]="false" firstText="&laquo;" lastText="&raquo;" [maxSize]="5" [itemsPerPage]="5"
+        (pageChanged)="cambiarPagina($event)">
+      </pagination>
+    </nav>
+  </div>
+</div>

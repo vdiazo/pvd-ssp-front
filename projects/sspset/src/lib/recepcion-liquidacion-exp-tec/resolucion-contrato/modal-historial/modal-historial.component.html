@@ -1,0 +1,181 @@
+<div class="container-fluid pt-4">
+  <div>
+    <tabset>
+      <tab heading="SEGUIMIENTO Y MONITOREO A ELABORACIÓN E.T" id="tab1">
+        <div class="tab-content" id="nav-tabContent">
+          <div class="tab-pane fade show active jumbotron container-fluid pt-4" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+            <accordion>
+              <div *ngIf="id_seguimientoMonitoreoObra"></div>
+              <div class="row">
+                <div class="col-12">
+                  <accordion-group [isOpen]="isOpen" [panelClass]="separator" *hasClaim="'monitoreo_tabSeg_infObra_listInfObra'">
+                    <button class="btn btn-link btn-block clearfix" accordion-heading>
+                      <div class="pull-left float-left">1. Información del expediente técnico</div>
+                      <span class="badge float-right pull-right">
+                        <i class="fa fa-circle-o"></i>
+                      </span>
+                    </button>
+                    <set-informacion-obra [idSeguimientoMonitoreoObra]="idSeguimientoMonitoreo" [bEstado]=false [idFase]="idFase" [idTramo]="idTramo" [bEstadoHistorial]=true>
+                    </set-informacion-obra>
+                  </accordion-group>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <accordion-group [panelClass]="separator" *hasClaim="'monitoreo_tabSeg_divResponsable'">
+                    <button class="btn btn-link btn-block clearfix" accordion-heading>
+                      <div class="pull-left float-left">2. Responsables</div>
+                      <span class="badge float-right pull-right">
+                        <i class="fa fa-circle-o"></i>
+                      </span>
+                    </button>
+                    <set-asignacion-responsable-exp-tec  [id_seguimientoMonitoreoObra]="idSeguimientoMonitoreo" [bEstado]=false></set-asignacion-responsable-exp-tec>
+                  </accordion-group>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <accordion-group [panelClass]="separator" *hasClaim="'monitoreo_tabSeg_regCronograma_listCronograma'">
+                    <button class="btn btn-link btn-block clearfix" accordion-heading>
+                      <div class="pull-left float-left">3. Registro de Programación - UEI</div>
+                      <span class="badge float-right pull-right">
+                        <i class="fa fa-circle-o"></i>
+                      </span>
+                    </button>
+                    <set-entregables-exp-tec [idSeguimientoMonitoreoObra]="idSeguimientoMonitoreo" [bEstado]=false [guid]="guid" [fecha_inicio_contractual]="fecha_inicio_contractual">
+                    </set-entregables-exp-tec>
+                  </accordion-group>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <accordion-group [panelClass]="separator" *hasClaim="'monitoreo_tabSeg_obraValorizaciones_listObraValorizaciones'">
+                    <button class="btn btn-link btn-block clearfix" accordion-heading>
+                      <div class="pull-left float-left">4. Avance de elaboración del expediente técnico, según informes - UEI</div>
+                      <span class="badge float-right pull-right">
+                        <i class="fa fa-circle-o"></i>
+                      </span>
+                    </button>
+                    <set-avance-elaboracion-expediente [idSeguimientoMonitoreoObra]="idSeguimientoMonitoreo" [bEstado]=false></set-avance-elaboracion-expediente>
+                  </accordion-group>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <accordion-group>
+                    <button class="btn btn-link btn-block clearfix" accordion-heading>
+                      <div class="pull-left float-left">5. Acciones de Seguimiento - UEI</div>
+                      <span class="badge float-right pull-right">
+                        <i class="fa fa-circle-o"></i>
+                      </span>
+                    </button>
+                    <set-acciones-seguimiento-monitoreo-exp-tec [idSeguimientoMonitoreoObra]="idSeguimientoMonitoreo" [bEstado]=false [idFase]="idFase"
+                      tipoPerfil="UEI"></set-acciones-seguimiento-monitoreo-exp-tec>
+                  </accordion-group>
+                </div>
+              </div>              
+              <div class="row">
+                <div class="col-12">
+                  <accordion-group>
+                    <button class="btn btn-link btn-block clearfix" accordion-heading>
+                      <div class="pull-left float-left">6. Acciones de Seguimiento y Monitoreo - PVD</div>
+                      <span class="badge float-right pull-right">
+                        <i class="fa fa-circle-o"></i>
+                      </span>
+                    </button>
+                    <set-acciones-seguimiento-monitoreo-exp-tec  [idSeguimientoMonitoreoObra]="idSeguimientoMonitoreo" [bEstado]=false [idFase]="idFase"
+                      tipoPerfil="PVD"></set-acciones-seguimiento-monitoreo-exp-tec>
+                  </accordion-group>
+                </div>
+              </div>              
+            </accordion>
+          </div>
+        </div>
+      </tab>
+      <!-- <tab heading="ADICIONAL Y DEDUCTIVO">
+        <div class="tab-content" id="nav-tabContent">
+          <div class="tab-pane fade show active jumbotron container-fluid pt-4" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+            <accordion>
+              <div class="row" *hasClaim="'monitoreo_tabInfComplementaria_lisPptoAdicional'">
+                <div class="col-12">
+                  <accordion-group>
+                    <button class="btn btn-link btn-block clearfix" accordion-heading>
+                      <div class="pull-left float-left">1. Información de Presupuesto Adicional</div>
+                      <span class="badge float-right pull-right">
+                        <i class="fa fa-circle-o"></i>
+                      </span>
+                    </button>
+                    <set-presupuesto-adicional [idSeguimientoMonitoreoObra]="idSeguimientoMonitoreo" [bEstado]=false></set-presupuesto-adicional>
+                  </accordion-group>
+                </div>
+              </div>
+              <div class="row" *hasClaim="'monitoreo_tabInfComplementaria_lisDeductivoReducciones'">
+                <div class="col-12">
+                  <accordion-group>
+                    <button class="btn btn-link btn-block clearfix" accordion-heading>
+                      <div class="pull-left float-left">2. Información de Deductivos y Reducciones</div>
+                      <span class="badge float-right pull-right">
+                        <i class="fa fa-circle-o"></i>
+                      </span>
+                    </button>
+                    <set-deductivos-reducciones [idSeguimientoMonitoreoObra]="idSeguimientoMonitoreo" [bEstado]=false></set-deductivos-reducciones>
+                  </accordion-group>
+                </div>
+              </div>
+            </accordion>
+          </div>
+        </div>
+      </tab> -->
+      <tab heading="APROBACIÓN Y LIQUIDACIÓN">
+        <div class="tab-content" id="nav-tabContent">
+          <div class="tab-pane fade show active jumbotron container-fluid pt-4" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+            <accordion>
+              <div class="row" *hasClaim="'monitoreo_tabRYL_RecObra_listRecepcionObra'">
+                <div class="col-12">
+                  <accordion-group>
+                    <button class="btn btn-link btn-block clearfix" accordion-heading>
+                      <div class="pull-left float-left">1. Aprobación y Liquidación de la elaboración expediente técnico</div>
+                      <span class="badge float-right pull-right">
+                        <i class="fa fa-circle-o"></i>
+                      </span>
+                    </button>
+                    <set-seguimiento-liquidacion-exp-tec [idSeguimientoMonitoreoObra]="idSeguimientoMonitoreo" [bEstado]=false></set-seguimiento-liquidacion-exp-tec>
+                  </accordion-group>
+                </div>
+              </div>
+              <div class="row" *hasClaim="'monitoreo_tabRYL_LiqSeg_listSegLiquidacion'">
+                <div class="col-12">
+                  <accordion-group>
+                    <button class="btn btn-link btn-block clearfix" accordion-heading>
+                      <div class="pull-left float-left">2. Responsables de la elaboración de expediente técnico</div>
+                      <span class="badge float-right pull-right">
+                        <i class="fa fa-circle-o"></i>
+                      </span>
+                    </button>
+                    <set-responsables-expediente-tecnico  [idSeguimientoMonitoreoObra]="idSeguimientoMonitoreo" [bEstado]=false></set-responsables-expediente-tecnico>
+                  </accordion-group>
+                </div>
+              </div>
+              <div class="row" *hasClaim="'monitoreo_tabRYL_LiqSeg_listSegLiquidacion'">
+                <div class="col-12">
+                  <accordion-group>
+                    <button class="btn btn-link btn-block clearfix" accordion-heading>
+                      <div class="pull-left float-left">2. Componentes del expediente técnico</div>
+                      <span class="badge float-right pull-right">
+                        <i class="fa fa-circle-o"></i>
+                      </span>
+                    </button>
+                    <set-form-expediente  [idSeguimientoMonitoreoObra]="idSeguimientoMonitoreo" [bEstado]=false></set-form-expediente>
+                  </accordion-group>
+                </div>
+              </div>
+            </accordion>
+          </div>
+        </div>
+      </tab>
+    </tabset>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-plomo" id="btnCancelar" type="button" (click)="closeModal()">Cancelar</button>
+  </div>
+</div>

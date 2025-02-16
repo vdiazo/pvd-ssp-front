@@ -1,0 +1,84 @@
+<div class="modal-header">
+  <h4 class="modal-title">Vinculación de Procesos</h4>
+</div>
+<div class="modal-body">
+  <div class="group-box">
+    <form [formGroup]="formVincularProceso" (ngSubmit)="buscarProcesoVincular()">
+      <div class="row form-group">
+        <label class="col-lg-2 col-sm-2 control-label" for="nombreEntidad">GR / GL:</label>
+        <div class="col-lg-8 col-sm-10">
+          <ng-select [items]="unidadesEjecutoras" placeholder="Seleccione la Entidad" bindLabel="entidad"
+            bindValue="entidad" formControlName="nombreEntidad">
+          </ng-select>
+        </div>
+      </div>
+      <div class="row form-group">
+        <label class="col-lg-2 col-sm-2 control-label" for="buscarConvocatoria">Descripcion de la convocatoria:</label>
+        <div class="col-lg-8 col-sm-8">
+          <div class="inner-addon right-addon">
+            <label *ngIf="nombreConvocatoria" class="btn mb-0 rounded-left" for="nombreConvocatoria"
+              (click)="nombreConvocatoria=''"><i class="fa fa-times" aria-hidden="true"></i></label>
+            <input class="form-control" style="text-transform: uppercase;" type='text' name="txtNombreConvocatoria"
+              (focus)="limpiarAutocompleteDescripcionItem()" matInput [formControl]="buscarConvocatoria"
+              [(ngModel)]="nombreConvocatoria" [matAutocomplete]="auto" placeholder="Nombre de la Convocatoria"
+              formControlName="nombreConvocatoria" />
+          </div>
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)='mostrarConvocatoriaSeleccionada($event)'>
+            <mat-option *ngFor="let itemConvocatoria of lstConvocatorias" [value]="itemConvocatoria.descripcion_item">
+              {{ itemConvocatoria.descripcion_item }}
+            </mat-option>
+          </mat-autocomplete>
+        </div>
+        <div class="col-lg-2 col-sm-2">
+          <button type="submit" id="btnBuscarProcesoProceso" class="btn btn-success"><i class="fa fa-search"></i>
+            &nbsp;Buscar</button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="group-box">
+    <div class="row">
+      <table class="table table-hover table-responsive">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>DESCRIPCIÓN</th>
+            <th>FECHA PUBLICACION</th>
+            <th>ESTADO PUBLICACION</th>
+            <th>ASOCIACIÓN</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of ListaGeneral; index as i">
+            <td>{{item.identificador}}</td>
+            <td>{{item.descripcion_item}}</td>
+            <td>{{item.fecha_publicacion}}</td>
+            <td style="text-transform: uppercase;">{{item.estado_item}}</td>
+            <td class="td-checkbox td-c">
+              <label class="checkbox">
+                <input type="checkbox" (click)="registrarVincular(item)">
+                <span class="check"></span>
+              </label>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <nav class="pl-3 pull-right">
+          <div class="text-right">
+            <span class="f-s-1-5rem">{{totalRegistros | number}}</span> Expresiones de Interés</div>
+          <pagination [totalItems]="totalRegistros" [boundaryLinks]="true" previousText="&lsaquo;" nextText="&rsaquo;"
+            [rotate]="false" firstText="&laquo;" lastText="&raquo;" [maxSize]="5" [itemsPerPage]="numPaginasMostrar"
+            (pageChanged)="cambiarPagina($event)">
+          </pagination>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-plomo" id="btnCancelar" type="button" (click)="closeModal()"><i class="fa fa-arrow-left"></i>
+      &nbsp;Cancelar</button>
+  </div>
+</div>

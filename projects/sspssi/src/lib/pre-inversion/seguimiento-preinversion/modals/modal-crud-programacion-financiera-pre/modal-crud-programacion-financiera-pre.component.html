@@ -1,0 +1,87 @@
+<div class="modal-header">
+  <h4 class="modal-title">Registro de Programación Financiera</h4>
+  <p class="pb-2 pl-4 pr-4" *ngIf="!cambiarEditar">Registro de una nueva programación financiera - Elaboración de
+    Estudio de Preinversión</p>
+  <p class="pb-2 pl-4 pr-4" *ngIf="cambiarEditar">Modificar programación financiera - Elaboración de
+    Estudio de Preinversión</p>
+</div>
+<div class="modal-body">
+  <div class="group-box">
+    <form [formGroup]="formProgramacionFinancieraPre" (ngSubmit)="registrarCronogramaFinanciero()">
+      <!-- <div class="row form-group">
+        <label class="col-sm-6" for="anio_programacion">Año</label>
+        <div class="col-sm-6">
+          <ng-select *ngIf="!cambiarEditar" [items]="lstAnioProgramacion" placeholder="Seleccione" bindLabel="anio"
+            bindValue="nro_anio" (change)="seleccionarAnioCronograma($event)"
+            notFoundText="no se ha encontrado ningún item" formControlName="anio_programacion" id="anio_programacion"
+            name="anio_programacion">
+          </ng-select>
+        </div>
+      </div> -->
+      <table class="table">
+        <thead>
+          <th>N°</th>
+          <th>MES</th>
+          <th>MONTO PROGRAMADA</th>
+          <th>% DE AVANCE PROGRAMADO</th>
+        </thead>
+        <tbody formArrayName="detalleProgramacion" *ngFor="let item of getCronograma.controls; let i = index">
+          <tr [formGroupName]="i">
+            <td class="text-center xs-hidden">{{ i + 1 }}</td>
+            <td class="text-center">
+              {{ this.funciones.obtenerPeriodo(item.value.periodo) }}
+            </td>
+            <td>
+              <input type="text" (keyup)="calcularPorcentajeAvanceProgramado()" id="{{ 'monto' + i }}"
+                [textMask]="{mask: funciones.currencyMask}" class="form-control"
+                formControlName="monto_programacion_mensual" />
+            </td>
+            <td>
+              <input readonly="readonly" type="number" #avance min="0" max="100" step="0.01"
+                (keyup)="avance.value = funciones.numberRange(avance.value,0,100)"
+                (keypress)="funciones.IsFloat($event)" [textMask]="{mask: funciones.percentageMask}"
+                id="{{ 'avance' + i }}" class="form-control" formControlName="porcentaje_avance"
+                placeholder="minimo 0.0 - máximo 100" (blur)="validarSumaPorcentajes()" />
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="2">
+              <b>MONTO TOTAL PROGRAMADO: </b>
+            </td>
+            <td>
+              <div class="xs-display xs-th">Monto total programado :</div>
+              <b>{{ sumaValorizacion | formatoMoneda }}</b>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <b>SALDO PARA PROGRAMACION: </b>
+            </td>
+            <td>
+              <div class="xs-display xs-th">Saldo para programación :</div>
+              <b>{{ (montoContratoProgramado - sumaValorizacion) | formatoMoneda }}</b>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+      <span class="comentario">(*) Campos Obligatorios</span>
+      <div class="row form-group">
+        <div class="col-12 clearfix">
+          <ng-container>
+            <div class="float-right">
+              <ng-container>
+                <button class="btn btn-danger" type="submit" [disabled]="formProgramacionFinancieraPre.invalid">
+                  <i [ngClass]=" (cambiarEditar)? 'fa fa-edit' : 'fa fa-save'"></i>
+                  Guardar</button>
+              </ng-container>
+              <button class="btn btn-plomo ml-1" type="button" (click)="closeModal()"><i class="fa fa-arrow-left"></i>
+                Cerrar</button>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,37 @@
+<div class="tab-content" id="nav-tabContent">
+  <div class="tab-pane fade show active jumbotron container-fluid pt-4" id="nav-home" role="tabpanel"
+    aria-labelledby="nav-home-tab">
+    <accordion>
+      <div class="row">
+        <div class="col-12">
+          <accordion-group [isOpen]="isOpen" [panelClass]="separator"
+            *hasClaim="'monitoreo_tabSeg_infObra_listInfObra_eje_dir'">
+            <button class="btn btn-link btn-block clearfix" accordion-heading>
+              <div class="pull-left float-left">1. APROBACIÓN Y LIQUIDACIÓN DE LA ELABORACIÓN DEL ESTUDIO DE
+                PREINVERSIÓN</div>
+              <span class="badge float-right pull-right">
+                <i class="fa fa-circle-o"></i>
+              </span>
+            </button>
+            <ssi-aprobacion-liquidacion-elaboracion-pre [idSeguimientoMonitoreoPreinversion]="idSeguimientoMonitoreo"
+              [idFase]="idFase"></ssi-aprobacion-liquidacion-elaboracion-pre>
+          </accordion-group>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <accordion-group [panelClass]="separator" *hasClaim="'monitoreo_tabSeg_divResponsable_eje_dir'">
+            <button class="btn btn-link btn-block clearfix" accordion-heading>
+              <div class="pull-left float-left">2. ESPECIALISTAS DE LA ELABORACIÓN DEL ESTUDIO DE PREINVERSIÓN</div>
+              <span class="badge float-right pull-right">
+                <i class="fa fa-circle-o"></i>
+              </span>
+            </button>
+            <ssi-responsables-elaboracion-estudio-pre [idSeguimientoMonitoreoPreinversion]="idSeguimientoMonitoreo"
+              [idFase]="idFase"></ssi-responsables-elaboracion-estudio-pre>
+          </accordion-group>
+        </div>
+      </div>
+    </accordion>
+  </div>
+</div>

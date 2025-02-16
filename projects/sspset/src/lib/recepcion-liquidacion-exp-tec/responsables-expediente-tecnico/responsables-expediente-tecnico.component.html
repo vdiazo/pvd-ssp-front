@@ -1,0 +1,116 @@
+<div class="row form-group" *hasClaim="'monitoreo_tabRYL_RecResponsableExp_regResponsableExp_exp_tec'"><!--*hasClaim="'monitoreo_tabRYL_RecObra_regRecepcion_exp_tec'"-->
+  <div class="col-sm-6" [hidden]=!bEstado>
+    <button class="btn btn-plomo" type="button" id="btnNuevoResponsableExpediente" (click)="opnModNuevoResponsableExpediente()">
+      <i class="fa fa-plus"></i> Nuevo</button>
+  </div>
+</div>
+<table class="table table-hover table-bordered table-responsive table-full-detalle">
+  <thead class="table-danger">
+    <tr>
+      <th>DNI</th>
+      <th>Apellidos</th>
+      <th>Nombres</th>
+      <th>Función</th>
+      <th>Colegiatura</th>
+      <th>Telefono / Correo</th>
+      <th>Foto</th>
+      <th [hidden]=!bEstado></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let recepcion of lstResponsables">
+      <td class="text-left">
+        <div class="xs-hidden">
+            {{recepcion.nro_dni}}
+        </div>
+        <div class="xs-display">
+            <div><span class="xs-th">DNI : </span> {{recepcion.nro_dni}}</div>
+            <div><span class="xs-th">Apellidos : </span> {{recepcion.apellido_paterno}} {{recepcion.apellido_materno}}</div>
+            <div><span class="xs-th">Nombres : </span> {{recepcion.nombres}}</div>
+            <div><span class="xs-th">Función : </span> {{recepcion.funcion_responsable}}</div>
+            <div><span class="xs-th">Colegiatura : </span> {{recepcion.tipo_colegiatura}} <br> {{recepcion.nro_colegiatura}}</div>
+            <div><span class="xs-th">Telefono / Correo : </span>
+              <div *ngIf="recepcion.telefonos!=null">
+                  <span *ngFor="let c of recepcion.telefonos;  index as i">
+                    {{ i + 1 }} - {{ c.telefono }} <br>
+                  </span>
+              </div>
+              <div *ngIf="recepcion.correos!=null">
+                <span *ngFor="let c of recepcion.correos;  index as i">
+                  {{ i + 1 }} - {{ c.email }} <br>
+                </span>
+              </div>
+            </div>
+            <div><span class="xs-th">Foto : </span><img id="imgFotoLista" height="150px" name="imgFotoLista" src="{{ recepcion.foto }}" /></div>
+        </div>
+      </td>
+      <td class="xs-hidden">{{recepcion.apellido_paterno}} {{recepcion.apellido_materno}}</td>
+      <td class="xs-hidden text-left">{{recepcion.nombres }}</td>
+      <td class="xs-hidden text-left">{{recepcion.funcion_responsable}}</td>
+      <td class="xs-hidden text-left">
+          <div>
+              {{recepcion.tipo_colegiatura}}
+          </div>
+          <div>
+              {{recepcion.nro_colegiatura}}
+          </div>
+      </td>
+      <td class="xs-hidden align-middle">
+          <div *ngIf="recepcion.telefonos!=null">
+            <span *ngFor="let c of recepcion.telefonos;  index as i">
+              {{ i + 1 }} - {{ c.telefono }} <br>
+            </span>
+          </div>
+          <div *ngIf="recepcion.correos!=null">
+            <span *ngFor="let c of recepcion.correos;  index as i">
+              {{ i + 1 }} - {{ c.email }} <br>
+            </span>
+          </div>
+      </td>
+      <td class="xs-hidden text-center">
+          <img id="imgFotoLista" height="150px" name="imgFotoLista" src="{{ recepcion.foto }}" />
+      </td>
+
+
+
+      <td class="xs-footer-lista" [hidden]=!bEstado>
+        <div class="xs-hidden pre-wrap">
+          <!--<span *hasClaim="'monitoreo_tabRYL_RecObra_listRecepcionObra_modRecepcion_exp_tec'" class="btn btn-sm btn-opt btn-icon" (click)="editarResponsableExpediente(recepcion)">
+            <i class="fa fa-15x">
+              <img src="assets/img/icons/pencil.svg" alt="editar">
+            </i>
+          </span>-->
+          <span *hasClaim="'monitoreo_tabRYL_RecResponsable_listResponsableExp_eliResponsableExp_exp_tec'" class="btn btn-sm btn-opt btn-icon" (click)="anularResponsableExpediente(recepcion.id_responsable_seguimiento_expediente)">
+            <i class="fa fa-15x">
+              <img src="assets/img/icons/trash.svg" alt="eliminar">
+            </i>
+          </span>
+        </div>
+        <div class="xs-display text-right">
+          <span *hasClaim="'monitoreo_tabRYL_RecResponsable_listResponsableExp_verArchivo_exp_tec'" class="mr-1">
+            <a *ngIf="recepcion.nombre_archivo != ''" href="{{recepcion.nombre_archivo}}" target="_blank" class="btn-icon">
+              <i class="fa fa-file"></i>
+            </a>
+          </span>
+          <!--<a *hasClaim="'monitoreo_tabRYL_RecObra_listRecepcionObra_modRecepcion_exp_tec'" href="javascript:void(0)" (click)="editarResponsableExpediente(recepcion)"
+            class="btn-icon mr-1">
+            <i class="fa fa-pencil"></i>
+          </a>-->
+          <a *hasClaim="'monitoreo_tabRYL_RecResponsable_listResponsableExp_eliResponsableExp_exp_tec'" href="javascript:void(0)" (click)="anularResponsableExpediente(recepcion.id_responsable_seguimiento_expediente)"
+            class="btn-icon">
+            <i class="fa fa-trash"></i>
+          </a>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<div class="row">
+  <div class="col-12 xs-p-0">
+    <nav class="pt-2 pull-right">
+      <pagination [totalItems]="totalRegistrosResponsables" [itemsPerPage]="numPaginasMostrar" [boundaryLinks]="true" previousText="&lsaquo;"
+        nextText="&rsaquo;" [rotate]="false" firstText="&laquo;" lastText="&raquo;" [maxSize]="5" (pageChanged)="cambiarPagina($event)">
+      </pagination>
+    </nav>
+  </div>
+</div>

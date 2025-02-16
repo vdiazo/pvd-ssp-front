@@ -1,0 +1,8 @@
+input.form-control.ng-untouched.ng-pristine.ng-invalid {
+    border-color: lightskyblue
+}
+
+.custom-select.is-invalid:focus, .form-control.is-invalid:focus, .was-validated .custom-select:invalid:focus, .was-validated .form-control:invalid:focus {
+    border-color: lightskyblue;
+    box-shadow: 0 0 0 0.2rem rgba(53, 151, 220, 0.25);
+}

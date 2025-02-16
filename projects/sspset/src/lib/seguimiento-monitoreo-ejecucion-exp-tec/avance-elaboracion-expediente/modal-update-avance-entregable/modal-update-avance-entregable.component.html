@@ -1,0 +1,91 @@
+<div class="modal-header">
+    <h4 class="modal-title">Modificar Avance de Informe</h4>
+    <p class="pb-2 pl-4 pr-4">Modificar avance de informe</p>
+  </div>
+  
+  <div class="modal-body">
+    <div class="group-box">
+      <form (ngSubmit)="grabar()" [formGroup]="entregableAvanceForm">
+        <div class="row form-group">
+          <div class="col-sm-6">
+            <label class="control-label">Valorizacion del (*):</label>
+          </div>
+          <div class="col-sm-6">
+              <!--<select class="form-control" name="cboValorizacion" #cboValorizacion formControlName="id_seguimiento_actividad">
+                  <option value="{{item.id_seguimiento_actividad}}" *ngFor="let item of listaValorizacion">
+                    {{item.tipo_valorizacion}}
+                  </option>
+              </select>-->
+              <input type="text" class="form-control" value="{{AvanceEntregableEditar.tipo_seguimiento_actividad}}" readonly/>
+          </div>
+        </div>
+        <div class="row form-group">
+          <div class="col-sm-6">
+              <label class="control-label">Número de Entregable (*):</label>
+          </div>
+          <div class="col-sm-6">
+            <!--<select class="form-control" name="cboEntregable" #cboEntregable formControlName="id_entregable_detalle_expediente">
+              <option value="0">Seleccione</option>
+              <option value="{{item.id_entregable_detalle_expediente}}" *ngFor="let item of listaEntregable">
+                {{item.numero_entregable}}
+              </option>
+            </select>-->
+            <input type="text" class="form-control" value="{{AvanceEntregableEditar.nro_etregable}}" readonly/>
+          </div>
+        </div>
+        <div class="row form-group">
+          <div class="col-sm-6">
+            <label class="control-label" for="fecha_presentacion">Fecha de Presentación (*):</label>
+          </div>
+          <div class="col-sm-6">
+            <input type='text' class="form-control" name="fecha_presentacion" id="fecha_presentacion" placeholder="dd/mm/aaaa" bsDatepicker
+              [minDate]="fecha_inicio_contractual" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es', containerClass: 'theme-red' }"
+              readonly="readonly" formControlName="fecha_presentacion" [maxDate]="fechaDesignaconMax" />
+          </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-sm-6">
+              <label class="control-label" for="fecha_aprobación">Fecha de Conformidad (*):</label>
+            </div>
+            <div class="col-sm-6">
+              <input type='text' class="form-control" name="fecha_conformidad" id="fecha_conformidad" placeholder="dd/mm/aaaa" bsDatepicker
+                 [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es', containerClass: 'theme-red' }"
+                readonly="readonly" formControlName="fecha_conformidad" [maxDate]="fechaDesignaconMax" />
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-sm-6">
+              <label class="control-label" for="fecha_aprobación">Descripción del Contenido (*):</label>
+            </div>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" placeholder="Ingrese Descripción" formControlName="descripcion">
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-sm-6">
+              <label class="control-label" for="fecha_aprobación">Monto Pagado (*):</label>
+            </div>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" placeholder="Ingrese Monto" [textMask]="{mask: funciones.currencyMask}" formControlName="monto_pagado">
+            </div>
+        </div>
+        <div class="row form-group">
+          <div class="col-sm-6">
+            <label class="control-label">Subir Documento de conformidad del entregable (*):</label>
+          </div>
+          <div class="col-sm-6">
+            <set-input-file idComp="fileInsert" (onChange)="fileChangeEvent($event)" class="input-group" IdTipoArchivo="{{tipoArchivo}}" Value="{{AvanceEntregableEditar.nombre_archivo}}"></set-input-file>
+          </div>
+        </div>
+        <span class="comentario">(*)Campos Obligatorios</span>
+        <div class="modal-footer">
+          <button type="submit" id="btnGuardar" class="btn btn-danger" [hidden]=bMostrar [disabled]="!esValidoSumaMontosAvanceProgramado">Guardar</button>
+          <button class="btn btn-danger" type="button" [hidden]=!bMostrar>
+            <i class="fa fa-save"></i> ....Procesando</button>
+          <button class="btn btn-plomo" id="btnCancelar" type="button" (click)="closeModal()">Cerrar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+

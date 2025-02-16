@@ -1,0 +1,131 @@
+<div class="group-box">
+  <form (ngSubmit)="modificarSegMonitoreo(model)" #FaseForm="ngForm">
+    <div class="row form-group">
+      <div class="col-sm-3">
+        <label dlabels class="control-label" for="fecha_inicio_contractual">Fecha de inicio obra (*):</label>
+      </div>
+      <div class="col-sm-2">
+        <input dTextBox class="form-control" type='text' name="model.fecha_inicio_contractual" id="model.fecha_inicio_contractual"
+          placeholder="dd/mm/aaaa" bsDatepicker [(ngModel)]="model.fecha_inicio_contractual" #fecha_inicio_contractual="ngModel"
+          required [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es', containerClass: 'theme-red' }" readonly="readonly">
+        <div [hidden]="fecha_inicio_contractual.valid || fecha_inicio_contractual.pristine" class="alert alert-danger">
+          Fecha inicio obra es obligatorio
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <label dlabels class="control-label" for="plazo_ejecucion">Plazo de Ejecución(Días Calendario) (*):</label>
+      </div>
+      <div class="col-sm-3">
+        <input (keypress)="funciones.IsNumberKey($event);" maxlength="3" dTextBox class="form-control" type='number' placeholder="Días"
+          (keyup)="model.plazo_ejecucion=funciones.IsMenor(model.plazo_ejecucion,10000)" #plazo_ejecucion="ngModel" min="1"
+          max="10000" (change)="model.plazo_ejecucion=funciones.IsMenor(model.plazo_ejecucion,10000)" id="model.plazo_ejecucion"
+          (change)="setFecTerContractual(model.fecha_inicio_contractual, model.plazo_ejecucion)" name="model.plazo_ejecucion"
+          [(ngModel)]="model.plazo_ejecucion" required [disabled]="!model.fecha_inicio_contractual">
+        <div [hidden]="plazo_ejecucion.valid || plazo_ejecucion.pristine" class="alert alert-danger">
+          Plazo de ejecución es obligatorio
+        </div>
+      </div>
+    </div>
+    <div *ngIf=divSegMonitoreo>
+      <div class="row form-group">
+        <div class="col-sm-3">
+          <label dlabels class="control-label" for="fecha_termino_contractual">Fecha de término obra:</label>
+        </div>
+        <div class="col-sm-2">
+          <input dTextBox class="form-control" type='text' name="model.fecha_termino_contractual" id="model.fecha_termino_contractual"
+            placeholder="dd/mm/aaaa" required [(ngModel)]="model.fecha_termino_contractual" #fecha_termino_contractual="ngModel"
+            bsDatepicker disabled="disabled" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es', containerClass: 'theme-red' }"
+          />
+        </div>
+        <div class="col-sm-3">
+          <label dlabels class="control-label">Ampliación (Días Calendario) :</label>
+        </div>
+        <div class="col-sm-3">
+          <div class="input-group">
+            <input dTextBox class="form-control" type='text' [(ngModel)]="model.ampliacion" id="model.ampliacion" name="model.ampliacion"
+              placeholder="Días" disabled="disabled" />
+            <span class="input-group-btn">
+              <button class="btn btn-secondary" type="button" id="btnVerDetalle" (click)="opnModRegAmpliacion()" *hasClaim="'monitoreo_tabSeg_infObra_verAmpliacion'">
+                Ver Ampliación y Suspensión</button>
+              <button class="btn btn-secondary" type="button" id="btnRegistrarDetalle" (click)="opnModRegAmpliacion()" *hasClaim="'monitoreo_tabSeg_infObra_registrarAmpliacion'">
+                    Agregar Ampliación y Suspensión</button>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-3">
+          <label dlabels class="control-label">Fecha de término Obra-Ampl. :</label>
+        </div>
+        <div class="col-sm-2">
+          <input dTextBox class="form-control" type='text' name="model.fecha_term_cont_ampl" id="model.fecha_term_cont_ampl" bsDatepicker
+            disabled="disabled" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es', containerClass: 'theme-red' }" [(ngModel)]="model.fecha_term_cont_ampl"
+            #fecha_term_cont_ampl="ngModel" placeholder="dd/mm/aaaa" />
+        </div>
+      </div>
+      <div *ngIf=divSegMonitoreo>
+        <div class="row form-group">
+          <div class="col-sm-3">
+            <label dlabels class="control-label">Monto de Adelanto Directo:</label>
+          </div>
+          <div class="col-sm-2">
+            <div class="input-group">
+              <span class="form-control" style="background-color: #e9ecef">
+                {{ model.monto_garantia_directo | currency: 'S/ ' }}
+              </span>
+              <span class="input-group-btn">
+                <button class="btn btn-secondary" type="button" id="btnVerDetalleAdelantoDirecto" (click)="opnModAdelantoDirecto()">
+                  Ver
+                </button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf=divSegMonitoreo>
+        <div class="row form-group">
+          <div class="col-sm-3">
+            <label dlabels class="control-label">Monto de Adelanto de Materiales:</label>
+          </div>
+          <div class="col-sm-2">
+            <div class="input-group">
+              <span class="form-control" style="background-color: #e9ecef">
+                {{ model.monto_garantia_materiales | currency: 'S/ ' }}
+              </span>
+              <span class="input-group-btn">
+                <button class="btn btn-secondary" type="button" id="btnVerDetalleAdelantoMateriales" (click)="opnModAdelantoMateriales()">
+                  Ver
+                </button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row form-group" *ngIf="false">
+        <div class="col-sm-3">
+          <label dlabels class="control-label">Fecha de Término Obra-Ampl.-Paraliz. :</label>
+        </div>
+        <div class="col-sm-2">
+          <input dTextBox class="form-control" type='text' name="model.fecha_term_cont_ampl_paral" id="model.fecha_term_cont_ampl_paral"
+            placeholder="dd/mm/aaaa" bsDatepicker [(ngModel)]="model.fecha_term_cont_ampl_paral" #fecha_term_cont_ampl_paral="ngModel"
+            disabled="disabled" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es', containerClass: 'theme-red' }" />
+        </div>
+      </div>
+    </div>
+    <div class="row form-group">
+      <ng-container *ngIf="showGuardar">
+        <div class="col-md-6" [hidden]=!bEstado>
+          <button class="btn btn-danger" type="submit" id="btnGuardar" [hidden]=bMostrar [disabled]="!(FaseForm.form.valid&&model.plazo_ejecucion>0)"
+            *hasClaim="'monitoreo_tabSeg_infObra_regInfObra'">
+            <i class="fa fa-save"></i> Guardar</button>
+          <button class="btn btn-danger" type="button"  [hidden]=!bMostrar>
+            <i class="fa fa-save"></i> ....Procesando</button>
+        </div>
+      </ng-container>
+      <div class="col-6 text-right">
+        <label dlabels class="control-label">Última Actualización:</label> &nbsp;
+        <span>{{UltimaActualizacionInfObra}}</span>
+      </div>
+    </div>
+  </form>
+</div>

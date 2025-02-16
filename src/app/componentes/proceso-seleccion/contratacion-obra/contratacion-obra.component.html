@@ -1,0 +1,123 @@
+<table class="table table-hover table-bordered table-responsive table-full-detalle" border="1">
+  <thead class="table-active">
+    <tr>
+      <th>Tipo de Selección</th>
+      <th>Fecha de Publicación</th>
+      <th>Nomenclatura</th>
+      <th>Estado del Proceso</th>
+      <th>Fecha</th>
+      <th>Valor Referencial</th>
+      <th *hasClaim="'monitoreo_tabSel_obra_verResultados'">Ver Resultados</th>
+      <th>Cronograma</th>
+      <th>El proceso, corresponde al proyecto</th>
+      <th>Comentario</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let obra of listContratacionObra; index as s">
+      <td class="text-left xs-hidden">{{obra.tipo_seleccion}}</td>
+      <td class="xs-hidden">{{obra.fecha_publicacion}}</td>
+      <td class="text-left xs-hidden">{{obra.nomenclatura}}</td>
+      <td class="text-left xs-hidden">{{obra.estado_proceso}}</td>
+      <td class="xs-hidden">{{obra.fecha}}</td>
+      <td class="text-right xs-hidden"> {{((obra.valor_referencial) ? (obra.valor_referencial) :"") | currency:" S/" }}
+      </td>
+      <td *hasClaim="'monitoreo_tabSel_obra_verResultados'" class="xs-hidden">
+        <a href="javascript:void(0)" class="btn btn-sm btn-icon" (click)="openModalVerResultados(obra)">
+          <i class="fa fa-15x"><img src="assets/img/icons/checklist.svg" alt="resultados"></i>
+        </a>
+      </td>
+      <td class="xs-hidden">
+        <a href="javascript:void(0)" class="btn btn-sm btn-icon" (click)="openModalListCrono(obra.identificador)">
+          <i class="fa fa-15x"><img src="assets/img/icons/calendar.svg" alt="cronograma"></i>
+        </a>
+      </td>
+      <td>
+        <div class="xs-display">
+          <div class="xs-th f-s-14">{{obra.nomenclatura}}</div>
+          <div>
+            <span class="xs-th"> Tipo de selección: </span>
+            <span> {{obra.tipo_seleccion}}</span>
+          </div>
+          <div>
+            <span class="xs-th"> Fecha de publicación: </span>
+            <span> {{obra.fecha_publicacion}} </span>
+          </div>
+          <div>
+            <span class="xs-th"> Estado del Proceso: </span>
+            <span> {{obra.estado_proceso}} </span>
+            <span>
+              <i class="fa fa-calendar"></i> {{obra.fecha}} </span>
+          </div>
+          <div>
+            <span class="xs-th"> Valor referencial: </span>
+            <span> {{((obra.valor_referencial) ? (obra.valor_referencial) :"") | currency:" S/" }}</span>
+          </div>
+          <div class="xs-th">El proceso, corresponde al proyecto:</div>
+        </div>
+        <ui-switch [disabled]="!habilitar" size="small" [checked]="setearEstadoCorrespondeProyecto(s)"
+          (change)="procesoCorrespondeProyecto($event,s)"></ui-switch>
+      </td>
+      <td class="text-left">
+        <textarea *ngIf="mostrarTextBoxComentario(s)" rows="3" dTextBox maxlength="2000" class="form-control"
+          name="txtComentario" [(ngModel)]="obra.comentario"></textarea>
+        <label dlabels class="control-label" *ngIf="mostrarLabelComentario(s)">{{obra.comentario}}&nbsp;&nbsp;</label>
+        <span style="font-size: 8px;">Actualización:
+          {{ (obra.fecha_modificacion) ? (obra.fecha_modificacion | date:'dd/MM/yyyy hh:mm:ss') :"" }} </span>
+      </td>
+      <td class="xs-footer-lista xs-text-right">
+        <div class="xs-hidden">
+          <span *hasClaim="'monitoreo_tabSel_obra_modComentario'">
+            <a href="javascript:void(0)" *ngIf="mostrarBotonEditar(s)" class="btn btn-sm btn-icon"
+              (click)="editarComentario(s)">
+              <i class="fa fa-15x"><img src="assets/img/icons/pencil.svg" alt="editar"></i>
+            </a>
+          </span>
+          <span *hasClaim="'monitoreo_tabSel_obra_regComentario'">
+            <a href="javascript:void(0)" *ngIf="mostrarBotonGuardar(s)" class="btn btn-sm btn-icon"
+              (click)="grabarComentario(obra,s)">
+              <i class="fa fa-15x"><img src="assets/img/icons/save.svg" alt="guardar"></i>
+            </a>
+          </span>
+        </div>
+        <div class="xs-display">
+          <a *hasClaim="'monitoreo_tabSel_obra_verResultados'" href="javascript:void(0)" class="btn-icon mr-1"
+            (click)="openModalVerResultados(obra)">
+            <i class="fa icon-checklist"></i>
+          </a>
+
+
+          <a href="javascript:void(0)" class="btn-icon mr-1" (click)="openModalListCrono(obra.identificador)">
+            <i class="fa fa-calendar"></i>
+          </a>
+
+          <span *hasClaim="'monitoreo_tabSel_obra_modComentario'">
+            <a href="javascript:void(0)" *ngIf="mostrarBotonEditar(s)" class="btn-icon mr-1"
+              (click)="editarComentario(s)">
+              <i class="fa fa-pencil"></i>
+            </a>
+          </span>
+          <span *hasClaim="'monitoreo_tabSel_obra_regComentario'">
+            <a href="javascript:void(0)" *ngIf="mostrarBotonGuardar(s)" class=" btn-icon"
+              (click)="grabarComentario(obra,s)">
+              <i class="fa fa-save"></i>
+            </a>
+          </span>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<div class="row">
+  <div class="col-12 xs-p-0">
+    <nav class="pt-2 pull-right">
+      <pagination [totalItems]="totalRegistros" [boundaryLinks]="true" previousText="&lsaquo;" nextText="&rsaquo;"
+        [rotate]="false" firstText="&laquo;" lastText="&raquo;" [itemsPerPage]="5" [maxSize]="5"
+        (pageChanged)="cambiarPagina($event)">
+      </pagination>
+    </nav>
+  </div>
+</div>
+<div *ngIf="listContratacionObra.length > 0">Fuente | <span class="c-dark-blue">Organismo Supervisor de las
+    Contrataciones del Estado (OSCE)</span></div>

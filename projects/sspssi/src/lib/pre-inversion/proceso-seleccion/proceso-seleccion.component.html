@@ -1,0 +1,38 @@
+<div class="tab-content" id="nav-tabContent">
+  <div class="tab-pane fade show active jumbotron container-fluid pt-4" id="nav-home" role="tabpanel"
+    aria-labelledby="nav-home-tab">
+    <div class="pb-4" *hasClaim="'monitoreo_tabSel_vincularConvocatoria_pre_inv_eje_dir'">¿Encontró la convocatoria?
+      ¿Desea
+      <a (click)="abrirModalVincularProceso()" style="color:blue; font-weight:600;"
+        href="javascript:void(0)">vincular</a>?
+    </div>
+    <accordion>
+      <div class="row">
+        <div class="col-12">
+          <accordion-group [isOpen]="true" [panelClass]="separator">
+            <button class="btn btn-link btn-block clearfix" accordion-heading>
+              <div class="pull-left float-left">1. Objeto de Contratación Consultoría</div>
+              <span class="badge float-right pull-right">
+                <i class="fa fa-circle-o"></i>
+              </span>
+            </button>
+            <ssi-contratacion-consultoria-pre #consultoriaPre></ssi-contratacion-consultoria-pre>
+          </accordion-group>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <accordion-group [isOpen]="false" [panelClass]="separator">
+            <button class="btn btn-link btn-block clearfix" accordion-heading>
+              <div class="pull-left float-left">2. Objeto de Contratación Bienes y Servicios</div>
+              <span class="badge float-right pull-right">
+                <i class="fa fa-circle-o"></i>
+              </span>
+            </button>
+            <ssi-contratacion-bienes-servicios-pre #bienesServiciosPre></ssi-contratacion-bienes-servicios-pre>
+          </accordion-group>
+        </div>
+      </div>
+    </accordion>
+  </div>
+</div>

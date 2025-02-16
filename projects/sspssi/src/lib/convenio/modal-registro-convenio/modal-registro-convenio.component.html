@@ -1,0 +1,548 @@
+<div class="modal-header">
+  <h4 class="modal-title">Nuevo convenio</h4>
+  <span class="pl-4 pr-4">Formulario para el registro de convenios</span>
+</div>
+<div class="modal-body">
+  <form (ngSubmit)="administrarConvenioRegistrar();" [formGroup]="formGroup" autocomplete="off">
+    <div class="form-row">
+      <ng-container *ngIf="!bSnip">
+        <div class="form-group col-md-3">
+          <label>SNIP / CU </label>
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="SNIP/CU" aria-describedby="button-addon2" maxlength="7"
+              (keypress)="this.funciones.IsNumberKey($event)" formControlName="codigo_snip"
+              [ngClass]="{'is-invalid': (formGroup.get('codigo_snip').touched || formGroup.get('codigo_snip').dirty) && !formGroup.get('codigo_snip').valid }"
+              [attr.readonly]="entidadEditar != null ? 'true': null">
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary" type="button" id="button-addon2" (click)="ExtraerInfo()"
+                [disabled]="entidadEditar != null ? 'true': null">
+                <svg id="i-search" viewBox="0 0 32 32" width="15" height="15" fill="none" stroke="currentcolor"
+                  stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                  <circle cx="14" cy="14" r="12" />
+                  <path d="M23 23 L30 30" />
+                </svg>
+              </button>
+            </div>
+            <span class="invalid-feedback">
+              <span *ngIf="formGroup.get('codigo_snip').errors?.required">
+                Este campo es obligatorio
+              </span>
+            </span>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="bSnip">
+        <div class="form-group col-md-3">
+          <label class="form-label">Codigo Idea:</label>
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Codigo Idea" maxlength="7">
+          </div>
+        </div>
+      </ng-container>
+      <div class="form-group col-md-9" formGroupName="proyectoGroup">
+        <label>PROYECTO:</label>
+        <textarea class="form-control" placeholder="Nombre de Proyecto" [readonly]="!bSnip"
+          formControlName="nombre_proyecto" rows="4"></textarea>
+      </div>
+
+
+    </div>
+
+    <div class="form-row" formGroupName="proyectoGroup">
+      <div class="form-group col-md-12">
+        <label>GR / GL:</label>
+        <!-- <select formControlName="id_municipalidad" class="form-control" (change)="listarEjecutora()" [attr.disabled]="(formGroup.get('proyectoGroup.nombre_proyecto').value == null && formGroup.get('proyectoGroup.id_municipalidad').value == null) || (formGroup.get('proyectoGroup.id_municipalidad').value != null && formGroup.get('id_convenio').value != 0) ? '' : null" 
+          [ngClass]="{'is-invalid': (formGroup.get('proyectoGroup.id_municipalidad').touched || formGroup.get('proyectoGroup.id_municipalidad').dirty) && !formGroup.get('proyectoGroup.id_municipalidad').valid }">
+          <option [ngValue]=null disabled>SELECCIONE UN BENEFICIARIO</option>
+          <option *ngFor="let item of municipalidades" [ngValue]="item.id_municipalidad">
+            {{ item.nombre_municipalidad }}
+          </option>
+        </select> -->
+
+        <ng-select [items]="municipalidades" placeholder="SELECCION ENTIDAD (GR/GL)" bindLabel="nombre_municipalidad"
+          bindValue="id_municipalidad" formControlName="id_municipalidad"
+          [attr.readonly]="(formGroup.get('proyectoGroup.nombre_proyecto').value == null && formGroup.get('proyectoGroup.id_municipalidad').value == null) || (formGroup.get('proyectoGroup.id_municipalidad').value != null && formGroup.get('id_convenio').value != 0) ? '' : null"
+          [ngClass]="{'is-invalid': (formGroup.get('proyectoGroup.id_municipalidad').touched || formGroup.get('proyectoGroup.id_municipalidad').dirty) && !formGroup.get('proyectoGroup.id_municipalidad').valid }"
+          (change)="listarEjecutora($event)">
+        </ng-select>
+
+        <span class="invalid-feedback">
+          <span *ngIf="formGroup.get('proyectoGroup.id_municipalidad').errors?.required">
+            Este campo es obligatorio
+          </span>
+        </span>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label>TIPO DE INVERSIÓN</label>
+        <select formControlName="id_tipo_inversion" class="form-control"
+          [ngClass]="{'is-invalid': (formGroup.get('id_tipo_inversion').touched || formGroup.get('id_tipo_inversion').dirty) && !formGroup.get('id_tipo_inversion').valid }">
+          <option [ngValue]=null readonly>SELECCIONE UN TIPO DE INVERSIÓN</option>
+          <option *ngFor="let item of tipoInversion" [ngValue]="item.id_tipo_inversion">
+            {{ item.descripcion }}
+          </option>
+        </select>
+        <span class="invalid-feedback">
+          <span *ngIf="formGroup.get('id_tipo_inversion').errors?.required">
+            Este campo es obligatorio
+          </span>
+        </span>
+      </div>
+      <div class="form-group col-md-6">
+        <label>PROGRAMA PVD</label>
+        <select formControlName="id_programa" class="form-control"
+          [ngClass]="{'is-invalid': (formGroup.get('id_programa').touched || formGroup.get('id_programa').dirty) && !formGroup.get('id_programa').valid }">
+          <option [ngValue]=null readonly>SELECCIONE UN TIPO DE PROGRAMA</option>
+          <option *ngFor="let item of programas" [ngValue]="item.id_programa">
+            {{ item.descripcion }}
+          </option>
+        </select>
+        <span class="invalid-feedback">
+          <span *ngIf="formGroup.get('id_programa').errors?.required">
+            Este campo es obligatorio
+          </span>
+        </span>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label>COMPROMISOS</label>
+        <select formControlName="id_compromiso" class="form-control" (change)=onChangeCompromiso($event)
+          [ngClass]="{'is-invalid': (formGroup.get('id_compromiso').touched || formGroup.get('id_compromiso').dirty) && !formGroup.get('id_compromiso').valid }">
+          <option [ngValue]=null readonly>SELECCIONE UN TIPO DE COMPROMISO</option>
+          <option *ngFor="let item of compromisos" [ngValue]="item.id_compromiso">
+            {{ item.descripcion }}
+          </option>
+        </select>
+        <span class="invalid-feedback">
+          <span *ngIf="formGroup.get('id_compromiso').errors?.required">
+            Este campo es obligatorio
+          </span>
+        </span>
+      </div>
+      <div class="form-group col-md-6">
+        <ui-switch id="checkCompromiso" formControlName="checkCompromiso" name="checkCompromiso" [disabled]="false"
+          [checked]="activo" size="small" (change)="activarCargaActaCompromiso($event)"></ui-switch><label>Cargar
+          Archivo de Compromiso</label>
+        <div [hidden]=mostrarAdjuntarArchivoCompromiso>
+          <app-input-file idComp="filebuscarActaCompromiso" (onChange)="fileChangeEventActaCompromiso($event)"
+            IdTipoArchivo="{{IdTipoArchivoCompromiso}}" Value="{{nombre_archivo_compromiso}}" class="input-group">
+          </app-input-file>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="bOtroCompromiso" class="form-row">
+      <div class="form-group col-md-6">
+        <input class="form-control" type="text">
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label>BRECHA</label>
+        <select formControlName="id_brecha" class="form-control"
+          [ngClass]="{'is-invalid': (formGroup.get('id_brecha').touched || formGroup.get('id_brecha').dirty) && !formGroup.get('id_brecha').valid }">
+          <option [ngValue]=null readonly>SELECCIONE UN TIPO DE BRECHA</option>
+          <option *ngFor="let item of brechas" [ngValue]="item.id_brecha">
+            {{ item.descripcion }}
+          </option>
+        </select>
+        <span class="invalid-feedback">
+          <span *ngIf="formGroup.get('id_brecha').errors?.required">
+            Este campo es obligatorio
+          </span>
+        </span>
+      </div>
+      <div class="form-group col-md-6">
+        <label>DOCUMENTO DE GESTION</label>
+        <select formControlName="id_documento_compromiso" class="form-control"
+          [ngClass]="{'is-invalid': (formGroup.get('id_documento_compromiso').touched || formGroup.get('id_documento_compromiso').dirty) && !formGroup.get('id_documento_compromiso').valid }">
+          <option [ngValue]=null readonly>SELECCIONE UN DOCUMENTO DE GESTION</option>
+          <option *ngFor="let item of documentos" [ngValue]="item.id_documento_compromiso">
+            {{ item.nombre_documento_compromiso }}
+          </option>
+        </select>
+        <span class="invalid-feedback">
+          <span *ngIf="formGroup.get('id_documento_compromiso').errors?.required">
+            Este campo es obligatorio
+          </span>
+        </span>
+      </div>
+    </div>
+
+    <div class="form-row" hidden="true">
+      <div class="form-group col-md-12">
+        <label>FUENTE DE FINANCIAMIENTO</label>
+        <ng-select [items]="denominacion" formControlName="id_fuente_financiamiento" [multiple]="true"
+          placeholder="SELECCIONE FUENTE DE FINANCIAMIENTO" bindLabel="nombre_fuente"
+          bindValue="id_fuente_financiamiento" [(ngModel)]="lstFuenteFinanciamiento" [selectableGroup]="true"
+          [closeOnSelect]="false"
+          [ngClass]="{'is-invalid': (formGroup.get('id_fuente_financiamiento').touched || formGroup.get('id_fuente_financiamiento').dirty) && !formGroup.get('id_fuente_financiamiento').valid }">
+          <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+            <input id="item-{{index}}" type="checkbox" [checked]="lstFuenteFinanciamiento.indexOf(item) > -1"
+              [ngModel]="item$.selected" [ngModelOptions]="{standalone: true}" /> {{item.nombre_fuente}}
+          </ng-template>
+        </ng-select>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group col-md-12">
+        <label>SIGLAS DE <span
+            [ngStyle]="{'color': boldConvenio ? 'red': '', 'font-weight': boldConvenio ? 'bold': 'normal'}">CONVENIO</span>/<span
+            [ngStyle]="{'color': boldAdenda ? 'red': '', 'font-weight': boldAdenda ? 'bold': 'normal'}">ADENDA</span>/<span
+            [ngStyle]="{'color': boldDecretoUrgencia ? 'red': '', 'font-weight': boldDecretoUrgencia ? 'bold': 'normal'}">DECRETO
+            DE URGENCIA</span></label>
+        <input class="form-control"
+          [placeholder]="boldConvenio ? 'Convenio N°XXX-2018-MTC/21': boldAdenda ? 'Adenda N°XXX-2018-MTC/21': boldDecretoUrgencia ? 'Decreto Urgencia N°XXX-2018-MTC/21' : 'N°XXX-2018-MTC/21'"
+          type='text' formControlName="siglas"
+          [ngClass]="{'is-invalid': (formGroup.get('siglas').touched || formGroup.get('siglas').dirty) && !formGroup.get('siglas').valid }" />
+
+        <span class="invalid-feedback">
+          <span *ngIf="formGroup.get('siglas').errors?.required">
+            Este campo es obligatorio
+          </span>
+        </span>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label>FECHA DE LA FIRMA DE <span
+            [ngStyle]="{'color': boldConvenio ? 'red': '', 'font-weight': boldConvenio ? 'bold': 'normal'}">CONVENIO</span>/<span
+            [ngStyle]="{'color': boldAdenda ? 'red': '', 'font-weight': boldAdenda ? 'bold': 'normal'}">ADENDA</span>/<span
+            [ngStyle]="{'color': boldDecretoUrgencia ? 'red': '', 'font-weight': boldDecretoUrgencia ? 'bold': 'normal'}">DECRETO
+            DE URGENCIA</span></label>
+        <input class="form-control" [maxDate]="maxDate" type='text' readonly="readonly" name="fechaConvenio"
+          [placeholder]="boldConvenio ? 'Fecha de Firma de Convenio': boldAdenda ? 'Fecha de Firma de Adenda': boldDecretoUrgencia ? 'Fecha de Firma de Decreto de Urgencia' : 'Fecha de Firma'"
+          formControlName="fecha_firma" bsDatepicker
+          [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es',containerClass: 'theme-red' }" [ngClass]="{'is-invalid': (formGroup.get('fecha_firma').touched || formGroup.get('fecha_firma').dirty) &&
+        !formGroup.get('fecha_firma').valid }" (bsValueChange)="setearFechaMinima($event)" />
+        <span class="invalid-feedback">
+          <span *ngIf="formGroup.get('fecha_firma').errors?.required">
+            Este campo es obligatorio
+          </span>
+        </span>
+      </div>
+      <div *ngIf="false" class="form-group col-md-6">
+        <label>FECHA DE VIGENCIA DE <span
+            [ngStyle]="{'color': boldConvenio ? 'red': '', 'font-weight': boldConvenio ? 'bold': 'normal'}">CONVENIO</span>/<span
+            [ngStyle]="{'color': boldAdenda ? 'red': '', 'font-weight': boldAdenda ? 'bold': 'normal'}">ADENDA</span>/<span
+            [ngStyle]="{'color': boldDecretoUrgencia ? 'red': '', 'font-weight': boldDecretoUrgencia ? 'bold': 'normal'}">DECRETO
+            DE URGENCIA</span></label>
+
+        <input class="form-control" type='text' readonly="readonly" name="fechaVigencia"
+          [placeholder]="boldConvenio ? 'Fecha de Vigencia de Convenio': boldAdenda ? 'Fecha de Vigencia de Adenda': boldDecretoUrgencia ? 'Fecha de Vigencia de Decreto de Urgencia' : 'Fecha de Vigencia'"
+          formControlName="fecha_vigencia" bsDatepicker [minDate]="MinFechaVigencia"
+          [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es',containerClass: 'theme-red' }" [ngClass]="{'is-invalid': (formGroup.get('fecha_vigencia').touched || formGroup.get('fecha_vigencia').dirty) &&
+          !formGroup.get('fecha_vigencia').valid }" />
+
+        <span class="invalid-feedback">
+          <span *ngIf="formGroup.get('fecha_vigencia').errors?.required">
+            Este campo es obligatorio
+          </span>
+        </span>
+      </div>
+      <div class="form-group col-md-6">
+        <label>PLAZO DE VIGENCIA DE <span
+            [ngStyle]="{'color': boldConvenio ? 'red': '', 'font-weight': boldConvenio ? 'bold': 'normal'}">CONVENIO</span>/<span
+            [ngStyle]="{'color': boldAdenda ? 'red': '', 'font-weight': boldAdenda ? 'bold': 'normal'}">ADENDA</span>/<span
+            [ngStyle]="{'color': boldDecretoUrgencia ? 'red': '', 'font-weight': boldDecretoUrgencia ? 'bold': 'normal'}">DECRETO
+            DE URGENCIA</span></label>
+        <input class="form-control" placeholder="Días" type='number' formControlName="plazo_vigencia"
+          [ngClass]="{'is-invalid': (formGroup.get('plazo_vigencia').touched || formGroup.get('plazo_vigencia').dirty) && !formGroup.get('plazo_vigencia').valid }" />
+
+        <span class="invalid-feedback">
+          <span *ngIf="formGroup.get('plazo_vigencia').errors?.required">
+            Este campo es obligatorio
+          </span>
+        </span>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group col-md-12">
+        <label>ANEXO <span
+            [ngStyle]="{'color': boldConvenio ? 'red': '', 'font-weight': boldConvenio ? 'bold': 'normal'}">CONVENIO</span>/<span
+            [ngStyle]="{'color': boldAdenda ? 'red': '', 'font-weight': boldAdenda ? 'bold': 'normal'}">ADENDA</span>/<span
+            [ngStyle]="{'color': boldDecretoUrgencia ? 'red': '', 'font-weight': boldDecretoUrgencia ? 'bold': 'normal'}">DECRETO
+            DE URGENCIA</span></label>
+        <app-input-file idComp="filebuscarproyectomodal" (onChange)="fileChangeEvent($event)"
+          IdTipoArchivo="{{IdTipoArchivo}}" class="input-group" Value="{{ formGroup.get('nombre_archivo').value }}">
+        </app-input-file>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group col-md-4">
+        <label>TIPO DE INFRAESTRUCTURA</label>
+        <select formControlName="id_tipo_infraestructura" class="form-control"
+          [ngClass]="{'is-invalid': (formGroup.get('id_tipo_infraestructura').touched || formGroup.get('id_tipo_infraestructura').dirty) && !formGroup.get('id_tipo_infraestructura').valid }">
+          <option [ngValue]=null readonly>SELECCIONE UN TIPO DE INFRAESTRUCTURA</option>
+          <option *ngFor="let item of infraestructuras" [ngValue]="item.id_tipo_infraestructura">
+            {{ item.nombre_tipo_infraestructura }}
+          </option>
+        </select>
+        <span class="invalid-feedback">
+          <span *ngIf="formGroup.get('id_tipo_infraestructura').errors?.required">
+            Este campo es obligatorio
+          </span>
+        </span>
+      </div>
+      <div class="form-group col-md-4">
+        <label>TIPO VÍA</label>
+        <select (ngModelChange)="asignarTipoEstadoVia($event)" formControlName="id_tipo_via" class="form-control"
+          [ngClass]="{'is-invalid': (formGroup.get('id_tipo_via').touched || formGroup.get('id_tipo_via').dirty) && !formGroup.get('id_tipo_via').valid }">
+          <option [ngValue]=null readonly>SELECCIONE UN TIPO DE VÍA</option>
+          <option *ngFor="let item of vias" value="{{item.id_tipo_via}}">
+            {{ item.nombre_tipo_via }}
+          </option>
+        </select>
+        <span class="invalid-feedback">
+          <span *ngIf="formGroup.get('id_tipo_via').errors?.required">
+            Este campo es obligatorio
+          </span>
+        </span>
+      </div>
+      <div class="form-group col-md-4">
+        <label>ESTADO DE VÍA</label>
+        <select formControlName="id_estado_tipo_via" class="form-control">
+          <option [ngValue]=null readonly>SELECCIONE ESTADO DE VIA</option>
+          <option *ngFor="let item of estadoVias" [ngValue]="item.id_estado_tipo_via">
+            {{ item.nombre_estado_tipo_via }}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label>UNIDAD DE MEDIDA</label>
+        <select formControlName="id_unidad_medida" class="form-control"
+          [ngClass]="{'is-invalid': (formGroup.get('id_unidad_medida').touched || formGroup.get('id_unidad_medida').dirty) && !formGroup.get('id_unidad_medida').valid }">
+          <option [ngValue]=null readonly>SELECCIONE UNA UNIDAD DE MEDIDA</option>
+          <option *ngFor="let item of medidas" [ngValue]="item.id_unidad_medida">
+            {{ item.nombre_unidad_medida }}
+          </option>
+        </select>
+        <span class="invalid-feedback">
+          <span *ngIf="formGroup.get('id_unidad_medida').errors?.required">
+            Este campo es obligatorio
+          </span>
+        </span>
+      </div>
+      <div class="form-group col-md-6">
+        <label>LONGITUD</label>
+        <input class="form-control" [textMask]="{mask: funciones.currencyMask}" type='text' name="numLongitud"
+          placeholder="Longitud" formControlName="longitud"
+          [ngClass]="{'is-invalid': (formGroup.get('longitud').touched || formGroup.get('longitud').dirty) && !formGroup.get('longitud').valid }" />
+        <span class="invalid-feedback">
+          <span *ngIf="formGroup.get('longitud').errors?.required">
+            Este campo es obligatorio
+          </span>
+        </span>
+      </div>
+    </div>
+    <p>
+    </p>
+    <div formGroupName="proyectoGroup">
+      <button type="button" class="btn btn-warning" (click)="agregarTramo(templateRegistrarTramo)"
+        [disabled]='(formGroup.get("proyectoGroup.id_municipalidad").value == null && formGroup.get("id_convenio").value == 0) || (formGroup.get("proyectoGroup.id_municipalidad").value != null && formGroup.get("id_convenio").value != 0)'>Agregar
+        Tramo
+      </button>
+    </div>
+    <p></p>
+    <table class="table table-hover table-bordered table-responsive table-full-detalle">
+      <thead>
+        <th>ITEM</th>
+        <th>TRAMO</th>
+        <th>FASE</th>
+        <!--         <th>UNIDAD ORGANICA</th> -->
+        <th>CODIGOS RUTA</th>
+        <th></th>
+      </thead>
+      <tbody *ngFor="let item of tramosAgregados; let i = index">
+        <tr>
+          <td class="xs-hidden">{{ i + 1 }}</td>
+          <td>
+            {{ item.nombreTramo }}
+          </td>
+          <td>
+            {{ item.nombreFase }}
+          </td>
+          <!--  <td>
+            {{ item.nombreEjecutora }}
+          </td> -->
+          <td>{{ item.codigo_ruta }}</td>
+          <td>
+            <a href="javascript:void(0)" (click)="editarTramo(item, i)" class="btn btn-sm btn-icon">
+              <i class="fa fa-15x">
+                <img src="assets/img/icons/pencil.svg" alt="editarTramo">
+              </i>
+            </a>
+            <a href="javascript:void(0)" *ngIf="!(entidadEditar != null)" (click)="eliminarTramo(i)"
+              class="btn btn-sm btn-icon">
+              <i class="fa fa-15x">
+                <img src="assets/img/icons/trash.svg" alt="eliminarTramo">
+              </i>
+            </a>
+          </td>
+
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
+    <p></p>
+    <div class="modal-footer">
+      <button class="btn btn-danger" type="submit" id="btnGuardar" [disabled]="!(formGroup.valid)"><i
+          class="fa fa-save"></i>
+        Guardar</button>
+      <button class="btn btn-plomo" id="btnCancelar" type="button" (click)="closeModal()"><i
+          class="fa fa-arrow-left"></i>
+        Cancelar</button>
+    </div>
+  </form>
+
+  <ng-template #templateRegistrarTramo>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Registra Tramo</h4>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="formRegistrarTramo">
+        <span class="note">*Si no tiene tramos, debe de agregar uno, en caso contrario seleccione uno de ellos</span>
+        <div class="row form-group">
+          <div class="col-md-2">
+            <label dlabels class="control-label">TRAMO</label>
+          </div>
+          <div class="col-md-8">
+            <select [hidden]="!visible" formControlName="id_tramo" class="form-control"
+              [ngClass]="{'is-invalid': (formRegistrarTramo.get('id_tramo').touched || formRegistrarTramo.get('id_tramo').dirty) && !formRegistrarTramo.get('id_tramo').valid }">
+              <option [ngValue]=null readonly>SELECCIONE UN TRAMO</option>
+              <option *ngFor="let item of tramosVer" [ngValue]="item.id_tramo">
+                {{ item.nombre_tramo }}
+              </option>
+            </select>
+            <span class="invalid-feedback">
+              <span *ngIf="formRegistrarTramo.get('id_tramo').errors?.required">
+                Este campo es obligatorio
+              </span>
+            </span>
+            <input class="form-control" type="text" [hidden]="visible" name="NombreTramo" placeholder="Escriba Tramo"
+              formControlName="nombre_tramo"
+              [ngClass]="{'is-invalid': (formRegistrarTramo.get('nombre_tramo').touched || formRegistrarTramo.get('nombre_tramo').dirty) && !formRegistrarTramo.get('nombre_tramo').valid }">
+            <span class="invalid-feedback">
+              <span *ngIf="formRegistrarTramo.get('nombre_tramo').errors?.required">
+                Este campo es obligatorio
+              </span>
+            </span>
+          </div>
+          <div class="col-md-2">
+            <button data-opcion="true" type="button" id="btnAgregar" (click)="ocultar()" [hidden]="!visible"
+              class="btn"><i class="fa fa-plus"></i> Agregar</button>
+            <button type="button" id="btnOk" (click)="ocultar()" [hidden]="visible" class="btn"><i
+                class="fa fa-arrow-left"></i>
+              Volver</button>
+
+          </div>
+        </div>
+        <div class="row form-group" [hidden]="!visibleEjecutora">
+          <div class="col-md-2">
+            <label dlabels class="control-label">UNIDAD ORGÁNICA:</label>
+          </div>
+          <div class="col-md-10">
+            <select formControlName="id_ejecutora" class="form-control"
+              [ngClass]="{'is-invalid': (formGroup.get('proyectoGroup.id_ejecutora').touched || formGroup.get('proyectoGroup.id_ejecutora').dirty) && !formGroup.get('proyectoGroup.id_ejecutora').valid }">
+              <option [ngValue]=null readonly>SELECCIONE UNA UNIDAD ORGÁNICA</option>
+              <option *ngFor="let item of ejecutoras" [ngValue]="item.id_ejecutora">
+                {{ item.nombre_ejecutora }}
+              </option>
+            </select>
+            <span class="invalid-feedback">
+              <span *ngIf="formGroup.get('proyectoGroup.id_ejecutora').errors?.required">
+                Este campo es obligatorio
+              </span>
+            </span>
+          </div>
+        </div>
+        <div class="row form-group">
+          <div class="col-md-2">
+            <label dlabels class="control-label">FASE</label>
+          </div>
+          <div class="col-md-4">
+            <select formControlName="id_tipo_fase" class="form-control"
+              [ngClass]="{'is-invalid': (formRegistrarTramo.get('id_tipo_fase').touched || formRegistrarTramo.get('id_tipo_fase').dirty) && !formRegistrarTramo.get('id_tipo_fase').valid }">
+              <option [ngValue]=null readonly>SELECCION UNA FASE</option>
+              <option *ngFor="let item of fases" [ngValue]="item.id_tipo_fase">
+                {{ item.nombre_tipo_fase }}
+              </option>
+            </select>
+            <span class="invalid-feedback">
+              <span *ngIf="formRegistrarTramo.get('id_tipo_fase').errors?.required">
+                Este campo es obligatorio
+              </span>
+            </span>
+          </div>
+        </div>
+        <div class="row form-group">
+          <div class="col-md-2">
+            <label dlabels class="control-label">CÓDIGO DE RUTA</label>
+          </div>
+          <div class="col-md-4">
+            <input class="form-control" [placeholder]="" type='text' formControlName="codigo_ruta" id="txtCodigoRuta"
+              [ngClass]="{'is-invalid': (formRegistrarTramo.get('codigo_ruta').touched || formRegistrarTramo.get('codigo_ruta').dirty) && !formRegistrarTramo.get('codigo_ruta').valid }" />
+            <span class="invalid-feedback">
+              <span *ngIf="formRegistrarTramo.get('codigo_ruta').errors?.required">
+                Este campo es obligatorio
+              </span>
+            </span>
+          </div>
+          <div class="col-md-2" style="margin-left: -29px">
+            <button class="btn btn-danger d-inline-flex" type="button"
+              [disabled]="!formRegistrarTramo.get('codigo_ruta').valid" id="btnAgregarCodigoRuta"
+              (click)="agregarCodigoRuta()">
+              +</button>
+          </div>
+        </div>
+        <div class="row form-group">
+          <div class="col-md-2">
+          </div>
+          <div class="col-sm-4">
+            <table class="table table-striped">
+              <tbody>
+                <tr *ngFor="let item of lstCodigoRuta;index as i">
+                  <td>{{ i+1}}</td>
+                  <td>{{ item }}</td>
+                  <td>
+                    <a style="cursor: pointer;" (click)="eliminarCodigoRuta(i)">
+                      <i class="material-icons" style="vertical-align: bottom;">clear</i>
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn btn-danger" (click)="guardarTramo()" id="btnGuardarTramo"
+            [disabled]="!formRegistrarTramo.valid"><i class="fa fa-save"></i>
+            Guardar</button>
+          <button class="btn btn-plomo" id="btnCancelarGuardarTramo" type="button" (click)="closeModalGuardarTramo()"><i
+              class="fa fa-arrow-left"></i> Cerrar</button>
+        </div>
+      </form>
+      <!-- {{ formRegistrarTramo.value | json }}<br>
+      Tramo {{ formRegistrarTramo.get('id_tramo').errors?.required }}<br>
+      Nombre {{ formRegistrarTramo.get('nombre_tramo').errors?.required }}<br>
+      fase {{ formRegistrarTramo.get('id_tipo_fase').errors?.required }}<br>
+      ejecutora {{ formRegistrarTramo.get('id_ejecutora').errors?.required }}<br>
+      {{ formRegistrarTramo.valid | json }} -->
+
+    </div>
+  </ng-template>
+</div>
+
+<!-- {{ formGroup.value | json }} -->

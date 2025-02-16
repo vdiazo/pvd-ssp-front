@@ -1,0 +1,382 @@
+<br>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-6 col-xl-6 col-md-6 col align-self-center">
+      <div class="card border-success mb-3">
+        <img class="card-img" src="assets/img/imagen.jpg" alt="Card image">
+        <div class="card-img-overlay">
+          <div class="card-title text-center">
+            <h1 class="font-weight-bold text-white">{{totalProyectos}}</h1>
+            <h2 class="font-weight-bold text-white">Proyectos</h2>
+          </div>
+        </div>
+        <div class="card-body bg-success">
+          <div class="row no-gutters">
+            <div class="col-lg-6 col-xl-6 col-md-6 text-center">
+              <h3 class="font-weight-bold text-white"><i class="icon-financiamiento"></i> PIM</h3>
+              <h2 class="font-weight-bold text-white">{{costoTotalPim | currency:" S/ " }}</h2>
+            </div>
+            <div class="col-lg-6 col-xl-6 col-md-6 text-center">
+              <h3 class="font-weight-bold text-white"><i class="icon-financiamiento1"></i> Devengado</h3>
+              <h2 class="font-weight-bold text-white">{{costoTotalDevengado | currency:" S/ " }}</h2>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <h6 class="card-text text-right" style="font-size: small;"><i class="icon-transfer"></i> Fecha de
+            actualización: {{fechaActual | formatoFecha}}</h6>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6 col-xl-6 col-md-6 col align-self-center">
+      <div class="row-default">
+        <div class="card-deck">
+          <div class="card border-light mb-3" style="border-radius: 15px">
+            <div class="card-header">
+              <span class="badge float-right pull-right">
+                <i class="fa fa-circle-o"></i>
+              </span>
+            </div>
+            <div class="row no-gutters">
+              <div class="col-lg-4 col-xl-4 col-md-4">
+                <div class="d-flex p-2 bd-highlight align-items-center">
+                  <img src="assets/img/icons/obrasDash.svg" class="img-thumbnail border-0" alt="img Obras"
+                    style="width: 150px">
+                </div>
+              </div>
+              <div class="col-lg-8 col-xl-8 col-md-8">
+                <div class="card-body">
+                  <h3 class="card-title font-weight-bold">Obras</h3>
+                  <h2 class="card-text text-right">{{totalObras}}</h2>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card border-light mb-3" style="border-radius: 15px">
+            <div class="card-header">
+              <span class="badge float-right pull-right">
+                <i class="fa fa-circle-o"></i>
+              </span>
+            </div>
+            <div class="row no-gutters">
+              <div class="col-lg-4 col-xl-4 col-md-4">
+                <div class="d-flex p-2 bd-highlight align-items-center">
+                  <img src="assets/img/icons/Estudio-tecnicoDash.svg" class="img-thumbnail border-0" alt="img expTec"
+                    style="width: 130px">
+                </div>
+              </div>
+              <div class="col-lg-8 col-xl-8 col-md-8">
+                <div class="card-body">
+                  <h4 class="card-title font-weight-bold">Expedientes Tecnicos</h4>
+                  <h2 class="card-text text-right">{{totalExpediente}}</h2>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row justify-content-center">
+        <div class="col-lg-6 col-xl-6 col-md-6">
+          <div class="card-deck">
+            <div class="card border-light mb-3 d-flex align-items-stretch" style="border-radius: 15px">
+              <div class="card-header">
+                <span class="badge float-right pull-right">
+                  <i class="fa fa-circle-o"></i>
+                </span>
+              </div>
+              <div class="row no-gutters">
+                <div class="col-lg-4 col-xl-4 col-md-4">
+                  <div class="d-flex p-2 bd-highlight align-items-center">
+                    <img src="assets/img/icons/preInversionDash.svg" class="img-thumbnail border-0" alt="img preInv"
+                      style="width: 150px">
+                  </div>
+                </div>
+                <div class="col-lg-8 col-xl-8 col-md-8">
+                  <div class="card-body">
+                    <h3 class="card-title font-weight-bold">Preinversion</h3>
+                    <h2 class="card-text text-right">{{totalPreinversion}}</h2>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="card border-light mb-3 d-flex align-items-stretch">
+        </div> -->
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xl-4 col-lg-4 col-md-4">
+      <div class="card border-light mb-3" style="border-radius: 15px;">
+        <div class="card-body d-flex align-content-stretch justify-content-center">
+          <div class="position-absolute" style="z-index: 999;bottom: 30px;left: 30px;">
+            <a href="javascrip:void(0);" (click)="Procesar('00');" class="btn-peru">PERÚ</a>
+            <a href="javascrip:void(0);" *ngIf="NombreDepartamento!=''" class="btn-dpto">{{NombreDepartamento}}</a>
+          </div>
+          <div id="map" class="app-mapa"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-8 col-lg-8 col-md-8">
+      <div class="card-deck" *ngIf="DepartamentoActual=='00'">
+        <div class="card border-light mb-3" style="border-radius: 15px; height:540px;">
+          <div class="card-header">
+            <div class="pull-left float-left">
+              <h5 class="font-weight-bold">Tipo de Inversion<i class="icon-arrow-forward"></i></h5>
+            </div>
+            <span class="badge float-right pull-right">
+              <i class="fa fa-circle-o"></i>
+            </span>
+          </div>
+          <div class="card-body d-flex align-content-stretch justify-content-center">
+            <div class="col-md-12 col-lg-12 col-xl-12 col align-self-center">
+              <dx-chart id="chart_tipo_proy" [dataSource]="tipoInversionGrafico" palette="Material">
+                <dxi-series valueField="ioarr" name="IOARR"></dxi-series>
+                <dxi-series valueField="proy_inversion" name="Proy. Inversion"></dxi-series>
+                <dxo-common-series-settings argumentField="denominacion" type="bar" [barPadding]="0.5"
+                  hoverMode="allArgumentPoints" selectionMode="allArgumentPoints">
+                  <dxo-label [visible]="true" [format]="{type: 'fixedPoint', precision: '0'}">
+                  </dxo-label>
+                </dxo-common-series-settings>
+                <dxo-legend verticalAlignment="bottom" horizontalAlignment="center">
+                </dxo-legend>
+                <dxo-export [enabled]="false"></dxo-export>
+                <dxo-tooltip [enabled]="true" [customizeTooltip]="customizeTooltip"></dxo-tooltip>>
+              </dx-chart>
+            </div>
+          </div>
+        </div>
+
+        <div class="card border-light mb-3" style="border-radius: 15px; height:540px;">
+          <div class="card-header">
+            <div class="pull-left float-left">
+              <h5 class="font-weight-bold">Tipo de Infraestructura<i class="icon-arrow-forward"></i></h5>
+            </div>
+            <span class="badge float-right pull-right">
+              <i class="fa fa-circle-o"></i>
+            </span>
+          </div>
+          <div class="card-body d-flex align-content-stretch justify-content-center">
+            <div class="col-lg-12 col-xl-12 col-md-12 col align-self-center">
+              <dx-chart id="chart_tipo_infra" [dataSource]="tipoInfraestructuraGrafico" palette="Material">
+                <dxi-series valueField="carretera" name="Carretera"></dxi-series>
+                <dxi-series valueField="puente_definitivo" name="Puente definitivo"></dxi-series>
+                <dxi-series valueField="puente_modular" name="Puente modular"></dxi-series>
+                <dxi-series valueField="otros" name="Otros"></dxi-series>
+                <dxo-common-series-settings argumentField="state" type="bar" [barPadding]="0.5"
+                  hoverMode="allArgumentPoints" selectionMode="allArgumentPoints">
+                  <dxo-label [visible]="true" [format]="{type: 'fixedPoint', precision: '0' }">
+                  </dxo-label>
+                </dxo-common-series-settings>
+                <dxo-legend verticalAlignment="bottom" horizontalAlignment="center">
+                </dxo-legend>
+                <dxo-export [enabled]="false"></dxo-export>
+                <dxo-tooltip [enabled]="true" [customizeTooltip]="customizeTooltip"></dxo-tooltip>>
+              </dx-chart>
+            </div>
+          </div>
+        </div>
+        <div class="card border-light mb-3" style="height:540px; border-radius: 15px;">
+          <div class="card-header">
+            <div class="pull-left float-left">
+              <h5 class="font-weight-bold">Estado Situacional<i class="icon-arrow-forward"></i></h5>
+            </div>
+            <span class="badge float-right pull-right">
+              <i class="fa fa-circle-o"></i>
+            </span>
+          </div>
+          <div class="card-body d-flex align-content-stretch justify-content-center">
+            <div class="col-lg-12 col-xl-12 col-md-12 col align-self-center">
+              <dx-pie-chart id="pieEstado" type="doughnut" [dataSource]="estadoSituacional"
+                (onPointClick)="pointClickHandler($event)" [palette]="paletteCustomize">
+                <dxo-legend orientation="horizontal" itemTextPosition="right" horizontalAlignment="center"
+                  verticalAlignment="bottom"></dxo-legend>
+                <dxo-export [enabled]="false"></dxo-export>
+                <dxo-tooltip [enabled]="true" [customizeTooltip]="customizeTooltip1"></dxo-tooltip>
+                <dxi-series argumentField="estado" valueField="cantidad">
+                  <dxo-label [visible]="true" format="fixedPoint" [customizeText]="customizeLabel">
+                    <dxo-font [size]="15" family="Trebuchet MS"></dxo-font>
+                    <dxo-connector [visible]="true" [width]="0.5"></dxo-connector>
+                  </dxo-label>
+                  <dxo-hover-style color="#ffa64e"></dxo-hover-style>
+                </dxi-series>
+              </dx-pie-chart>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" *ngIf="DepartamentoActual != '00'">
+        <div class="col-sm-8">
+          <div class="card border-light" style="border-radius: 15px;">
+            <div class="card-header">
+              <div class="pull-left float-left">
+                <h5 class="font-weight-bold">Proyectos<i class="icon-arrow-forward"></i></h5>
+              </div>
+              <span class="badge float-right pull-right">
+                <i class="fa fa-circle-o"></i>
+              </span>
+            </div>
+            <div class="card-body d-flex align-content-stretch">
+              <div class="col-lg-12 col-xl-12 col-md-12 scroll-container">
+                <div class="group-box">
+                  <div class="row mb-3 text-center">
+                    <div class="col-2 flex-leyenda"><span style="background-color: #212123" class="icon-leyenda"></span>
+                      Actos Preparatorios</div>
+                    <div class="col-2 flex-leyenda"><span style="background-color: #FFEB3B" class="icon-leyenda"></span>
+                      Proceso de Selección</div>
+                    <div class="col-2 flex-leyenda"><span style="background-color: #757575" class="icon-leyenda"></span>
+                      Contrato Suscrito</div>
+                    <div class="col-2 flex-leyenda"><span style="background-color: #00c853" class="icon-leyenda"></span>
+                      En Ejecución</div>
+                    <div class="col-2 flex-leyenda"><span style="background-color: #1e88e5" class="icon-leyenda"></span>
+                      Culminado</div>
+                    <div class="col-2 flex-leyenda"><span style="background-color: #db4437" class="icon-leyenda"></span>
+                      Paralizada</div>
+                    <!-- <div class="col-2 flex-leyenda"><span style="background-color: #FF8C33" class="icon-leyenda"></span> Suspendida</div> -->
+                  </div>
+                  <table class="table table-responsive table-borderless">
+                    <thead>
+                      <tr>
+                        <th>CU / SNIP</th>
+                        <th>Fase</th>
+                        <th>Nombre del Proyecto</th>
+                        <th>Tipo Infraestructura</th>
+                        <th>Estado Situacional</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let item of listProyectosDepartamento">
+                        <td class="text-center" style="width: 15%;">{{item.cod_unificado}} / {{item.cod_snip}}</td>
+                        <td class="text-center" style="width: 10%;">{{item.nombre_tipo_fase}}</td>
+                        <td>{{item.nombre_proyecto}}</td>
+                        <td class="text-center text-uppercase" style="width: 5%;">
+                          {{getTipoInfraestructura(item.id_tipo_infraestructura)}}
+                        </td>
+                        <td class="text-center" style="width: 10%;">
+                          <span class="btnObraFase btnObraFase-{{item.estado}} btn-icon">
+                            <span>
+                              {{item.avance_fisico_real}} %
+                            </span>
+                            <i aria-hidden="true"
+                              class="fa {{item.numero_tramos > 1 ? 'icon-obra-fase-x' : 'icon-obra-fase'}} "></i>
+                          </span>
+                        </td>
+                        <td class="text-center" style="width: 5%;">
+                          <a href="javascript:void(0)" class="btn btn-sm btn-icon"
+                            (click)="detalleProyecto(item.cod_unificado, templateDetalleProyecto)"
+                            tooltip="Ver detalle">
+                            <i class="material-icons fa-15x">
+                              assignment
+                            </i>
+                          </a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="card border-light" style="height:540px; border-radius: 15px;">
+            <div class="card-header">
+              <div class="pull-left float-left">
+                <h5 class="font-weight-bold">Estado Situacional<i class="icon-arrow-forward"></i></h5>
+              </div>
+              <span class="badge float-right pull-right">
+                <i class="fa fa-circle-o"></i>
+              </span>
+            </div>
+            <div class="card-body d-flex align-content-stretch justify-content-center">
+              <div class="col-lg-12 col-xl-12 col-md-12 col align-self-center">
+                <dx-pie-chart id="pieEstado" type="doughnut" [dataSource]="estadoSituacional"
+                  (onPointClick)="pointClickHandler($event)" [palette]="paletteCustomize">
+                  <dxo-legend orientation="horizontal" itemTextPosition="right" horizontalAlignment="center"
+                    verticalAlignment="bottom"></dxo-legend>
+                  <dxo-export [enabled]="false"></dxo-export>
+                  <dxo-tooltip [enabled]="true" [customizeTooltip]="customizeTooltip1"></dxo-tooltip>
+                  <dxi-series argumentField="estado" valueField="cantidad">
+                    <dxo-label [visible]="true" format="fixedPoint" [customizeText]="customizeLabel">
+                      <dxo-font [size]="15" family="Trebuchet MS"></dxo-font>
+                      <dxo-connector [visible]="true" [width]="0.5"></dxo-connector>
+                    </dxo-label>
+                    <dxo-hover-style color="#ffa64e"></dxo-hover-style>
+                  </dxi-series>
+                </dx-pie-chart>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #templateDetalleProyecto>
+  <div class="modal-header bg-magenta c-white">
+    <button type="button" class="close pull-right btn-sm" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title">Detalle Proyecto</h4>
+    <h6 class="card-text text-left" style="font-size: small;">{{proyectoSeleccionado.nombre_proyecto}}</h6>
+    <div class="col-sm-12">
+      <h5 class="item-tag text-left" style="font-size: small;"
+        *ngIf="proyectoSeleccionado.nombre_tipo_infraestructura=='CARRETERA'; else templateTipoInfraestructura">
+        <i class="icon icon-pista"></i>&nbsp;&nbsp;{{proyectoSeleccionado.nombre_tipo_infraestructura}}
+      </h5>
+    </div>
+    <ng-template #templateTipoInfraestructura>
+      <h5 class="item-tag text-left" style="font-size: small;"><i
+          class="icon icon-puente"></i>&nbsp;&nbsp;{{proyectoSeleccionado.nombre_tipo_infraestructura}}</h5>
+    </ng-template>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <table class="table table-borderless">
+        <tr>
+          <td><b>SNIP/CUI</b></td>
+          <td>{{proyectoSeleccionado.cod_snip}} / {{proyectoSeleccionado.cod_unificado}}</td>
+        </tr>
+        <tr>
+          <td><b>Tipo de Via</b></td>
+          <td>{{proyectoSeleccionado.nombre_tipo_via}}</td>
+        </tr>
+        <tr>
+          <td><b>Longitud</b></td>
+          <td>{{proyectoSeleccionado.longitud | number : ''}} {{proyectoSeleccionado.nombre_unidad_medida}}</td>
+        </tr>
+        <tr>
+          <td><b>Nro. Beneficiarios</b></td>
+          <td>{{proyectoSeleccionado.beneficiario | number : ''}}</td>
+        </tr>
+        <tr>
+          <td><b>Monto de Inversion Total</b></td>
+          <td>
+            {{proyectoSeleccionado.montoinversiontotal == null ? 0.00 : proyectoSeleccionado.montoinversiontotal | formatoMoneda}}
+          </td>
+        </tr>
+        <tr>
+          <td><b>PIM Anual</b></td>
+          <td>{{proyectoSeleccionado.pim_anual | formatoMoneda}}</td>
+        </tr>
+        <tr>
+          <td><b>Devengado anual</b></td>
+          <td>{{proyectoSeleccionado.devengado_anual | formatoMoneda}}</td>
+        </tr>
+        <tr>
+          <td><b>Fecha Inicio ({{proyectoSeleccionado.nombre_tipo_fase}})</b></td>
+          <td>{{proyectoSeleccionado.fecha_inicio | date: 'dd/MM/yyyy'}}</td>
+        </tr>
+        <tr>
+          <td><b>Fecha Termino ({{proyectoSeleccionado.nombre_tipo_fase}})</b></td>
+          <td>{{proyectoSeleccionado.fecha_termino | formatoFecha}}</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</ng-template>

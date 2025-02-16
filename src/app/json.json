@@ -1,0 +1,14 @@
+[
+    {
+        "id_adelanto_directo": 1,
+        "id_seguimiento_monitoreo_obra": 126,
+        "nombre_adelanto_directo": "monto de adelanto directo",
+        "fecha_inicio": "01/02/2018",
+        "fecha_termino": "28/03/2013",
+        "monto_garantia": 7689631.68,
+        "monto_adelanto": 78565353.4,
+        "entidad_financiera": "ninguna entidad",
+        "nombre_archivo": "abc.pdf",
+        "ruta_archivo": "http://172.22.9.76/SSPVD_ARCHIVO/obras/adelanto_directo/abc.pdf"
+    }
+]

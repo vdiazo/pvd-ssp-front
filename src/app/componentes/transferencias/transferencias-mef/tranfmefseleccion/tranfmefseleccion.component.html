@@ -1,0 +1,60 @@
+<div class="row form-group">
+  <div class="col-sm-2">
+    <input dTextBox class="form-control" type='text' name="txtCodUnificado" id="txtCodUnificado" placeholder="SNIP / C.U."
+      [(ngModel)]="beConvenioSeleccionarRequest.codproy_snip" #txtCodUnificado="ngModel" />
+  </div>
+  <div class="col-sm-6">
+    <input dTextBox class="form-control" type='text' name="txtNombreProyecto" id="txtNombreProyecto" placeholder="Nombre Proyecto"
+      [(ngModel)]="beConvenioSeleccionarRequest.nombre_proyecto" #txtCodUnificado="ngModel" />
+  </div>
+  <div class="col-sm-4">
+    <button class="btn btn-plomo mr-1" (click)="ConsultarConveniosSeleccionar(beConvenioSeleccionarRequest)" type="button" id="btnBuscar">
+      <i class="fa fa-search"></i> Buscar</button>
+      <span class="xs-p-0" style="text-align: right;" *hasClaim="'financiamiento_transferencia_listSelecProyectos_regSelecProyectos'">
+        <button class="btn btn-danger" type="button" [disabled]="activarConfirmacion" id="btnConfirmarTransferencia" (click)="opnModConfirmarTransferencia()">
+          Confirmar Transferencia</button>
+      </span>
+  </div>
+</div>
+<div style="height:800px; overflow: auto;">
+<table class="table table-hover table-bordered table-responsive table-full-detalle">
+  <thead class="table-danger">
+    <tr>
+      <th>Código del Proyecto</th>
+      <th>Código Snip <a style="cursor: pointer;" [hidden]="mostrarOrdenamiento" title="Ordenar ascendentemente" (click)="ordenarConveniosSeleccion('ascendente')"><span class="fa fa-angle-double-up"></span></a>
+        <a style="cursor: pointer;" title="Ordenar descendentemente" [hidden]="!mostrarOrdenamiento" (click)="ordenarConveniosSeleccion('descendente')"><span class="fa fa-angle-double-down"></span></a>
+      </th>
+      <th>N° de Convenio</th>
+      <th>Nombre del Proyecto</th>
+      <!-- <th>F.F. del Convenio</th> -->
+      <th>Unidad Ejecutora</th>
+      <!-- <th>Monto del Convenio (S/)</th> -->
+      <th>Selección</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let seleccion of listTransferenciasSeleccion; index as s">
+      <td class="xs-hidden">{{seleccion.cod_unificado }}</td>
+      <td class="xs-hidden">{{seleccion.cod_snip }}</td>
+      <td class="xs-hidden text-left">{{seleccion.siglas }}</td>
+      <td class="xs-hidden text-left">{{seleccion.nombre_proyecto }}</td>
+      <!-- <td class="xs-hidden text-left">{{seleccion.fuente_financiamiento_convenio }}</td> -->
+      <td class="xs-hidden text-left">{{seleccion.unidad_ejecutora }}</td>
+      <!-- <td class="xs-hidden text-right">{{seleccion.monto | currency:" S/" }}</td> -->
+      <td class="xs-relative">
+        <div class="xs-display">
+            <div><span class="xs-th">Código : </span><span>{{seleccion.cod_unificado }}</span></div>
+            <div><span class="xs-th">SNIP : </span><span>{{seleccion.cod_snip }}</span></div>
+            <div>{{seleccion.nombre_proyecto }}</div>
+            <div><span class="xs-th">N° de Convenio : </span><span>{{seleccion.siglas }}</span></div>
+        </div>
+        <div class="xs-row-seleccionable row-seleccionable">
+            <input type="checkbox" (change)="seleccionProyecto($event,s,seleccion.id_convenio)" [checked]="seleccion.Estado"
+            id="chkSeleccionf{{s}}" />
+            <label for="chkSeleccionf{{s}}"></label>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div>

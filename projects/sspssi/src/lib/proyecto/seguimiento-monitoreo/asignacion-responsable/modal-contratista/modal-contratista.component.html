@@ -1,0 +1,417 @@
+<div class="modal-header">
+  <h3 class="modal-title">Contratista - Ejecutor de Obra</h3>
+  <p class="pb-2 pl-4 pr-4">Datos del Contratista</p>
+</div>
+
+<div class="modal-body">
+  <div class="group-box" *hasClaim="'monitoreo_tabSeg_responsable_divContratista_eje_dir'">
+    <form [formGroup]="formGroupContratista" (ngSubmit)="registrarContratista()" autocomplete="off" novalidate>
+      <div class="row form-group">
+        <div class="col-sm-2">
+          <label class="control-label" for="ruc">RUC (*):</label>
+        </div>
+        <div class="col-md-4">
+          <input type="text" id="ruc" class="form-control" formControlName="ruc" maxlength="11"
+            (keypress)="funciones.IsNumberKey($event);"
+            [ngClass]="{'is-invalid': (formGroupContratista.get('ruc').touched || formGroupContratista.get('ruc').dirty) && formGroupContratista.get('ruc').invalid }">
+          <span [hidden]="formGroupContratista.get('ruc').valid || formGroupContratista.get('ruc').pristine"
+            class="invalid-tooltip">
+            <span *ngIf="formGroupContratista.get('ruc').errors?.required">
+              RUC del Contratista es obligatorio.
+            </span>
+          </span>
+        </div>
+        <div class="col-sm-2">
+          <label class="control-label" for="razon_social">Razón Social (*):</label>
+        </div>
+        <div class="col-md-4">
+          <input type="text" id="razon_social" class="form-control text-uppercase" formControlName="razon_social"
+            [ngClass]="{'is-invalid': (formGroupContratista.get('razon_social').touched || formGroupContratista.get('razon_social').dirty) && formGroupContratista.get('razon_social').invalid }">
+          <span
+            [hidden]="formGroupContratista.get('razon_social').valid || formGroupContratista.get('razon_social').pristine"
+            class="invalid-tooltip">
+            <span *ngIf="formGroupContratista.get('razon_social').errors?.required">
+              Razón Social del Contratista es obligatorio.
+            </span>
+          </span>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-2">
+          <label class="control-label" for="dni_representante_legal">DNI Representante Legal (*):</label>
+        </div>
+        <div class="col-md-4">
+          <input type="text" id="dni_representante_legal" class="form-control" formControlName="dni_representante_legal"
+            maxlength="8" (keypress)="funciones.IsNumberKey($event);"
+            [ngClass]="{'is-invalid': (formGroupContratista.get('dni_representante_legal').touched || formGroupContratista.get('dni_representante_legal').dirty) && formGroupContratista.get('dni_representante_legal').invalid }">
+          <span
+            [hidden]="formGroupContratista.get('dni_representante_legal').valid || formGroupContratista.get('dni_representante_legal').pristine"
+            class="invalid-tooltip">
+            <span *ngIf="formGroupContratista.get('dni_representante_legal').errors?.required">
+              DNI Representante Legal es obligatorio.
+            </span>
+          </span>
+        </div>
+        <div class="col-sm-2">
+          <label class="control-label" for="apellido_representante_legal">Apellidos (*):</label>
+        </div>
+        <div class="col-md-4">
+          <input type="text" id="apellido_representante_legal" class="form-control text-uppercase"
+            formControlName="apellido_representante_legal"
+            [ngClass]="{'is-invalid': (formGroupContratista.get('apellido_representante_legal').touched || formGroupContratista.get('apellido_representante_legal').dirty) && formGroupContratista.get('apellido_representante_legal').invalid }">
+          <span
+            [hidden]="formGroupContratista.get('apellido_representante_legal').valid || formGroupContratista.get('apellido_representante_legal').pristine"
+            class="invalid-tooltip">
+            <span *ngIf="formGroupContratista.get('apellido_representante_legal').errors?.required">
+              Apellidos del Representante Legal es obligatorio.
+            </span>
+          </span>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-2">
+          <label class="control-label" for="nombre_representante_legal">Nombre(s) (*):</label>
+        </div>
+        <div class="col-md-4">
+          <input type="text" id="nombre_representante_legal" class="form-control text-uppercase"
+            formControlName="nombre_representante_legal"
+            [ngClass]="{'is-invalid': (formGroupContratista.get('nombre_representante_legal').touched || formGroupContratista.get('nombre_representante_legal').dirty) && formGroupContratista.get('nombre_representante_legal').invalid }">
+          <span
+            [hidden]="formGroupContratista.get('nombre_representante_legal').valid || formGroupContratista.get('nombre_representante_legal').pristine"
+            class="invalid-tooltip">
+            <span *ngIf="formGroupContratista.get('nombre_representante_legal').errors?.required">
+              Nombre(s) del Representante Legal es obligatorio.
+            </span>
+          </span>
+        </div>
+        <div class="col-sm-2">
+          <label class="control-label" for="telefono">N° de Teléfono (*):</label>
+        </div>
+        <div class="col-md-4">
+          <input type="text" id="telefono" class="form-control" formControlName="telefono"
+            (keypress)="funciones.IsNumberKey($event);"
+            [ngClass]="{'is-invalid': (formGroupContratista.get('telefono').touched || formGroupContratista.get('telefono').dirty) && formGroupContratista.get('telefono').invalid }">
+          <span [hidden]="formGroupContratista.get('telefono').valid || formGroupContratista.get('telefono').pristine"
+            class="invalid-tooltip">
+            <span *ngIf="formGroupContratista.get('telefono').errors?.required">
+              Nro. de teléfono es obligatorio.
+            </span>
+          </span>
+        </div>
+      </div>
+      <div class="row form-group">
+        <label class="col-sm-2 control-label" for="email">Correo Electrónico (*):</label>
+        <div class="col-md-4">
+          <input type="text" id="email" class="form-control" formControlName="email"
+            [ngClass]="{'is-invalid': (formGroupContratista.get('email').touched || formGroupContratista.get('email').dirty) && formGroupContratista.get('email').invalid }">
+          <span [hidden]="formGroupContratista.get('email').valid || formGroupContratista.get('email').pristine"
+            class="invalid-tooltip">
+            <span *ngIf="formGroupContratista.get('email').errors?.required">
+              Correo Electrónico es obligatorio.
+            </span>
+            <span *ngIf="formGroupContratista.get('email').errors?.email">
+              No es un email valido.
+            </span>
+          </span>
+        </div>
+        <label class="col-sm-2 control-label" for="tipo_contratista">Es Consorcio?</label>
+        <div class="col-sm-4">
+          <ui-switch id="checkCompromiso" name="checkCompromiso" [disabled]="false" [checked]="false" size="small"
+            formControlName="tipo_contratista" (change)="activarCargaConsorcio($event)"></ui-switch>
+        </div>
+      </div>
+      <div *ngIf="esConsorcio">
+        <div class="row form-group">
+          <div class="col-sm-12">
+            <table class="table table-responsive table-bordered">
+              <thead>
+                <tr>
+                  <th>RUC Consorciado</th>
+                  <th>Razón Social Consorciado</th>
+                  <th>% Participación</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody formArrayName="ListDetalleContratista"
+                *ngFor="let item of formGroupContratista['controls'].ListDetalleContratista['controls']; let i= index">
+                <tr [formGroupName]="i">
+                  <td>
+                    <div class="xs-th">RUC Consorciado:</div>
+                    <input type="text" id="{{'ruc_detalle' + i}}" class="form-control text-center"
+                      (keypress)="funciones.IsNumberKey($event);" maxlength="11" formControlName="ruc_detalle"
+                      placeholder="RUC consorciado">
+                  </td>
+                  <td>
+                    <div class="xs-th">Razon Social Consorciado:</div>
+                    <input type="text" id="{{'razon_social_detalle' + i}}" class="form-control text-center"
+                      formControlName="razon_social_detalle" placeholder="Razon Social consorciado">
+                  </td>
+                  <td>
+                    <div class="xs-th">% Participación:</div>
+                    <input type="number" id="{{'nombre_porcentaje_participacion' + i}}" class="form-control text-center"
+                      formControlName="nombre_porcentaje_participacion" placeholder="%" min="0" max="100" step="0.01"
+                      (keypress)="funciones.IsFloat($event)" maxlength="5">
+                  </td>
+                  <td>
+                    <div>
+                      <button *ngIf="i > 0" class="btn btn-debug" type="button" (click)="removerContratistaDetalle(i)"
+                        title="Quitar Consorciado"><i class="fa fa-close"></i></button>
+                      <button *ngIf="i == 0" class="btn btn-success" type="button" (click)="agregarContratistaDetalle()"
+                        title="Agregar Consorciado"><i class="fa fa-plus"></i></button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <span class="comentario">(*) Campos obligatorios</span>
+      <div class="modal-footer" [hidden]=!bEstado>
+        <button type="submit" id="btGuardar" readonly [disabled]="!formGroupContratista.valid" class="btn btn-danger"
+          [hidden]=bMostrar> <i class="fa fa-save"></i> Guardar</button>
+        <button class="btn btn-danger" type="button" [hidden]=!bMostrar>
+          <i class="fa fa-save"></i>....Procesando</button>
+        <button type="button" id="btnLimpiar" (click)="formGroupContratista.reset();setControles();"
+          class="btn btn-default"><i class="icon icon-limpiar"></i> Limpiar</button>
+      </div>
+    </form>
+
+    <!-- <form (ngSubmit)="modificarContratista(model, contratistaForm)" #contratistaForm="ngForm">
+      <div class="row form-group">
+        <input [hidden]="true" type="text" name="id_contratista_seguimiento_obra" id="id_contratista_seguimiento_obra"
+          [(ngModel)]="model.id_contratista_seguimiento_obra" #id_contratista_seguimiento_obra="ngModel" />
+        <div class="col-sm-2">
+          <label dlabels class="control-label" for="ruc">RUC (*)</label>
+        </div>
+        <div class="col-sm-4">
+          <input dTextBox class="form-control" type="text" name="ruc" id="ruc" placeholder="RUC" [(ngModel)]="model.ruc"
+            maxlength="11" #ruc="ngModel" required (keypress)="funciones.IsNumberKey($event)" />
+          <div [hidden]="ruc.valid || ruc.pristine" class="alert alert-danger">
+            RUC del Contratista es obligatorio
+          </div>
+        </div>
+        <div class="col-sm-2">
+          <label dlabels class="control-label" for="razon_social">Razon Social (*)</label>
+        </div>
+        <div class="col-sm-4">
+          <input dTextBox class="form-control" type="text" name="razon_social" id="razon_social"
+            placeholder="Razon Social" [(ngModel)]="model.razon_social" #razon_social="ngModel" />
+          <div [hidden]="razon_social.valid || razon_social.pristine" class="alert alert-danger">
+            Razon Social del Contratista es obligatorio
+          </div>
+        </div>
+      </div>
+
+      <div class="row form-group">
+        <div class="col-sm-2">
+          <label dlabels class="control-label" for="dni_representante_legal">DNI (*)</label>
+        </div>
+        <div class="col-sm-4">
+          <input dTextBox class="form-control" type="text" name="dni_representante_legal" id="dni_representante_legal"
+            placeholder="DNI" [(ngModel)]="model.dni_representante_legal" maxlength="8"
+            #dni_representante_legal="ngModel" required (keypress)="funciones.IsNumberKey($event)" />
+          <div [hidden]="dni_representante_legal.valid || dni_representante_legal.pristine" class="alert alert-danger">
+            DNI del Representante es obligatorio
+          </div>
+        </div>
+        <div class="col-sm-2">
+          <label dlabels class="control-label" for="apellido_representante_legal">Apellidos (*)</label>
+        </div>
+        <div class="col-sm-4">
+          <input dTextBox class="form-control" type="text" name="apellido_representante_legal"
+            id="apellido_representante_legal" placeholder="Apellidos" [(ngModel)]="model.apellido_representante_legal"
+            #apellido_representante_legal="ngModel" required pattern="[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ\s]+" />
+          <div [hidden]="apellido_representante_legal.valid || apellido_representante_legal.pristine"
+            class="alert alert-danger">
+            Apellidos del Representante es obligatorio
+          </div>
+        </div>
+      </div>
+
+      <div class="row form-group">
+        <div class="col-sm-2">
+          <label dlabels class="control-label" for="nombre_representante_legal">Nombre (*)</label>
+        </div>
+        <div class="col-sm-4">
+          <input dTextBox class="form-control" type="text" name="nombre_representante_legal"
+            id="nombre_representante_legal" placeholder="nombres" [(ngModel)]="model.nombre_representante_legal"
+            #nombre_representante_legal="ngModel" required pattern="[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ\s]+" />
+          <div [hidden]="nombre_representante_legal.valid || nombre_representante_legal.pristine"
+            class="alert alert-danger">
+            Nombre del Representante es obligatorio
+          </div>
+        </div>
+        <div class="col-sm-2">
+          <label dlabels class="control-label" for="telefono">N° de Telefono (*)</label>
+        </div>
+        <div class="col-sm-4">
+          <input dTextBox class="form-control" type="text" name="telefono" id="telefono" placeholder="N° de telefono"
+            [(ngModel)]="model.telefono" #telefono="ngModel" #telefono="ngModel" required
+            (keypress)="funciones.IsNumberKey($event)" maxlength="10" />
+          <div [hidden]="telefono.valid || telefono.pristine" class="alert alert-danger">
+            N° de telefono es obligatorio
+          </div>
+        </div>
+      </div>
+
+      <div class="row form-group">
+        <div class="col-sm-2">
+          <label dlabels class="control-label" for="email">Correo Electrónico (*):</label>
+        </div>
+        <div class="col-sm-4">
+          <input dTextBox class="form-control" type="text" name="email" id="email" placeholder="Correo Electronico"
+            [(ngModel)]="model.email" #email="ngModel" required pattern="^[^\s@]+@[^\s@]+\.[^\s@]{2,}$" />
+          <div [hidden]="email.valid || email.pristine" class="alert alert-danger">
+            Correo Electrónico del Contratista es obligatorio
+          </div>
+        </div>
+      </div>
+      <span class="comentario">(*) Campos obligatorios</span>
+      <div class="modal-footer" [hidden]=!bEstado>
+        <button type="submit" id="btGuardar" readonly
+          [disabled]="!contratistaForm.form.valid || model.ruc.length!=11 || model.dni_representante_legal.length!=8"
+          class="btn btn-danger" [hidden]=bMostrar *hasClaim="'monitoreo_tabSeg_responsable_regContratista_eje_dir'"><i
+            class="fa fa-save"></i> Guardar</button>
+        <button class="btn btn-danger" type="button" [hidden]=!bMostrar>
+          <i class="fa fa-save"></i>....Procesando</button>
+        <button type="button" id="btnLimpiar" (click)="contratistaForm.reset();setControles()"
+          class="btn btn-default"><i class="icon icon-limpiar"></i> Limpiar</button>
+      </div>
+    </form> -->
+  </div>
+  <div class="row form-group">
+    <div class="col-12 container-scroll">
+      <table class="table table-hover table-responsive">
+        <thead class="table-active">
+          <tr>
+            <th></th>
+            <th>RUC</th>
+            <th>Razon Social</th>
+            <th>Representante Legal</th>
+            <th>DNI - Representante</th>
+            <th>Telefono</th>
+            <th>Email</th>
+            <th [hidden]=!bEstado></th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let contratista of listaContratista; index as i">
+          <tr>
+            <td>
+              <div>
+                <span [hidden]="!contratista.tipo_contratista" class="btnTramo btn-dark"
+                  (click)="mostrarConsorciados(contratista.listacontratistas)" *ngIf="!mostrarConsorcio"><i
+                    class="fa fa-chevron-down"></i>
+                  Ver Miembros
+                </span>
+                <span [hidden]="!contratista.tipo_contratista" class="btnTramo btn-success"
+                  (click)="mostrarConsorciados(contratista.listacontratistas)" *ngIf="mostrarConsorcio"><i
+                    class="fa fa-chevron-up"></i>
+                  Ocultar Detalle
+                </span>
+              </div>
+            </td>
+            <td class="xs-hidden text-center">{{contratista.ruc}}</td>
+            <td class="xs-hidden text-center">{{contratista.razon_social}}</td>
+            <td class="xs-hidden text-center">{{contratista.apellido_representante_legal}},
+              {{contratista.nombre_representante_legal}}
+            </td>
+            <td class="xs-hidden text-center">{{contratista.dni_representante_legal}}</td>
+            <td class="xs-hidden text-center">{{contratista.telefono}}</td>
+            <td class="text-center">
+              <div class="xs-hidden">
+                {{contratista.email}}
+              </div>
+              <div class="xs-display">
+                <div class="xs-th">RUC: {{contratista.ruc}}</div>
+                <div class="xs-th">Razon Social</div>
+                <div>{{contratista.razon_social}}</div>
+                <div class="xs-th">{{contratista.apellido_representante_legal}},
+                  {{contratista.nombre_representante_legal}}
+                </div>
+                <div class="xs-th">RUC: {{contratista.dni_representante_legal}}</div>
+                <div class="xs-th">Teléfono</div>
+                <div>{{contratista.telefono}}</div>
+                <div class="xs-th">Correo Electrónico</div>
+                <div>{{contratista.email}}</div>
+              </div>
+            </td>
+            <td class="xs-footer-lista xs-text-right" [hidden]=!bEstado>
+              <div class="xs-hidden pre-wrap">
+                <a href="javascript:void(0)" (click)="editarContratista(contratista)" class="btn btn-sm btn-icon"
+                  *hasClaim="'monitoreo_tabSeg_responsable_modContratista_eje_dir'">
+                  <i class="fa fa-15x">
+                    <img src="assets/img/icons/pencil.svg" alt="editar">
+                  </i>
+                </a>
+              </div>
+            </td>
+          </tr>
+          <tr *ngIf="contratista.tipo_contratista" class="xs-grid-detalle">
+            <td *ngIf="mostrarConsorcio" colspan="8" align="center" style="background-color: #EAEAE8;">
+              <table class="table table-hover table-responsive" style="width: 95%">
+                <thead>
+                  <th>RUC Consorciado</th>
+                  <th>Razón Social Consorciado</th>
+                  <th>% Participación</th>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let consorciado of listaConsorcio">
+                    <td>{{consorciado.ruc_detalle}}</td>
+                    <td>{{consorciado.razon_social_detalle}}</td>
+                    <td>{{consorciado.nombre_porcentaje_participacion}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <!--  <div *ngIf="mostrarConsorcio" class="row form-group">
+    <div class="col-sm-12 xs-p-0 pull-left float-left">
+      MIEMBROS CONSORCIO
+    </div>
+  </div> -->
+  <!--  <div *ngIf="mostrarConsorcio" class="row form-group">
+    <div class="col-12 xs-p-0">
+      <table class="table table-hover table-bordered table-responsive table-full-detalle" border="1">
+        <thead class="table-active">
+          <tr>
+            <th *ngIf="false">id_detalle_contratista_seguimiento_obra</th>
+            <th *ngIf="false">id_contratista_seguimiento_obra</th>
+            <th>Ruc de Empresa Consorciada</th>
+            <th>Nombre del Miembro</th>
+            <th>Porcentaje de Participacion (%)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let consorciado of listaConsorcio">
+            <td *ngIf="false">{{consorciado.id_detalle_contratista_seguimiento_obra}}</td>
+            <td *ngIf="false">{{consorciado.id_contratista_seguimiento_obra}}</td>
+            <td class="text-center xs-hidden">{{consorciado.ruc_detalle}}</td>
+            <td class="text-center xs-hidden">{{consorciado.razon_social_detalle}}</td>
+            <td>
+              <div class="xs-hidden text-center">{{consorciado.nombre_porcentaje_participacion}}</div>
+              <div class="xs-display text-center">
+                <div class="xs-th f-s-8">{{consorciado.ruc_detalle}}</div>
+                <div class="xs-th f-s-13">{{consorciado.razon_social_detalle}}</div>
+                <div>
+                  <span class="xs-th">Porcentaje de Participacion:</span>&nbsp;
+                  {{consorciado.nombre_porcentaje_participacion}} %
+                </div>
+              </div>
+            </td>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div> -->
+</div>
+<div class="modal-footer">
+  <button class="btn btn-plomo" id="btnCancelar" type="button" (click)="closeModal()"><i class="fa fa-arrow-left"></i>
+    Cerrar</button>
+</div>

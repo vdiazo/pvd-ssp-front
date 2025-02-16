@@ -1,0 +1,338 @@
+<div class="modal-header">
+  <h3 class="modal-title">Administrador de Contrato - Expediente Tecnico</h3>
+  <p class="pb-2 pl-4 pr-4">Datos del Administrador de Contrato</p>
+</div>
+<div class="modal-body">
+  <div class="group box">
+    <ng-container *hasClaim="'monitoreo_tabSeg_responsable_regAdministrador_exp_tec_eje_dir'">
+      <form [formGroup]="formGroupAdministrador" (ngSubmit)="registrarAdministrador()" autocomplete="off">
+        <div class="row">
+          <div class="col-sm-9">
+            <div class="row form-group">
+              <div class="col-sm-12">
+                <div class="inner-addon right-addon">
+                  <label *ngIf="!cambiarEditar" class="btn mb-0 rounded-left" title="Validar con RENIEC" for="dni"
+                    (click)="validarInformacionReniec()"><i class="icono material-icons">search</i></label>
+                  <input *ngIf="!cambiarEditar" type="text" formControlName="dni" id="dni" placeholder="Número de DNI"
+                    type="text" maxlength="8" class="form-control" (keypress)="funciones.IsNumberKey($event);"
+                    (ngModelChange)="validarDNI()" required>
+                  <label *ngIf="cambiarEditar" class="mb-0 rounded-left" for="dni"><i
+                      class="icono material-icons">search</i></label>
+                  <input *ngIf="cambiarEditar" type="text" formControlName="dni" id="dni" type="text"
+                    (ngModelChange)="validarDNI()" class="form-control" style="background: #e9ecef" readonly>
+                </div>
+                <span class="invalid-feedback">
+                  <span *ngIf="formGroupAdministrador.get('dni').errors?.required">
+                    DNI es obligatorio.
+                  </span>
+                </span>
+              </div>
+            </div>
+            <div class="row form-group">
+              <div class="col-sm-12">
+                <input type="text" formControlName="apellido_paterno" placeholder="Apellido Paterno"
+                  class="form-control" readonly>
+              </div>
+            </div>
+            <div class="row form-group">
+              <div class="col-sm-12">
+                <input type="text" formControlName="apellido_materno" placeholder="Apellido Materno"
+                  class="form-control" readonly>
+              </div>
+            </div>
+            <div class="row form-group">
+              <div class="col-sm-12">
+                <input type="text" formControlName="nombres" placeholder="Nombre(s)" class="form-control" readonly>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div style="height: 100%;width:163.43px;border:1px solid rgba(0, 0, 0, 0.2)">
+              <img id="imgFoto" name="imgFoto" />
+            </div>
+          </div>
+        </div>
+        <!-- <div class="row form-group">
+          <div class="col-sm-2">
+            <label class="control-label" for="dni">DNI (*):</label>
+          </div>
+          <div class="col-md-4">
+            <input type="text" id="dni" class="form-control" formControlName="dni" maxlength="8"
+              (keypress)="funciones.IsNumberKey($event);"
+              [ngClass]="{'is-invalid': (formGroupAdministrador.get('dni').touched || formGroupAdministrador.get('dni').dirty) && formGroupAdministrador.get('dni').invalid }">
+            <span [hidden]="formGroupAdministrador.get('dni').valid || formGroupAdministrador.get('dni').pristine"
+              class="invalid-tooltip">
+              <span *ngIf="formGroupAdministrador.get('dni').errors?.required">
+                DNI es obligatorio.
+              </span>
+            </span>
+          </div>
+          <div class="col-sm-2">
+            <label class="control-label" for="apellidos">Apellidos (*):</label>
+          </div>
+          <div class="col-md-4">
+            <input type="text" id="apellidos" class="form-control text-uppercase" formControlName="apellidos"
+              [ngClass]="{'is-invalid': (formGroupAdministrador.get('apellidos').touched || formGroupAdministrador.get('apellidos').dirty) && formGroupAdministrador.get('apellidos').invalid }">
+            <span
+              [hidden]="formGroupAdministrador.get('apellidos').valid || formGroupAdministrador.get('apellidos').pristine"
+              class="invalid-tooltip">
+              <span *ngIf="formGroupAdministrador.get('apellidos').errors?.required">
+                Apellidos es obligatorio.
+              </span>
+            </span>
+          </div>
+        </div> 
+        <div class="row form-group">
+          <div class="col-sm-2">
+            <label class="control-label" for="nombres">Nombre(s) (*):</label>
+          </div>
+          <div class="col-md-4">
+            <input type="text" id="nombres" class="form-control text-uppercase" formControlName="nombres"
+              [ngClass]="{'is-invalid': (formGroupAdministrador.get('nombres').touched || formGroupAdministrador.get('nombres').dirty) && formGroupAdministrador.get('nombres').invalid }">
+            <span [hidden]="formGroupAdministrador.get('nombres').valid || formGroupAdministrador.get('nombres').pristine"
+              class="invalid-tooltip">
+              <span *ngIf="formGroupAdministrador.get('nombres').errors?.required">
+                Nombre(s) es obligatorio.
+              </span>
+            </span>
+          </div>
+          <label class="col-sm-2 control-label" for="id_tipo_colegiatura_expediente">Tipo de Colegiatura (*):</label>
+          <div class="col-sm-4">
+            <ng-select [items]="listaTipoColegiatura" bindLabel="tipo_colegiatura" bindValue="id_tipo_colegiatura"
+              formControlName="id_tipo_colegiatura_expediente" placeholder="Seleccione"
+              [ngClass]="{'is-invalid': (formGroupAdministrador.get('id_tipo_colegiatura_expediente').touched || formGroupAdministrador.get('id_tipo_colegiatura_expediente').dirty) && formGroupAdministrador.get('id_tipo_colegiatura_expediente').invalid }">
+            </ng-select>
+            <span class="invalid-feedback" style="width: 200px;">
+              <span *ngIf="formGroupAdministrador.get('id_tipo_colegiatura_expediente').errors?.required">
+                Tipo de Colegiatura es obligatorio.
+              </span>
+            </span>
+          </div>
+        </div>-->
+        <br>
+        <div class="row form-group">
+          <label class="col-sm-2 control-label" for="id_tipo_colegiatura_expediente">Tipo de Colegiatura (*):</label>
+          <div class="col-sm-4">
+            <ng-select [items]="listaTipoColegiatura" bindLabel="tipo_colegiatura" bindValue="id_tipo_colegiatura"
+              formControlName="id_tipo_colegiatura_expediente" placeholder="Seleccione"
+              [ngClass]="{'is-invalid': (formGroupAdministrador.get('id_tipo_colegiatura_expediente').touched || formGroupAdministrador.get('id_tipo_colegiatura_expediente').dirty) && formGroupAdministrador.get('id_tipo_colegiatura_expediente').invalid }">
+            </ng-select>
+            <span class="invalid-feedback" style="width: 200px;">
+              <span *ngIf="formGroupAdministrador.get('id_tipo_colegiatura_expediente').errors?.required">
+                Tipo de Colegiatura es obligatorio.
+              </span>
+            </span>
+          </div>
+          <div class="col-sm-2">
+            <label class="control-label" for="nro_colegiatura">N° de Colegiatura (*):</label>
+          </div>
+          <div class="col-md-4">
+            <input type="text" id="nro_colegiatura" class="form-control" formControlName="nro_colegiatura"
+              (keypress)="funciones.IsNumberKey($event);"
+              [ngClass]="{'is-invalid': (formGroupAdministrador.get('nro_colegiatura').touched || formGroupAdministrador.get('nro_colegiatura').dirty) && formGroupAdministrador.get('nro_colegiatura').invalid }">
+            <span
+              [hidden]="formGroupAdministrador.get('nro_colegiatura').valid || formGroupAdministrador.get('nro_colegiatura').pristine"
+              class="invalid-tooltip">
+              <span *ngIf="formGroupAdministrador.get('nro_colegiatura').errors?.required">
+                DNI es obligatorio.
+              </span>
+            </span>
+          </div>
+        </div>
+        <div class="row form-group">
+          <div class="col-sm-2">
+            <label class="control-label" for="fecha_designacion">Fecha de Designación (*):</label>
+          </div>
+          <div class="col-sm-4">
+            <div class="inner-addon left-addon">
+              <i class="icono material-icons">event</i>
+              <input type="text" id="fecha_designacion" class="form-control" formControlName="fecha_designacion"
+                placeholder="dd/mm/aaaa" bsDatepicker
+                [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es', containerClass: 'theme-red' }"
+                [minDate]="fecha_inicio_contractual" readonly
+                [ngClass]="{'is-invalid': (formGroupAdministrador.get('fecha_designacion').touched || formGroupAdministrador.get('fecha_designacion').dirty) && formGroupAdministrador.get('fecha_designacion').invalid }">
+            </div>
+            <span
+              [hidden]="formGroupAdministrador.get('fecha_designacion').valid || formGroupAdministrador.get('fecha_designacion').pristine"
+              class="invalid-tooltip">
+              <span *ngIf="formGroupAdministrador.get('fecha_designacion').errors?.required">
+                Fecha de designación es obligatorio.
+              </span>
+            </span>
+          </div>
+          <div class="col-sm-2">
+            <label class="control-label" for="telefono">N° de Teléfono (*):</label>
+          </div>
+          <div class="col-md-4">
+            <input type="text" id="telefono" class="form-control" formControlName="telefono"
+              (keypress)="funciones.IsNumberKey($event);"
+              [ngClass]="{'is-invalid': (formGroupAdministrador.get('telefono').touched || formGroupAdministrador.get('telefono').dirty) && formGroupAdministrador.get('telefono').invalid }">
+            <span
+              [hidden]="formGroupAdministrador.get('telefono').valid || formGroupAdministrador.get('telefono').pristine"
+              class="invalid-tooltip">
+              <span *ngIf="formGroupAdministrador.get('telefono').errors?.required">
+                Nro. de teléfono es obligatorio.
+              </span>
+            </span>
+          </div>
+        </div>
+        <div class="row form-group">
+          <div class="col-sm-2">
+            <label class="control-label" for="email">Correo Electrónico (*):</label>
+          </div>
+          <div class="col-md-4">
+            <input type="text" id="email" class="form-control" formControlName="email"
+              [ngClass]="{'is-invalid': (formGroupAdministrador.get('email').touched || formGroupAdministrador.get('email').dirty) && formGroupAdministrador.get('email').invalid }">
+            <span [hidden]="formGroupAdministrador.get('email').valid || formGroupAdministrador.get('email').pristine"
+              class="invalid-tooltip">
+              <span *ngIf="formGroupAdministrador.get('email').errors?.required">
+                Correo Electrónico es obligatorio.
+              </span>
+              <span *ngIf="formGroupAdministrador.get('email').errors?.email">
+                No es un email valido.
+              </span>
+            </span>
+          </div>
+          <div class="col-sm-2">
+            <label class="control-label">Documento de Designación (*):</label>
+          </div>
+          <div class="col-sm-4">
+            <app-input-file idComp="fileadministradorexpe" (onChange)="fileChangeEvent($event)" class="input-group"
+              IdTipoArchivo="{{tipoArchivo}}" Value="{{ nombreArchivo }}"
+              [ngClass]="{'is-invalid': (formGroupAdministrador.get('nombre_archivo').touched || formGroupAdministrador.get('nombre_archivo').dirty) && !formGroupAdministrador.get('nombre_archivo').valid }">
+            </app-input-file>
+            <span
+              [hidden]="formGroupAdministrador.get('nombre_archivo').valid || formGroupAdministrador.get('nombre_archivo').pristine"
+              class="invalid-tooltip">
+              <span *ngIf="formGroupAdministrador.get('nombre_archivo').errors?.required">
+                Documento de designación es obligatorio.
+              </span>
+            </span>
+            <p></p>
+          </div>
+        </div>
+        <span class="comentario">(*)Campos Obligatorios</span>
+        <div class="modal-footer" [hidden]=!bEstado>
+          <button type="submit" class="btn btn-danger" id="btnGuardar" readonly
+            *hasClaim="'monitoreo_tabSeg_responsable_regSupervisor_eje_dir'" [hidden]=bMostrar
+            [disabled]="!formGroupAdministrador.valid"><i class="fa fa-save"></i> Guardar</button>
+          <button class="btn btn-danger" type="button" [hidden]=!bMostrar>
+            <i class="fa fa-save"></i> ....Procesando</button>
+          <button type="button" id="btnLimpiar" (click)="formGroupAdministrador.reset();setControles()"
+            class="btn btn-default"> <i class="icon icon-limpiar"></i>
+            Limpiar</button>
+        </div>
+      </form>
+    </ng-container>
+  </div>
+
+  <div class="row form-group">
+    <div class="col-12 container-scroll">
+      <table class="table table-hover table-responsive">
+        <thead>
+          <tr>
+            <th>DNI</th>
+            <th>Administrador</th>
+            <th>Tipo Colegiatura</th>
+            <th>Nro. Colegiatura</th>
+            <th>Fecha de designacion</th>
+            <th>Teléfono</th>
+            <th>Correo Electrónico</th>
+            <th>Doc.</th>
+            <th [hidden]=!bEstado *hasClaim="'monitoreo_tabSeg_responsable_regAdministrador_exp_tec_eje_dir'"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let administrador of listaAdministradorExpediente">
+            <td class="xs-hidden text-center">{{administrador.dni}}</td>
+            <td class="xs-hidden text-center">{{administrador.apellido_paterno}} {{administrador.apellido_materno}},
+              {{administrador.nombres}}</td>
+            <td class="xs-hidden text-center">{{administrador.nombre_tipo_colegiatura_expediente}}</td>
+            <td class="xs-hidden text-center">{{administrador.nro_colegiatura}}</td>
+            <td class="xs-hidden">{{administrador.fecha_designacion | formatoFecha}}</td>
+            <td class="xs-hidden text-center">{{administrador.telefono}}</td>
+            <td class="xs-hidden">
+              <div class="xs-hidden">
+                {{administrador.email}}
+              </div>
+              <div class="xs-display">
+                <div class="xs-th">DNI: {{administrador.dni}}</div>
+                <div class="xs-th">{{administrador.apellidos}}, {{administrador.nombres}}
+                </div>
+                <div class="xs-th">Tipo Colegiatura</div>
+                <div>{{administrador.nombre_tipo_colegiatura_expediente}}</div>
+                <div class="xs-th">Colegiatura</div>
+                <div>{{administrador.nro_colegiatura}}</div>
+                <div class="xs-th">Fecha de Designación</div>
+                <div>{{administrador.fecha_designacion | formatoFecha}}</div>
+                <div class="xs-th">Teléfono</div>
+                <div>{{administrador.telefono}}</div>
+                <div class="xs-th">Correo Electrónico</div>
+                <div>{{administrador.email}}</div>
+              </div>
+            </td>
+            <td>
+              <div class="xs-hidden">
+                <div
+                  *ngIf="administrador.ruta_archivo != '' && administrador.nombre_archivo != null && administrador.nombre_archivo != ''; else templateicono">
+                  <a href="{{administrador.ruta_archivo}}" target="_blank" class="btn-icon" [LinkNube]="administrador.nombre_archivo" [Ruta]="administrador.ruta_archivo">
+                    <i class="fa fa-15x">
+                      <img src="assets/img/icons/file.svg" alt="archivo">
+                    </i>
+                  </a>
+                </div>
+                <ng-template #templateicono>
+                </ng-template>
+              </div>
+            </td>
+            <td class="xs-footer-lista xs-text-right" [hidden]=!bEstado
+              *hasClaim="'monitoreo_tabSeg_responsable_regAdministrador_exp_tec_eje_dir'">
+              <div class="xs-hidden pre-wrap">
+                <a href="javascript:void(0)" (click)="editarAdministrador(administrador)" class="btn btn-sm btn-icon">
+                  <i class="fa fa-15x">
+                    <img src="assets/img/icons/pencil.svg" alt="editar">
+                  </i>
+                </a>
+                <a href="javascript:void(0)"
+                  (click)="eliminarAdministrador(administrador.id_administrador_contrato_seguimiento_expediente)"
+                  class="btn btn-sm btn-icon">
+                  <i class="fa fa-15x">
+                    <img src="assets/img/icons/trash.svg" alt="eliminar">
+                  </i>
+                </a>
+              </div>
+              <div class="d-block d-sm-none">
+                <span
+                  *ngIf="administrador.ruta_archivo != '' && administrador.nombre_archivo != null && administrador.nombre_archivo != '';">
+                  <a href="{{administrador.ruta_archivo}}" target="_blank" class="btn-icon mr-1" [LinkNube]="administrador.nombre_archivo" [Ruta]="administrador.ruta_archivo">
+                    <i class="fa fa-file"></i>
+                  </a>
+                </span>
+                <a href="javascript:void(0)" (click)="editarAdministrador(administrador)" class="btn-icon mr-1">
+                  <i class="fa fa-pencil"></i>
+                </a>
+                <a href="javascript:void(0)"
+                  (click)="eliminarAdministrador(administrador.id_administrador_contrato_seguimiento_expediente)"
+                  class="btn-icon">
+                  <i class="fa fa-trash"></i>
+                </a>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-12">
+      <nav class="pt-4 pl-3 pull-right">
+        <pagination [totalItems]="totalRegistros" [itemsPerPage]="numPaginasMostrar" [boundaryLinks]="true"
+          previousText="&lsaquo;" nextText="&rsaquo;" [rotate]="false" firstText="&laquo;" lastText="&raquo;"
+          [maxSize]="5" (pageChanged)="cambiarPagina($event)">
+        </pagination>
+      </nav>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-plomo" id="btnCancelar" type="button" (click)="closeModal()"><i class="fa fa-close"></i>
+    Cerrar</button>
+</div>

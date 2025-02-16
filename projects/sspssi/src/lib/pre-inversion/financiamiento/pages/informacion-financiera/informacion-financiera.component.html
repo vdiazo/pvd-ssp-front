@@ -1,0 +1,53 @@
+<div class="row">
+  <div class="col-12">
+    <ng-container *hasClaim="'monitoreo_tabFinan_regFinanciamiento_vincularFinanciamiento_pre_inv_eje_dir'">
+      <form [formGroup]="formVincularSigat" (ngSubmit)="vincularInformacionSigat()">
+        <div class="row form-group">
+          <div class="col-4">
+            <input class="form-control" type="text" formControlName="nro_contrato" maxlength="10" [ngClass]="{'is-invalid': f.nro_contrato.invalid && (f.nro_contrato.dirty || f.nro_contrato.touched),
+            'ng-inicio': f.nro_contrato.invalid && f.nro_contrato.untouched}">
+            <div *ngIf="f.nro_contrato.invalid && (f.nro_contrato.dirty || f.nro_contrato.touched)">
+              <strong *ngIf="f.nro_contrato.errors.required" class="text-danger">Nro. de contrato es
+                obligatorio</strong>
+              <strong *ngIf="f.nro_contrato.errors.pattern" class="text-danger">Nro. de contrato es de la forma
+                2018-0002
+                (formato SIGAT)</strong>
+            </div>
+          </div>
+          <div class="col6">
+            <button type="submit" class="btn btn-danger" [disabled]="bVincular"><i
+                class="fa fa-link"></i>&nbsp;Vincular</button>
+          </div>
+        </div>
+      </form>
+    </ng-container>
+  </div>
+</div>
+<div class="row" *ngIf="bVincular">
+  <div class="col-12">
+    <table class="table table-hover table-responsive table-borderled">
+      <thead>
+        <tr>
+          <th>PERIODO</th>
+          <th>F.F.</th>
+          <th>VALBRUTA</th>
+          <th>AMORTIZACION</th>
+          <th>VAL. NETO</th>
+          <th>IGV</th>
+          <th>TOTAL</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let periodo of listaPagosEfectuados;">
+          <td>{{funciones.obtenerAbreviacionMes(periodo.mes)}} - {{periodo.anno}}</td>
+          <td class="text-center">{{periodo.c_codent_fin}}</td>
+          <td class="text-right">{{periodo.VALBRUTA | currency: 'S/ '}}</td>
+          <td class="text-right">{{periodo.AMORTIZACION | currency: 'S/ '}}</td>
+          <td class="text-right">{{periodo.VALNETO | currency: 'S/ '}}</td>
+          <td class="text-right">{{periodo.IGV | currency: 'S/ '}}</td>
+          <td class="text-right">{{periodo.TOTAL | currency: 'S/ '}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,59 @@
+<div class="modal-header">
+
+  <h4 class="modal-title">Cronograma</h4>
+  <br>
+</div>
+<div class="modal-body">
+  <div class="group-box">
+    <div class="row form-group">
+      <div class="col-lg-2 col-sm-2">
+        <label dlabels class="control-label">VERSIÓN:</label>
+      </div>
+      <div class="col-lg-8 col-sm-10">
+        <ng-select [items]="Cronograma" 
+        placeholder="Seleccione la Cronograma" 
+        bindLabel="version_cronograma" 
+        bindValue="version_cronograma" 
+        [(ngModel)]="version_cronograma"
+        (change)="VCronograma($event)">
+        </ng-select>
+      </div>
+    </div>
+  </div>
+  <table class="table table-hover responsivo">
+    <thead>
+      <tr>
+        <th class="text-center">ETAPA</th>
+        <th class="text-center">FECHA INICIO</th>
+        <th class="text-center">FECHA FIN</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of ListadoOsce">
+        <td class="td-l xs-hidden">
+          {{item.etapa}}</td>
+        <td class="td-c xs-hidden">
+          {{item.fecha_inicio}}</td>
+        <td class="td-c">
+          <div class="xs-hidden">
+              {{item.fecha_fin}}
+          </div>
+          <div class="xs-display text-left">
+              <div class="xs-th f-s-13">Etapa:</div>
+              <div class="f-s-13">{{item.etapa}}</div>
+              <div>
+                <span class="xs-th">Fecha inicio: </span>&nbsp;{{item.fecha_inicio}}
+              </div>
+              <div>
+                  <span class="xs-th">Fecha fin: </span>&nbsp;{{item.fecha_fin}}
+                </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-plomo d-inline-flex align-items-center" id="btnCancelar" type="button" (click)="BsModalRef.hide()">
+    <i class="material-icons v-m">keyboard_backspace</i>Cancelar</button>
+</div>

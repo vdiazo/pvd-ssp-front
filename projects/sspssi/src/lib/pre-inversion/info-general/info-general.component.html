@@ -1,0 +1,52 @@
+<div class="tab-content" id="nav-tabContent">
+  <div class="tab-pane fade show active jumbotron container-fluid pt-4" id="nav-home" role="tabpanel"
+    aria-labelledby="nav-home-tab">
+    <accordion>
+      <div class="row">
+        <div class="col-12">
+          <accordion-group [isOpen]=true>
+            <button class="btn btn-link btn-block clearfix" accordion-heading>
+              <div class="pull-left float-left">1. Información General</div>
+              <span class="badge float-right pull-right">
+                <i class="fa fa-circle-o"></i>
+              </span>
+            </button>
+            <div class="row">
+              <div class="col-md-2">
+                <strong>Código Proyecto</strong>
+              </div>
+              <div class="col-md-10">{{Proyecto.cod_unificado}}</div>
+            </div><br>
+            <div class="row">
+              <div class="col-md-2">
+                <strong>Nombre PIP</strong>
+              </div>
+              <div class="col-md-10">{{Proyecto.nombre_proyecto}}</div>
+            </div><br>
+            <div class="row">
+              <div class="col-md-2">
+                <strong>Ubicación del Proyecto</strong>
+              </div>
+              <div class="col-md-10">
+                {{ "Región: " + Proyecto.Region + " - Provincia: " + Proyecto.Provincia + " - Distrito: " + Proyecto.Distrito}}
+              </div>
+            </div><br>
+          </accordion-group>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <accordion-group [isOpen]=false [panelClass]="separator">
+            <button class="btn btn-link btn-block clearfix" accordion-heading>
+              <div class="pull-left float-left">2. Convenio(s) / Adenda / Decreto de Urgencia</div>
+              <span class="badge float-right pull-right">
+                <i class="fa fa-circle-o"></i>
+              </span>
+            </button>
+            <ssi-listado-convenio></ssi-listado-convenio>
+          </accordion-group>
+        </div>
+      </div>
+    </accordion>
+  </div>
+</div>

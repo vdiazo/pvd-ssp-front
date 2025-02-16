@@ -1,0 +1,372 @@
+<div class="modal-header">
+  <h4 class="modal-title">{{nombreProyecto}} </h4>
+  <p class="pl-4 pr-4">Código SNIP: {{ modelVerResultados.snip }}</p>
+  <p class="pl-4 pr-4">Unidad Ejecutora: {{ modelVerResultados.nombre_municipalidad }}</p>
+</div>
+<div class="modal-body xs-p-0 xs-m-l-2 xs-m-r-2">
+  <accordion>
+    <div class="row row-default">
+      <div class="col-12 p-0">
+        <accordion-group [isOpen]=true>
+          <button class="btn btn-link btn-block clearfix" accordion-heading>
+            <div class="pull-left float-left">1. INFORMACIÓN GENERAL</div>
+            <span class="badge float-right pull-right">
+              <i class="fa fa-circle-o"></i>
+            </span>
+          </button>
+          <div class="row form-group">
+            <label dlabels class="col-sm-3 xs-p-0  control-label">Identificador Convocatoria:</label>
+            <div class="col-sm-9 xs-p-0">
+              {{mostrarResultados.identificador}}
+            </div>
+          </div>
+          <div class="row form-group">
+            <label dlabels class="col-sm-3 xs-p-0  control-label">Entidad Convocante:</label>
+            <div class="col-sm-9 xs-p-0">
+              {{mostrarResultados.entidad}}
+            </div>
+          </div>
+          <div class="row form-group">
+            <div class="col-sm-3 xs-p-0">
+              <label dlabels class="control-label">Descripción del Objeto:</label>
+            </div>
+            <div class="col-sm-9 xs-p-0">
+              {{mostrarResultados.descripcion_proceso}}
+            </div>
+          </div>
+          <div class="row form-group">
+            <div class="col-sm-3 xs-p-0">
+              <label dlabels class="control-label">Tipo de Selección:</label>
+            </div>
+            <div class="col-sm-9 xs-p-0">
+              {{mostrarResultados.tipo_seleccion}}
+            </div>
+          </div>
+          <div class="row form-group">
+            <div class="col-md-3 xs-p-0">
+              <label dlabels class="control-label">Modalidad:</label>
+            </div>
+            <div class="col-md-9 xs-p-0">
+              {{mostrarResultados.modalidad}}
+            </div>
+          </div>
+          <div class="row form-group">
+            <div class="col-sm-3 xs-p-0">
+              <label dlabels class="control-label">Normativa Aplicable:</label>
+            </div>
+            <div class="col-sm-9 xs-p-0">
+              {{mostrarResultados.normativa}}
+            </div>
+          </div>
+          <div class="row form-group">
+            <div class="col-sm-3 xs-p-0">
+              <label dlabels class="control-label">Sistema de Contratación:</label>
+            </div>
+            <div class="col-sm-9 xs-p-0">
+              {{mostrarResultados.sistema_contratacion}}
+            </div>
+          </div>
+          <div class="row form-group">
+            <div class="col-sm-3 xs-p-0">
+              <label dlabels class="control-label">Nomenclatura:</label>
+            </div>
+            <div class="col-sm-9 xs-p-0">
+              {{nomemclaturaProc}}
+            </div>
+          </div>
+          <div class="row form-group">
+            <div class="col-sm-3 xs-p-0">
+              <label dlabels class="control-label">Fecha y Hora de Publicación:</label>
+            </div>
+            <div class="col-sm-9 xs-p-0">
+              {{mostrarResultados.fecha_publicacion}}
+            </div>
+          </div>
+          <div class="row form-group">
+            <div class="col-sm-3 xs-p-0">
+              <label dlabels class="control-label">Valor Referencial S/</label>
+            </div>
+            <div class="col-sm-9 xs-p-0">
+              {{mostrarResultados.valor_referencial_item | currency:" S/"}}
+            </div>
+          </div>
+        </accordion-group>
+      </div>
+    </div>
+    <div class="row row-default">
+      <div class="col-12 p-0">
+        <accordion-group [isOpen]=true>
+          <button class="btn btn-link btn-block clearfix" accordion-heading>
+            <div class="pull-left float-left">2. RESULTADO DEL PROCESO</div>
+            <span class="badge float-right pull-right">
+              <i class="fa fa-circle-o"></i>
+            </span>
+          </button>
+          <div class="row form-group">
+            <label dlabels class="col-sm-3 xs-p-0 control-label">Estado del ITEM:</label>
+            <div class="col-sm-9 xs-p-0">
+              {{mostrarResultados.estado_item}}
+            </div>
+          </div>
+          <div *ngIf="verAdjudicado || verContratado" class="row form-group">
+            <label *ngIf="verLabelNullsFecha" dlabels class="col-sm-3 xs-p-0 control-label">Fecha de Buena Pro:</label>
+            <label *ngIf="!verLabelNullsFecha" dlabels class="col-sm-3 xs-p-0 control-label">Fecha:</label>
+            <div class="col-sm-9 xs-p-0">
+              {{mostrarResultados.fecha_buena_pro }}
+            </div>
+          </div>
+
+          <div *ngIf="!verLabelNullsFecha" class="row form-group">
+            <div class="col-sm-3 xs-p-0">
+              <label dlabels class="control-label">Sustento:</label>
+            </div>
+            <div class="col-sm-9 xs-p-0">
+              <div *ngIf="mostrarResultados.url_documento_sustento !=''">
+                <a href="{{mostrarResultados.url_documento_sustento}}" target="_blank" class="btn-icon">
+                  <i class="fa fa-15x">
+                    <img src="assets/img/icons/file.svg" alt="archivo">
+                  </i>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="verConsentido" class="row form-group">
+            <div class="col-sm-3 xs-p-0">
+              <label dlabels class="control-label">Fecha de Buena Pro Consentida:</label>
+            </div>
+            <div class="col-sm-9 xs-p-0">
+              {{mostrarResultados.fecha_buena_pro_consentida}}
+            </div>
+          </div>
+          <div *ngIf="verContratado" class="row form-group">
+            <div class="col-sm-3 xs-p-0">
+              <label dlabels class="control-label">Valor Adjudicado ITEM S/:</label>
+            </div>
+            <div class="col-sm-9 xs-p-0">
+              {{mostrarResultados.varlor_adjudicado_item | currency:" S/"}}
+            </div>
+          </div>
+          <div *ngIf="verContratado" class="row form-group">
+            <div class="col-md-3 xs-p-0">
+              <label dlabels class="control-label">Moneda:</label>
+            </div>
+            <div class="col-md-9 xs-p-0">
+              {{mostrarResultados.moneda}}
+            </div>
+          </div>
+          <div *ngIf="verContratado" class="row form-group">
+            <div class="col-sm-3 xs-p-0">
+              <label dlabels class="control-label">N° Contrato:</label>
+            </div>
+            <div class="col-sm-9 xs-p-0">
+              {{mostrarResultados.numero_contrato}}
+            </div>
+          </div>
+          <div *ngIf="verContratado" class="row form-group">
+            <div class="col-sm-3 xs-p-0">
+              <label dlabels class="control-label">Fecha de Contrato:</label>
+            </div>
+            <div class="col-sm-9 xs-p-0">
+              {{mostrarResultados.fecha_contrato}}
+            </div>
+          </div>
+          <div *ngIf="verContratado" class="row form-group">
+            <div class="col-sm-3 xs-p-0">
+              <label dlabels class="control-label">Ver Contrato:</label>
+            </div>
+            <div class="col-sm-9 xs-p-0">
+              <div *ngIf="mostrarResultados.url_contrato != ''">
+                <a href="{{mostrarResultados.url_contrato}}" target="_blank" class="btn-icon">
+                  <i class="fa fa-15x">
+                    <img src="assets/img/icons/file.svg" alt="archivo">
+                  </i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </accordion-group>
+      </div>
+    </div>
+    <div *ngIf="verContratado" class="row row-default">
+      <div class="col-12 p-0">
+        <accordion-group [isOpen]=true>
+          <button class="btn btn-link btn-block clearfix" accordion-heading>
+            <div class="pull-left float-left">3. INFORMACIÓN DEL GANADOR DEL PROCESO</div>
+            <span class="badge float-right pull-right">
+              <i class="fa fa-circle-o"></i>
+            </span>
+          </button>
+          <div class="row form-group">
+            <div *ngIf="mostrarResultados.consorcio=='N'" class="col-sm-12 xs-p-0 pull-left float-left">3.1. EMPRESA
+            </div>
+            <div *ngIf="mostrarResultados.consorcio=='S'" class="col-sm-12 xs-p-0 pull-left float-left">3.1. CONSORCIO
+            </div>
+            <div class="col-sm-2 xs-p-0">
+              <label dlabels class="control-label">Nombre:</label>
+            </div>
+            <div class="col-sm-10 xs-p-0">
+              {{mostrarResultados.ganador}}
+            </div>
+            <div *ngIf="mostrarResultados.consorcio=='N'" class="col-sm-2 xs-p-0">
+              <label dlabels class="control-label">RUC:</label>
+            </div>
+            <div *ngIf="mostrarResultados.consorcio=='N'" class="col-sm-10 xs-p-0">
+              {{mostrarResultados.ruc_codigo_ganador}}
+            </div>
+            <div *ngIf="mostrarResultados.consorcio=='N'" class="col-sm-2 xs-p-0">
+              <label dlabels class="control-label">Ver Garantía:</label>
+            </div>
+            <div *ngIf="mostrarResultados.consorcio=='N'" class="col-sm-10 xs-p-0">
+              <div *ngIf="urlGarantia != '' ; else templateVerGarantia">
+                <a href="{{urlGarantia}}" target="_blank" class="btn-icon">
+                  <i class="fa fa-15x">
+                    <img src="assets/img/icons/file.svg" alt="archivo">
+                  </i>
+                </a>
+              </div>
+              <ng-template #templateVerGarantia>
+              </ng-template>
+            </div>
+          </div>
+          <div *ngIf="mostrarResultados.consorcio=='S'" class="row form-group">
+            <div class="col-sm-12  xs-p-0 pull-left float-left">3.2. CONSORCIADOS</div>
+          </div>
+          <div *ngIf="mostrarResultados.consorcio=='S'" class="row form-group">
+            <div class="col-12  xs-p-0">
+              <table class="table table-hover table-bordered table-responsive table-full-detalle" border="1">
+                <thead class="table-active">
+                  <tr>
+                    <th>Ruc de Empresas Consorciadas</th>
+                    <th>Nombre del Miembro</th>
+                    <th>Porcentaje de Participación</th>
+                    <!-- <th>Ver Garantías</th> -->
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let empresas of listEmpresasConsorciadas; index as s">
+                    <td class="text-left xs-hidden">{{empresas.ruc_miembro_consorcio}}</td>
+                    <td class="text-left xs-hidden">{{empresas.nombre_miembro_consorcio}}</td>
+                    <td>
+                      <div class="xs-hidden text-right">{{empresas.porcentaje_participacion}}</div>
+                      <div class="xs-display text-left">
+                        <div class="xs-th f-s-8">{{empresas.ruc_miembro_consorcio}}</div>
+                        <div class="xs-th f-s-13">{{empresas.nombre_miembro_consorcio}}</div>
+                        <div>
+                          <span class="xs-th">Porcentaje de Participación: </span>&nbsp;
+                          {{empresas.porcentaje_participacion}} %
+                        </div>
+                      </div>
+
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="row" *ngIf="mostrarResultados.consorcio=='S'">
+            <div class="col-12">
+              <nav class="pull-right">
+                <pagination [totalItems]="totalRegistros" [itemsPerPage]="num_filas" [boundaryLinks]="true"
+                  previousText="&lsaquo;" nextText="&rsaquo;" [rotate]="false" firstText="&laquo;" lastText="&raquo;"
+                  [maxSize]="5" (pageChanged)="cambiarPagina($event)">
+                </pagination>
+              </nav>
+            </div>
+          </div>
+          <div *ngIf="mostrarResultados.consorcio=='S'" class="row form-group">
+            <div class="col-sm-12  xs-p-0 pull-left float-left">3.3. GARANTÍAS</div>
+          </div>
+          <div *ngIf="mostrarResultados.consorcio=='S'" class="row form-group">
+            <div class="col-12  xs-p-0">
+              <table class="table table-hover table-bordered table-responsive table-full-detalle" border="1">
+                <thead class="table-active">
+                  <tr>
+                    <th>Carta de Garantía</th>
+                    <th>Fecha de Inicio</th>
+                    <th>Fecha de Término</th>
+                    <th>Monto de la Garantía</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let garantias of listGarantias; index as s">
+                    <td class="xs-footer-lista xs-text-right">
+                      <div class="xs-hidden">
+                        <div *ngIf="garantias.url != '' ; else templateiconoDetalle">
+                          <a href="{{garantias.url}}" target="_blank" class="btn-icon">
+                            <i class="fa fa-15x">
+                              <img src="assets/img/icons/file.svg" alt="archivo">
+                            </i>
+                          </a>
+                        </div>
+                        <ng-template #templateiconoDetalle>
+                        </ng-template>
+                      </div>
+                    </td>
+                    <td class="text-left xs-hidden">{{garantias.fecha_inicio}}</td>
+                    <td class="text-left xs-hidden">{{garantias.fecha_termino}}</td>
+                    <td class="text-left">
+                      <div class="xs-hidden">{{garantias.monto_garantia}}</div>
+                      <div class="xs-display">
+                        <div><span class="xs-th">Fecha de Inicio : </span><span>{{garantias.fecha_inicio}}</span></div>
+                        <div><span class="xs-th">Fecha de Término : </span><span>{{garantias.fecha_termino}}</span>
+                        </div>
+                        <div><span class="xs-th">Monto de la Garantía : </span><span>{{garantias.monto_garantia}}</span>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="icon-group xs-footer-lista xs-text-right">
+                      <div class="xs-hidden pre-wrap">
+                        <span *hasClaim="'monitoreo_tabSel_verResult_divInfGanador_verEditarGarantia_eje_dir'">
+                          <div *ngIf="garantias.url != ''">
+                            <div class="xs-hidden pre-wrap">
+                              <a href="javascript:void(0)" (click)="editarGarantia(garantias)"
+                                class="btn btn-sm btn-icon">
+                                <i class="fa fa-15x">
+                                  <img src="assets/img/icons/pencil.svg" alt="editar">
+                                </i>
+                              </a>
+                            </div>
+                          </div>
+                        </span>
+                      </div>
+                      <div class="xs-display pre-wrap">
+                        <span *ngIf="garantias.url != ''">
+                          <a href="{{garantias.url}}" target="_blank" class="btn-icon mr-1">
+                            <i class="fa fa-file"></i>
+                          </a>
+                        </span>
+                        <span *hasClaim="'monitoreo_tabSel_verResult_divInfGanador_verEditarGarantia_eje_dir'">
+                          <span *ngIf="garantias.url != ''">
+                            <a href="javascript:void(0)" (click)="editarGarantia(garantias)" class="btn-icon">
+                              <i class="fa fa-pencil"></i>
+                            </a>
+                          </span>
+                        </span>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="row" *ngIf="mostrarResultados.consorcio=='S'">
+            <div class="col-12">
+              <nav class="pull-right">
+                <pagination [totalItems]="totalRegistrosGarantia" [itemsPerPage]="num_filas" [boundaryLinks]="true"
+                  previousText="&lsaquo;" nextText="&rsaquo;" [rotate]="false" firstText="&laquo;" lastText="&raquo;"
+                  [maxSize]="5" (pageChanged)="cambiarPaginaGarantia($event)">
+                </pagination>
+              </nav>
+            </div>
+          </div>
+        </accordion-group>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-plomo" id="btnCancelar" type="button" (click)="closeModal()"><i class="fa fa-close"></i>
+        Cerrar</button>
+    </div>
+  </accordion>
+</div>

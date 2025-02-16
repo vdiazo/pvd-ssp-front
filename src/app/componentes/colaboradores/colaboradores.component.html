@@ -1,0 +1,126 @@
+<div class="container-fluid">
+    <p class="page-title">Colaboradores</p>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card card-white">
+                <div class="card-header"></div>
+                <div class="card-body">
+                    <div class="row form-group">
+                        <label dlabels class="col-sm-2 control-label">Colaborador:</label>
+                        <div class="col-sm-10">
+                            <input dTextBox class="form-control" type='text' placeholder="INGRESE NOMBRE DEL COLABORADOR"
+                                name="campoBusqueda" [(ngModel)]="nombreUsuario" />
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-sm-12">
+                            <div class=" pull-right">
+                                <button type="button" id="btnBuscar" class="btn pull-left btn-plomo" (click)="busquedaColaboradores()"><i
+                                        class="fa fa-search"></i> Buscar</button>
+                                <button type="button" id="btnNuevoRegistro" class="btn pull-left ml-1 btn-danger"
+                                    (click)="addOrEditColaboradorColaborador()"> Nuevo Colaborador</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card card-auto bg-orange-600">
+                <div class="card-body">
+                    <div class="div-centrado text-center c-white">
+                        <div class="f-s-5rem l-h-100">{{totalRegistros}}</div>
+                        <div>Colaboradores</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="card card-principal">
+        <div class="card-head"></div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12 container-scroll">
+                    <table class="table table-hover table-responsive table-normal">
+                        <thead>
+                            <tr>
+                                <th>Usuario Colaborador</th>
+                                <th>Nombre Colaborador</th>
+                                <th>DNI</th>
+                                <th>Correo Electronico</th>
+                                <th>Celular</th>
+                                <th>Estado</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let campos of arreglo">
+                                <td class="xs-hidden text-left">{{ campos.usuario }}</td>
+                                <td class="xs-hidden text-left">{{campos.nombre_usuario }}</td>
+                                <td class="xs-hidden text-left">{{campos.dni_usuario }}</td>
+                                <td class="xs-hidden text-left">{{campos.correo_electronico }}</td>
+                                <td class="xs-hidden text-left">{{campos.celular}}</td>
+                                <td>
+                                    <div class="xs-display">
+                                        <div class="xs-th f-s-8">{{campos.dni_usuario}}</div>
+                                        <div class="xs-th f-s-13">{{campos.nombre_usuario }}</div>
+                                        <div class="mt-1 mb-1">
+                                            <span class="xs-th">Usuario: </span>&nbsp;&nbsp;
+                                            <span>{{campos.usuario }}</span>
+                                        </div>
+                                        <div class="mt-1 mb-2">
+                                            <span class="xs-th">Correo: </span>&nbsp;&nbsp;
+                                            <span>{{campos.correo_electronico }}</span>
+                                        </div>
+                                        <div class="mt-1 mb-2">
+                                            <span class="xs-th">Celular: </span>&nbsp;&nbsp;
+                                            <span>{{campos.celular}}</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <ui-switch size="small" [checked]="campos.estado"
+                                        (change)="estado($event,campos)"></ui-switch>
+                                </td>
+                                <td width="140" class="xs-footer-lista xs-100 xs-text-right pre-wrap">
+                                    <div class="xs-hidden">
+                                        <span class="btn btn-sm btn-opt btn-icon" (click)="consultaResetear(campos)"><i
+                                                class="fa fa-15x">
+                                                <img src="assets/img/icons/key.svg" alt="restracer clave">
+                                            </i></span>
+                                        <span class="btn btn-sm btn-opt btn-icon" (click)="addOrEditColaboradorColaborador(campos.id_usuario)"><i
+                                                class="fa fa-15x"><img src="assets/img/icons/pencil.svg" alt="editar"></i></span>
+                                        <span class="btn btn-sm btn-opt btn-icon" (click)="mostrarAlerta(campos.id_usuario)"><i
+                                                class="fa fa-15x"><img src="assets/img/icons/trash.svg" alt="eliminar"></i></span>
+                                    </div>
+                                    <div class="xs-display">
+                                        <span class="btn-icon mr-1" (click)="consultaResetear(campos)"><i class="fa fa-key"></i></span>
+                                        <span class="btn-icon mr-1" (click)="addOrEditColaboradorColaborador(campos.id_usuario)"><i class="fa fa-pencil"></i></span>
+                                        <span class="btn-icon" (click)="mostrarAlerta(campos.id_usuario)"><i class="fa fa-trash"></i></span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <nav class="pt-4 pl-3 pull-right">
+                        <pagination [totalItems]="totalRegistros" [boundaryLinks]="true" previousText="&lsaquo;" nextText="&rsaquo;"
+                            [rotate]="false" firstText="&laquo;" lastText="&raquo;" [maxSize]="5" [(ngModel)]="paginaActual"
+                            (pageChanged)="cambiarPagina($event)">
+                        </pagination>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

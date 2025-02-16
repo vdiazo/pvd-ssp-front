@@ -1,0 +1,151 @@
+<div class="modal-header">
+    <h4 class="modal-title">NUEVA RECEPCIÓN OBRA</h4>
+  </div>
+  <div class="modal-body">
+  <div class="group-box">
+    <form (ngSubmit)="administrarRecepcionObra(model);" #accRecepcionObraForm="ngForm">
+      <div class="row form-group">
+        <input *ngIf="false" type='text' name="id_recepcion_obra" id="id_recepcion_obra" [(ngModel)]="model.id_recepcion_obra"
+          #id_recepcion_obra="ngModel" />
+        <div class="col-sm-4">
+          <label dlabels class="control-label">Estado Recepción:</label>
+        </div>
+        <div class="col-sm-8">
+          <ng-select required [items]="lstEstadoRecepcionObra" placeholder="Seleccione el Estado" bindLabel="nombre_estado_recepcion" bindValue="id_estado_recepcion"
+            [(ngModel)]="model.id_estado_recepcion_expediente" name="id_estado_recepcion"
+            #id_estado_recepcion="ngModel"
+            >
+          </ng-select>
+          <div [hidden]="id_estado_recepcion.valid || id_estado_recepcion.pristine" class="alert alert-danger">
+              El Estado de la recepción es obligatorio
+          </div>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-4">
+          <label dlabels class="control-label" for="fecha">Fecha:</label>
+        </div>
+        <div class="col-sm-8">
+          <input dTextBox class="form-control" readonly="readonly" type='text' name="model.fecha" id="model.fecha" placeholder="dd/mm/aaaa" [(ngModel)]="model.fecha"
+            #fecha="ngModel" bsDatepicker required [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es', containerClass: 'theme-red' }">
+          <div [hidden]="fecha.valid || fecha.pristine" class="alert alert-danger">
+            Fecha de Recepción es obligatoria
+          </div>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-4">
+          <label dlabels class="control-label">Tipo Documento:</label>
+        </div>
+        <div class="col-sm-8">
+          <ng-select required [items]="lstTipoDocumentoRecepcionObra" placeholder="Seleccione Documento" 
+            bindLabel="nombre_tipo_documento_recepcion" bindValue="id_tipo_documento_recepcion"
+            #id_tipo_documento_recepcion="ngModel"
+            [(ngModel)]="model.id_tipo_documento_recepcion_expediente" name="id_tipo_documento_recepcion_expediente">
+          </ng-select>
+          <div [hidden]="id_tipo_documento_recepcion.valid || id_tipo_documento_recepcion.pristine" class="alert alert-danger">
+              El tipo documento es obligatorio
+          </div>
+        </div>
+      </div>
+      
+      <div class="row form-group">
+        <div class="col-sm-4">
+          <label dlabels class="control-label" for="observaciones">Observaciones :</label>
+        </div>
+        <div class="col-sm-8">
+          <input dTextBox class="form-control" type='text' name="model.observacion" id="model.observacion" placeholder="Ingrese observaciones"
+            [(ngModel)]="model.observacion" #observacion="ngModel"/>
+        </div>
+      </div>
+      <div class="row form-group">
+          <div class="col-sm-4">
+            <label dlabels class="control-label">Documento :</label>
+          </div>
+          <div class="col-sm-8">
+              <set-input-file idComp="fileRecepcionObra" (onChange)="fileChangeEvent($event)" IdTipoArchivo="{{IdTipoArchivo}}" class="input-group" Value="{{this.modelRecepcionObra.archivo_recepcion}}"></set-input-file>
+          </div>
+      </div>
+      <div class="modal-footer">
+          <button type="submit" id="btnGuardar" [disabled]="!accRecepcionObraForm.form.valid" class="btn btn-danger"> Guardar</button>
+        <button id="btnCancelar" type="button" (click)="closeModal()" class="btn btn-plomo">Cerrar</button>
+      </div>
+    </form>
+  </div>
+  </div>
+  
+  <!--<div class="modal-header">
+      <h4 class="modal-title">NUEVA RECEPCIÓN OBRA</h4>
+    </div>
+    <div class="modal-body">
+    <div class="group-box">
+      <form (ngSubmit)="administrarRecepcionObra(model);" #accRecepcionObraForm="ngForm">
+        <div class="row form-group">
+          <input *ngIf="false" type='text' name="id_recepcion_obra" id="id_recepcion_obra" [(ngModel)]="model.id_recepcion_obra"
+            #id_recepcion_obra="ngModel" />
+          <div class="col-sm-4">
+            <label dlabels class="control-label">Estado Recepción:</label>
+          </div>
+          <div class="col-sm-8">
+            <ng-select required [items]="lstEstadoRecepcionObra" placeholder="Seleccione el Estado" bindLabel="nombre_estado_recepcion" bindValue="id_estado_recepcion"
+              [(ngModel)]="model.id_estado_recepcion" name="id_estado_recepcion"
+              #id_estado_recepcion="ngModel"
+              >
+            </ng-select>
+            <div [hidden]="id_estado_recepcion.valid || id_estado_recepcion.pristine" class="alert alert-danger">
+                El Estado de la recepción es obligatorio
+            </div>
+          </div>
+        </div>
+        <div class="row form-group">
+          <div class="col-sm-4">
+            <label dlabels class="control-label" for="fecha">Fecha:</label>
+          </div>
+          <div class="col-sm-8">
+            <input dTextBox class="form-control" readonly="readonly" type='text' name="model.fecha" id="model.fecha" placeholder="dd/mm/aaaa" [(ngModel)]="model.fecha"
+              #fecha="ngModel" bsDatepicker required [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es', containerClass: 'theme-red' }">
+            <div [hidden]="fecha.valid || fecha.pristine" class="alert alert-danger">
+              Fecha de Recepción es obligatoria
+            </div>
+          </div>
+        </div>
+        <div class="row form-group">
+          <div class="col-sm-4">
+            <label dlabels class="control-label">Tipo Documento:</label>
+          </div>
+          <div class="col-sm-8">
+            <ng-select required [items]="lstTipoDocumentoRecepcionObra" placeholder="Seleccione Documento" 
+              bindLabel="nombre_tipo_documento_recepcion" bindValue="id_tipo_documento_recepcion"
+              #id_tipo_documento_recepcion="ngModel"
+              [(ngModel)]="model.id_tipo_documento_recepcion_expediente" name="id_tipo_documento_recepcion_expediente">
+            </ng-select>
+            <div [hidden]="id_tipo_documento_recepcion.valid || id_tipo_documento_recepcion.pristine" class="alert alert-danger">
+                El tipo documento es obligatorio
+            </div>
+          </div>
+        </div>
+        
+        <div class="row form-group">
+          <div class="col-sm-4">
+            <label dlabels class="control-label" for="observaciones">Observaciones :</label>
+          </div>
+          <div class="col-sm-8">
+            <input dTextBox class="form-control" type='text' name="model.observacion" id="model.observacion" placeholder="Ingrese observaciones"
+              [(ngModel)]="model.observacion" #observacion="ngModel"/>
+          </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-sm-4">
+              <label dlabels class="control-label">Documento :</label>
+            </div>
+            <div class="col-sm-8">
+              <set-input-file idComp="fileRecepcionObra" (onChange)="fileChangeEvent($event)" IdTipoArchivo="{{IdTipoArchivo}}" class="input-group" Value="{{this.modelRecepcionObra.archivo_recepcion}}"></set-input-file>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" id="btnGuardar" [disabled]="!accRecepcionObraForm.form.valid" class="btn btn-danger"> Guardar</button>
+          <button id="btnCancelar" type="button" (click)="closeModal()" class="btn btn-plomo">Cerrar</button>
+        </div>
+      </form>
+    </div>
+    </div>-->

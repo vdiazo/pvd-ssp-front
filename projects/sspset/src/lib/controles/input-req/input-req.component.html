@@ -1,0 +1,305 @@
+<div class="row" style="display: none">
+    <div class="col-6">
+        <div class="row" *ngIf="!EsObligatorio">
+            <div class="col-12">
+                <div class="checkbox" *ngIf="HabilitarBtnInputReq">
+                    <input type="checkbox" (click)="checkEvent($event)" id="checkbox{{IdComponente}}" [checked]=NoCorresponde />
+                    <label for="checkbox{{IdComponente}}" class="ml-3">No Corresponde</label>
+                  </div>
+                  <div class="checkbox" *ngIf="!HabilitarBtnInputReq">
+                      <input type="checkbox" id="checkbox{{IdComponente}}" [checked]=NoCorresponde [disabled]=true />
+                      <label for="checkbox{{IdComponente}}" class="ml-3">No Corresponde</label>
+                  </div> 
+            </div>
+          </div>
+    </div>
+    <div class="col-6 text-right" *ngIf="!NoCorresponde">
+      <form class="">
+        <!--<div class="form-group">
+          <label for="{{IdComponente}}" class="btn btn-magenta-outlined btn-sm mb-0 d-inline-flex"><i class="material-icons">cloud_upload</i>&nbsp;Subir archivos</label>
+          <input type="file" class="form-control d-none" id="{{IdComponente}}" name="multiple" ng2FileSelect [uploader]="uploader" multiple />
+        </div>-->
+        <div class="form-group">
+            <!--<label for="{{IdComponente}}" class="btn btn-magenta-outlined btn-sm mb-0 d-inline-flex"><i class="material-icons">cloud_upload</i>&nbsp;Subir archivosss</label>-->
+            <!--<set-input-file idComp="fileRecepcionObra" id="{{IdComponente}}" (onChange)="fileChangeEvent($event)" IdTipoArchivo="{{IdTipoArchivo}}" class="input-group"></set-input-file>-->
+            <input type="file" style="display:none;" id="{{IdComponente}}" class="customfile" (change)="lanzarOnChange($event)" >
+            <!--<dx-file-uploader
+              #fileUploader
+              [uploadUrl]="rutaServicio"
+              selectButtonText="SUBIR ARCHIVOS"
+              [showFileList]="false"
+              [elementAttr]="{ class: 'btn btn-magenta-outlined btn-sm mb-0 d-inline-flex' }"
+              labelText=""
+              (onUploadStarted)="onUploadStarted($event)"
+              (onProgress)="onUploadProgress($event)"
+              (uploadAborted)="cancelar($event)"
+              (valueChanged)="elimina($event)"
+              (onUploaded)="Registro($event)"
+              [multiple]="true"
+              accept="*"
+              [(value)]="value"
+              uploadMode="instantly"
+          ></dx-file-uploader>-->
+            <input class="form-control inputfile-receptor" style="display: none;" disabled="" name="{{idComp}}"  placeholder="Seleccione archivo" type="text" value="{{Value}}">
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="row" *hasClaim="'monitoreo_tabRYL_CompExpediente_regArchivoComp_exp_tec'">
+    <div class="col-6">
+        <dx-file-uploader
+              id="myFileUploader"
+              #fileUploader
+              [uploadUrl]="rutaServicio"
+              selectButtonText="SUBIR ARCHIVOS"
+              uploadedMessage=""
+              [showFileList]="true"
+              [hoverStateEnabled]="true"
+              [elementAttr]="{ class: 'btn btn-magenta-outlined btn-sm mb-0 d-inline-flex' }"
+              labelText=""
+              (onUploadStarted)="onUploadStarted($event)"
+              (onProgress)="onUploadProgress($event)"
+              (uploadAborted)="cancelar($event)"
+              (valueChanged)="elimina($event)"
+              (onUploaded)="Registro($event)"
+              [multiple]="true"
+              accept="*"
+              [(value)]="value"
+              [showFileList]="false"
+              uploadMode="instantly"
+          ></dx-file-uploader>
+
+          aaaa {{valor}}
+    </div>
+  </div><br>
+    <div class="row" *ngIf="tablafinalMostrar">
+    <div class="col-12" *ngIf="!NoCorresponde">
+      <div class="div-tabla">
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered table-responsive table-full-detalle">
+              <thead>
+                <th>Orden</th>
+                <th>Nombre</th>
+                <th>Tamaño</th>
+                <th>Fecha de carga</th>
+                <th>Progreso</th>
+                <th>Acción</th>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of documentosExpediente;let i = index">
+                    <td class="text-left">
+                      <div class="xs-hidden">{{ i + 1 }}</div>
+                      <div class="xs-display">
+                          <div><span class="xs-th">Orden: </span> {{ i + 1 }}</div>
+                          <div><span class="xs-th">Nombre: </span> {{ item.nombre_archivo_original }}</div>
+                          <div><span class="xs-th">Tamaño: </span> {{ item.tamanio/1024/1024 | number:'.2' }} MB</div>
+                          <div><span class="xs-th">Fecha de carga: </span> {{item.fecha_creacion | date: 'dd/MM/yyyy'}}</div>
+                          <div><span class="xs-th">Progreso: </span>
+                            <div class="progress position-relative" style="margin-bottom: 0;background-color:#065fd5">
+                                <span style="color:#fff;position: absolute; right: 5px;">{{100 + '%'}}</span>
+                                <div class="progress-bar bg-info" role="progressbar" [ngStyle]="{ 'width': item.progress + '%' }"> 
+                                </div>
+                            </div>
+                          </div>
+                      </div>
+                    </td>
+                    <td class="xs-hidden text-left">{{ item.nombre_archivo_original }}</td>
+                    <td class="xs-hidden text-left"> {{ item.tamanio/1024/1024 | number:'.2' }} MB </td>
+                    <td class="xs-hidden text-left">{{item.fecha_creacion | date: 'dd/MM/yyyy'}}</td>
+                    <td class="xs-hidden text-left">
+                        <div class="progress position-relative" style="margin-bottom: 0;background-color:#065fd5">
+                            <span style="color:#fff;position: absolute; right: 5px;">{{100 + '%'}}</span>
+                            <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': item.progress + '%' }"> 
+                            </div>
+                        </div>
+                    </td>
+                    <td class="xs-footer-lista xs-100 xs-text-right pre-wrap">
+                      <div class="xs-hidden">
+                          <span *hasClaim="'monitoreo_tabRYL_CompExpediente_listSegComponenteExp_VerArchivoComp_exp_tec'">
+                              <a href="{{item.ruta_archivo}}" target="_blank">
+                                  <i class="fa fa-15x"><img src="assets/img/icons/file.svg" alt="archivo"></i>
+                              </a>
+                          </span>
+                          <span *hasClaim="'monitoreo_tabRYL_CompExpediente_listSegComponenteExp_eliArchivoComp_exp_tec'">
+                              <a  href="javascript:void(0)" (click)="anularFile(item.id_contenido_exptec_fase_archivo)" class="btn-icon">
+                                  <i class="fa fa-15x"><img src="assets/img/icons/trash.svg" alt="eliminar"></i>
+                              </a>
+                          </span>
+                      </div>
+                      <div class="xs-display">
+                          <span *hasClaim="'monitoreo_tabRYL_CompExpediente_listSegComponenteExp_VerArchivoComp_exp_tec'">
+                              <a *ngIf="item.nombre_archivo != ''" href="{{item.ruta_archivo}}" target="_blank" class="btn-icon mr-1">
+                                  <i class="fa fa-file"></i>
+                              </a>
+                          </span>
+                          <span *hasClaim="'monitoreo_tabRYL_CompExpediente_listSegComponenteExp_eliArchivoComp_exp_tec'" class="btn-icon" (click)="anularFile(item.id_contenido_exptec_fase_archivo)">
+                              <i class="fa fa-trash"></i>
+                          </span>
+                      </div>
+                      
+                    </td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+  <div class="row" style="display: none">
+      <div class="row tbody" >
+          
+            
+            <div class="div-tabla">
+                <div class="thead" *ngIf="mostrarTabla">
+                    <div class="row">
+                        <table>
+                          <thead>
+                              <th>Orden</th>
+                              <th>Nombre</th>
+                              <th>Tamaño</th>
+                              <th>Fecha de carga</th>
+                              <th>Progreso</th>
+                              <th>Acción</th>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let item of listaCargada;let i = index">
+                                <td>
+                                   1
+                                </td>
+                                <td> {{ item.nombre }}</td>
+                                <td> {{ item.tamanio/1024/1024 | number:'.2' }} MB</td>
+                                <td>fecha</td>
+                                <td>
+                                    <div class="progress position-relative" style="margin-bottom: 0;">
+                                        <span style="color:black;position: absolute; right: 5px;">{{valor+ '%'}}</span>
+                                        <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': valor + '%' }">
+                                          
+                                        </div>
+                                      </div>
+                                </td>
+                                <td>
+                                    <span *hasClaim="'monitoreo_tabRYL_CompExpediente_listSegComponenteExp_eliArchivoComp_exp_tec'" class="btn-icon" (click)="anularFile(item.id_contenido_exptec_fase_archivo)">
+                                        <i class="fa fa-trash"></i>
+                                    </span>
+                                </td>
+                            </tr>
+                          </tbody>
+                        </table>
+
+
+
+                        <!--<div class="col-1">
+                          Orden
+                        </div>
+                        <div class="col-3 text-left">
+                          Nombre
+                        </div>
+                        <div class="col-1">
+                            Estado
+                          </div>
+                        <div class="col-1">
+                          Tamaño
+                        </div>
+                        <div class="col-2">
+                            Fecha de carga
+                          </div>
+                        <div class="col-2">
+                          Progreso
+                        </div>
+                        <div class="col-2 text-right">
+                          Acción
+                        </div>-->
+                      </div>
+                </div>
+                <!--<div class="row tbody" *ngFor="let item of listaCargada"> 
+                    <div class="col-1">
+                      </div>
+                      <div class="col-3">
+                          {{ item.nombre }}
+                      </div>
+                      <div class="col-1">
+                         {{ item.tamanio/1024/1024 | number:'.2' }} MB
+                      </div>
+                      <div class="col-2">
+                          <div class="progress position-relative" style="margin-bottom: 0;">
+                              <span style="color:black;position: absolute; right: 5px;">{{valor+ '%'}}</span>
+                              <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': valor + '%' }">
+                                
+                              </div>
+                            </div>
+                      </div>
+      
+                </div>-->
+            </div>
+              
+
+      </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+  <div class="row" *ngIf="mostrarTabla">
+      <div class="col-12" *ngIf="!NoCorresponde">
+        <div class="div-tabla">
+          <div class="table-responsive">
+              <table class="table table-hover table-bordered table-responsive table-full-detalle">
+                <thead>
+                  <th>Orden</th>
+                  <th>Nombre</th>
+                  <th>Tamaño</th>
+                  <th>Fecha de carga</th>
+                  <th>Progreso</th>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of listaCargada;let i = index">
+                      <td class="text-left">
+                        <div class="xs-hidden">{{ i + 1 }}</div>
+                        <div class="xs-display">
+                            <div><span class="xs-th">Orden: </span> {{ i + 1 }}</div>
+                            <div><span class="xs-th">Nombre: </span> {{ item.nombre }}</div>
+                            <div><span class="xs-th">Tamaño: </span> {{ item.tamanio/1024/1024 | number:'.2' }} MB</div>
+                            <div><span class="xs-th">Fecha de carga: </span> fecha</div>
+                            <div><span class="xs-th">Progreso: </span>
+                              <div class="progress position-relative" style="margin-bottom: 0;">
+                                  <span style="color:black;position: absolute; right: 5px;">{{valor+ '%'}}</span>
+                                  <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': valor + '%' }">
+                                    
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                      </td>
+                      <td class="xs-hidden text-left">{{ item.nombre }}</td>
+                      <td class="xs-hidden text-left"> {{ item.tamanio/1024/1024 | number:'.2' }} MB </td>
+                      <td class="xs-hidden text-left">fecha</td>
+                      <td class="xs-hidden text-left">
+                          <div class="progress position-relative" style="margin-bottom: 0;">
+                              <span style="color:black;position: absolute; right: 5px;">{{valor+ '%'}}</span>
+                              <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': valor + '%' }">
+                                
+                              </div>
+                            </div>
+                      </td>
+                      
+                  </tr>
+                </tbody>
+              </table>
+          </div>
+        </div>
+      </div>
+    </div>

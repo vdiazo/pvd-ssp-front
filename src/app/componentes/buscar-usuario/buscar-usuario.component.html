@@ -1,0 +1,124 @@
+<div class="container-fluid">
+    <p class="page-title">Usuarios</p>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-8">
+          <div class="card card-white">
+            <div class="card-header"></div>
+            <div class="card-body">
+                <div class="row form-group">
+                    <label dlabels class="col-sm-2 control-label">Usuario:</label>
+                    <div class="col-sm-10">
+                      <input dTextBox class="form-control" type='text' placeholder="INGRESE NOMBRE DEL USUARIO" name="campoBusqueda" [(ngModel)]="campoBusqueda" />
+                    </div>
+                  </div>
+                  <div class="row form-group">
+                    <div class="col-sm-12">
+                      <div class=" pull-right">
+                          <button type="button" id="btnBuscar" class="btn pull-left btn-plomo" (click)="busqueda()"><i class="fa fa-search"></i> Buscar</button>
+                          <button type="button" id="btnNuevoRegistro" class="btn pull-left ml-1 btn-danger" *hasClaim="'usuario_regUsuario'"  (click)="modalAgregarUsuario()"> Nuevo Registro</button>
+                      </div>
+                    </div>
+                  </div>
+            </div>
+          </div>
+        </div>
+          <div class="col-lg-4"><div class="card card-auto bg-orange-600"><div class="card-body"><div class="div-centrado text-center c-white"><div class="f-s-5rem l-h-100">{{totalUsuario}}</div><div>Usuarios</div></div></div></div></div>
+      </div>
+  </div>
+  <div class="container-fluid">
+    <div class="card card-principal">
+      <div class="card-head"></div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12 container-scroll">
+          <table class="table table-hover table-responsive table-normal">
+            <thead>
+              <tr>
+                <th>Usuario</th>
+                <th>Nombre</th>
+                <th>DNI</th>
+                <th>Correo</th>
+                <th>Celular</th>
+                <th>Área</th>
+                <th>Estado</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let campos of arregloUsuario">
+                <td class="xs-hidden text-left">{{campos.usuario}}</td>
+                <td class="xs-hidden text-left">{{campos.nombre_usuario}}</td>
+                <td class="xs-hidden text-left">{{campos.dni_usuario}}</td>
+                <td class="xs-hidden text-left">{{campos.correo_electronico}}</td>
+                <td class="xs-hidden text-left">{{campos.celular}}</td>               
+                <td>
+                  <div class="xs-hidden text-left">
+                      {{campos.nombre_area}}
+                  </div>
+                  <div class="xs-display">
+                      <div class="xs-th f-s-8">{{campos.dni_usuario}}</div>
+                      <div class="xs-th f-s-13">{{campos.nombre_usuario}}</div>
+                      <div class="mt-1 mb-1">
+                        <span class="xs-th">Usuario: </span>&nbsp;&nbsp;
+                        <span>{{campos.usuario}}</span>
+                      </div>
+                        <div class="mt-1">
+                            <span class="xs-th">Área: </span>&nbsp;&nbsp;
+                            <span>{{campos.nombre_area}}</span>
+                          </div>
+                          <div class="mt-1 mb-2">
+                              <span class="xs-th">Correo: </span>&nbsp;&nbsp;
+                              <span>{{campos.correo_electronico}}</span>
+                            </div>
+                            <div class="mt-1 mb-2">
+                                <span class="xs-th">Celular: </span>&nbsp;&nbsp;
+                                <span>{{campos.celular}}</span>
+                              </div>
+                  </div>
+                </td>
+                <td>
+                  <ui-switch *hasClaim="'usuario_listUsuario_modEstado'" size="small" [checked]="campos.estado" (change)="estado($event,campos)"></ui-switch>
+                </td>
+                <td width="140" class="xs-footer-lista xs-100 xs-text-right pre-wrap">
+                    <div class="xs-hidden">
+                        <span class="btn btn-sm btn-opt btn-icon" *hasClaim="'usuario_listUsuario_resetearClave'" (click)="consultaResetear(campos)"><i class="fa fa-15x">
+                            <img src="assets/img/icons/key.svg" alt="restracer clave">
+                        </i></span>
+                        <span class="btn btn-sm btn-opt btn-icon" *hasClaim="'usuario_listUsuario_modUsuario'" (click)="modalEditarUsuario(campos)"><i class="fa fa-15x"><img src="assets/img/icons/pencil.svg" alt="editar"></i></span>
+                        <span class="btn btn-sm btn-opt btn-icon"  *hasClaim="'usuario_listUsuario_eliUsuario'" (click)="mostrarAlerta(campos.id_usuario)"><i class="fa fa-15x"><img src="assets/img/icons/trash.svg" alt="eliminar"></i></span>
+                    </div>
+                    <div class="xs-display">
+                        <span class="btn-icon mr-1" *hasClaim="'usuario_listUsuario_resetearClave'" (click)="consultaResetear(campos)"><i class="fa fa-key"></i></span>
+                        <span class="btn-icon mr-1" *hasClaim="'usuario_listUsuario_modUsuario'" (click)="modalEditarUsuario(campos)"><i class="fa fa-pencil"></i></span>
+                        <span class="btn-icon" *hasClaim="'usuario_listUsuario_eliUsuario'" (click)="mostrarAlerta(campos.id_usuario)"><i class="fa fa-trash"></i></span>
+                    </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          </div>
+
+        </div>
+        <div class="row">
+          <div class="col-12">            
+              <nav class="pt-4 pl-3 pull-right">
+              <pagination [totalItems]="totalUsuario"
+                  [boundaryLinks]="true"
+                  previousText="&lsaquo;"
+                  nextText="&rsaquo;"
+                  [rotate]="false"
+                  firstText="&laquo;"
+                  lastText="&raquo;"
+                  [maxSize]="5"
+                  [(ngModel)]="paginaActual"
+                  (pageChanged)="cambiarPagina($event)">
+                </pagination>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

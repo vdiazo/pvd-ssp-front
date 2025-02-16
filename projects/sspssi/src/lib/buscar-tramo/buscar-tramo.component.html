@@ -1,0 +1,141 @@
+<div class="container-fluid">
+  <p class="page-title">Tramos</p>
+</div>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-8 col-sm-8 col-xl-8">
+      <div class="card card-white">
+        <div class="card-header"></div> 
+        <div class="card-body">
+          <div class="group-box">
+            <form [formGroup]="formBusquedaProyecto" (ngSubmit)="busquedaProyecto()">
+              <div class="row form-group">
+                <label class="control-label col-sm-2" for="campo_busqueda">PROYECTO:
+                </label>
+                <div class="col-sm-10">
+                  <input class="form-control" type="text" id="campo_busqueda" formControlName="campo_busqueda"
+                    placeholder="NOMBRE DE PROYECTO / CÓDIGO SNIP / CODIGO UNIFICADO" style="text-transform: uppercase">
+                </div>
+              </div>
+              <div class="row form-group">
+                <div class="col-xl-12 col-lg-12 col-sm-12">
+                  <div class="pull-right">
+                    <button type="submit" id="btnBuscar" class="btn pull-left btn-plomo"><i class="fa fa-search"></i>
+                      Buscar</button>&nbsp;
+                    <button class="btn pull-left ml-1" type="reset" id="btnLimpiar" (click)="listarTramoPrincipal();"><i
+                        class="icon icon-limpiar"></i>
+                      Limpiar</button>
+                    <!-- <button type="button" id="bntNuevoRegistro" class="btn pull-left ml-1 btn-danger"
+                      (click)="modalNuevoRegistro()" *hasClaim="'tramo_nuevoTramo_eje_dir'"> Nuevo Registro</button> -->
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-sm-4 col-xl-4">
+      <div class="card card-auto bg-black-600">
+        <div class="card-header"></div>
+        <div class="card-body">
+          <div class="div-centrado text-center c-white">
+            <div class="f-s-5rem l-h-100">{{totalTramo}}</div>
+            <div>Tramos</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid">
+  <div class="card card-principal">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-xl-12 col-lg-12 col-sm-12">
+          <table class="table table-hover table-responsive table-normal">
+            <thead>
+              <tr>
+                <th>Proyecto</th>
+                <th>SNIP</th>
+                <th>Codigo Unificado</th>
+                <th>Tramo</th>
+                <th>Codigo(s) de Ruta</th>
+                <th *hasClaim="'tramo_listTramo_editTramo_eje_dir'"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let tramo of listTramo">
+                <td class="text-justify xs-hidden">{{tramo.nombre_proyecto}}</td>
+                <td class="xs-hidden">{{tramo.cod_snip}}</td>
+                <td class="xs-hidden">{{tramo.cod_unificado}}</td>
+                <td>
+                  <div class="text-justify xs-hidden">
+                    {{tramo.nombre_tramo}}
+                  </div>
+                  <div class="xs-display">
+                    <span class="xs-th f-s-10"></span>&nbsp;&nbsp;&nbsp;
+                    <span class="f-s-10 pull-right">
+                      <a style="color: #4285f4;" (click)="abrirConsultaSnip(tramo.cod_snip)">SNIP:
+                        {{ tramo.cod_snip }}</a>
+                    </span>
+                    <div class="xs-th">{{tramo.nombre_proyecto}}</div>
+                    <div class="pt-2 mb-2">
+                      <span class="xs-th">
+                        <a style="color: #4285f4;" (click)="abrirConsultaSnip(tramo.cod_unificado)">Codigo Unificado:
+                          {{ tramo.cod_unificado }}</a></span>
+                    </div>
+                    <div class="xs-th f-s-10">Tramo
+                      <i class="icon icon-tramo"></i>
+                    </div>
+                    <div>{{tramo.nombre_tramo}}</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="text-center xs-hidden">
+                    {{tramo.codigo_ruta}}
+                  </div>
+                </td>
+                <td width="100" class="xs-footer-lista xs-100 xs-text-right pre-wrap"
+                  *hasClaim="'tramo_listTramo_editTramo_eje_dir'">
+                  <div class="xs-hidden">
+                    <span class="btn btn-sm btn-opt btn-icon" (click)="modalEditarTramo(tramo)">
+                      <i class="fa fa-15x">
+                        <img src="assets/img/icons/pencil.svg" alt="editar">
+                      </i>
+                    </span>
+                    <span class="btn btn-sm btn-opt btn-icon" (click)="mostrarAlerta(tramo.id_tramo)">
+                      <i class="fa fa-15x">
+                        <img src="assets/img/icons/trash.svg" alt="eliminar">
+                      </i>
+                    </span>
+                  </div>
+                  <div class="xs-display">
+                    <span class="btn-icon mr-1" (click)="modalEditarTramo(tramo)">
+                      <i class="fa fa-pencil"></i>
+                    </span>
+                    <span class="btn-icon" (click)="mostrarAlerta(tramo.id_tramo)">
+                      <i class="fa fa-trash"></i>
+                    </span>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <nav class="pt-4 pl-3 pull-right">
+            <pagination [totalItems]="totalTramo" [boundaryLinks]="true" previousText="&lsaquo;" nextText="&rsaquo;"
+              [rotate]="false" firstText="&laquo;" lastText="&raquo;" [maxSize]="5" [(ngModel)]="paginaActual"
+              (pageChanged)="cambiarPagina($event)">
+            </pagination>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

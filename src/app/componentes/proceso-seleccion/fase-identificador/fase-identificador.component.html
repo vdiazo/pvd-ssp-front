@@ -1,0 +1,44 @@
+<div *ngIf="DataListado.cantidad > 0">
+<table border="1" class="table table-hover table-bordered table-responsive table-full-detalle">
+  <thead class="table-active">
+    <tr>
+        <th>SNIP</th>
+      <th>Identificador</th>
+      <th>Tipo de Selección</th>
+      <th>Fecha de Publicación</th>
+      <th>Nomenclatura</th>
+      <th>Estado del Proceso</th>
+      <th>Fecha</th>
+      <th>Valor Referencial</th>
+      <th *hasClaim="'monitoreo_tabSel_obra_verResultados'">Ver Resultados</th>
+      <th>Comentario</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of DataListado.resultado">
+        <td>{{item.codigo_snip}}</td>
+        <td>{{item.identificador}}</td>
+        <td>{{item.tipo_seleccion}}</td>
+        <td>{{item.fecha_publicacion}}</td>
+        <td>{{item.nomenclatura}}</td>
+        <td>{{item.estado_item}}</td>
+        <td>{{item.fecha}}</td>
+        <td>{{item.valor_referencial_item}}</td>
+        <td *hasClaim="'monitoreo_tabSel_obra_verResultados'" class="xs-hidden">
+            <a href="javascript:void(0)" class="btn btn-sm btn-icon" (click)="openModalVerResultados(item)">
+              <i class="fa fa-15x"><img src="assets/img/icons/checklist.svg" alt="resultados"></i>
+            </a>
+          </td>
+        <td>{{item.descripcion_item}}</td>
+        <td>
+          <a href="javascript:void(0)" (click)="Anular(item.id_fase_identificador)" class="btn btn-sm btn-icon">
+              <i class="fa fa-15x">
+                <img src="assets/img/icons/trash.svg" alt="eliminar">
+              </i>
+            </a>
+        </td>
+    </tr>
+  </tbody>
+</table>  
+</div>

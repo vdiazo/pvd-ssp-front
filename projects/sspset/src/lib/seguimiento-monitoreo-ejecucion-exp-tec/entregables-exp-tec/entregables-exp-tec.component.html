@@ -1,0 +1,163 @@
+<div class="row form-group" *hasClaim="'monitoreo_tabSeg_regCronograma_nuevCronograma_exp_tec'">
+    <div class="col-6" [hidden]=!bEstado>
+      <button class="btn btn-plomo" (click)="nuevoRegistroEntregable()">
+        <i class="fa fa-plus"></i> Nuevo
+      </button>
+    </div>
+</div>
+  
+  <form #form="ngForm" class="row form-group">
+    <div class="col-12 container-scroll">
+      <table class="table table-hover table-bordered table-responsive table-full-detalle">
+        <thead>
+          <tr>
+            <th>Detalle Entregable</th>
+            <th>N° Informe</th>
+            <th>Documento que aprueba</th>
+            <th>Fecha Aprobación</th>
+            <th>Monto Total</th>
+            <th>Doc.</th>
+            <th>Plan de Trabajo</th>
+            <th [hidden]=!bEstado></th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let item of listaEntregablesBD">
+          <tr [hidden]="editarFila==true && item.id_actividad_ejecucion_expediente == codigoEditar">
+            <td>
+                <div class="xs-hidden">
+                    <a href="javascript:void()" (click)="verDetalleEntregable(item.id_entregable_expediente)">(Mostrar Entregable)</a>
+                </div>
+            </td>
+            <td class="text-left">
+              <div class="xs-hidden"> {{item.num_entregable}} </div>
+              <div class="xs-display">
+                <div><span class="xs-th">N° Informe : </span> {{item.num_entregable}}</div>
+                <div><span class="xs-th">Documento que aprueba : </span> {{item.tipo_entregable}}</div>
+                <div><span class="xs-th"><i class="fa fa-calendar"></i> Fecha de Aprobación: </span> {{ item.fecha_aprobacion | formatoFecha }}</div>
+                <div><span class="xs-th">Monto Total:</span>  {{item.monto_total | currency:" S/"}}</div>
+                <div class="xs-th">Documento</div>
+                <div *ngIf="item.ruta != '' ; else templateicono"><a href="{{item.ruta}}" target="_blank" class="btn-icon mr-1" [LinkNube]="item.nombre_archivo" [Ruta]="item.ruta">
+                    <i class="fa fa-15x">
+                      <img src="assets/img/icons/file.svg" alt="archivo">
+                    </i>
+                  </a>
+                </div>
+                <div class="xs-th">Plan de Trabajo</div>
+                <div *ngIf="item.plan_archivo != '' ; else templateicono"><a href="{{item.rutaplan}}" target="_blank" class="btn-icon mr-1" [LinkNube]="item.plan_archivo" [Ruta]="item.rutaplan">
+                    <i class="fa fa-15x">
+                      <img src="assets/img/icons/file.svg" alt="archivo">
+                    </i>
+                  </a>
+                </div>
+              </div>
+            </td>
+            <td class="text-left xs-hidden">{{ item.tipo_entregable}}</td>
+            <td class="text-left xs-hidden">{{ item.fecha_aprobacion | formatoFecha }}</td>
+            <td class="text-left xs-hidden">{{ item.monto_total | currency:" S/" }}</td>
+            <td class="xs-hidden">
+              <div *ngIf="item.ruta != '' ; else templateicono">
+                <a href="{{item.ruta}}" target="_blank" class="btn-icon mr-1" [LinkNube]="item.nombre_archivo" [Ruta]="item.ruta">
+                  <i class="fa fa-15x">
+                    <img src="assets/img/icons/file.svg" alt="archivo">
+                  </i>
+                </a>
+              </div>
+              <ng-template #templateicono>
+              </ng-template>
+            </td>
+            <td class="xs-hidden">
+                <div *ngIf="item.plan_archivo != '' ; else templateicono">
+                  <a href="{{item.rutaplan}}" target="_blank" class="btn-icon mr-1" [LinkNube]="item.plan_archivo" [Ruta]="item.rutaplan">
+                    <i class="fa fa-15x">
+                      <img src="assets/img/icons/file.svg" alt="archivo">
+                    </i>
+                  </a>
+                </div>
+                <ng-template #templateicono>
+                </ng-template>
+            </td>
+            <td colspan="2" class="xs-footer-lista" [hidden]=!bEstado>
+              <div class="xs-hidden pre-wrap">
+                <span *hasClaim="'monitoreo_tabSeg_regCronograma_editCronograma_exp_tec'">
+                  <a class="btn btn-sm btn-icon mr-1s" href="javascript:void(0);" (click)="editarFilaEntregable(item)">
+                    <i class="fa fa-15x">
+                      <img src="assets/img/icons/pencil.svg" alt="editar">
+                    </i>
+                  </a>
+                </span>
+                <span *hasClaim="'monitoreo_tabSeg_regCronograma_eliCronograma_exp_tec'">
+                  <a class="btn btn-sm btn-icon" href="javascript:void(0);" (click)="eliminarFilaEntregable(item)">
+                    <i class="fa fa-15x">
+                      <img src="assets/img/icons/trash.svg" alt="eliminar">
+                    </i>
+                  </a>
+                </span>
+              </div>
+              <div class="xs-display xs-text-right">
+                <a *ngIf="item.ruta != ''" href="{{item.ruta}}" target="_blank" class="btn-icon mr-1">
+                  <i class="fa fa-file"></i>
+                </a>
+                <a class="btn-icon mr-1" href="javascript:void(0);" (click)="editarFilaEntregable(item)" *hasClaim="'monitoreo_tabSeg_regCronograma_editCronograma_exp_tec'">
+                  <i class="fa fa-pencil"></i>
+                </a>
+                <a class="btn-icon" href="javascript:void(0);" (click)="eliminarFilaEntregable(item)" *hasClaim="'monitoreo_tabSeg_regCronograma_eliCronograma_exp_tec'">
+                  <i class="fa fa-trash"></i>
+                </a>
+              </div>
+            </td>
+          </tr>
+
+
+
+          <tr [hidden]="codigoEditar != item.id_entregable_expediente">
+              <td colspan="9">
+                <table class="table table-hover table-bordered table-responsive table-full-detalle">
+                  <thead>
+                    <th>ITEM</th>
+                    <th>N° Entregable</th>
+                    <th>Descripción Contenido</th>
+                    <th>Plazo de Entrega (N° Días)</th>
+                    <th>Fecha de Entrega Programada</th>
+                    <th>Monto</th>
+                  </thead>
+                  <tbody *ngFor="let itemDetalle of entregaDetalle">
+                    <tr *ngFor="let item of itemDetalle.detalle_entregable; let i = index">
+                      <td class="xs-hidden">{{ i + 1 }}</td>
+                      <td>
+                        <div class="xs-display">N° Entregable :</div>{{item.concepto}}
+                      </td>
+                      <td>
+                        <div class="xs-display xs-th">Descripción Contenido :</div>{{ item.descripcion }}
+                      </td>
+                      <td>
+                        <div class="xs-display xs-th">Plazo de Entrega (N° Días)</div>{{ item.plazo_dias }}
+                      </td>
+                      <td>
+                        <div class="xs-display xs-th">Fecha de Entrega Programada</div>{{ item.fecha_resultado_aprobacion | formatoFecha}}
+                      </td>
+                      <td>
+                        <div class="xs-display xs-th">Monto: </div> {{item.monto | currency:" S/"}}
+                      </td>
+                    </tr>
+                    <tr>
+                      
+                    </tr>
+                  </tbody>
+                 
+                </table>
+              </td>
+            </tr>
+        </tbody>
+      </table>
+    </div>
+
+
+    
+    <div class="col-12">
+      <nav class="pt-4 pl-3 pull-right">
+        <pagination [totalItems]="totalRegistros" [boundaryLinks]="true" previousText="&lsaquo;" nextText="&rsaquo;" [rotate]="false"
+          firstText="&laquo;" lastText="&raquo;" [itemsPerPage]="numPaginasMostrar" (pageChanged)="cambiarPagina($event)">
+        </pagination>
+      </nav>
+    </div>
+  </form>

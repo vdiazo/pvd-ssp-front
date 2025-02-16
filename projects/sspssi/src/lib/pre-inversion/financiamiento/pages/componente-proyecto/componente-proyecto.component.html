@@ -1,0 +1,62 @@
+<div class="row">
+  <div class="col-12">
+    <form [formGroup]="formRegistroComponentes" (ngSubmit)="registrarComponenteProyecto()">
+      <div class="row form-group">
+        <div class="col-6">
+          <table class="table table-sm table-hover table-responsive">
+            <thead>
+              <tr>
+                <th>ITEM</th>
+                <th>COMPONENTE</th>
+                <th>MONTO</th>
+                <th *hasClaim="'monitoreo_tabFinan_regComponentes_agregarComponente_pre_inv_eje_dir'"></th>
+              </tr>
+            </thead>
+            <tbody formArrayName="componentes" *ngFor="let item of componente.controls; index as i; first as isFirst;">
+              <tr [formGroupName]="i">
+                <td class="text-center">{{i + 1}}</td>
+                <td class="text-left">
+                  <ng-select [items]="lstTipoComponente" placeholder="Seleccione" bindLabel="descripcion"
+                    bindValue="id_tipo_componente" notFoundText="no se ha encontrado ningún item"
+                    id="id_tipo_componente" formControlName="id_tipo_componente" [ngClass]="{'is-invalid': item.get('id_tipo_componente').invalid && (item.get('id_tipo_componente').dirty || item.get('id_tipo_componente').touched),
+                    'ng-inicio': item.get('id_tipo_componente').invalid && item.get('id_tipo_componente').untouched}">
+                  </ng-select>
+                  <div
+                    *ngIf="item.get('id_tipo_componente').invalid && (item.get('id_tipo_componente').dirty || item.get('id_tipo_componente').touched)">
+                    <strong *ngIf="item.get('id_tipo_componente').errors.required" class="text-danger">Tipo de
+                      Componente es obligatorio</strong>
+                  </div>
+                </td>
+                <td>
+                  <input type="text" id="{{ 'monto_componente' + i }}" [textMask]="{mask: funciones.currencyMask}"
+                    class="form-control" formControlName="monto_componente" [ngClass]="{'is-invalid': item.get('monto_componente').invalid && (item.get('monto_componente').dirty || item.get('monto_componente').touched),
+                    'ng-inicio': item.get('monto_componente').invalid && item.get('monto_componente').untouched}">
+                  <div
+                    *ngIf="item.get('monto_componente').invalid && (item.get('monto_componente').dirty || item.get('monto_componente').touched)">
+                    <strong *ngIf="item.get('monto_componente').errors.required" class="text-danger">Monto es
+                      obligatorio</strong>
+                  </div>
+                </td>
+                <td *hasClaim="'monitoreo_tabFinan_regComponentes_agregarComponente_pre_inv_eje_dir'">
+                  <button type="button" class="btn btn-sm btn-icon btn-plomo" (click)="agregarComponente()"
+                    *ngIf="isFirst" tooltip="Agregar componente"><i class="fa fa-plus"></i></button>
+                  <button type="button" class="btn btn-sm btn-icon" (click)="removerComponente(i)" *ngIf="!isFirst"
+                    tooltip="Remover componente"><i class="fa fa-minus"></i></button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-6" *hasClaim="'monitoreo_tabFinan_regComponentes_registrarComponente_pre_inv_eje_dir'">
+          <button class="btn btn-danger pull-right" type="submit" id="btnGuardar"
+            [disabled]="formRegistroComponentes.invalid" [hidden]=bMostrar>
+            <i class="fa fa-save"></i> Guardar</button>
+          <button class="btn btn-danger" type="button" [hidden]=!bMostrar>
+            <i class="fa fa-save"></i> ....Procesando</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

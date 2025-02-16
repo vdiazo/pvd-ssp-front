@@ -1,0 +1,80 @@
+<div class="tab-content" id="nav-tabContent">
+  <div class="tab-pane fade show active jumbotron container-fluid pt-4" id="nav-home" role="tabpanel"
+    aria-labelledby="nav-home-tab">
+
+    <div class="container-fluid">
+      <div class="card card-default card-principal">
+        <div class="card-body">
+          <!--<div class="row" >
+                      <div class="col-md-4 xs-hidden" *ngFor="let valor of listaDetalleCapacitacion">
+                        <div *ngFor="let detalle of valor.detalle_capacitacion">
+                                <video src="{{detalle.ruta_archivo}}"
+                                controls
+                                width="100%" height="300px">
+                              </video>
+                        </div>
+                        <div class="text-center"><h4><strong>{{valor.denominacion}}</strong></h4></div><br><br>
+                        
+                      </div>
+        
+                      <div class="xs-th f-s-14" *ngFor="let valor of listaDetalleCapacitacion">
+                          <div *ngFor="let detalle of valor.detalle_capacitacion">
+                              <video src="{{detalle.ruta_archivo}}"
+                              controls
+                              width="100%" height="auto">
+                              </video>
+                              <div class="text-center"><h4><strong>{{valor.denominacion}}</strong></h4></div>
+                          </div>
+                      </div>
+        
+                      
+                      
+                  </div>-->
+
+          <ng-container *ngIf="cargado">
+
+
+            <div class="row">
+              <div *ngFor="let valor of listaDetalleCapacitacion" class="col-lg-4 col-md-6 col-sm-12">
+                <div class="cartel">
+                  <div class="poster" *ngFor="let detalle of valor.detalle_capacitacion"
+                    (click)="AbrirModalVerVideo(templateModalVerVideo,detalle.ruta_real)">
+                    <video id="video1" preload="metadata">
+                      <source src="{{detalle.ruta_real}}#t=16" type="video/mp4">
+                      El navegador no soporta videos HTML5.
+                    </video>
+                    <div class="shadow"></div>
+                    <div class="arrow"><i class="material-icons">play_circle_filled_white</i></div>
+                  </div><br>
+                  <div class="text-center">
+                    <h4><strong>{{valor.denominacion}}</strong></h4>
+                  </div><br>
+                </div>
+              </div>
+            </div>
+
+            <ng-template #templateModalVerVideo>
+              <div class="modal-header bg-magenta c-white">
+                <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <video id="video1" preload="metadata" controls="">
+                  <source src="{{rutaArchivo}}" type="video/mp4">
+                  El navegador no soporta videos HTML5.
+                </video>
+              </div>
+            </ng-template>
+          </ng-container>
+        </div>
+      </div>
+
+    </div>
+
+    <div>
+
+    </div>
+
+  </div>
+</div>

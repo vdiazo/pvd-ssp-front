@@ -1,0 +1,109 @@
+<div class="row form-group">
+  <div class="col-6" [hidden]=!bEstado>
+    <button class="btn btn-plomo" (click)="nuevoRegistroProgramacionFinancieraPre()"
+      *hasClaim="'monitoreo_tabSeg_regCronograma_nuevProgFinanciera_pre_inv_eje_dir'">
+      <i class="fa fa-plus"></i> Nuevo
+    </button>
+  </div>
+  <div class="col-6 text-right">
+    <label dlabels class="control-label">Última Actualización: </label>&nbsp;
+    <span>{{UltimaActualizacion}}</span>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-12 container-scroll">
+    <table class="table table-hover table-bordered table-responsive table-full-detalle">
+      <thead>
+        <tr>
+          <th>DETALLE<br>CRONOGRAMA</th>
+          <th>FECHA INICIO</th>
+          <th>FECHA FIN</th>
+          <th>TOTAL MONTO PROGRAMADO</th>
+          <th>% AVANCE PROGRAMADO</th>
+          <th *hasClaim="'monitoreo_tabSeg_regCronograma_editProgFinanciera_pre_inv_eje_dir'">ACCIONES</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let cronograma of lstProgramacionFinancieraPreinversion">
+          <tr>
+            <td>
+              <a href="javascript:void(0)" class="btn btn-sm btn-icon" (click)="openDetails(cronograma)"
+                tooltip="Ver detalle">
+                <i [ngClass]="(cronograma.is_open)? 'fa fa-chevron-up' : 'fa fa-chevron-down'"></i>
+              </a>
+            </td>
+            <td>{{cronograma.fecha_inicio | date: 'dd/MM/yyyy'}}</td>
+            <td>{{cronograma.fecha_termino | date: 'dd/MM/yyyy'}}</td>
+            <td>{{cronograma.total_monto_programacion_financiera | currency : 'S/ '}}</td>
+            <td>{{cronograma.total_porcentaje_avance | number: '0.2-2'}} %</td>
+            <td *hasClaim="'monitoreo_tabSeg_regCronograma_editProgFinanciera_pre_inv_eje_dir'">
+              <a href="javascript:void(0)" (click)="modificarProgramacionFinancieraPre(cronograma)"
+                class="btn btn-sm btn-icon">
+                <i class="fa fa-15x">
+                  <img src="assets/img/icons/pencil.svg" alt="editar">
+                </i>
+              </a>
+              <a href="javascript:void(0)"
+                (click)="anularProgramacionFinancieraPre(cronograma.id_programacion_financiera)"
+                class="btn btn-sm btn-icon">
+                <i class="fa fa-15x">
+                  <img src="assets/img/icons/trash.svg" alt="eliminar">
+                </i>
+              </a>
+            </td>
+          </tr>
+          <tr *ngIf="cronograma.is_open">
+            <td colspan="9">
+              <table class="table table-hover table-bordered table-responsive table-full-detalle">
+                <thead>
+                  <th>ITEM</th>
+                  <th>MES</th>
+                  <th>VALORIZACIÓN PROGRAMADA</th>
+                  <th>% DE AVANCE PROGRAMADO</th>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let detalle of cronograma.cronograma; let i = index">
+                    <td class="xs-hidden">{{ i + 1 }}</td>
+                    <td>
+                      <div class="xs-display">Mes :</div>{{ funciones.obtenerPeriodo(detalle.periodo) }}
+                    </td>
+                    <td>
+                      <div class="xs-display xs-th">Monto programado :</div>
+                      {{ detalle.monto_programacion_mensual | currency: 'S/ ' }}
+                    </td>
+                    <td>
+                      <div class="xs-display xs-th">Avance programado :</div>{{ detalle.porcentaje_avance }} %
+                    </td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td colspan="2">
+                      <b>Total</b>
+                    </td>
+                    <td>
+                      <div class="xs-display xs-th">Monto total programado :</div>
+                      <b>{{ cronograma.total_monto_programacion_financiera | currency: 'S/ ' }}</b>
+                    </td>
+                    <td>
+                      <div class="xs-display xs-th">Avance programado :</div>
+                      <b>{{ cronograma.total_porcentaje_avance | number: '0.2-2' }} %</b>
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-12">
+    <nav class="pt-4 pl-3 pull-right">
+      <pagination [totalItems]="totalRegistros" [boundaryLinks]="true" previousText="&lsaquo;" nextText="&rsaquo;"
+        [rotate]="false" firstText="&laquo;" lastText="&raquo;" [itemsPerPage]="itemsPerPage"
+        (pageChanged)="cambiarPagina($event)">
+      </pagination>
+    </nav>
+  </div>
+</div>

@@ -1,0 +1,8 @@
+.contenedor
+{
+   align-items: flex-start;
+   justify-content: space-between;
+   padding: 1rem;
+   border-top-left-radius: .3rem;
+   border-top-right-radius: .3rem;
+}

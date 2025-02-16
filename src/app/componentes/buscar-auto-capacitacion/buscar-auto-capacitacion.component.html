@@ -1,0 +1,103 @@
+<div class="container-fluid">
+    <p class="page-title">Auto Capacitación</p>
+</div>
+
+<!--<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-8">
+          <div class="card card-white">
+            <div class="card-header"></div>
+            <div class="card-body">
+                <div class="row form-group">
+                    <label dlabels class="col-sm-2 control-label">Auto Capacitación:</label>
+                                      
+                </div>
+                <div class="row form-group">
+                  <div class="col-sm-12">
+                    <div class=" pull-right">
+                        <button type="button" id="btnNuevoRegistro" class="btn pull-left ml-1 btn-danger" (click)="modalAgregarCapacitacion()"> Nuevo Registro</button>
+                    </div>
+                  </div>
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4"><div class="card card-auto bg-cyan-600"><div class="card-body"><div class="div-centrado text-center c-white"><div class="f-s-5rem l-h-100">{{totalCapacitaciones}}</div><div>Capacitaciones</div></div></div></div></div>
+    </div>
+</div>-->
+
+<div class="container-fluid">
+    <div class="card card-principal">
+      <div class="card-head"></div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-lg-4">
+              <button type="button" id="btnNuevoRegistro" class="btn pull-left ml-1 btn-danger" (click)="modalAgregarCapacitacion()"> Nuevo Registro</button>
+          </div>
+          <div class="col-lg-2">
+              
+          </div>
+        </div><br>
+        <div class="row">
+          <div class="col-12 container-scroll">
+          <table class="table table-hover table-responsive table-normal">
+            <thead>
+              <tr>
+                <th class="text-left">Descripción</th>
+                <th class="text-left">Tipo Capacitación</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let campos of listaDetalleCapacitacion">
+                <td class="text-left">
+                  <div class="xs-hidden">
+                      {{campos.denominacion}}
+                  </div>
+                  <div class="xs-display">
+                      <div><span class="xs-th">Descripción: </span> {{campos.denominacion}}</div>
+                      <div><span class="xs-th">Tipo Capacitación: </span> {{campos.tipo_capacitacion}}</div>
+                      
+
+                  </div>
+                  
+                </td>
+                <td class="xs-hidden text-left">{{campos.tipo_capacitacion}}</td>
+                
+                
+                
+                
+                <td width="140" class="xs-footer-lista xs-100 xs-text-right pre-wrap">
+                    <div class="xs-hidden">
+                        <span class="btn btn-sm btn-opt btn-icon"  (click)="modalEditarCapacitacion(campos)"><i class="fa fa-15x"><img src="assets/img/icons/pencil.svg" alt="editar"></i></span> <!--*hasClaim="'capacitacion_listCapacitacion_modCapacitacion'"-->
+                        <span class="btn btn-sm btn-opt btn-icon"  (click)="eliminarCapacitacion(campos.id_capacitacion)"><i class="fa fa-15x"><img src="assets/img/icons/trash.svg" alt="eliminar"></i></span> <!--*hasClaim="'capacitacion_listCapacitacion_eliCapacitacion'"-->
+                    </div>
+                    <div class="xs-display">
+                        <span class="btn-icon mr-1"  (click)="modalEditarCapacitacion(campos)"><i class="fa fa-pencil"></i></span> <!--*hasClaim="'capacitacion_listCapacitacion_modCapacitacion'"-->
+                        <span class="btn-icon"  (click)="eliminarCapacitacion(campos.id_capacitacion)"><i class="fa fa-trash"></i></span><!--*hasClaim="'capacitacion_listCapacitacion_eliCapacitacion'"-->
+                    </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          </div>
+
+        </div>
+        <div class="row">
+          <div class="col-12">            
+              <nav class="pt-4 pl-3 pull-right">
+              <!--<pagination [totalItems]="totalAcceso" [boundaryLinks]="true" previousText="&lsaquo;" nextText="&rsaquo;" [rotate]="false" firstText="&laquo;" lastText="&raquo;"
+                  [maxSize]="5" [(ngModel)]="paginaActual"
+                  (pageChanged)="cambiarPagina($event)">
+              </pagination>-->
+
+              <pagination [totalItems]="totalCapacitaciones" [itemsPerPage]="paginaActiva" [boundaryLinks]="true"
+                previousText="&lsaquo;" nextText="&rsaquo;" [rotate]="false" firstText="&laquo;" lastText="&raquo;" [maxSize]="5"
+                (pageChanged)="cambiarPagina($event)">
+              </pagination>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

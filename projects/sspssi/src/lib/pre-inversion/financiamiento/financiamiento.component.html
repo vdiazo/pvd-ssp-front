@@ -1,0 +1,34 @@
+<div class="tab-content" id="nav-tabContent">
+  <div class="tab-pane fade show active jumbotron container-fluid pt-4" id="nav-home" role="tabpanel"
+    aria-labelledby="nav-home-tab">
+    <accordion>
+      <div class="row">
+        <div class="col-12">
+          <accordion-group [isOpen]=true [panelClass]="separator">
+            <button class="btn btn-link btn-block clearfix" accordion-heading>
+              <div class="pull-left float-left">1. Costo del proyecto</div>
+              <span class="badge float-right pull-right">
+                <i class="fa fa-circle-o"></i>
+              </span>
+            </button>
+            <ssi-componente-proyecto [idFase]="id_fase"></ssi-componente-proyecto>
+          </accordion-group>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <accordion-group [isOpen]=false [panelClass]="separator">
+            <button class="btn btn-link btn-block clearfix" accordion-heading>
+              <div class="pull-left float-left">2. Seguimiento financiero</div>
+              <span class="badge float-right pull-right">
+                <i class="fa fa-circle-o"></i>
+              </span>
+            </button>
+            <ssi-informacion-financiera [idFase]="id_fase"></ssi-informacion-financiera>
+            <div>Fuente | <span class="c-dark-blue">Sistema de Gestion Administrativa (SIGAT)</span></div>
+          </accordion-group>
+        </div>
+      </div>
+    </accordion>
+  </div>
+</div>

@@ -1,0 +1,31 @@
+[
+    {
+        "id_usuario": 66,
+        "usuario": "PRUEBA001",
+        "nombre_usuario": "PRUEBA001",
+        "correo_electronico": "PRUEBA@PRUEBA.COM",
+        "dni_usuario": "111111111",
+        "celular": "999999999",
+        "estado": true,
+        "tramos": [
+            {
+                "seleccionado": 1,
+                "id_usuario_tramo": 11,
+                "cod_snip": 50669,
+                "cod_unificado": 2046177,
+                "nombre_proyecto": "MEJORAMIENTO DE LA RED VIAL DEPARTAMENTAL MOQUEGUA-AREQUIPA; TRAMO MO-108: CRUZ DE FLORES, DISTRITOS TORATA, OMATE, COALAQUE, PUQUINA, L.D. PAMPA USUÑA, MOQUEGUA; TRAMO AR-118: DISTRITOS POLOBAYA, POCSI, MOLLEBAYA, AREQUIPA",
+                "nombre_tramo": "TRAMO MO-108: CRUZ DE FLORES, DISTRITOS TORATA, OMATE, COALAQUE, PUQUINA, L.D. PAMPA USUÑA, MOQUEGUA",
+                "activo": true
+            },
+            {
+                "seleccionado": 0,
+                "id_usuario_tramo": null,
+                "cod_snip": 72437,
+                "cod_unificado": 2177187,
+                "nombre_proyecto": "CONSTRUCCION DE LA CARRETERA A NIVEL DE TROCHA CARROZABLE, RUTA TRAMO QUINISTAQUILLA EMP MO-100 (CHIMPAPAMPA)-YARAGUA-YOJO EMP. MO-102 (CUCHUMBAYA), DE LOS DIST. DE QUINISTAQUILLAS-CUCHUMBAYA DE LA PROV. GRAL SANCHEZ CERRO-MCAL NIETO, REGION MOQUEGUA",
+                "nombre_tramo": "CONSTRUCCION DE LA CARRETERA A NIVEL DE TROCHA CARROZABLE, RUTA TRAMO QUINISTAQUILLA EMP MO-100 (CHIMPAPAMPA)-YARAGUA-YOJO EMP. MO-102 (CUCHUMBAYA), DE LOS DIST. DE QUINISTAQUILLAS-CUCHUMBAYA DE LA PROV. GRAL SANCHEZ CERRO-MCAL NIETO, REGION MOQUEGUA",
+                "activo": null
+            }
+        ]
+    }
+]

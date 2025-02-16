@@ -1,0 +1,150 @@
+<div class="tab-content" id="nav-tabContent">
+  <div class="tab-pane fade show active jumbotron container-fluid pt-4" id="nav-home" role="tabpanel"
+    aria-labelledby="nav-home-tab">
+    <accordion>
+      <div class="row">
+        <div class="col-12">
+          <accordion-group [isOpen]=true>
+            <button class="btn btn-link btn-block clearfix" accordion-heading>
+              <div class="pull-left float-left">1. Información General</div>
+              <span class="badge float-right pull-right">
+                <i class="fa fa-circle-o"></i>
+              </span>
+            </button>
+            <div class="row">
+              <div class="col-md-2">
+                <strong>Código Proyecto</strong>
+              </div>
+              <div class="col-md-10">{{EntidadInfoProyecto.general?.codigo_unico}}</div>
+            </div><br>
+            <div class="row">
+              <div class="col-md-2">
+                <strong>Nombre PIP</strong>
+              </div>
+              <div class="col-md-10">{{EntidadInfoProyecto.general?.nombre}}</div>
+            </div><br>
+            <div class="row">
+              <div class="col-md-2">
+                <strong>Ubicación del Proyecto</strong>
+              </div>
+              <div class="col-md-10">
+                <ng-container *ngFor="let ubigeo of EntidadInfoProyecto.general?.ubicacion">
+                  <div>{{ "Región: " + ubigeo.departamento + " - Provincia: " + ubigeo.provincia + " - Distrito: " +
+                    ubigeo.distrito}}</div>
+                </ng-container>
+
+              </div>
+            </div><br>
+            <div class="row">
+              <div class="col-md-2">
+                <strong>Cadena Funcional</strong>
+              </div>
+              <div class="col-md-10">{{EntidadInfoProyecto.general?.cadena}}</div>
+            </div><br>
+            <div class="row">
+              <div class="col-md-2">
+                <strong>Unidad Formuladora (UF)</strong>
+              </div>
+              <div class="col-md-10">
+                <span>{{EntidadInfoProyecto.general?.unidadformuladora}}</span>
+              </div>
+            </div><br>
+            <div class="row">
+              <div class="col-md-2">
+                <strong>Unidad Evaluadora (OPI)</strong>
+              </div>
+              <div class="col-md-10">
+                <span>{{EntidadInfoProyecto.general?.evaluadora}}</span>
+              </div>
+            </div><br>
+            <div class="row">
+              <div class="col-md-2">
+                <strong>Beneficiarios SNIP</strong>
+              </div>
+              <div class="col-md-10">{{EntidadInfoProyecto.general?.beneficiario | number}}</div>
+            </div><br>
+            <div class="row">
+              <div class="col-md-2">
+                <strong>GL / GR</strong>
+              </div>
+              <div class="col-md-10">{{UnidadEjecutora}}</div>
+            </div>
+          </accordion-group>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <accordion-group [isOpen]=true>
+            <button class="btn btn-link btn-block clearfix" accordion-heading>
+              <div class="pull-left float-left">2. Información de Estudio de Pre Inversión</div>
+              <span class="badge float-right pull-right">
+                <i class="fa fa-circle-o"></i>
+              </span>
+            </button>
+            <div class="row">
+              <div class="col-md-2">
+                <strong>Nivel de Estudio de Pre Inversión Recomendado</strong>
+              </div>
+              <div class="col-md-10">{{EntidadInfoProyecto.estudio?.nivelestudio}}</div>
+            </div><br>
+            <div class="row">
+              <div class="col-md-2">
+                <strong>Estado</strong>
+              </div>
+              <div class="col-md-10">{{EntidadInfoProyecto.estudio?.estado}}</div>
+            </div><br>
+            <div class="row">
+              <div class="col-md-2">
+                <strong>Fecha de viabilidad</strong>
+              </div>
+              <div class="col-md-10">{{EntidadInfoProyecto.estudio?.fechaviabilidad}}</div>
+            </div><br>
+            <div class="row">
+              <div class="col-md-2">
+                <strong>Monto viable</strong>
+              </div>
+              <div class="col-md-10">{{EntidadInfoProyecto.estudio?.montoviable | currency:" S/ "}}</div>
+            </div>
+          </accordion-group>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <accordion-group [isOpen]=true>
+            <button class="btn btn-link btn-block clearfix" accordion-heading>
+              <div class="pull-left float-left">3. Información del Expediente Técnico</div>
+              <span class="badge float-right pull-right">
+                <i class="fa fa-circle-o"></i>
+              </span>
+            </button>
+            <div class="row">
+              <div class="col-md-2">
+                <strong>Monto Reformulado</strong>
+              </div>
+              <div class="col-md-10">{{EntidadInfoProyecto.expediente?.montoreformulado | currency:" S/ "}}</div>
+            </div><br>
+            <div class="row">
+              <div class="col-md-2">
+                <strong>Monto del Estudio Definitivo o Expediente Técnico</strong>
+              </div>
+              <div class="col-md-10">{{EntidadInfoProyecto.expediente?.montof15 | currency:" S/
+                "}}</div>
+            </div><br>
+            <div class="row">
+              <div class="col-md-2">
+                <strong>Monto Total Registrado en la Fase de Inversión</strong>
+              </div>
+              <div class="col-md-10">{{EntidadInfoProyecto.expediente?.montototalregistro | currency:" S/ "}}</div>
+            </div><br>
+            <div class="row">
+              <div class="col-md-2">
+                <strong>Monto de Inversión Total</strong>
+              </div>
+              <div class="col-md-10">{{EntidadInfoProyecto.expediente?.montototalinversion | currency:" S/ "}}</div>
+            </div>
+          </accordion-group>
+        </div>
+      </div>
+    </accordion>
+  </div>
+</div>

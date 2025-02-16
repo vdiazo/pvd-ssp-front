@@ -1,0 +1,43 @@
+
+          <div class="row">
+            <div class="col-12">
+              <accordion-group [isOpen]="false">
+                <button class="btn btn-link btn-block clearfix" accordion-heading>
+                  <div class="pull-left float-left">3. Transferencias Directas por el MEF</div>
+                  <span class="badge float-right pull-right">
+                    <i class="fa fa-circle-o"></i>
+                  </span>
+                </button>
+
+                <accordion>
+                  <div class="row">
+                    <div class="col-12">
+                      <accordion-group [isOpen]="false">
+                        <button class="btn btn-link btn-block clearfix" accordion-heading>
+                          <div class="pull-left float-left">3.1. Transferencias de Recursos</div>
+                          <span class="badge float-right pull-right">
+                            <i class="fa fa-circle-o"></i>
+                          </span>
+                        </button>
+                        <app-tranfmefrecursos (emitEventListadoTransferencias)="listarConvenios()" #lista></app-tranfmefrecursos>
+                      </accordion-group>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-12">
+                      <accordion-group [isOpen]="false">
+                        <button class="btn btn-link btn-block clearfix" accordion-heading>
+                          <div class="pull-left float-left">3.2. Selección de Proyectos a Transferir</div>
+                          <span class="badge float-right pull-right">
+                            <i class="fa fa-circle-o"></i>
+                          </span>
+                        </button>
+                        <app-tranfmefseleccion (emitEvent)="listarTransferencias()" #seleccion></app-tranfmefseleccion>
+                      </accordion-group>
+                    </div>
+                  </div>
+            </accordion>
+            
+                </accordion-group>
+                </div>
+                </div>

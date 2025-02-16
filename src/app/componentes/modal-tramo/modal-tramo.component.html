@@ -1,0 +1,61 @@
+<div class="modal-header">
+  <h4 class="modal-title" [hidden] ="!cambiarEditar">Nuevo Tramo</h4>
+  <h4 class="modal-title" [hidden] ="cambiarEditar">Editar Tramo</h4>
+  <p class="pl-4 pr-4" [hidden] ="!cambiarEditar">Formulario para el registro de tramo</p>
+  <p class="pl-4 pr-4" [hidden] ="cambiarEditar">Formulario para el editar de tramo</p>
+</div>
+<div class="modal-body">
+  <form (ngSubmit)="administrarTramo();" #tramoGrabarForm="ngForm" [hidden] ="!cambiarEditar">
+  <div class="row form-group">
+    <label dlabels class="col-md-2 control-label">Proyecto:</label>
+    <div class="col-md-10">
+      <input dTextBox class="form-control" [matAutocomplete]="auto" [formControl]="buscarProyecto" (focus)="limpiarAutocomplete()" 
+        type='text' required placeholder="ingrese nombre del Proyecto" name="nombreProyecto" [(ngModel)]="entidadModal.nombreProyecto"/>
+      
+      <mat-autocomplete #auto="matAutocomplete" (optionSelected)='mostrarProyectoSeleccionado($event.option.value)'>
+        <mat-option *ngFor="let itemProyecto of proyectos" [value]="itemProyecto.id_proyecto + '|' + itemProyecto.nombre_proyecto">
+          {{ itemProyecto.nombre_proyecto }}
+        </mat-option>
+      </mat-autocomplete>
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-md-2">
+      <label dlabels class="control-label">Tramo</label>
+    </div>
+    <div class="col-md-10">
+      <input dTextBox class="form-control" type='text' name="nombreTramo" #nombreTramo="ngModel" required placeholder="Ingrese nombre del tramo" [(ngModel)]="entidadModal.nombreTramo" />
+      <div [hidden]="nombreTramo.valid || nombreTramo.pristine" class="alert alert-danger">
+        El tramo es obligatorio
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+  <button class="btn btn-danger" type="submit" id="btnGuardar" [disabled]="!tramoGrabarForm.form.valid"><i class="fa fa-save"></i> Guardar</button>
+  <button class="btn btn-plomo" id="btnCancelar" type="button" (click)="closeModal()"><i class="fa fa-arrow-left"></i> Cancelar</button>
+  </div>
+</form>
+<form (ngSubmit)="administrarTramo();" #tramoEditarForm="ngForm" [hidden] ="cambiarEditar">
+  <div class="row form-group">
+    <label dlabels class="col-md-2 control-label">Proyecto:</label>
+    <div class="col-md-10">
+      <input dTextBox class="form-control" type='text' required readonly placeholder="ingrese nombre del Proyecto" name="nombreProyecto" [(ngModel)]="entidadModal.nombreProyecto"/>
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-md-2">
+      <label dlabels class="control-label">Tramo</label>
+    </div>
+    <div class="col-md-10">
+      <input dTextBox class="form-control" type='text' name="nombreTramo" #nombreTramo="ngModel" required placeholder="Ingrese nombre del tramo" [(ngModel)]="entidadModal.nombreTramo" />
+      <div [hidden]="nombreTramo.valid || nombreTramo.pristine" class="alert alert-danger">
+        El tramo es obligatorio
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+  <button class="btn btn-danger" type="submit" id="btnGuardar" [disabled]="!tramoEditarForm.form.valid"><i class="fa fa-save"></i> Guardar</button>
+  <button class="btn btn-plomo" id="btnCancelar" type="button" (click)="closeModal()"><i class="fa fa-arrow-left"></i> Cancelar</button>
+  </div>
+</form>
+</div>

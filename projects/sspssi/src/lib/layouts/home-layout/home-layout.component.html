@@ -1,0 +1,74 @@
+<nav class="navbar fixed-top navbar-expand" id="nav-top">
+  <ul class="navbar-nav mr-auto">
+    <li class="nav-item xs-display">
+      <button type="button" id="sidebarCollapse" class="btn btn-default">
+        <i class="icon icon-menu"></i>
+      </button>
+    </li>
+    <li class="app-logo">SSP - PVD</li>
+    <li style="display: flex;align-items: center;">
+      <img src="assets/img/logo-mtc.png" style="width: 160px;" class="xs-hidden" alt="mtc">
+    </li>
+  </ul>
+
+  <ul class="navbar-nav ml-auto">
+    <li class="nav-item">
+      <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+        aria-expanded="false">
+        <span class="txtUsuario">{{txtUsuario}}</span>&nbsp;
+        <img class="foto-usuario" src="assets/img/man-1.svg" alt="usuario" />
+      </a>
+      <div class="dropdown-menu dropdown-menu-right f-s-14">
+        <a routerLink="/perfil" class="dropdown-item" routerLinkActive="active-link" *ngIf="esLogin"><i
+            class="fa fa-user-o"></i> &nbsp;Perfil</a>
+            <a class="dropdown-item" href="javascript:void(0)" (click)="AccederComo()" *ngIf="MostarOpcionCambiarPerfil"><i class="fa fa-grav"></i> &nbsp;Acceder como</a>
+
+        <a class="dropdown-item" href="#" (click)="cerrarSesion()"><i class="fa fa-sign-out"></i>
+          &nbsp;Salir</a>
+      </div>
+    </li>
+  </ul>
+</nav>
+
+<div class="wrapper">
+  <!-- Sidebar  -->
+
+  <nav id="sidebar">
+    <perfect-scrollbar style="height: 100%;">
+      <ul class="list-unstyled components pt-0">
+        <li *ngFor="let row of menu">
+          <a *ngIf="row.trama.hijos.length>0; else nosubmenu" href="#{{row.trama.nombre_menu}}" data-toggle="collapse"
+            aria-expanded="false"><span><i class="{{row.trama.icono}}"></i></span><span
+              class="dropdown-toggle">{{row.trama.nombre_menu}}</span></a>
+          <ng-template #nosubmenu>
+            <a routerLink="{{row.trama.url}}" routerLinkActive="active-link"><span><i
+                  class="{{row.trama.icono}}"></i></span><span>{{row.trama.nombre_menu}}</span></a>
+          </ng-template>
+
+          <ul *ngIf="row.trama.hijos.length>0;" class="collapse list-unstyled" id="{{row.trama.nombre_menu}}">
+            <li *ngFor="let rowb of row.trama.hijos">
+              <a routerLink="{{rowb.trama.url}}" routerLinkActive="active-link"><span><i
+                    class="{{rowb.trama.icono}}"></i></span><span>{{rowb.trama.nombre_menu}}</span></a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+
+    </perfect-scrollbar>
+  </nav>
+
+  <div id="black-panel"></div>
+  <!-- Page Content  -->
+  <div id="content">
+
+
+
+    <div class="container-componentes">
+      <router-outlet></router-outlet>
+    </div>
+    <div class="container-fluid text-center app-footer">
+      Ministerio de Transportes y Comunicaciones - Oficina General de Tecnología de la Información<br>Todos
+      los derechos reservados © 2019
+    </div>
+  </div>
+</div>

@@ -1,0 +1,32 @@
+<div class="tab-content" id="nav-tabContent">
+  <div class="tab-pane fade show active jumbotron container-fluid pt-4" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+    <accordion>
+      <div class="row" *hasClaim="'monitoreo_tabRYL_RecObra_listRecepcionObra'">
+        <div class="col-12">
+          <accordion-group [isOpen]="true">
+            <button class="btn btn-link btn-block clearfix" accordion-heading>
+              <div class="pull-left float-left">1. Recepción de la Obra</div>
+              <span class="badge float-right pull-right">
+                <i class="fa fa-circle-o"></i>
+              </span>
+            </button>
+            <app-recepcion-obra [idSeguimientoMonitoreoObra]="idSeguimientoMonitoreo" [bEstado]=true></app-recepcion-obra>
+          </accordion-group>
+        </div>
+      </div>
+      <div class="row" *hasClaim="'monitoreo_tabRYL_LiqSeg_listSegLiquidacion'">
+        <div class="col-12">
+          <accordion-group [isOpen]="false">
+            <button class="btn btn-link btn-block clearfix" accordion-heading>
+              <div class="pull-left float-left">2. Liquidación y Cierre Financiero</div>
+              <span class="badge float-right pull-right">
+                <i class="fa fa-circle-o"></i>
+              </span>
+            </button>
+            <app-seguimiento-liquidacion [idSeguimientoMonitoreoObra]="idSeguimientoMonitoreo" [bEstado]=true></app-seguimiento-liquidacion>
+          </accordion-group>
+        </div>
+      </div>
+    </accordion>
+  </div>
+</div>

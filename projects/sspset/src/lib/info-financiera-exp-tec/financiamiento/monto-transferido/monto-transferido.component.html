@@ -1,0 +1,86 @@
+<table class="table table-hover table-responsive table-full-detalle lastTD">
+  <thead class="table-danger">
+    <tr>
+      <th>Dispositivo de Transferencia</th>
+      <th>Fecha de publicación</th>
+      <th>Unidad Ejecutora</th>
+      <th>Fuente Financiamiento</th>
+      <th>Monto</th>
+      <th>Fecha Incorporación</th>
+      <th>Monto Incorporación</th>
+      <th>Estado</th>
+      <th *hasClaim="'monitoreo_tabFin_transf_listTransf_verArchivo_exp_tec'">Nota Modificatoria</th>
+      <th *hasClaim="'monitoreo_tabFin_transf_listTransf_modTranseferencia_exp_tec'"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor='let transferencia of listTransferencia'>
+      <td class="xs-hidden text-left">{{transferencia.dispositivo}}</td>
+      <td class="xs-hidden text-left">{{transferencia.fecha_publicacion| formatoFecha }}</td>
+      <td class="xs-hidden text-left">{{transferencia.nombre_municipalidad}}</td>
+      <td class="xs-hidden text-left">{{transferencia.nombre_fuente}}</td>
+      <td class="text-right">
+        <div class="xs-hidden">
+          {{transferencia.monto | currency:" S/"}}
+        </div>
+        <div class="xs-display text-left">
+          <div class="xs-th f-s-8">Dispositivo de Transferencia</div>
+          <div class="xs-th f-s-13">{{transferencia.dispositivo}}</div>
+          <div class="xs-th">Unidad Ejecutora</div>
+          <div>{{transferencia.nombre_municipalidad}}</div>
+          <div>
+            <span class="xs-th">Fuente financiamiento :</span> {{transferencia.nombre_fuente}}</div>
+          <div>
+            <span class="xs-th">Fecha de publicación :</span> {{transferencia.fecha_publicacion | formatoFecha }}</div>
+          <div>
+            <span class="xs-th">Monto :</span> {{transferencia.monto | currency:" S/"}}</div>
+          <div>
+            <span class="xs-th">Fecha incorporación :</span> {{transferencia.fecha_incorporacion | formatoFecha }}</div>
+          <div>
+            <span class="xs-th">Monto incorporación :</span> {{transferencia.monto_incorporacion | currency:" S/" }}</div>
+          <div>
+            <span class="xs-th">Estado :</span> {{transferencia.nombre_estado}}</div>
+        </div>
+      </td>
+      <td class="xs-hidden">{{transferencia.fecha_incorporacion != null ? (transferencia.fecha_incorporacion|formatoFecha):''}}</td>
+      <td class="xs-hidden text-right">{{transferencia.monto_incorporacion | currency:" S/" }}</td>
+      <td class="xs-hidden text-left">{{transferencia.nombre_estado}}</td>
+      <td class="xs-hidden" *hasClaim="'monitoreo_tabFin_transf_listTransf_verArchivo_exp_tec'">
+        <a *ngIf="transferencia.nombre_archivo != ''" href="{{transferencia.nombre_archivo}}" target="_blank" class="btn-icon" [LinkNube]="transferencia.nombre_archivo" [Ruta]="transferencia.ruta">
+          <i class="fa fa-15x">
+            <img src="assets/img/icons/file.svg" alt="archivo">
+          </i>
+        </a>
+      </td>
+      <td class="xs-footer-lista" *hasClaim="'monitoreo_tabFin_transf_listTransf_modTranseferencia_exp_tec'">
+        <div class="xs-hidden">
+          <a href="javascript:void(0)" class="btn btn-sm btn-icon" (click)="openModalDetalleTransferencia(transferencia)">
+            <i class="fa fa-15x">
+              <img src="assets/img/icons/pencil.svg" alt="editar">
+            </i>
+          </a>
+        </div>
+        <div class="xs-display text-right">
+          <a *ngIf="transferencia.nombre_archivo != ''" href="{{transferencia.nombre_archivo}}" target="_blank" class="btn-icon mr-1" [LinkNube]="transferencia.nombre_archivo" [Ruta]="transferencia.ruta">
+            <i class="fa fa-file"></i>
+          </a>
+          <a href="javascript:void(0)" class="btn-icon" (click)="openModalDetalleTransferencia(transferencia)">
+            <i class="fa fa-pencil"></i>
+          </a>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="4" class="f-w-6">TOTAL</td>
+      <td class="f-w-6">{{montoTotal | currency:" S/"}}</td>
+      <td colspan="3"></td>
+      <td *hasClaim="'monitoreo_tabFin_transf_listTransf_verArchivo_exp_tec'"></td>
+      <td *hasClaim="'monitoreo_tabFin_transf_listTransf_modTranseferencia_exp_tec'"></td>
+    </tr>
+  </tbody>
+</table>
+<nav class="pt-4 pl-3 pull-right">
+  <pagination [totalItems]="totalRegistros" [itemsPerPage]="numPaginasMostrar" [boundaryLinks]="true" previousText="&lsaquo;"
+    nextText="&rsaquo;" [rotate]="false" firstText="&laquo;" lastText="&raquo;" [maxSize]="5" (pageChanged)="cambiarPagina($event)">
+  </pagination>
+</nav>

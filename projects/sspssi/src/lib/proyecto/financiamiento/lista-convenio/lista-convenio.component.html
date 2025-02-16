@@ -1,0 +1,77 @@
+<div class="row">
+  <div class="col-12">
+    <table class="table table-hover table-responsive table-full-detalle lastTD">
+      <thead class="table-danger">
+        <tr>
+          <th *ngIf="false">id_convenio</th>
+          <th *ngIf="false">id_municipalidad</th>
+          <th>Documento</th>
+          <th>Número de Convenio</th>
+          <th>Fecha de Firma de Convenio</th>
+          <th></th>
+          <th *hasClaim="'monitoreo_tabFin_convenio_listConvenio_verArchivo_eje_dir'">Ver Convenio</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let convenio of listConvenio">
+          <td *ngIf="false">{{convenio.id_convenio}}</td>
+          <td *ngIf="false">{{convenio.id_municipalidad}}</td>
+          <td class="xs-hidden text-left">{{convenio.nombre_documento_compromiso}}</td>
+          <td class="xs-hidden text-left">{{convenio.siglas}}</td>
+          <td class="xs-hidden">{{ convenio.fecha_firma | date: 'dd/MM/yyyy' }}</td>
+          <td>
+            <!-- <div class="xs-hidden">
+              {{convenio.monto | currency:" S/"}}
+            </div> -->
+            <div class="xs-display">
+              <div class="xs-th f-s-8">{{convenio.nombre_documento_compromiso}}</div>
+              <div class="xs-th f-s-13">{{convenio.siglas}}</div>
+              <div>
+                <span class="xs-th">Fecha de Firma de Convenio:</span> {{convenio.fecha_firma | date: 'dd/MM/yyyy' }}</div>
+              <!-- <div>
+                <span class="xs-th pre-wrap">Monto :</span> {{convenio.monto | currency:" S/"}}</div> -->
+            </div>
+          </td>
+          <td class="xs-footer-lista xs-text-right" *hasClaim="'monitoreo_tabFin_convenio_listConvenio_verArchivo_eje_dir'">
+            <div class="xs-hidden">
+              <div *ngIf="convenio.nombre_archivo != '' ; else templateicono">
+                <a href="{{convenio.nombre_archivo}}" target="_blank" class="btn-icon" [LinkNube]="convenio.nombre_archivo" [Ruta]="convenio.ruta_archivo">
+                  <i class="fa fa-15x">
+                    <img src="assets/img/icons/file.svg" alt="archivo">
+                  </i>
+                </a>
+              </div>
+              <ng-template #templateicono>
+              </ng-template>
+            </div>
+            <div class="xs-display">
+              <div *ngIf="convenio.nombre_archivo != '' ; else templateicono">
+                <a href="{{convenio.nombre_archivo}}" target="_blank" class="btn-icon" [LinkNube]="convenio.nombre_archivo" [Ruta]="convenio.ruta_archivo">
+                  <i class="fa fa-file"></i>
+                </a>
+              </div>
+              <ng-template #templateicono>
+              </ng-template>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="3" class="f-w-6"></td>
+          <td class="f-w-6"></td>
+          <td *hasClaim="'monitoreo_tabFin_convenio_listConvenio_verArchivo_eje_dir'">
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="row">
+  <div class="col-12">
+    <nav class="pt-4 pl-3 pull-right">
+      <pagination [totalItems]="totalRegistros" [itemsPerPage]="numPaginasMostrar" [boundaryLinks]="true"
+        previousText="&lsaquo;" nextText="&rsaquo;" [rotate]="false" firstText="&laquo;" lastText="&raquo;"
+        [maxSize]="5" (pageChanged)="cambiarPagina($event)">
+      </pagination>
+    </nav>
+  </div>
+</div>

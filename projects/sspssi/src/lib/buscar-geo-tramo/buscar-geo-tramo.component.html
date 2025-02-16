@@ -1,0 +1,117 @@
+<div class="container-fluid">
+  <p class="page-title">Geo Tramo</p>
+</div>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xl-8 col-lg-8 col-sm-8 col-md-8">
+      <div class="card card-white">
+        <div class="card-header"></div>
+        <div class="card-body">
+          <div class="group-box">
+            <form [formGroup]="formBusquedaGeo" (ngSubmit)="busquedaGeoTramo()">
+              <div class="row form-group">
+                <label class="control-label col-sm-2" for="campo_busqueda">PROYECTO:</label>
+                <div class="col-sm-10">
+                  <input class="form-control" type="text" id="campo_busqueda" formControlName="campo_busqueda"
+                    placeholder="Ingrese nombre del tramo / nombre proyecto / código clasificador / código provisional"
+                    style="text-transform: uppercase">
+                </div>
+              </div>
+              <div class="row form-group">
+                <div class="col-xl-12 col-lg-12 col-sm-12 col-md-12">
+                  <div class="pull-right">
+                    <button type="submit" id="btnBuscar" class="btn pull-left btn-plomo"><i class="fa fa-search"></i>
+                      Buscar</button>
+                    <button type="reset" id="btnLimpiar" class="btn pull-left ml-1"
+                      (click)="listarGeoTramoPrincipal();"><i class="icon icon-limpiar"></i> Limpiar</button>
+                    <button type="button" id="btnNuevoRegistro" class="btn pull-left ml-1 btn-danger"
+                      (click)="modalNuevoRegistro()" *hasClaim="'geoTramo_nuevoGeoTramo_eje_dir'">Nuevo
+                      Registro</button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-4 col-lg-4 col-sm-4 col-md-4">
+      <div class="card card-auto bg-cyan-600">
+        <div class="card-body">
+          <div class="div-centrado text-center c-white">
+            <div class="f-s-5rem l-h-100">{{totalTramoGeo}}</div>
+            <div>GEOS</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container-fluid">
+  <div class="card card-principal">
+    <div class="card-header"></div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-12 container-scroll">
+          <table class="table table-hover table-responsive table-normal">
+            <thead>
+              <tr>
+                <th>TRAMO</th>
+                <th>COD. CLASIFICADOR RUTA</th>
+                <th>COD. PROVISIONAL RUTA</th>
+                <th>UNIDAD MEDIDA</th>
+                <th>LONGITUD</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let geo of listadoGeo">
+                <td>{{geo.nombre_tramo}}</td>
+                <td>{{geo.codigo_clasificador_ruta}}</td>
+                <td>{{geo.codigo_provisional_ruta}}</td>
+                <td>{{geo.unidad_medida}}</td>
+                <td>
+                  <div class="xs-hidden text-left">
+                    {{geo.longitud | number}}
+                  </div>
+                  <div class="xs-display">
+                    <div class="xs-th f-s-8">{{geo.nombre_tramo}}</div>
+                  </div>
+                </td>
+                <td width="140" class="xs-footer-lista xs-100 xs-text-right pre-wrap">
+                  <div class="xs-hidden">
+                    <span class="btn btn-sm btn-opt btn-icon" (click)="modalVerGeoTramo(geo.id_geo_tramo)"><i
+                        class="fa fa-map-marker c-red-2 fa fa-15x"></i></span>
+                    <span class="btn btn-sm btn-opt btn-icon" *hasClaim="'geoTramo_modGeoTramo_editTramo_eje_dir'"
+                      (click)="modalEditarGeoTramo(geo)"><i class="fa fa-15x"><img
+                          src="assets/img/icons/pencil.svg"></i></span>
+                    <span class="btn btn-sm btn-opt btn-icon" *hasClaim="'geoTramo_eliGeoTramo_editTramo_eje_dir'"
+                      (click)="mostrarAlerta(geo.id_geo_tramo)"><i class="fa fa-15x"><img
+                          src="assets/img/icons/trash.svg"></i></span>
+                  </div>
+                  <div class="xs-display">
+                    <span class="btn btn-sm btn-opt btn-icon" (click)="modalVerGeoTramo(geo.id_geo_tramo)"><i
+                        class="fa fa-map-marker c-red-2 fa fa-15x"></i></span>
+                    <span class="btn-icon mr-1" (click)="modalEditarGeoTramo(geo)"><i class="fa fa-pencil"></i></span>
+                    <span class="btn-icon" (click)="mostrarAlerta(geo.id_geo_tramo)"><i class="fa fa-trash"></i></span>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <nav class="pt-4 pl-3 pull-right">
+            <pagination [totalItems]="totalTramoGeo" [boundaryLinks]="true" previousText="&lsaquo;" nextText="&rsaquo;"
+              [rotate]="false" firstText="&laquo;" lastText="&raquo;" [maxSize]="5" [(ngModel)]="paginaActual"
+              (pageChanged)="cambiarPagina($event)">
+            </pagination>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

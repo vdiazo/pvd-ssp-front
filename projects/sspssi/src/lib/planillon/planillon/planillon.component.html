@@ -1,0 +1,359 @@
+<div class="container-fluid">
+  <p class="page-title">Reporte Planillon</p>
+</div>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="card card-white">
+        <div class="card-header"></div>
+        <div class="card-body">
+          <div>
+            <form [formGroup]="formBusquedaPlanillon" (ngSubmit)="buscarProyecto()">
+              <div class="row form-group">
+                <label class="col-sm-2 control-label" for="">Codigo Unico</label>
+                <div class="col-sm-4">
+                  <input type="text" class="form-control" placeholder="Ingrese Cod. Unico" formControlName="cod_snip">
+                </div>
+                <label class="col-sm-2 control-label" for="">Programa PVD</label>
+                <div class="col-sm-4">
+                  <ng-select [items]="listProgramaPvd" placeholder="Seleccione programa" bindLabel="descripcion"
+                    bindValue="id_programa" formControlName="id_programa" name="id_programa" id="id_programa">
+                  </ng-select>
+                </div>
+                <!-- <label class="col-sm-2 control-label" for="">Tipo fase</label>
+                <div class="col-sm-4">
+                  <ng-select [items]="listFases" placeholder="Seleccione fase" bindLabel="nombre_tipo_fase"
+                    bindValue="id_tipo_fase" formControlName="id_tipo_fase" name="id_tipo_fase" id="id_tipo_fase">
+                  </ng-select>
+                </div> -->
+              </div>
+              <div class="row form-group">
+                <!-- <label class="col-sm-2 control-label" for="codmes">Mes</label>
+                <div class="col-sm-4">
+                  <ng-select [items]="listMeses" placeholder="Seleccione mes" bindLabel="mes" bindValue="codmes"
+                    formControlName="codmes" name="codmes" id="codmes">
+                  </ng-select>
+                </div>-->
+                <label class="col-sm-2 control-label" for="codanio">Año</label>
+                <div class="col-sm-4">
+                  <ng-select [items]="listAnio" placeholder="Seleccione año" bindLabel="anio" bindValue="codanio"
+                    formControlName="codanio" name="codanio" id="codanio">
+                  </ng-select>
+                </div>
+              </div>
+              <div class="row form-group">
+                <div class="col-sm-12">
+                  <div class="pull-right">
+                    <button type="submit" class="btn btn-plomo mr-1" id="btnBuscar">
+                      <i class="fa fa-search"></i> Buscar
+                    </button>
+                    <!--  <button class="btn btn-exportar mr-1" (click)="exportarReportePlanillon()" type="button"
+                      id="btnExportarGeneral">
+                      <i class="icon icon-excel"></i> Exportar</button> -->
+                    <button class="btn btn-debug" (click)="limpiarControles()" type="button" id="btnLimpiar">
+                      <i class="icon icon-limpiar"></i> Limpiar</button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="card card-auto bg-black-600">
+        <div class="card-body">
+          <div class="div-centrado text-center c-white">
+            <div class="f-s-5rem l-h-100">{{totalRegistros}}</div>
+            <div>Proyectos</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container-fluid">
+  <div class="card card-principal">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-xl-12 col-lg-12 col-sm-12 container-scroll">
+          <table class="table table-hover table-bordered table-responsive table-principal">
+            <thead class="table-active">
+              <tr>
+                <th rowspan="3">CUI</th>
+                <th rowspan="3">Nombre del Proyecto</th>
+                <th rowspan="3">Meta fisica</th>
+                <th rowspan="3">Programa PVD</th>
+                <th rowspan="3">PROG. PMI?</th>
+                <th rowspan="3">F.F.</th>
+                <th colspan="6">EJECUCION</th>
+                <th colspan="36">EJECUTADO</th>
+                <th rowspan="3">TOTAL PROGRAMACION</th>
+                <th rowspan="3">SALDOS</th>
+                <th rowspan="3"></th>
+              </tr>
+              <tr>
+                <th rowspan="2">PIA</th>
+                <th rowspan="2">PIM</th>
+                <th rowspan="2">CERTIFICADO ANUAL</th>
+                <th rowspan="2">COMPROMISO ANUAL</th>
+                <th rowspan="2">DEVENGADO ANUAL</th>
+                <th rowspan="2">AVANCE ANUAL %</th>
+                <th colspan="3">ENE</th>
+                <th colspan="3">FEB</th>
+                <th colspan="3">MAR</th>
+                <th colspan="3">ABR</th>
+                <th colspan="3">MAY</th>
+                <th colspan="3">JUN</th>
+                <th colspan="3">JUL</th>
+                <th colspan="3">AGO</th>
+                <th colspan="3">SET</th>
+                <th colspan="3">OCT</th>
+                <th colspan="3">NOV</th>
+                <th colspan="3">DIC</th>
+              </tr>
+              <tr>
+                <th>PROG</th>
+                <th>DEV</th>
+                <th>SALDO</th>
+                <th>PROG</th>
+                <th>DEV</th>
+                <th>SALDO</th>
+                <th>PROG</th>
+                <th>DEV</th>
+                <th>SALDO</th>
+                <th>PROG</th>
+                <th>DEV</th>
+                <th>SALDO</th>
+                <th>PROG</th>
+                <th>DEV</th>
+                <th>SALDO</th>
+                <th>PROG</th>
+                <th>DEV</th>
+                <th>SALDO</th>
+                <th>PROG</th>
+                <th>DEV</th>
+                <th>SALDO</th>
+                <th>PROG</th>
+                <th>DEV</th>
+                <th>SALDO</th>
+                <th>PROG</th>
+                <th>DEV</th>
+                <th>SALDO</th>
+                <th>PROG</th>
+                <th>DEV</th>
+                <th>SALDO</th>
+                <th>PROG</th>
+                <th>DEV</th>
+                <th>SALDO</th>
+                <th>PROG</th>
+                <th>DEV</th>
+                <th>SALDO</th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let proyecto of listProyectos; index as i" class="panel">
+              <tr [style.background-color]="i%2==0 ? 'white': '#fafafa'" data-toggle="collapse">
+                <td [attr.rowspan]="proyecto.detalle_avance.length+1">
+                  {{proyecto.codigo_unico}}
+                  <div>
+                    <button class="btn btn-sm btn-icon" (click)="verDetalle(proyecto)">
+                      <i [ngClass]="(proyecto.isopen) ? 'fa fa-chevron-up': 'fa fa-chevron-down'"></i>
+                    </button>
+                  </div>
+                </td>
+                <td [attr.rowspan]="proyecto.detalle_avance.length+1">
+                  {{proyecto.nombre_proyecto}}</td>
+                <td [attr.rowspan]="proyecto.detalle_avance.length+1">
+                  {{proyecto.meta_fisica}}
+                </td>
+                <td [attr.rowspan]="proyecto.detalle_avance.length+1">
+                  {{proyecto.nombre_programa}}
+                </td>
+                <td [attr.rowspan]="proyecto.detalle_avance.length+1">
+                  {{proyecto.data_pmi ? 'SI': 'NO'}}
+                </td>
+              </tr>
+              <tr *ngFor="let detalle of proyecto.detalle_avance">
+                <td>{{detalle.fuentefinanciamiento}}</td>
+                <td>{{detalle.pia | currency : 'S/'}}</td>
+                <td>{{detalle.pim | currency : 'S/'}}</td>
+                <td>{{detalle.certificado_anual | currency : 'S/'}}</td>
+                <td>{{detalle.compromiso_anual | currency : 'S/'}}</td>
+                <td>{{detalle.devengado | currency : 'S/'}}</td>
+                <td style="background-color: lavender;">{{detalle.avance_porcentual_anual | number: '1.2-2'}}%</td>
+                <td>{{detalle.ene_prog | number: '1.2-2'}}</td>
+                <td>{{detalle.ene_eje | number: '1.2-2'}}</td>
+                <td>{{detalle.ene_pendiente | number: '1.2-2'}}</td>
+                <td>{{detalle.feb_prog | number: '1.2-2'}}</td>
+                <td>{{detalle.feb_eje | number: '1.2-2'}}</td>
+                <td>{{detalle.feb_pendiente | number: '1.2-2'}}</td>
+                <td>{{detalle.mar_prog | number: '1.2-2'}}</td>
+                <td>{{detalle.mar_eje | number: '1.2-2'}}</td>
+                <td>{{detalle.mar_pendiente | number: '1.2-2'}}</td>
+                <td>{{detalle.abr_prog | number: '1.2-2'}}</td>
+                <td>{{detalle.abr_eje | number: '1.2-2'}}</td>
+                <td>{{detalle.abr_pendiente | number: '1.2-2'}}</td>
+                <td>{{detalle.may_prog | number: '1.2-2'}}</td>
+                <td>{{detalle.may_eje | number: '1.2-2'}}</td>
+                <td>{{detalle.may_pendiente | number: '1.2-2'}}</td>
+                <td>{{detalle.jun_prog | number: '1.2-2'}}</td>
+                <td>{{detalle.jun_eje | number: '1.2-2'}}</td>
+                <td>{{detalle.jun_pendiente | number: '1.2-2'}}</td>
+                <td>{{detalle.jul_prog | number: '1.2-2'}}</td>
+                <td>{{detalle.jul_eje | number: '1.2-2'}}</td>
+                <td>{{detalle.jul_pendiente | number: '1.2-2'}}</td>
+                <td>{{detalle.ago_prog | number: '1.2-2'}}</td>
+                <td>{{detalle.ago_eje | number: '1.2-2'}}</td>
+                <td>{{detalle.ago_pendiente | number: '1.2-2'}}</td>
+                <td>{{detalle.set_prog | number: '1.2-2'}}</td>
+                <td>{{detalle.set_eje | number: '1.2-2'}}</td>
+                <td>{{detalle.set_pendiente | number: '1.2-2'}}</td>
+                <td>{{detalle.oct_prog | number: '1.2-2'}}</td>
+                <td>{{detalle.oct_eje | number: '1.2-2'}}</td>
+                <td>{{detalle.oct_pendiente | number: '1.2-2'}}</td>
+                <td>{{detalle.nov_prog | number: '1.2-2'}}</td>
+                <td>{{detalle.nov_eje | number: '1.2-2'}}</td>
+                <td>{{detalle.nov_pendiente | number: '1.2-2'}}</td>
+                <td>{{detalle.dic_prog | number: '1.2-2'}}</td>
+                <td>{{detalle.dic_eje | number: '1.2-2'}}</td>
+                <td>{{detalle.dic_pendiente | number: '1.2-2'}}</td>
+                <td>{{detalle.totalproyeccion | number: '1.2-2'}}</td>
+                <td>{{detalle.saldofinal | number: '1.2-2'}}</td>
+              </tr>
+              <tr class="xs-grid-detalle">
+                <td *ngIf="proyecto.isopen" colspan="50"
+                  style="padding-right: 50px;padding-top: 30px;padding-bottom: 30px;padding-left: 20px;background-color: #fafafa;">
+                  <table style="box-shadow: 10px 5px 5px #9e9e9e;"
+                    class="table table-hover table-bordered table-responsive">
+                    <thead class="table-active">
+                      <tr>
+                        <th rowspan="3">Componente</th>
+                        <th rowspan="3">PIA</th>
+                        <th rowspan="3">PIM</th>
+                        <th rowspan="3">CERTIF.</th>
+                        <th rowspan="3">COMPROM.</th>
+                        <th rowspan="3">DEVENGADO ANUAL</th>
+                        <th rowspan="3">AVANCE (%)</th>
+                        <th colspan="36">EJECUTADO</th>
+                      </tr>
+                      <tr>
+                        <th colspan="3">ENE</th>
+                        <th colspan="3">FEB</th>
+                        <th colspan="3">MAR</th>
+                        <th colspan="3">ABR</th>
+                        <th colspan="3">MAY</th>
+                        <th colspan="3">JUN</th>
+                        <th colspan="3">JUL</th>
+                        <th colspan="3">AGO</th>
+                        <th colspan="3">SET</th>
+                        <th colspan="3">OCT</th>
+                        <th colspan="3">NOV</th>
+                        <th colspan="3">DIC</th>
+                      </tr>
+                      <tr>
+                        <th>PROG</th>
+                        <th>DEV</th>
+                        <th>SALDO</th>
+                        <th>PROG</th>
+                        <th>DEV</th>
+                        <th>SALDO</th>
+                        <th>PROG</th>
+                        <th>DEV</th>
+                        <th>SALDO</th>
+                        <th>PROG</th>
+                        <th>DEV</th>
+                        <th>SALDO</th>
+                        <th>PROG</th>
+                        <th>DEV</th>
+                        <th>SALDO</th>
+                        <th>PROG</th>
+                        <th>DEV</th>
+                        <th>SALDO</th>
+                        <th>PROG</th>
+                        <th>DEV</th>
+                        <th>SALDO</th>
+                        <th>PROG</th>
+                        <th>DEV</th>
+                        <th>SALDO</th>
+                        <th>PROG</th>
+                        <th>DEV</th>
+                        <th>SALDO</th>
+                        <th>PROG</th>
+                        <th>DEV</th>
+                        <th>SALDO</th>
+                        <th>PROG</th>
+                        <th>DEV</th>
+                        <th>SALDO</th>
+                        <th>PROG</th>
+                        <th>DEV</th>
+                        <th>SALDO</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let detalle of proyecto.arrComponenteProyecto; index as s">
+                        <td>{{detalle.componente}}</td>
+                        <td>{{detalle.pia | currency : 'S/'}}</td>
+                        <td>{{detalle.pim | currency : 'S/'}}</td>
+                        <td>{{detalle.certificado_anual | currency : 'S/'}}</td>
+                        <td>{{detalle.compromiso_anual | currency : 'S/'}}</td>
+                        <td>{{detalle.devengado | currency : 'S/'}}</td>
+                        <td style="background-color: lavender;">{{detalle.avance_porcentual_anual | number: '1.2-2'}}%
+                        </td>
+                        <td>{{detalle.ene_prog | number: '1.2-2'}}</td>
+                        <td>{{detalle.ene_eje | number: '1.2-2'}}</td>
+                        <td>{{detalle.ene_pendiente | number: '1.2-2'}}</td>
+                        <td>{{detalle.feb_prog | number: '1.2-2'}}</td>
+                        <td>{{detalle.feb_eje | number: '1.2-2'}}</td>
+                        <td>{{detalle.feb_pendiente | number: '1.2-2'}}</td>
+                        <td>{{detalle.mar_prog | number: '1.2-2'}}</td>
+                        <td>{{detalle.mar_eje | number: '1.2-2'}}</td>
+                        <td>{{detalle.mar_pendiente | number: '1.2-2'}}</td>
+                        <td>{{detalle.abr_prog | number: '1.2-2'}}</td>
+                        <td>{{detalle.abr_eje | number: '1.2-2'}}</td>
+                        <td>{{detalle.abr_pendiente | number: '1.2-2'}}</td>
+                        <td>{{detalle.may_prog | number: '1.2-2'}}</td>
+                        <td>{{detalle.may_eje | number: '1.2-2'}}</td>
+                        <td>{{detalle.may_pendiente | number: '1.2-2'}}</td>
+                        <td>{{detalle.jun_prog | number: '1.2-2'}}</td>
+                        <td>{{detalle.jun_eje | number: '1.2-2'}}</td>
+                        <td>{{detalle.jun_pendiente | number: '1.2-2'}}</td>
+                        <td>{{detalle.jul_prog | number: '1.2-2'}}</td>
+                        <td>{{detalle.jul_eje | number: '1.2-2'}}</td>
+                        <td>{{detalle.jul_pendiente | number: '1.2-2'}}</td>
+                        <td>{{detalle.ago_prog | number: '1.2-2'}}</td>
+                        <td>{{detalle.ago_eje | number: '1.2-2'}}</td>
+                        <td>{{detalle.ago_pendiente | number: '1.2-2'}}</td>
+                        <td>{{detalle.set_prog | number: '1.2-2'}}</td>
+                        <td>{{detalle.set_eje | number: '1.2-2'}}</td>
+                        <td>{{detalle.set_pendiente | number: '1.2-2'}}</td>
+                        <td>{{detalle.oct_prog | number: '1.2-2'}}</td>
+                        <td>{{detalle.oct_eje | number: '1.2-2'}}</td>
+                        <td>{{detalle.oct_pendiente | number: '1.2-2'}}</td>
+                        <td>{{detalle.nov_prog | number: '1.2-2'}}</td>
+                        <td>{{detalle.nov_eje | number: '1.2-2'}}</td>
+                        <td>{{detalle.nov_pendiente | number: '1.2-2'}}</td>
+                        <td>{{detalle.dic_prog | number: '1.2-2'}}</td>
+                        <td>{{detalle.dic_eje | number: '1.2-2'}}</td>
+                        <td>{{detalle.dic_pendiente | number: '1.2-2'}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <nav class="pt-4 pl-3 pull-right">
+            <pagination [totalItems]="totalRegistros" [itemsPerPage]="num_filas" [boundaryLinks]="true"
+              previousText="&lsaquo;" nextText="&rsaquo;" [rotate]="false" firstText="&laquo;" lastText="&raquo;"
+              [(ngModel)]="paginaActiva" [maxSize]="5" (pageChanged)="cambiarPagina($event)">
+            </pagination>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

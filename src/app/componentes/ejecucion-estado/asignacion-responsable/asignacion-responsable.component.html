@@ -1,0 +1,55 @@
+<div class="row form-group">
+  <div class="col-sm-2">
+    <label dlabels class="control-label" for="supervisor">Supervisor (*):</label>
+  </div>
+  <div class="col-sm-4">
+    <div class="input-group">
+      <input dTextBox class="form-control" type='text' placeholder="Ingrese el Supervisor de la obra" id="supervisor" name="supervisor"
+        [(ngModel)]="supervisor" readonly="readonly">
+      <span class="input-group-btn">
+        <button class="btn btn-secondary" type="button" id="btnAgregarSupervisor" (click)="openModalSupervisor()" *hasClaim="'monitoreo_tabSeg_responsable_supervisor'">Agregar</button>
+        <button class="btn btn-secondary" type="button" id="btnVerSupervisor" (click)="openModalSupervisor()" *hasClaim="'monitoreo_tabSeg_responsable_supervisor_ver'">Ver</button>
+      </span>
+    </div>
+    <div class="input-group">
+        <label dlabels class="control-label">Última Actualización:</label> &nbsp;
+        <span>{{UltimaActualizacionSupervisor}}</span>  
+    </div>
+  </div>
+  <div class="col-sm-2">
+    <label dlabels class="control-label" for="residente">Residente de obra (*):</label>
+  </div>
+  <div class="col-sm-4">
+    <div class="input-group">
+      <input dTextBox class="form-control" type='text' placeholder="Ingrese el Residente de la obra" id="residente" name="residente"
+        [(ngModel)]="residente" readonly="readonly">
+      <span class="input-group-btn">
+        <button class="btn btn-secondary" type="button" id="btnAgregarResidente" (click)="openModalResidente()" *hasClaim="'monitoreo_tabSeg_responsable_residente'">Agregar</button>
+        <button class="btn btn-secondary" type="button" id="btnVerResidente" (click)="openModalResidente()" *hasClaim="'monitoreo_tabSeg_responsable_residente_ver'">Ver</button>
+      </span>
+    </div>
+    <div class="input-group">
+        <label dlabels class="control-label">Última Actualización:</label> &nbsp;
+        <span>{{UltimaActualizacionResidente}}</span>  
+    </div>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-sm-2">
+    <label dlabels class="control-label" for="inspector">Inspector (*):</label>
+  </div>
+  <div class="col-sm-4">
+    <div class="input-group">
+      <input dTextBox class="form-control" type='text' placeholder="Ingrese el Inspector de la obra" id="inspector" name="inspector"
+        [(ngModel)]="inspector" readonly="readonly">
+      <span class="input-group-btn">
+        <button class="btn btn-secondary" type="button" id="btnAgregarInspector" (click)="openModalInspector()" *hasClaim="'monitoreo_tabSeg_responsable_inspector'">Agregar</button>
+        <button class="btn btn-secondary" type="button" id="btnVerInspector" (click)="openModalInspector()" *hasClaim="'monitoreo_tabSeg_responsable_inspector_ver'">Ver</button>
+      </span>
+    </div>
+    <div class="input-group">
+        <label dlabels class="control-label">Última Actualización:</label> &nbsp;
+        <span>{{UltimaActualizacionInspector}}</span>  
+    </div>
+  </div>
+</div>

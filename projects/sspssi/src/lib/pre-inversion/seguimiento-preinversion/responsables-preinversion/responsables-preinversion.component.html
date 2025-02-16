@@ -1,0 +1,36 @@
+<div class="group-box">
+  <div class="row form-group">
+    <label class="col-12 col-lg-2" for="">Contratista:</label>
+    <div class="col-12 col-lg-4">
+      <div class="input-group">
+        <input class="form-control" type="text" id="contratista" name="contratista" placeholder="Ingrese contratista"
+          [(ngModel)]="contratista" readonly>
+        <span class="input-group-btn">
+          <button class="btn btn-secondary" type="button" id="btnVerDetalleContratista" (click)="opnModRegContratista()"
+            *hasClaim="'monitoreo_tabSeg_infObra_verAmpliacion_eje_dir'">
+            Ver</button>
+        </span>
+      </div>
+      <div class="input-group">
+        <label class="control-label">Última Actualización:</label> &nbsp;
+        <span>{{UltimaActualizacionContratista}}</span>
+      </div>
+    </div>
+    <label class="col-12 col-lg-2" for="administrador">Administrador de Contrato:</label>
+    <div class="col-12 col-lg-4">
+      <div class="input-group">
+        <input class="form-control" type="text" id="administrador" name="administrador" [(ngModel)]="administrador"
+          placeholder="Ingrese administrador de contrato" readonly>
+        <span class="input-group-btn">
+          <button class="btn btn-secondary" type="button" id="btnVerDetalleAdministrador"
+            (click)="opnModRegResponsable()" *hasClaim="'monitoreo_tabSeg_infObra_verAmpliacion_eje_dir'">
+            Ver</button>
+        </span>
+      </div>
+      <div class="input-group">
+        <label class="control-label">Última Actualización:</label> &nbsp;
+        <span>{{UltimaActualizacionAdministrador}}</span>
+      </div>
+    </div>
+  </div>
+</div>

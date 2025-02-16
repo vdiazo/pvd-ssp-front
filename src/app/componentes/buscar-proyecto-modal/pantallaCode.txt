@@ -1,0 +1,436 @@
+import { Component, OnInit, ViewEncapsulation, Output, EventEmitter, TemplateRef } from '@angular/core';
+import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
+import { MaestraService } from '../../services/maestra.service';
+import { Convenio, _proyecto, _tramo, _Tipofase, _convenio, ConvenioRegistrar, Proyecto } from '../../models/Convenio';
+import { SosemService } from '../../services/sosem.service';
+import { ConvenioService } from '../../services/convenio.service';
+import { Functions } from '../../appSettings/functions';
+import { tipoArchivo } from '../../appSettings/enumeraciones';
+import { BsModalService } from '../../../../node_modules/ngx-bootstrap/modal';
+
+@Component({
+  selector: 'app-buscar-proyecto-modal',
+  templateUrl: './buscar-proyecto-modal.component.html',
+  styleUrls: ['./buscar-proyecto-modal.component.css'],
+  encapsulation: ViewEncapsulation.None,
+  providers: [Convenio, _proyecto, _tramo, _Tipofase, _convenio, Functions]
+})
+export class BuscarProyectoModalComponent implements OnInit {
+  @Output() retornoValores = new EventEmitter();
+  entidadModal: ConvenioRegistrar;
+  file: any;
+  tramos = [];
+  fases;
+  documentos;
+  infraestructuras;
+  vias;
+  medidas;
+  denominacion;
+  ejecutoras;
+  municipalidades;
+  entidadArchivo;
+  nombreArchivo: string = null;
+  maxDate = new Date();
+  IdTipoArchivo: number = tipoArchivo.convenio;
+  tramosRegistrados: any = [];
+
+  convenio: Convenio;
+
+  constructor(private modalService: BsModalService, public modalRef: BsModalRef, public modalRef2: BsModalRef, private maestraService: MaestraService, private sosem: SosemService, private conveniopost: ConvenioService, public funciones: Functions) {
+
+  }
+  //campos de la vista
+  arreglo;
+  listaConvenio;
+  entidad;
+
+  ngOnInit() {
+    this.entidadModal = new ConvenioRegistrar();
+    this.listarTipoDocumentos();
+    this.listarTipoInfraestructura();
+    this.listarTipoMedidas();
+    this.listarTipoVias();
+    this.listarDenominacion();
+    this.listarMunicipalidades();
+    this.listarFases();
+  }
+  administrarConvenioRegistrar() {
+    this.guardarConvenios();
+  }
+
+  // calcularMonto(monto) {
+  //   let vmonto: string;
+  //   vmonto = this.funciones.format(monto);
+  //   this.entidadModal.numMonto_texto = vmonto;
+  // }
+
+  // calcularLongitud(monto) {
+  //   let vmonto: string;
+  //   vmonto = this.funciones.format(monto);
+  //   this.entidadModal.numLongitud_texto = vmonto;
+  // }
+
+  closeModal() {
+    this.retornoValores.emit(0);
+    this.modalRef.hide();
+  }
+  closeModalGuardarTramo() {
+    this.modalRef2.hide();
+  }
+
+  visibleEjecutora: boolean;
+  seleccionarEjecutora(municipalidad) {
+    if (municipalidad == null || municipalidad == undefined) {
+      this.ejecutoras = [];
+      return;
+    }
+    let id = municipalidad.id_municipalidad;
+    this.conveniopost.ListarEjecutora(id).subscribe(
+      response => {
+        this.ejecutoras = response;
+        if (this.ejecutoras == '{ \"data\":[{}]}') {
+          this.visibleEjecutora = false;
+          this.ejecutoras = null;
+          this.entidadModal.idejecutora = 0;
+        }
+        else {
+          this.visibleEjecutora = true;
+        }
+      }
+    );
+  }
+
+  fileChangeEvent(evento: any) {
+    if (evento.uploaded != null) {
+      this.nombreArchivo = evento.uploaded._body;
+    }
+  }
+
+  seleccionar(tramoSeleccionado) {
+    this.entidadModal.codTramo = tramoSeleccionado.id_tramo;
+  }
+
+  listarMunicipalidades() {
+    this.maestraService.listarMunicipalidad().subscribe(
+      data => {
+        this.municipalidades = data;
+      }
+    )
+  }
+
+  listarDenominacion() {
+    this.maestraService.listarDenominacion().subscribe(
+      data => {
+        this.denominacion = data;
+      }
+    )
+  }
+  listarFases() {
+    this.maestraService.listarTipoFases().subscribe(
+      data => {
+        this.fases = data;
+      }
+    )
+  }
+
+  listarTipoDocumentos() {
+    this.maestraService.listarTipoDocumentoCompromiso().subscribe(
+      data => {
+        this.documentos = data;
+      }
+    )
+  }
+
+  listarTipoInfraestructura() {
+    this.maestraService.listarTipoInfraestructura().subscribe(
+      data => {
+        this.infraestructuras = data;
+      }
+    )
+  }
+
+  listarTipoVias() {
+    this.maestraService.listarTipoVia().subscribe(
+      data => {
+        this.vias = data;
+      }
+    )
+  }
+
+  listarTipoMedidas() {
+    this.maestraService.listarUnidadMedidas().subscribe(
+      data => {
+        this.medidas = data;
+      }
+    )
+  }
+  ExtraerInfo() {
+    //condicion
+    if (this.entidadModal.codSnip) {
+      //llamar servicio
+      // this.funciones.alertaSimple("info", "Procesando...", "", false);
+      this.conveniopost.BusquedaProyecto(this.entidadModal.codSnip, 0).subscribe(
+        data => {
+          this.arreglo = data;
+          if (this.arreglo == "") {
+            this.sosem.BuscarProyectoSosem(this.entidadModal.codSnip, "0").subscribe(
+              data => {
+                this.funciones.cerrarAlerta();
+                //asignar el dato
+                this.entidad = data;
+                this.entidadModal.idproyecto = 0;
+                if (this.entidad.InfoPorSNIP.Snip != null) {
+                  this.entidadModal.nomProyecto = this.entidad.InfoPorSNIP.Snip.Nombre;
+                  this.entidadModal.codProyecto = this.entidad.InfoPorSNIP.Siaf != null ? this.entidad.InfoPorSNIP.Siaf[0].CodigoSiaf : this.entidad.InfoPorSNIP.Snip.CodigoUnico;
+                  this.tramos = [];
+                  this.visible = false;
+                  this.ocultar();
+                } else {
+                  this.entidadModal.nomProyecto = this.entidad.InfoPorSNIP.Siaf[0].Nombre;
+                  this.entidadModal.codProyecto = this.entidad.InfoPorSNIP.Siaf[0].CodigoSiaf;
+                  this.tramos = [];
+                  this.visible = false;
+                  this.ocultar();
+                }
+                this.listarFases();
+              }
+            )
+          } else {
+            this.funciones.cerrarAlerta();
+            this.entidadModal.idproyecto = this.arreglo.proyecto.id_proyecto;
+            this.entidadModal.nomProyecto = this.arreglo.proyecto.nombre_proyecto;
+            this.entidadModal.codProyecto = this.arreglo.proyecto.cod_unificado;
+            this.tramos = this.arreglo.proyecto.tramos;
+            this.visible = false;
+            this.ocultar();
+          }
+        }
+      );
+    }
+    else if (this.entidadModal.codProyecto) {
+      //llamar servicio
+      this.sosem.BuscarProyectoSosem("0", this.entidadModal.codProyecto).subscribe(
+        () => {
+          //asignar el dato
+          //this.entidad = data;
+          //this.nomProyecto = this.entidad.InfoPorSNIP.Snip.Nombre;
+          //this.codProyecto = this.entidad.InfoPorSNIP.Siaf[0].CodigoSiaf;
+        }
+      )
+      this.funciones.mensaje("info", "Por el momento la búsqueda de por codigo de proyecto no está implementado.");
+      //asignar el dato
+      //this.nomProyecto = this.codProyecto;
+      //this.codSnip = this.codProyecto;
+    }
+    else {
+      this.funciones.mensaje("info", "Debe de ingresar el código Snip o el código proyecto.");
+    }
+  }
+
+  guardarConvenios() {
+    // if (this.entidadModal.nomProyecto == null) {
+    //   this.funciones.mensaje("info", "Debe buscar el nombre de proyecto por código snip o del proyecto.");
+    //   return;
+    // }
+    // if (this.visible == false) {
+    //   if (this.tramoagregar == null) {
+    //     this.funciones.mensaje("info", "Ingrese nombre del tramo.");
+    //     return;
+    //   }
+    // } else {
+    //   if (this.entidadModal.nomTramo == null) {
+    //     this.funciones.mensaje("info", "Seleccione un Tramo.");
+    //     return;
+    //   }
+    // }
+    // if (this.entidadModal.fecFechaConvenio == null) {
+    //   this.funciones.mensaje("info", "Seleccione una fecha de firma.");
+    //   return;
+    // }
+    // if (this.entidadModal.fecFechaVigencia == null) {
+    //   this.funciones.mensaje("info", "Seleccione una fecha de vigencia.");
+    //   return;
+    // }
+    // if (this.nombreArchivo == null) {
+    //   this.funciones.mensaje("info", "Seleccione un archivo.");
+    //   return;
+    // }
+    // if (this.entidadModal.fecFechaConvenio > this.entidadModal.fecFechaVigencia) {
+    //   this.funciones.mensaje("info", "La fecha de firma de convenio no puede ser mayor a la fecha de vigencia.");
+    //   return;
+    // }
+    // if(this.visibleEjecutora && (this.entidadModal.idejecutora == null || this.entidadModal.idejecutora == 0)){      
+    //   this.funciones.mensaje("info","Debe seleccionar un tipo de ejecutora.");
+    //   return;
+    // }
+    
+    //if (this.entidadModal.idproyecto == 0) {
+    this.convenio = new Convenio();
+    // convenio._BE_Tm_Ssppvd_Proyecto = new _proyecto();
+    // convenio._BE_Tm_Ssppvd_Proyecto.id_proyecto = 0;
+    // convenio._BE_Tm_Ssppvd_Proyecto.cod_snip = Number.parseInt(this.entidadModal.codSnip.toString()); //Tramo
+    // convenio._BE_Tm_Ssppvd_Proyecto.cod_unificado = Number.parseInt(this.entidadModal.codProyecto.toString()); //Tramo
+    // convenio._BE_Tm_Ssppvd_Proyecto.nombre_proyecto = this.entidadModal.nomProyecto; //Tramo
+    // convenio._BE_Tm_Ssppvd_Proyecto.activo = true;
+    // convenio._BE_Tm_Ssppvd_Proyecto.usuario_creacion = sessionStorage.getItem("Usuario");
+    // convenio._BE_Tm_Ssppvd_Tramo = new _tramo();
+    // convenio._BE_Tm_Ssppvd_Tramo.id_tramo = 0; //Tramo
+    // if (this.tramoagregar != null) {
+    //   convenio._BE_Tm_Ssppvd_Tramo.nombre_tramo = this.tramoagregar; //Tramo
+    //   convenio._BE_Tm_Ssppvd_Tramo.descripcion_tramo = this.tramoagregar; //Tramo
+    // } else {
+    //   convenio._BE_Tm_Ssppvd_Tramo.nombre_tramo = this.entidadModal.nomTramo; //Tramo
+    //   convenio._BE_Tm_Ssppvd_Tramo.descripcion_tramo = this.entidadModal.nomTramo; //Tramo
+    // }
+    // convenio._BE_Tm_Ssppvd_Tramo.activo = true;
+    // convenio._BE_Tm_Ssppvd_Tramo.usuario_creacion = sessionStorage.getItem("Usuario");
+    // convenio._BE_Tm_Ssppvd_Fase = new _Tipofase();
+    // convenio._BE_Tm_Ssppvd_Fase.id_tipo_fase = Number.parseInt(this.entidadModal.nomFase.toString()); //Tramo
+    // convenio._BE_Tm_Ssppvd_Fase.usuario_creacion = sessionStorage.getItem("Usuario"); //Tramo
+
+    // Registro Cabecera convenio
+    this.convenio._BE_Tm_Ssppvd_Convenio = new _convenio();
+    this.convenio._BE_Tm_Ssppvd_Convenio.id_municipalidad = Number.parseInt(this.entidadModal.nomUniEjecutora.toString()); //Tramo
+    this.convenio._BE_Tm_Ssppvd_Convenio.id_documento_compromiso = Number.parseInt(this.entidadModal.nomDocumento.toString()); //Cabecera
+    this.convenio._BE_Tm_Ssppvd_Convenio.id_tipo_infraestructura = Number.parseInt(this.entidadModal.nomInfraestructura.toString()); //Cabecera
+    this.convenio._BE_Tm_Ssppvd_Convenio.id_tipo_via = Number.parseInt(this.entidadModal.nomVia.toString()); //Cabecera
+    this.convenio._BE_Tm_Ssppvd_Convenio.id_unidad_medida = Number.parseInt(this.entidadModal.nomUniMedida.toString()); //Cabecera
+    this.convenio._BE_Tm_Ssppvd_Convenio.id_fuente_financiamiento = Number.parseInt(this.entidadModal.nomDenomConvenio.toString()); //Cabecera
+    this.convenio._BE_Tm_Ssppvd_Convenio.fecha_firma = this.funciones.ConvertStringtoDate(this.funciones.formatDate(this.entidadModal.fecFechaConvenio)); //Cabecera
+    this.convenio._BE_Tm_Ssppvd_Convenio.fecha_vigencia = this.funciones.ConvertStringtoDate(this.funciones.formatDate(this.entidadModal.fecFechaVigencia)); //Cabecera
+    this.convenio._BE_Tm_Ssppvd_Convenio.longitud = Number.parseFloat(this.entidadModal.numLongitud_texto.toString().replace(/,/g, "")); //Cabecera
+    this.convenio._BE_Tm_Ssppvd_Convenio.monto = Number.parseFloat(this.entidadModal.numMonto_texto.toString().replace(/,/g, "")); //Cabecera
+    this.convenio._BE_Tm_Ssppvd_Convenio.siglas = this.entidadModal.nomSiglas; //Cabecera
+    this.convenio._BE_Tm_Ssppvd_Convenio.usuario_creacion = sessionStorage.getItem("Usuario");
+    this.convenio._BE_Tm_Ssppvd_Convenio.nombre_archivo = this.nombreArchivo == null ? null : this.nombreArchivo; //Cabecera
+    this.convenio._BE_Tm_Ssppvd_Convenio.id_ejecutora = this.entidadModal.idejecutora == null ? 0 : Number.parseInt(this.entidadModal.idejecutora.toString()); //Tramo
+
+
+    //convenio.proyecto.push({id_fase_convenio: 0,id_fase: 473, activo: true},{id_fase_convenio: 0,id_fase: 430, activo: true});
+    //convenio.proyecto.push({id_fase:1})
+    // convenio.proyecto.push(new Proyecto({
+    //         id_fase: 1,
+    //         id_ejecutora: convenio._BE_Tm_Ssppvd_Convenio.id_ejecutora,
+    //         id_municipalidad: convenio._BE_Tm_Ssppvd_Convenio.id_municipalidad
+    //       }));
+
+
+
+    //id_fase,id_municipalidad,id_ejecutora
+
+
+    //let entidad = { data: JSON.stringify(convenio) }
+    //this.conveniopost.registrarConvenioSosem(convenio).subscribe(
+    //   data => {
+    //     if (data == 0) {
+    //       this.funciones.mensaje("danger", this.funciones.mostrarMensaje("error", ""));
+    //     }
+
+    //     else {
+    //       this.funciones.mensaje("success", this.funciones.mostrarMensaje("insertar", ""));
+    //       this.retornoValores.emit(0);
+    //       this.modalRef.hide();
+    //     }
+    //   }
+    // );
+    //} else {
+    // let envioRegistrar = new Convenio();
+    // envioRegistrar._BE_Tm_Ssppvd_Proyecto = new _proyecto();
+    // envioRegistrar._BE_Tm_Ssppvd_Proyecto.id_proyecto = Number.parseInt(this.entidadModal.idproyecto.toString());
+    // envioRegistrar._BE_Tm_Ssppvd_Proyecto.cod_snip = Number.parseInt(this.entidadModal.codSnip.toString());
+    // envioRegistrar._BE_Tm_Ssppvd_Proyecto.cod_unificado = Number.parseInt(this.entidadModal.codProyecto.toString());
+    // envioRegistrar._BE_Tm_Ssppvd_Proyecto.nombre_proyecto = this.entidadModal.nomProyecto;
+    // envioRegistrar._BE_Tm_Ssppvd_Proyecto.activo = true;
+    // envioRegistrar._BE_Tm_Ssppvd_Proyecto.usuario_creacion = sessionStorage.getItem("Usuario");
+    // envioRegistrar._BE_Tm_Ssppvd_Tramo = new _tramo();
+    // if (this.tramoagregar != null) {
+    //   envioRegistrar._BE_Tm_Ssppvd_Tramo.id_tramo = 0;
+    //   envioRegistrar._BE_Tm_Ssppvd_Tramo.nombre_tramo = this.tramoagregar;
+    //   envioRegistrar._BE_Tm_Ssppvd_Tramo.descripcion_tramo = this.tramoagregar;
+    // } else {
+    //   envioRegistrar._BE_Tm_Ssppvd_Tramo.id_tramo = Number.parseInt(this.entidadModal.codTramo.toString());
+    //   envioRegistrar._BE_Tm_Ssppvd_Tramo.nombre_tramo = this.entidadModal.nomTramo;
+    //   envioRegistrar._BE_Tm_Ssppvd_Tramo.descripcion_tramo = this.entidadModal.nomTramo;
+    // }
+    // envioRegistrar._BE_Tm_Ssppvd_Tramo.activo = true;
+    // envioRegistrar._BE_Tm_Ssppvd_Tramo.usuario_creacion = sessionStorage.getItem("Usuario");
+    // envioRegistrar._BE_Tm_Ssppvd_Tramo.usuario_modificacion = sessionStorage.getItem("Usuario");
+    // envioRegistrar._BE_Tm_Ssppvd_Fase = new _Tipofase();
+    // envioRegistrar._BE_Tm_Ssppvd_Fase.id_tipo_fase = Number.parseInt(this.entidadModal.nomFase.toString());
+    // envioRegistrar._BE_Tm_Ssppvd_Fase.usuario_creacion = sessionStorage.getItem("Usuario");
+    // envioRegistrar._BE_Tm_Ssppvd_Convenio = new _convenio();
+    // envioRegistrar._BE_Tm_Ssppvd_Convenio.id_convenio = 0;
+    // envioRegistrar._BE_Tm_Ssppvd_Convenio.fecha_firma = this.funciones.ConvertStringtoDate(this.funciones.formatDate(this.entidadModal.fecFechaConvenio));
+    // envioRegistrar._BE_Tm_Ssppvd_Convenio.fecha_vigencia = this.funciones.ConvertStringtoDate(this.funciones.formatDate(this.entidadModal.fecFechaVigencia));
+    // envioRegistrar._BE_Tm_Ssppvd_Convenio.id_documento_compromiso = Number.parseInt(this.entidadModal.nomDocumento.toString());
+    // envioRegistrar._BE_Tm_Ssppvd_Convenio.id_fuente_financiamiento = Number.parseInt(this.entidadModal.nomDenomConvenio.toString());
+    // //envioRegistrar._BE_Tm_Ssppvd_Convenio.id_municipalidad = Number.parseInt(this.entidadModal.nomUniEjecutora.toString());
+    // envioRegistrar._BE_Tm_Ssppvd_Convenio.id_tipo_infraestructura = Number.parseInt(this.entidadModal.nomInfraestructura.toString());
+    // envioRegistrar._BE_Tm_Ssppvd_Convenio.id_tipo_via = Number.parseInt(this.entidadModal.nomVia.toString());
+    // envioRegistrar._BE_Tm_Ssppvd_Convenio.id_unidad_medida = Number.parseInt(this.entidadModal.nomUniMedida.toString());
+    // envioRegistrar._BE_Tm_Ssppvd_Convenio.longitud = Number.parseFloat(this.entidadModal.numLongitud_texto.toString().replace(/,/g, ""));
+    // envioRegistrar._BE_Tm_Ssppvd_Convenio.monto = Number.parseFloat(this.entidadModal.numMonto_texto.toString().replace(/,/g, ""));
+    // envioRegistrar._BE_Tm_Ssppvd_Convenio.siglas = this.entidadModal.nomSiglas;
+    // envioRegistrar._BE_Tm_Ssppvd_Convenio.usuario_creacion = sessionStorage.getItem("Usuario");
+    // envioRegistrar._BE_Tm_Ssppvd_Convenio.nombre_archivo = this.nombreArchivo == null ? null : this.nombreArchivo;
+    // //envioRegistrar._BE_Tm_Ssppvd_Convenio.id_ejecutora = this.entidadModal.idejecutora == null ? 0 :Number.parseInt(this.entidadModal.idejecutora.toString());
+    // let procede;
+    // let validar = new ConvenioValidar;
+    // validar.siglas = envioRegistrar._BE_Tm_Ssppvd_Convenio.siglas.replace(/ /g,"");
+    // validar.id_fase = 0;
+    // this.conveniopost.ValidarConvenio(validar).subscribe(
+    //   data=>{
+    //     procede = data;
+    //     if(procede == ""){
+    //       this.conveniopost.registrarConvenioSosem(envioRegistrar).subscribe(
+    //         response => {
+    //           if (response == 0) {
+    //             this.funciones.mensaje("danger", this.funciones.mostrarMensaje("error", ""));
+    //           }
+    //           else {
+    //             this.funciones.mensaje("success", this.funciones.mostrarMensaje("insertar", ""));
+    //             this.retornoValores.emit(0);
+    //             this.modalRef.hide();
+    //           }
+    //         }
+    //       )
+    //     }else{
+    //       this.funciones.alertaSimple("warning","La siglas del convenio ya se encuentra registrada en un tramo.","Debe de ingresar otra siglas para el convenio",true);
+    //     }
+    //   }
+    // );      
+    //}
+  }
+  visible: boolean = true;
+  tramoagregar: string;
+  ocultar() {
+    if (this.visible) {
+      this.visible = false;
+      if (this.tramos.length == 0) {
+        this.tramoagregar = this.entidadModal.nomProyecto;
+      }
+    } else {
+      this.visible = true;
+      this.tramoagregar = null;
+    }
+  }
+  modalRegistrarTramo(template: TemplateRef<any>) {
+    this.modalRef2 = this.modalService.show(template);
+  }
+
+  guardarTramo() {
+    if (this.convenio == null){
+      this.convenio = new Convenio();
+    }
+
+    this.convenio.proyecto = new Array<Proyecto>();
+    let proyecto: Proyecto = new Proyecto();
+    proyecto.id_fase = 1;
+    proyecto.id_ejecutora = this.entidadModal.idejecutora;  //this.convenio._BE_Tm_Ssppvd_Convenio.id_ejecutora;
+    proyecto.id_municipalidad = this.convenio._BE_Tm_Ssppvd_Convenio.id_municipalidad;
+    this.convenio.proyecto.push(proyecto);
+
+    this.modalRef2.hide();
+    this.modalRef2 = null;
+  }
+}

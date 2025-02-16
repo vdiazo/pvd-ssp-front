@@ -1,0 +1,18 @@
+.btn-magenta-outlined {
+    color: #007791;
+    background-color: white;
+    border-color: #007791;
+}
+.item-uploader{
+    border-top: 1px solid rgb(232, 233, 235);
+    padding: 5px 0;
+}
+.ItemAccion button {
+    background-color: transparent;
+    color: rgb(104, 111, 122);
+    cursor: pointer;
+    border-width: initial;
+    border-style: none;
+    border-color: initial;
+    border-image: initial;
+}

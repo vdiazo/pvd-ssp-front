@@ -1,0 +1,111 @@
+<div class="modal-header">
+  <h4 class="modal-title" *ngIf="!cambiarEditar">Registro de Avance - Elaboración Estudio Preinversión</h4>
+  <p class="pb-2 pl-4 pr-4" *ngIf="!cambiarEditar">Registrar Avance Entrega de Informes</p>
+  <h4 class="modal-title" *ngIf="cambiarEditar">Edición de Avance - Elaboración Estudio Preinversión</h4>
+  <p class="pb-2 pl-4 pr-4" *ngIf="cambiarEditar">Actualizar Avance Entrega de Informes</p>
+</div>
+<div class="modal-body">
+  <form [formGroup]="formRegistroAvanceEstudio" (ngSubmit)="registrarAvanceEstudio()">
+    <div class="row form-group">
+      <label class="form-label col-12 col-md-3 mb-2">(*) VALORIZACION DEL:</label>
+      <div class="col-12 col-md-3 mb-2">
+        <span>{{tipoValorizacion}}</span>
+      </div>
+      <label for="id_programacion_detalle" class="form-label col-12 col-md-3 mb-2">(*) NUMERO DE ENTREGABLE:</label>
+      <div class="col-12 col-md-3 mb-2">
+        <input *ngIf="cambiarEditar" class="form-control" formControlName="numero_entregable" readonly>
+        <ng-select *ngIf="!cambiarEditar" [items]="lstNumeroAvanceInforme" placeholder="Seleccione"
+          bindLabel="numero_entregable" bindValue="id_programacion_detalle"
+          notFoundText="no se ha encontrado ningún item" formControlName="id_programacion_detalle"
+          id="ddlNumeroEntregable" name="ddlNumeroEntregable" [ngClass]="{'is-invalid': f.id_programacion_detalle.invalid && (f.id_programacion_detalle.dirty || f.id_programacion_detalle.touched), 
+          'ng-inicio': f.id_programacion_detalle.invalid && f.id_programacion_detalle.untouched}">
+        </ng-select>
+        <div
+          *ngIf="f.id_programacion_detalle.invalid && (f.id_programacion_detalle.dirty || f.id_programacion_detalle.touched)">
+          <strong *ngIf="f.id_programacion_detalle.errors.required" class="text-danger">Nro. de entregable es
+            obligatorio</strong>
+        </div>
+      </div>
+      <label for="fecha_presentacion" class="form-label col-12 col-md-3 mb-2">(*) FECHA DE PRESENTACION:</label>
+      <div class="col-12 col-md-3 mb-2">
+        <div class="inner-addon left-addon">
+          <i class="icono material-icons">event</i>
+          <input class="form-control" #dpYMD="bsDatepicker" bsDatepicker [readonly]="true" id="txtFechaPresentacion"
+            placeholder="__/__/____"
+            [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es',showWeekNumbers: false, containerClass: 'theme-red'}"
+            formControlName="fecha_presentacion" [ngClass]="{'is-invalid': f.fecha_presentacion.invalid && (f.fecha_presentacion.dirty || f.fecha_presentacion.touched),
+            'ng-inicio': f.fecha_presentacion.invalid && f.fecha_presentacion.untouched}">
+        </div>
+        <div *ngIf="f.fecha_presentacion.invalid && (f.fecha_presentacion.dirty || f.fecha_presentacion.touched)">
+          <strong *ngIf="f.fecha_presentacion.errors.required" class="text-danger">Fecha de Presentación es
+            obligatorio</strong>
+        </div>
+      </div>
+      <label for="fecha_conformidad" class="form-label col-12 col-md-3 mb-2">(*) FECHA DE CONFORMIDAD:</label>
+      <div class="col-12 col-md-3 mb-2">
+        <div class="inner-addon left-addon">
+          <i class="icono material-icons">event</i>
+          <input class="form-control" #dpYMD="bsDatepicker" bsDatepicker [readonly]="true" id="txtFechaConformidad"
+            placeholder="__/__/____"
+            [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es',showWeekNumbers: false, containerClass: 'theme-red' }"
+            formControlName="fecha_conformidad" [ngClass]="{'is-invalid': f.fecha_conformidad.invalid && (f.fecha_conformidad.dirty || f.fecha_conformidad.touched),
+            'ng-inicio': f.fecha_conformidad.invalid && f.fecha_conformidad.untouched}">
+        </div>
+        <div *ngIf="f.fecha_conformidad.invalid && (f.fecha_conformidad.dirty || f.fecha_conformidad.touched)">
+          <strong *ngIf="f.fecha_conformidad.errors.required" class="text-danger">Fecha de Conformidad es
+            obligatorio</strong>
+        </div>
+      </div>
+      <label for="monto_pagado" class="form-label col-12 col-md-3 mb-2">(*) MONTO PAGADO:</label>
+      <div class="col-12 col-md-3 mb-2">
+        <input id="txtMontoPagado" name="txtMontoPagado" maxlength="22" placeholder="Ingrese el monto pagado"
+          formControlName="monto_pagado" [textMask]="{mask: funciones.currencyMask}" type="text" class="form-control"
+          [ngClass]="{'is-invalid': (f.monto_pagado.touched || f.monto_pagado.dirty) && f.monto_pagado.invalid,
+          'ng-inicio': f.monto_pagado.invalid && f.monto_pagado.untouched }">
+        <div *ngIf="f.monto_pagado.invalid && (f.monto_pagado.dirty || f.monto_pagado.touched)">
+          <strong *ngIf="f.monto_pagado.errors.required" class="text-danger">Monto pagado es obligatorio</strong>
+        </div>
+      </div>
+      <label for="fileDocumentoConformidadEntregable" class="form-label col-12 col-md-3 mb-2">(*) SUBIR DOCUMENTO DE
+        CONFORMIDAD DEL ENTREGABLE:</label>
+      <div class="col-12 col-md-3 mb-2">
+        <app-input-file idComp="fileDocumentoConformidadEntregable" (onChange)="fileChangeEvent($event)"
+          class="input-group" IdTipoArchivo="{{tipoArchivo}}" Value="{{ documentoConformidad }}" [ngClass]="{'is-invalid': f.documento_conformidad.invalid && (f.documento_conformidad.dirty || f.documento_conformidad.touched), 
+          'ng-inicio': f.documento_conformidad.invalid && f.documento_conformidad.untouched}">
+        </app-input-file>
+        <div
+          *ngIf="f.documento_conformidad.invalid && (f.documento_conformidad.dirty || f.documento_conformidad.touched)">
+          <strong *ngIf="f.documento_conformidad.errors.required" class="text-danger">Documento Aprobación es
+            obligatorio</strong>
+        </div>
+      </div>
+      <label for="descripcion_contenido" class="form-label col-12 col-md-3 mb-2">(*) DESCRIPCIÓN DEL CONTENIDO:</label>
+      <div class="col-12 col-md-9 mb-6">
+        <textarea class="form-control" name="txtDescripcionContenido" id="txtDescripcionContenido"
+          formControlName="descripcion_contenido" rows="2"
+          [ngClass]="{'is-invalid': f.descripcion_contenido.invalid && (f.descripcion_contenido.dirty || f.descripcion_contenido.touched)}"></textarea>
+        <div
+          *ngIf="f.descripcion_contenido.invalid && (f.descripcion_contenido.dirty || f.descripcion_contenido.touched)">
+          <strong *ngIf="f.descripcion_contenido.errors.required" class="text-danger">Descripción es
+            obligatorio</strong>
+        </div>
+      </div>
+    </div>
+    <strong class="text-danger">(*) Campos Obligatorios</strong>
+    <div class="row form-group">
+      <div class="col-12 clearfix">
+        <ng-container>
+          <div class="float-right">
+            <ng-container>
+              <button class="btn btn-danger" type="submit" [disabled]="formRegistroAvanceEstudio.invalid">
+                <i [ngClass]=" (cambiarEditar)? 'fa fa-edit' : 'fa fa-save'"></i>
+                Guardar</button>
+            </ng-container>
+            <button class="btn btn-plomo ml-1" type="button" (click)="closeModal()"><i class="fa fa-arrow-left"></i>
+              Cerrar</button>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </form>
+</div>

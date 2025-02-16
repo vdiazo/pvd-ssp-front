@@ -1,0 +1,80 @@
+<div class="modal-header">
+  <h4 class="modal-title">Resolucion de Contrato</h4>
+  <p class="pb-2 pl-4 pr-4">Registro de Resolucion de Contrato</p>
+</div>
+<div class="modal-body">
+  <div class="group-box">
+    <form (ngSubmit)="grabar()" [formGroup]="formGroup">
+      <div class="row form-group">
+        <div class="col-sm-2">
+          <label class="control-label">Fecha Emisión Documento (*):</label>
+        </div>
+        <div class="col-sm-4">
+          <input formControlName="fecha_emision_documento" class="form-control" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es', containerClass: 'theme-red' }"
+            type='text' id="fecha_emision_documento" placeholder="dd/mm/aaaa" bsDatepicker readonly [ngClass]="{'is-invalid': (formGroup.get('fecha_emision_documento').touched || formGroup.get('fecha_emision_documento').dirty) && 
+            !formGroup.get('fecha_emision_documento').valid }" />
+          <span class="invalid-feedback" style="width: 200px;">
+            <span *ngIf="formGroup.get('fecha_emision_documento').errors?.required">
+              El campo Fecha Emisión Documento es obligatorio.
+            </span>
+          </span>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-2">
+          <label class="control-label">Tipo de Documento (*):</label>
+        </div>
+        <div class="col-sm-4">
+          <select id="cboTipoDocumento" class="form-control" formControlName="id_tipo_documento" [ngClass]="{'is-invalid': (formGroup.get('id_tipo_documento').touched || formGroup.get('id_tipo_documento').dirty) && !formGroup.get('id_tipo_documento').valid }">
+            <option [ngValue]="null" disabled>Seleccione</option>
+            <option *ngFor="let opt of listTipoDocumento" [ngValue]="opt.id_tipo_documento">{{ opt.nombre_tipo_documento }}</option>
+          </select>
+          <span class="invalid-feedback">
+            <span *ngIf="formGroup.get('id_tipo_documento').errors?.required">
+              El campo Tipo de Documento es obligatorio.
+            </span>
+          </span>
+        </div>
+        <div class="col-sm-2">
+          <label class="control-label">Documento (*):</label>
+        </div>
+        <div class="col-sm-4">
+          <app-input-file idComp="fileInsert" (onChange)="fileChangeEvent($event)" class="input-group" IdTipoArchivo="{{tipoArchivo}}"
+            Value="{{ nombreArchivo }}" [ngClass]="{'is-invalid': (formGroup.get('nombre_archivo').touched || formGroup.get('nombre_archivo').dirty) &&
+             !formGroup.get('nombre_archivo').valid }">
+          </app-input-file>
+          <p></p>
+          <div *ngIf="tieneArchivo; else templateicono">
+            <a href="{{ formGroup.get('ruta_archivo').value }}" target="_blank" class="btn-icon mr-1">
+              <i class="fa fa-15x">
+                <img src="assets/img/icons/file.svg" alt="archivo">
+              </i>
+            </a>
+          </div>
+          <ng-template #templateicono>
+          </ng-template>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-2">
+          <label class="control-label">Descripción (*):</label>
+        </div>
+        <div class="col-sm-10">
+          <textarea rows="5" class="form-control"  [ngClass]="{'is-invalid': (formGroup.get('descripcion').touched || formGroup.get('descripcion').dirty) && 
+            !formGroup.get('descripcion').valid }" type='multiline' placeholder="Ingrese descripción" id="descripcion" formControlName="descripcion" ></textarea>
+          <span class="invalid-feedback" style="width: 200px;">
+            <span *ngIf="formGroup.get('descripcion').errors?.required">
+              El campo Descripción es obligatorio.
+            </span>
+          </span>
+        </div>
+      </div>
+      <span class="comentario">(*)Campos Obligatorios</span>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-danger" id="btnGuardar" [disabled]="!formGroup.valid">Guardar</button>
+        <button class="btn btn-plomo" id="btnCancelar" type="button" (click)="closeModal()">
+          <i class="fa fa-arrow-left"></i> Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>

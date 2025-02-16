@@ -1,0 +1,91 @@
+
+  <div class="row" *hasClaim="'monitoreo_tabRYL_LiqSeg_regComponentesFile_exp_tec'">
+      <div class="col-6">
+          <div class="row" *ngIf="!EsObligatorio">
+              <div class="col-12">
+                  <div class="checkbox" >
+                      <input type="checkbox" (click)="checkEvent($event)" id="checkbox{{IdComponente}}" [checked]=NoCorresponde />
+                      <label for="checkbox{{IdComponente}}" class="ml-3">No Corresponde</label>
+                    </div>
+              </div>
+          </div>
+      </div>
+      <div class="col-6 text-right" *ngIf="!NoCorresponde">
+        <form class="">
+          <div class="form-group" > 
+            <label for="{{IdComponente}}" class="btn btn-magenta-outlined btn-sm mb-0 d-inline-flex align-items-center"><i class="material-icons">cloud_upload</i>&nbsp;Subir archivos</label>
+            <input type="file" class="form-control d-none" id="{{IdComponente}}" name="multiple" ng2FileSelect [uploader]="uploader" multiple />
+          </div>
+        </form>
+      </div>
+  </div>
+      <div class="row">
+      <div class="col-12" *ngIf="!NoCorresponde">
+        <div class="div-tabla">
+  
+          <div class="thead" >
+              <div class="row">
+                  <div class="col-1">
+                    Orden
+                  </div>
+                  <div class="col-3 text-left">
+                    Nombre
+                  </div>
+                  <div class="col-2 text-right">
+                    Tamaño
+                  </div>
+                  <div class="col-2 text-right">
+                      Fecha de carga
+                    </div>
+                  <div class="col-2">
+                    Progreso
+                  </div>
+                  <div class="col-2 text-right">
+                    Acción
+                  </div>
+                </div>
+          </div>
+  
+  
+  
+  
+            <div class="row tbody item-uploader" *ngFor="let item of uploader.queue">
+                <div class="col-1">
+                    <span *ngIf="item.isSuccess"><i class="material-icons">check</i></span>
+                    <span *ngIf="item.isCancel"><i class="material-icons">cloud_off</i></span>
+                    <span *ngIf="item.isError"><i class="material-icons">close</i></span>
+                  </div>
+                  <div class="col-3 text-left">
+                      {{ item.file.name }}
+                  </div>
+                  <div class="col-2 text-right">
+                      {{ item.file.size/1024/1024 | number:'.2' }} MB
+                  </div>
+                  <div class="col-2 text-right"></div>
+                  <div class="col-2">
+                      <div class="progress position-relative" style="margin-bottom: 0;">
+                          <span style="color:black;position: absolute; right: 5px;">{{item.progress + '%'}}</span>
+                          <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': item.progress + '%' }">
+                            
+                          </div>
+                        </div>
+                  </div>
+                    <div class="col-2 ItemAccion text-right">
+                        <button type="button" (click)="item.upload()" [disabled]="item.isReady || item.isUploading || item.isSuccess">
+                            <i class="material-icons">cloud_upload</i>
+                          </button>
+  
+                          <button type="button" (click)="item.cancel()" [disabled]="!item.isUploading">
+                            <i class="material-icons">cloud_off</i>
+                          </button>
+  
+                          <button type="button" (click)="item.remove()">
+                              <i class="material-icons">delete</i>
+                          </button>
+  
+                      </div>
+  
+            </div>
+          </div>
+      </div>
+    </div>

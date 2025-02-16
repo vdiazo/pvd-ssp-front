@@ -1,0 +1,350 @@
+<div class="modal-header">
+    <h4 class="modal-title" [hidden]="!cambiarEditarLiquidacion">Aprobación y Conformidad</h4>
+    <h4 class="modal-title" [hidden]="cambiarEditarLiquidacion">Editar Aprobación y Conformidad</h4>
+    <p class="pl-4 pr-4" [hidden]="!cambiarEditarLiquidacion">Formulario para el registro de Aprobación y Conformidad</p>
+    <p class="pl-4 pr-4" [hidden]="cambiarEditarLiquidacion">Formulario para la edición de Aprobación y Conformidad</p>
+  </div>
+  <div class="modal-body">
+    <form (ngSubmit)="administrarTramo();" #LiquidacionGrabarForm="ngForm" [hidden]="!cambiarEditarLiquidacion">
+      <div class="row form-group">
+        <div class="col-md-3">
+          <label dlabels class="control-label">FECHA DE INFORME DE APROBACIÓN (*) :</label>
+        </div>
+        <div class="col-md-3">
+            <input class="form-control" type='text' readonly="readonly" name="fechaInformeAprobacion" placeholder="seleccione la Fecha"
+              [(ngModel)]="entidadModal.fechaInformeAprobacion" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es',containerClass: 'theme-red' }" [maxDate]="fechaDesignaconMax"/>
+        </div>
+        <div class="col-md-3">
+          <label dlabels class="control-label">SUBIR INFORME DE APROBACIÓN (*) :</label>
+        </div>
+        <div class="col-md-3">
+            <set-input-file idComp="filebuscarInformeAprobacionAgregar" (onChange)="fileChangeEventInformeAprobacion($event)" IdTipoArchivo="{{IdTipoArchivoInformeAprobacion}}"
+              class="input-group"></set-input-file>
+          </div>
+      </div>
+
+      <div class="row form-group">
+          <div class="col-md-3">
+            <label dlabels class="control-label">FECHA DE APROBACIÓN DE RESOLUCIÓN DE EXPEDIENTE TÉCNICO (*) :</label>
+          </div>
+          <div class="col-md-3">
+              <input class="form-control" type='text' readonly="readonly" name="fechaAprobacionResolucion" placeholder="seleccione la Fecha"
+                [(ngModel)]="entidadModal.fechaAprobacionResolucion" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es',containerClass: 'theme-red' }"
+                [maxDate]="fechaDesignaconMax" />
+          </div>
+          <div class="col-md-3">
+            <label dlabels class="control-label">SUBIR RESOLUCIÓN DE APROBACIÓN DE EXPEDIENTE TÉCNICO (*) :</label>
+          </div>
+          <div class="col-md-3">
+              <set-input-file idComp="filebuscarAprobacionResolucionAgregar" (onChange)="fileChangeEventAprobacionResolucion($event)" IdTipoArchivo="{{IdTipoArchivoAprobacionResolucion}}"
+                class="input-group"></set-input-file>
+          </div>
+      </div>
+      <!--<div class="row form-group">
+        <div class="col-md-3">
+          <label dlabels class="control-label">ESTADO LIQUIDACIÓN</label>
+        </div>
+        <div class="col-md-3">
+          <ng-select required [items]="estados" placeholder="Seleccione un estado" bindLabel="denominacion" bindValue="id_estado_liquidacion_expediente"
+            [(ngModel)]="entidadModal.id_estado_liquidacion_expediente" #estadoLiquidacion="ngModel" (change)="SeleccionarEstado($event)" name="estadoLiquidacion">
+          </ng-select>
+          <div [hidden]="estadoLiquidacion.valid || estadoLiquidacion.pristine" class="alert alert-danger">
+            El estado liquidación es obligatorio
+          </div>
+        </div>
+        <div class="col-md-2">
+          <label dlabels class="control-label">FECHA</label>
+        </div>
+        <div class="col-md-4">
+          <input class="form-control" type='text' #fecha="ngModel" readonly="readonly" required name="fecha" placeholder="seleccione la Fecha"
+            [(ngModel)]="entidadModal.fecha" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es',containerClass: 'theme-red' }"
+          />
+          <div [hidden]="fecha.valid || fecha.pristine" class="alert alert-danger">
+            La fecha es obligatorio
+          </div>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-md-3">
+          <label dlabels class="control-label">TIPO DOCUMENTO</label>
+        </div>
+        <div class="col-md-3">
+          <ng-select required [items]="documentos" placeholder="Seleccione un estado" bindLabel="denominacion"
+            bindValue="id_tipo_documento_liquidacion_expediente" [(ngModel)]="entidadModal.tipoDocumento" #tipoDocumento="ngModel" name="tipoDocumento">
+          </ng-select>
+          <div [hidden]="tipoDocumento.valid || tipoDocumento.pristine" class="alert alert-danger">
+            El tipo documento es obligatorio
+          </div>
+        </div>
+        <div class="col-md-2" [hidden]="desArchivo">
+          <label dlabels class="control-label">ARCHIVO</label>
+        </div>
+        <div class="col-md-4" [hidden]="desArchivo">
+          <set-input-file idComp="filebuscarLiquidacionAgregar" (onChange)="fileChangeEventSeguimiento($event)" IdTipoArchivo="{{IdTipoArchivoSeguimiento}}"
+            class="input-group"></set-input-file>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-md-3">
+          <label dlabels class="control-label">OBSERVACIONES</label>
+        </div>
+        <div class="col-md-9">
+          <input dTextBox class="form-control" type='text' name="observaciones" placeholder="Ingrese la observación" [(ngModel)]="entidadModal.observaciones"
+          />
+        </div>
+      </div>-->
+      <!-- CUANDO ES APROBADO  -->
+      <div ><!--[hidden]="mostrarAprobar"-->
+        <div class="row form-group">
+          <div class="col-md-3">
+            <label dlabels class="control-label">RESOLUCIÓN DE LIQUIDACIÓN DE ELABORACIÓN DE EXPEDIENTE TÉCNICO (*) :</label>
+          </div>
+          <div class="col-md-3">
+            <input dTextBox class="form-control" type='text' name="nombreLiquidacionObra" placeholder="Ingrese Resolución de liquidacion de obra"
+              [(ngModel)]="entidadModal.nombreLiquidacionObra" />
+          </div>
+          <div class="col-md-3">
+            <label dlabels class="control-label">FECHA DE LIQUIDACIÓN DE ELABORACIÓN DE EXPEDIENTE TÉCNICO (*) :</label>
+          </div>
+          <div class="col-md-3">
+            <input class="form-control" type='text' readonly="readonly" name="fechaLiquidacionObra" placeholder="seleccione la Fecha"
+              [(ngModel)]="entidadModal.fechaLiquidacionObra" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es',containerClass: 'theme-red' }"
+              [maxDate]="fechaDesignaconMax"/>
+          </div>
+        </div>
+        <div class="row form-group  ">
+          <div class="col-md-3">
+            <label dlabels class="control-label">MONTO DE LIQUIDACIÓN DE ELABORACIÓN DE EXPEDIENTE TÉCNICO (S/) (*) :</label>
+          </div>
+          <div class="col-md-3">
+            <input dTextBox class="form-control" [textMask]="{mask: funciones.currencyMask}" type='text' name="textoMontoObra" placeholder="Ingrese monto de liquidacion de obra"
+              [(ngModel)]="entidadModal.textoMontoObra" />
+          </div>
+          <div class="col-md-3">
+            <label dlabels class="control-label">SUBIR RESOLUCIÓN DE LIQUIDACIÓN DE ELABORACIÓN DE EXPEDIENTE TÉCNICO (*) :</label>
+          </div>
+          <div class="col-md-3">
+            <set-input-file idComp="filebuscarLiquidacionObraAgregar" (onChange)="fileChangeEventObra($event)" IdTipoArchivo="{{IdTipoArchivoObra}}"
+              class="input-group"></set-input-file>
+          </div>
+        </div>
+        <!--<div [hidden]="supervisor===null">
+          <div class="row form-group">
+            <div class="col-md-3">
+              <label dlabels class="control-label">RESOLUCIÓN DE LIQUIDACIÓN DE SUPERVISIÓN A LA ELABORACIÓN DE EXPEDIENTE TÉCNICO </label>
+            </div>
+            <div class="col-md-3">
+              <input dTextBox class="form-control" type='text' name="nombreLiquidacionSupervision" placeholder="Ingrese Resolución de liquidacion de supervisión"
+                [(ngModel)]="entidadModal.nombreLiquidacionSupervision" />
+            </div>
+            <div class="col-md-3">
+              <label dlabels class="control-label">FECHA DE LIQUIDACIÓN DE SUPERVISIÓN A LA ELABORACIÓN DE EXPEDIENTE TÉCNICO</label>
+            </div>
+            <div class="col-md-3">
+              <input class="form-control" type='text' readonly="readonly" name="fechaLiquidacionSupervision" placeholder="seleccione la Fecha"
+                [(ngModel)]="entidadModal.fechaLiquidacionSupervision" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es',containerClass: 'theme-red' }"
+              />
+            </div>
+          </div>
+          <div class="row form-group">
+            <div class="col-md-3">
+              <label dlabels class="control-label">MONTO DE LIQUIDACIÓN DE SUPERVISIÓN A LA ELABORACIÓN DE EXPEDIENTE TÉCNICO (S/)</label>
+            </div>
+            <div class="col-md-3">
+              <input dTextBox class="form-control" [textMask]="{mask: funciones.currencyMask}" type='text' name="textoMontoSupervision"
+                placeholder="Ingrese monto de liquidacion de supervisión" [(ngModel)]="entidadModal.textoMontoSupervision" />
+            </div>
+            <div class="col-md-3">
+              <label dlabels class="control-label">SUBIR RESOLUCIÓN DE LIQUIDACIÓN DE SUPERVISIÓN DE ELABORACIÓN DE EXPEDIENTE TÉCNICO</label>
+            </div>
+            <div class="col-md-3">
+              <set-input-file idComp="filebuscarLiquidacionSupervisionAgregar" (onChange)="fileChangeEventSupervision($event)" IdTipoArchivo="{{IdTipoArchivoSupervision}}"
+                class="input-group"></set-input-file>
+            </div>
+          </div>
+        </div>-->
+      </div>
+      <span class="comentario">(*)Campos Obligatorios</span>
+      <div class="modal-footer">
+        <button class="btn btn-danger" type="submit" id="btnGuardar" [disabled]="!LiquidacionGrabarForm.form.valid">
+          <i class="fa fa-save"></i> Guardar</button>
+        <button class="btn btn-plomo" id="btnCancelar" type="button" (click)="closeModal()">
+          <i class="fa fa-arrow-left"></i> Cancelar</button>
+      </div>
+    </form>
+
+
+    <form (ngSubmit)="administrarTramo();" #LiquidacionEditarForm="ngForm" [hidden]="cambiarEditarLiquidacion">
+      <!--<div class="row form-group">
+        <div class="col-md-3">
+          <label dlabels class="control-label">ESTADO LIQUIDACIÓN</label>
+        </div>
+        <div class="col-md-3">
+          <ng-select required [items]="estados" placeholder="Seleccione un estado" bindLabel="denominacion" bindValue="id_estado_liquidacion_expediente"
+            [(ngModel)]="entidadModal.id_estado_liquidacion_expediente" #estadoLiquidacion="ngModel" (change)="SeleccionarEstado($event)" name="estadoLiquidacion">
+          </ng-select>
+          <div [hidden]="estadoLiquidacion.valid || estadoLiquidacion.pristine" class="alert alert-danger">
+            El estado liquidación es obligatorio
+          </div>
+        </div>
+        <div class="col-md-3">
+          <label dlabels class="control-label">FECHA</label>
+        </div>
+        <div class="col-md-3">
+          <input class="form-control" type='text' #fecha="ngModel" readonly="readonly" required name="fecha" placeholder="seleccione la Fecha"
+            [(ngModel)]="entidadModal.fecha" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es',containerClass: 'theme-red' }"
+          />
+          <div [hidden]="fecha.valid || fecha.pristine" class="alert alert-danger">
+            La fecha es obligatorio
+          </div>
+        </div>
+      </div>-->
+      <!--<div class="row form-group">
+        <div class="col-md-3">
+          <label dlabels class="control-label">TIPO DOCUMENTO</label>
+        </div>
+        <div class="col-md-3">
+          <ng-select required [items]="documentos" placeholder="Seleccione un estado" bindLabel="denominacion"
+            bindValue="id_tipo_documento_liquidacion_expediente" [(ngModel)]="entidadModal.tipoDocumento" #tipoDocumento="ngModel" name="tipoDocumento">
+          </ng-select>
+          <div [hidden]="tipoDocumento.valid || tipoDocumento.pristine" class="alert alert-danger">
+            El tipo documento es obligatorio
+          </div>
+        </div>
+        <div class="col-md-3" [hidden]="desArchivo">
+          <label dlabels class="control-label">ARCHIVO</label>
+        </div>
+        <div class="col-md-3 text-truncate" [hidden]="desArchivo">
+          <set-input-file idComp="filebuscarLiquidacionEditar" Value={{ruta_seguimiento}} (onChange)="fileChangeEventSeguimiento($event)"
+            IdTipoArchivo="{{IdTipoArchivoSeguimiento}}" class="input-group"></set-input-file>
+        </div>
+      </div>-->
+      <!--<div class="row form-group">
+        <div class="col-md-3">
+          <label dlabels class="control-label">OBSERVACIONES</label>
+        </div>
+        <div class="col-md-9">
+          <input dTextBox class="form-control" type='text' name="observaciones" placeholder="Ingrese la observación" [(ngModel)]="entidadModal.observaciones"
+          />
+        </div>
+      </div>-->
+
+
+      <div class="row form-group">
+        <div class="col-md-3">
+          <label dlabels class="control-label">FECHA DE INFORME DE APROBACIÓN (*) :</label>
+        </div>
+        <div class="col-md-3">
+            <input class="form-control" type='text' readonly="readonly" name="fechaInformeAprobacion" placeholder="seleccione la Fecha"
+              [(ngModel)]="entidadModal.fechaInformeAprobacion" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es',containerClass: 'theme-red' }"
+              [maxDate]="fechaDesignaconMax" />
+        </div>
+        <div class="col-md-3">
+          <label dlabels class="control-label">SUBIR INFORME DE APROBACIÓN (*) :</label>
+        </div>
+        <div class="col-md-3">
+            <set-input-file idComp="filebuscarInformeAprobacionAgregar" (onChange)="fileChangeEventInformeAprobacion($event)" IdTipoArchivo="{{IdTipoArchivoInformeAprobacion}}" Value={{ruta_informe_aprobacion}}
+              class="input-group"></set-input-file>
+          </div>
+      </div>
+  
+      <div class="row form-group">
+          <div class="col-md-3">
+            <label dlabels class="control-label">FECHA DE APROBACIÓN DE RESOLUCIÓN DE EXPEDIENTE TÉCNICO (*) :</label>
+          </div>
+          <div class="col-md-3">
+              <input class="form-control" type='text' readonly="readonly" name="fechaAprobacionResolucion" placeholder="seleccione la Fecha"
+                [(ngModel)]="entidadModal.fechaAprobacionResolucion" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es',containerClass: 'theme-red' }"
+                [maxDate]="fechaDesignaconMax" />
+          </div>
+          <div class="col-md-3">
+            <label dlabels class="control-label">SUBIR RESOLUCIÓN DE APROBACIÓN DE EXPEDIENTE TÉCNICO (*) :</label>
+          </div>
+          <div class="col-md-3">
+              <set-input-file idComp="filebuscarAprobacionResolucionAgregar" (onChange)="fileChangeEventAprobacionResolucion($event)" IdTipoArchivo="{{IdTipoArchivoAprobacionResolucion}}" Value={{ruta_resolucion_aprobacion}}
+                class="input-group"></set-input-file>
+          </div>
+      </div>
+
+
+      <!-- CUANDO ES APROBADO  -->
+      <div> <!--[hidden]="mostrarAprobar"-->
+        <div class="row form-group">
+          <div class="col-md-3">
+            <label dlabels class="control-label">RESOLUCIÓN DE LIQUIDACIÓN DE ELABORACIÓN DE EXPEDIENTE TÉCNICO (*) :</label>
+          </div>
+          <div class="col-md-3">
+            <input dTextBox class="form-control" type='text' name="nombreLiquidacionObra" placeholder="Ingrese Resolución de liquidacion de obra"
+              [(ngModel)]="entidadModal.nombreLiquidacionObra" />
+          </div>
+          <div class="col-md-3">
+            <label dlabels class="control-label">FECHA DE LIQUIDACIÓN DE ELABORACIÓN DE EXPEDIENTE TÉCNICO (*) :</label>
+          </div>
+          <div class="col-md-3">
+            <input class="form-control" type='text' readonly="readonly" name="fechaLiquidacionObra" placeholder="seleccione la Fecha"
+              [(ngModel)]="entidadModal.fechaLiquidacionObra" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es',containerClass: 'theme-red' }"
+              [maxDate]="fechaDesignaconMax" />
+          </div>
+        </div>
+        <div class="row form-group">
+          <div class="col-md-3">
+            <label dlabels class="control-label">MONTO DE LIQUIDACIÓN DE ELABORACIÓN DE EXPEDIENTE TÉCNICO (S/) (*) :</label>
+          </div>
+          <div class="col-md-3">
+            <input dTextBox class="form-control" [textMask]="{mask: funciones.currencyMask}" type='text' name="textoMontoObra" placeholder="Ingrese monto de liquidacion de obra"
+              [(ngModel)]="entidadModal.textoMontoObra" />
+          </div>
+          <div class="col-md-3">
+            <label dlabels class="control-label">SUBIR RESOLUCIÓN DE LIQUIDACIÓN DE ELABORACIÓN DE EXPEDIENTE TÉCNICO (*) :</label>
+          </div>
+          <div class="col-md-3 text-truncate">
+            <set-input-file idComp="filebuscarLiquidacionObraEditar" Value={{ruta_obra}} (onChange)="fileChangeEventObra($event)" IdTipoArchivo="{{IdTipoArchivoObra}}"
+              class="input-group"></set-input-file>
+          </div>
+        </div>
+        <!--<div [hidden]="supervisor===null">
+          <div class="row form-group">
+            <div class="col-md-3">
+              <label dlabels class="control-label">RESOLUCIÓN DE LIQUIDACIÓN DE SUPERVISIÓN A LA ELABORACIÓN DE EXPEDIENTE TÉCNICO</label>
+            </div>
+            <div class="col-md-3">
+              <input dTextBox class="form-control" type='text' name="nombreLiquidacionSupervision" placeholder="Ingrese Resolución de liquidacion de supervisión"
+                [(ngModel)]="entidadModal.nombreLiquidacionSupervision" />
+            </div>
+            <div class="col-md-3">
+              <label dlabels class="control-label">FECHA DE LIQUIDACIÓN DE SUPERVISIÓN A LA ELABORACIÓN DE EXPEDIENTE TÉCNICO</label>
+            </div>
+            <div class="col-md-3">
+              <input class="form-control" type='text' readonly="readonly" name="fechaLiquidacionSupervision" placeholder="seleccione la Fecha"
+                [(ngModel)]="entidadModal.fechaLiquidacionSupervision" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es',containerClass: 'theme-red' }"
+              />
+            </div>
+          </div>
+          <div class="row form-group">
+            <div class="col-md-3">
+              <label dlabels class="control-label">MONTO DE LIQUIDACIÓN DE SUPERVISIÓN A LA ELABORACIÓN DE EXPEDIENTE TÉCNICO (S/)</label>
+            </div>
+            <div class="col-md-3">
+              <input dTextBox class="form-control" [textMask]="{mask: funciones.currencyMask}" type='text' name="textoMontoSupervision"
+                placeholder="Ingrese monto de liquidacion de supervisión" [(ngModel)]="entidadModal.textoMontoSupervision" />
+            </div>
+            <div class="col-md-3">
+              <label dlabels class="control-label">SUBIR RESOLUCIÓN DE LIQUIDACIÓN DE SUPERVISIÓN DE ELABORACIÓN DE EXPEDIENTE TÉCNICO</label>
+            </div>
+            <div class="col-md-3 text-truncate">
+              <set-input-file idComp="filebusucarLiquidacionSupervisionEditar" Value={{ruta_supervision}} (onChange)="fileChangeEventSupervision($event)"
+                IdTipoArchivo="{{IdTipoArchivoSupervision}}" class="input-group"></set-input-file>
+            </div>
+          </div>
+        </div>-->
+      </div>
+
+      <span class="comentario">(*)Campos Obligatorios</span>
+      <div class="modal-footer">
+        <button class="btn btn-danger" type="submit" id="btnGuardar" [disabled]="!LiquidacionEditarForm.form.valid">
+          <i class="fa fa-save"></i> Guardar</button>
+        <button class="btn btn-plomo" id="btnCancelar" type="button" (click)="closeModal()">
+          <i class="fa fa-arrow-left"></i> Cancelar</button>
+      </div>
+    </form>
+  </div>

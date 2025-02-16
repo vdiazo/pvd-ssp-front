@@ -1,0 +1,378 @@
+<div class="modal-header">
+  <h4 class="modal-title">Avance de obra según valorizaciones</h4>
+  <p class="pb-2 pl-4 pr-4">Registrar/Actualizar los Avances de obra según Valorizaciones</p>
+</div>
+<div class="modal-body">
+  <div class="group-box">
+    <form [formGroup]="formGroup" autocomplete="off" (ngSubmit)="Grabar()">
+
+      <div class="row form-group">
+        <div class="col-sm-3">
+          <label class="control-label">Valorización del
+            <span class="comentario">(*)</span>:</label>
+        </div>
+        <div class="col-sm-3">
+          <select id="cboEstados" (change)="cambiarEstado(formGroup.get('id_estado_situacional').value)"
+            class="form-control" formControlName="id_estado_situacional"
+            [ngClass]="{'is-invalid': (formGroup.get('id_estado_situacional').touched || formGroup.get('id_estado_situacional').dirty) && !formGroup.get('id_estado_situacional').valid }">
+            <option [ngValue]="null" disabled>Seleccione</option>
+            <option *ngFor="let opt of listaEstados" [ngValue]="opt.id_estado_situacional">{{ opt.nombre_estado_situacional
+              }}</option>
+          </select>
+          <span class="invalid-feedback">
+            <span *ngIf="formGroup.get('id_estado_situacional').errors?.required">
+              El campo Valorización es obligatorio.
+            </span>
+          </span>
+        </div>
+        <div class="col-sm-3">
+          <label class="control-label" for="fecha_valorizacion">Mes y Año de la Valorización
+            <span class="comentario">(*)</span>:</label>
+        </div>
+        <div class="col-sm-3">
+          <select id="cboValorizaciones" *ngIf="mostrarSeleccionValorizacion" class="form-control"
+            formControlName="periodo"
+            [ngClass]="{'is-invalid': (formGroup.get('periodo').touched || formGroup.get('periodo').dirty) && !formGroup.get('periodo').valid }">
+            <option [ngValue]="null" disabled>Seleccione</option>
+            <option *ngFor="let opt of listaPeriodosValorizaciones" [ngValue]="opt.periodo">{{ opt.periodo_texto }}
+            </option>
+          </select>
+          <span class="invalid-feedback">
+            <span *ngIf="formGroup.get('periodo').errors?.required">
+              El campo Periodo es obligatorio.
+            </span>
+          </span>
+          <select id="cboAdicionales" *ngIf="mostrarSeleccionValorizacion == false" class="form-control"
+            formControlName="periodo_adicional"
+            [ngClass]="{'is-invalid': (formGroup.get('periodo_adicional').touched || formGroup.get('periodo_adicional').dirty) && !formGroup.get('periodo_adicional').valid }">
+            <option [ngValue]="null" disabled>Seleccione</option>
+            <option *ngFor="let opt of listaPeriodosAdicionales" [ngValue]="opt.periodo_adicional">{{ opt.periodo_adicional_texto
+              }}</option>
+          </select>
+          <span class="invalid-feedback">
+            <span *ngIf="formGroup.get('periodo_adicional').errors?.required">
+              El campo Periodo es obligatorio.
+            </span>
+          </span>
+        </div>
+      </div>
+
+      <div class="row form-group">
+        <div class="col-sm-3">
+          <label class="control-label">Monto de Valorización Bruto
+            <span class="comentario">(*)</span>:</label>
+        </div>
+        <div class="col-sm-3">
+          <input id="avance_financiero_programado" name="avance_financiero_programado"
+            placeholder="Ingrese monto de valorización bruto" formControlName="avance_financiero_programado"
+            [textMask]="{mask: funciones.currencyMask}" type="text" class="form-control"
+            [ngClass]="{'is-invalid': (formGroup.get('avance_financiero_programado').touched || formGroup.get('avance_financiero_programado').dirty) && !formGroup.get('avance_financiero_programado').valid }" />
+          <span class="invalid-feedback">
+            <span *ngIf="formGroup.get('avance_financiero_programado').errors?.required">
+              Este campo es obligatorio.
+            </span>
+          </span>
+        </div>
+        <div class="col-sm-3">
+          <label class="control-label">Avance Fisico Real (%)
+            <span class="comentario">(*)</span>:</label>
+        </div>
+        <div class="col-sm-3">
+          <input type="number" name="avance_fisico_real" formControlName="avance_fisico_real" class="form-control"
+            id="avance_fisico_real" placeholder="minimo 0.0 - máximo 100" step="0.01"
+            (keyup)="formGroup.patchValue({ avance_fisico_real :  funciones.IsMenor(formGroup.get('avance_fisico_real').value,100) })"
+            (keypress)="funciones.IsFloat($event)" maxlength="5" min="0" max="100"
+            [ngClass]="{'is-invalid': (formGroup.get('avance_fisico_real').touched || formGroup.get('avance_fisico_real').dirty) && !formGroup.get('avance_fisico_real').valid }" />
+          <span class="invalid-feedback">
+            <span *ngIf="formGroup.get('avance_fisico_real').errors?.required">
+              Este campo es obligatorio.
+            </span>
+          </span>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-3">
+          <label class="control-label">Monto de Valorización Neta
+            <span class="comentario">(*)</span>:</label>
+        </div>
+        <div class="col-sm-3">
+          <input id="avance_financiero_real" name="avance_financiero_real"
+            placeholder="Ingrese monto de valorización neto" formControlName="avance_financiero_real"
+            [textMask]="{mask: funciones.currencyMask}" type="text" class="form-control"
+            [ngClass]="{'is-invalid': (formGroup.get('avance_financiero_real').touched || formGroup.get('avance_financiero_real').dirty) && !formGroup.get('avance_financiero_real').valid }" />
+          <span class="invalid-feedback">
+            <span *ngIf="formGroup.get('avance_financiero_real').errors?.required">
+              Este campo es obligatorio.
+            </span>
+          </span>
+        </div>
+        <div class="col-sm-3">
+          <label class="control-label">Avance Fisico Programado (%)
+            <span class="comentario">(*)</span>:</label>
+        </div>
+        <div class="col-sm-3">
+          <input type="number" name="avance_fisico_programado" formControlName="avance_fisico_programado"
+            class="form-control" id="avance_fisico_programado" maxlength="5" min="0" max="100"
+            placeholder="minimo 0.0 - máximo 100" step="0.01" (keypress)="funciones.IsFloat($event)"
+            (keyup)="formGroup.patchValue({ avance_fisico_programado :  funciones.IsMenor(formGroup.get('avance_fisico_programado').value,100)})"
+            [ngClass]="{'is-invalid': (formGroup.get('avance_fisico_programado').touched || formGroup.get('avance_fisico_programado').dirty) && !formGroup.get('avance_fisico_programado').valid }" />
+          <span class="invalid-feedback">
+            <span *ngIf="formGroup.get('avance_fisico_programado').errors?.required">
+              Este campo es obligatorio.
+            </span>
+          </span>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-3">
+          <label class="control-label" for="fecha_valorizacion">Fecha Aprobación Valorización
+            <span class="comentario">(*)</span>:</label>
+        </div>
+        <div class="col-sm-3">
+          <input dTextBox class="form-control" type='text' name="fecha_valorizacion" id="fecha_valorizacion"
+            placeholder="dd/mm/aaaa" readonly="readonly" formControlName="fecha_valorizacion" bsDatepicker
+            [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es', containerClass: 'theme-red' }"
+            [minDate]="fecha_inicio_contractual"
+            [ngClass]="{'is-invalid': (formGroup.get('fecha_valorizacion').touched || formGroup.get('fecha_valorizacion').dirty) && !formGroup.get('fecha_valorizacion').valid }" />
+
+          <span class="invalid-feedback">
+            <span *ngIf="formGroup.get('fecha_valorizacion').errors?.required">
+              Este campo es obligatorio.
+            </span>
+          </span>
+        </div>
+
+        <div class="col-sm-3">
+          <label dlabels class="control-label">Documento :</label>
+        </div>
+        <div class="col-sm-3">
+          <app-input-file idComp="fileaccionseguimiento" (onChange)="fileChangeEvent($event)" class="input-group"
+            IdTipoArchivo="{{IdTipoArchivo}}" Value="{{formGroup.get('nombre_archivo').value}}"></app-input-file>
+        </div>
+      </div>
+
+      <div class="row form-group">
+        <div class="col-sm-3">
+          <label class="control-label">Observacion:</label>
+        </div>
+        <div class="col-sm-9">
+          <textarea formControlName="observacion" name="observacion" class="form-control" id="observacion"
+            placeholder="Ingrese observación"></textarea>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-3">
+          <label dlabels class="control-label">Subir Fotos:</label>
+        </div>
+        <div class="col-sm-6">
+          <app-input-file-listado idComp="fileValorizacionesmodal" (onChange)="fileChangeEventList($event)"
+            Extensiones=".jpeg,.png,.jpg" class="input-group"></app-input-file-listado>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-12">
+          <accordion>
+            <accordion-group [isOpen]="true">
+              <span class="btn btn-link btn-block clearfix" accordion-heading>
+                <div class="pull-left float-left">Listado de Archivos</div>
+                <span class="badge float-right pull-right">
+                  <i class="fa fa-circle-o"></i>
+                </span>
+              </span>
+              <mat-list>
+                <mat-list-item *ngFor="let shoe of listArchivosSeleccionados">
+                  <mat-icon mat-list-icon>folder_open</mat-icon>
+                  <h4 mat-line>{{shoe.nombre_archivo}}</h4>
+                  <a style="cursor: pointer;" [hidden]="activarTransferencia"
+                    (click)="eliminarArchivoSeleccionado(shoe)">
+                    <i class="fa fa-15x">
+                      <img src="assets/img/icons/trash.svg" />
+                    </i>
+                  </a>
+                  <a style="cursor: pointer;" href="{{shoe.ruta}}" target="_blank" [hidden]="!activarTransferencia"
+                    (click)="verArchivoSeleccionado(shoe)">
+                    <i class="material-icons">
+                      archive
+                    </i>
+                  </a>
+                </mat-list-item>
+              </mat-list>
+            </accordion-group>
+          </accordion>
+        </div>
+      </div>
+      <span class="comentario">(*)Campos Obligatorios</span>
+
+      <div class="modal-footer">
+        <button type="submit" id="btnGuardar" [disabled]="!formGroup.valid" class="btn btn-danger" [hidden]=bMostrar> <i
+            class="fa fa-save"></i> Guardar</button>
+        <button class="btn btn-danger" type="button" [hidden]=!bMostrar>
+          <i class="fa fa-save"></i> ....Procesando</button>
+        <button type="button" id="btnCerrar" class="btn btn-plomo" (click)="cerrarModal()"><i
+            class="fa fa-arrow-left"></i> Cancelar</button>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<!-- {{ formGroup.value | json }} <br>
+Valid: {{ formGroup.valid }} -->
+
+
+<!-- <div class="modal-header">
+  <h4 class="modal-title">Avance de obra según valorizaciones</h4>
+  <p class="pb-2 pl-4 pr-4">Registrar/Actualizar los Avances de obra según Valorizaciones</p>
+</div>
+<div class="modal-body">
+  <div class="group-box">
+    <form (ngSubmit)="AdministrarSeguimiento(model);" #Monitoreo="ngForm">
+      <div class="row form-group">
+        <div class="col-sm-2">
+          <label class="control-label">Valorización del: </label>
+        </div>
+        <div class="col-sm-4">
+          <ng-select [items]="estados" placeholder="Seleccione" bindLabel="nombre_estado_situacional" bindValue="id_estado_situacional"
+            [(ngModel)]="model.id_estado_situacional" name="NombreEstado" id="id_estado_situacional" required
+            #id_estado_situacional="ngModel">
+          </ng-select>
+          <div [hidden]="id_estado_situacional.valid || id_estado_situacional.pristine" class="alert alert-danger">
+            Valorización es obligatorio
+          </div>
+        </div>
+        <div class="col-sm-2">
+          <label class="control-label" for="fecha_valorizacion">Mes y Año de la Valorización</label>
+        </div>
+        <div class="col-sm-4">
+          <ng-select [items]="lstMesAnioValorizacion" placeholder="Seleccione" bindLabel="periodo_texto" bindValue="periodo"
+            [(ngModel)]="model.periodo" name="mesAnioValorizacion">
+          </ng-select>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-2">
+          <label class="control-label">Avance Financiero Bruto</label>
+        </div>
+        <div class="col-sm-4">
+          <input id="avance_financiero_programado" name="avance_financiero_programado" placeholder="Ingrese avance financiero real"
+            #avance_financiero_programado="ngModel" required [(ngModel)]="model.avance_financiero_programado" [textMask]="{mask: funciones.currencyMask}"
+            type="text" class="form-control" />
+
+          <div [hidden]="avance_financiero_programado.valid || avance_financiero_programado.pristine" class="alert alert-danger">
+            El avance financiero real es obligatorio
+          </div>
+        </div>
+        <div class="col-sm-2">
+          <label class="control-label">Avance Financiero Neto</label>
+        </div>
+        <div class="col-sm-4">
+          <input id="avance_financiero_real" name="avance_financiero_real" placeholder="Ingrese avance financiero programado"
+            #avance_financiero_real="ngModel" required [(ngModel)]="model.avance_financiero_real"
+            [textMask]="{mask: funciones.currencyMask}" type="text" class="form-control" />
+
+          <div [hidden]="avance_financiero_real.valid || avance_financiero_real.pristine" class="alert alert-danger">
+            El avance financiero programado es obligatorio
+          </div>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-2">
+          <label class="control-label">Avance Fisico Real (%)</label>
+        </div>
+        <div class="col-sm-4">
+          <input type="number" name="avance_fisico_real" [(ngModel)]="model.avance_fisico_real" class="form-control" id="avance_fisico_real"
+            placeholder="minimo 0.0 - máximo 100" step="0.01" (keyup)="model.avance_fisico_real=funciones.IsMenor(model.avance_fisico_real,100)"
+            (keypress)="funciones.IsFloat($event)" required #avance_fisico_real="ngModel" maxlength="5" min="0" max="100" />
+          <div [hidden]="avance_fisico_real.valid || avance_fisico_real.pristine" class="alert alert-danger">
+            El avance físico real es obligatorio
+          </div>
+        </div>
+        <div class="col-sm-2">
+          <label class="control-label">Avance Fisico Programado (%)</label>
+        </div>
+        <div class="col-sm-4">
+          <input type="number" name="avance_fisico_programado" [(ngModel)]="model.avance_fisico_programado" class="form-control"
+            id="avance_fisico_programado" maxlength="5" min="0" max="100" placeholder="minimo 0.0 - máximo 100" step="0.01"
+            required #avance_fisico_programado="ngModel" (keypress)="funciones.IsFloat($event)" (keyup)="model.avance_fisico_programado=funciones.IsMenor(model.avance_fisico_programado,100)" />
+          <div [hidden]="avance_fisico_programado.valid || avance_fisico_programado.pristine" class="alert alert-danger">
+            El avance físico programado es obligatorio
+          </div>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-2">
+          <label class="control-label" for="fecha_valorizacion">Fecha Aprobación Valorización</label>
+        </div>
+        <div class="col-sm-4">
+          <input dTextBox class="form-control" type='text' name="fecha_valorizacion" id="fecha_valorizacion"
+            placeholder="dd/mm/aaaa" readonly="readonly" required [(ngModel)]="model.fecha_valorizacion"
+            #fecha_valorizacion="ngModel" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es', containerClass: 'theme-red' }"
+            [minDate]="fecha_inicio_contractual" />
+          <div [hidden]="fecha_valorizacion.valid || fecha_valorizacion.pristine" class="alert alert-danger">
+            Fecha Varolizacion es obligatorio
+          </div>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-2">
+          <label dlabels class="control-label">Documento :</label>
+        </div>
+        <div class="col-sm-4">
+          <app-input-file idComp="fileaccionseguimiento" (onChange)="fileChangeEvent($event)" class="input-group"
+            IdTipoArchivo="{{IdTipoArchivo}}" Value="{{model.nombre_archivo}}"></app-input-file>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-2">
+          <label class="control-label">Observacion:</label>
+        </div>
+        <div class="col-sm-10">
+          <textarea [(ngModel)]="model.observacion" name="observacion" class="form-control" id="observacion"
+            placeholder="Ingrese observación" #observacion="ngModel"></textarea>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-2">
+          <label dlabels class="control-label">Subir Fotos:</label>
+        </div>
+        <div class="col-sm-4">
+          <app-input-file-listado idComp="fileValorizacionesmodal" (onChange)="fileChangeEventList($event)" Extensiones=".jpeg,.png,.jpg"
+            class="input-group"></app-input-file-listado>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-12">
+          <accordion>
+            <accordion-group [isOpen]="true">
+              <span class="btn btn-link btn-block clearfix" accordion-heading>
+                <div class="pull-left float-left">Listado de Archivos</div>
+                <span class="badge float-right pull-right">
+                  <i class="fa fa-circle-o"></i>
+                </span>
+              </span>
+              <mat-list>
+                <mat-list-item *ngFor="let shoe of listArchivosSeleccionados">
+                  <mat-icon mat-list-icon>folder_open</mat-icon>
+                  <h4 mat-line>{{shoe.nombre_archivo}}</h4>
+                  <a style="cursor: pointer;" [hidden]="activarTransferencia" (click)="eliminarArchivoSeleccionado(shoe)">
+                    <i class="fa fa-15x"> <img src="assets/img/icons/trash.svg" /></i>
+                  </a>
+                  <a style="cursor: pointer;" href="{{shoe.ruta}}" target="_blank" [hidden]="!activarTransferencia"
+                    (click)="verArchivoSeleccionado(shoe)">
+                    <i class="material-icons">
+                      archive
+                    </i>
+                  </a>
+                </mat-list-item>
+              </mat-list>
+            </accordion-group>
+          </accordion>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" id="btnGuardar" [disabled]="!Monitoreo.form.valid" class="btn btn-danger"> Guardar</button>
+        <button type="button" id="btnCerrar" class="btn btn-plomo" (click)="cerrarModal()">Cerrar</button>
+      </div>
+    </form>
+  </div>
+</div> -->

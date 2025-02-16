@@ -1,0 +1,117 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">Registra Tramo</h4>
+</div>
+<div class="modal-body">
+  <form [formGroup]="formRegistrarTramo">
+    <div class="row form-group">
+      <div class="col-md-2">
+        <label dlabels class="control-label">TRAMO</label>
+      </div>
+      <div class="col-md-10">
+        <input class="form-control" type="text" name="NombreTramo" placeholder="Escriba Tramo"
+          formControlName="nombre_tramo"
+          [ngClass]="{'is-invalid': (formRegistrarTramo.get('nombre_tramo').touched || formRegistrarTramo.get('nombre_tramo').dirty) && !formRegistrarTramo.get('nombre_tramo').valid }">
+        <span class="invalid-feedback">
+          <span *ngIf="formRegistrarTramo.get('nombre_tramo').errors?.required">
+            Este campo es obligatorio
+          </span>
+        </span>
+      </div>
+    </div>
+    <div class="row form-group" [hidden]="!visibleEjecutora">
+      <div class="col-md-2">
+        <label dlabels class="control-label">UNIDAD ORGÁNICA:</label>
+      </div>
+      <div class="col-md-10">
+        <select formControlName="id_ejecutora" class="form-control"
+          [ngClass]="{'is-invalid': (formRegistrarTramo.get('id_ejecutora').touched || formRegistrarTramo.get('id_ejecutora').dirty) && !formRegistrarTramo.get('id_ejecutora').valid }">
+          <option [ngValue]=null disabled>SELECCIONE UNA UNIDAD ORGÁNICA</option>
+          <option *ngFor="let item of ejecutoras" [ngValue]="item.id_ejecutora">
+            {{ item.nombre_ejecutora }}
+          </option>
+        </select>
+        <span class="invalid-feedback">
+          <span *ngIf="formRegistrarTramo.get('id_ejecutora').errors?.required">
+            Este campo es obligatorio
+          </span>
+        </span>
+      </div>
+    </div>
+    <div class="row form-group">
+      <div class="col-md-2">
+        <label dlabels class="control-label">FASE</label>
+      </div>
+      <div class="col-md-4" *ngIf="!visible">
+        <select formControlName="id_tipo_fase" class="form-control"
+          [ngClass]="{'is-invalid': (formRegistrarTramo.get('id_tipo_fase').touched || formRegistrarTramo.get('id_tipo_fase').dirty) && !formRegistrarTramo.get('id_tipo_fase').valid }">
+          <option [ngValue]=null disabled>SELECCION UNA FASE</option>
+          <option *ngFor="let item of fases" [ngValue]="item.id_tipo_fase">
+            {{ item.nombre_tipo_fase }}
+          </option>
+        </select>
+        <span class="invalid-feedback">
+          <span *ngIf="formRegistrarTramo.get('id_tipo_fase').errors?.required">
+            Este campo es obligatorio
+          </span>
+        </span>
+      </div>
+      <div class="col-md-4" *ngIf="visible">
+        <input class="form-control" formControlName="nombre_fase" type="text" disabled>
+      </div>
+    </div>
+    <div class="row form-group">
+      <div class="col-md-2">
+        <label dlabels class="control-label">CÓDIGO DE RUTA</label>
+      </div>
+      <div class="col-md-4">
+        <input class="form-control" [placeholder]="" type='text' formControlName="codigo_ruta" id="txtCodigoRuta"
+          [ngClass]="{'is-invalid': (formRegistrarTramo.get('codigo_ruta').touched || formRegistrarTramo.get('codigo_ruta').dirty) && !formRegistrarTramo.get('codigo_ruta').valid }" />
+        <span class="invalid-feedback">
+          <span *ngIf="formRegistrarTramo.get('codigo_ruta').errors?.required">
+            Este campo es obligatorio
+          </span>
+        </span>
+      </div>
+      <div class="col-md-2" style="margin-left: -29px">
+        <button class="btn btn-danger d-inline-flex" type="button"
+          [disabled]="!formRegistrarTramo.get('codigo_ruta').valid" id="btnAgregarCodigoRuta"
+          (click)="agregarCodigoRuta()">
+          +</button>
+      </div>
+    </div>
+    <div class="row form-group">
+      <div class="col-md-2">
+      </div>
+      <div class="col-sm-4">
+        <table class="table table-striped">
+          <tbody>
+            <tr *ngFor="let item of lstCodigoRuta;index as i">
+              <td>{{ i+1}}</td>
+              <td>{{ item }}</td>
+              <td>
+                <a style="cursor: pointer;" (click)="eliminarCodigoRuta(i)">
+                  <i class="material-icons" style="vertical-align: bottom;">clear</i>
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-danger" (click)="guardarTramo()" id="btnGuardarTramo"
+        [disabled]="!formRegistrarTramo.valid"><i class="fa fa-save"></i>
+        Guardar</button>
+      <button class="btn btn-plomo" id="btnCancelarGuardarTramo" type="button" (click)="closeModalGuardarTramo()"><i
+          class="fa fa-arrow-left"></i> Cerrar</button>
+    </div>
+  </form>
+  <!-- {{ formRegistrarTramo.value | json }}<br>
+  Tramo {{ formRegistrarTramo.get('id_tramo').errors?.required }}<br>
+  Nombre {{ formRegistrarTramo.get('nombre_tramo').errors?.required }}<br>
+  fase {{ formRegistrarTramo.get('id_tipo_fase').errors?.required }}<br>
+  ejecutora {{ formRegistrarTramo.get('id_ejecutora').errors?.required }}<br>
+  {{ formRegistrarTramo.valid | json }} -->
+
+</div>

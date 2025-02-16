@@ -1,0 +1,107 @@
+#myVideo {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%; 
+    min-height: 100%;
+}
+
+h1{
+    color:#ffffff !important;
+    font-weight: 500 !important;
+}
+/* Add some content at the bottom of the video/page */
+ .content {
+    position: fixed;
+    bottom: 0;
+    color: #f1f1f1;
+    width: 100%;
+    padding: 20px;
+    height: 100vh;
+background: -moz-linear-gradient(top, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.35) 1%, rgba(0,0,0,0.5) 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(top, rgba(0,0,0,0.35) 0%,rgba(0,0,0,0.35) 1%,rgba(0,0,0,0.5) 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom, rgba(0,0,0,0.35) 0%,rgba(0,0,0,0.35) 1%,rgba(0,0,0,0.5) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#59000000', endColorstr='#80000000',GradientType=0 ); /* IE6-9 */
+}
+
+/* Style the button used to pause/play the video */
+#myBtn {
+    width: 200px;
+    font-size: 18px;
+    padding: 10px;
+    border: none;
+    background: #000;
+    color: #fff;
+    cursor: pointer;
+}
+
+#myBtn:hover {
+    background: #ddd;
+    color: black;
+} 
+.login-center{
+    transform: translate(-50%,-50%);
+    top: 50%;
+    margin-left: 50%;
+    position: fixed;
+    color:#fff;
+    width: 100%;
+  }
+
+.login-form{
+    background-color: rgba(0,0,0,0.4);
+    border-radius:2px;
+}
+.form-control{
+    border-radius:2px;
+}
+.login-form>.form-control+.form-control {
+    margin-top: .5rem;
+}
+.login-panel-links{
+    font-size: 30px;
+    padding-top: 0px !important;
+}
+.login-panel-links span{
+    font-size: 16px;
+    padding-top: 0px !important;
+}
+.barra-top{
+    position: absolute;
+    height: 10px;
+    width: 100%;
+    top: 0;
+    left: 0;
+}
+.f-s-12{
+    font-size: 12px;
+}
+
+
+@media (max-width: 991.98px) {
+    .login-form{
+        padding-top: 10px !important;
+        padding-bottom: 10px !important;
+    }
+    h1{
+        font-size: 2rem !important;
+    }
+    .login-panel-links {
+        font-size: 24px !important;
+    }
+    .xs-mt-0{
+        margin-top: 0 !important;
+    }
+    .xs-ml-0{
+        margin-left: 0 !important;
+    }
+    .xs-pl-0{
+        padding-left: 0 !important;
+    }
+}
+@media (max-width: 768px) {
+    .row {
+        margin-right: -15px !important;
+        margin-left:  -15px !important;
+    }
+}

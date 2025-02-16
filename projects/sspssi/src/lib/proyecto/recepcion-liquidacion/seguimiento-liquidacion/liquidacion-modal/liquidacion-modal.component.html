@@ -1,0 +1,276 @@
+<div class="modal-header">
+  <h4 class="modal-title" [hidden]="!cambiarEditarLiquidacion">Nueva Liquidación</h4>
+  <h4 class="modal-title" [hidden]="cambiarEditarLiquidacion">Editar Liquidación</h4>
+  <p class="pl-4 pr-4" [hidden]="!cambiarEditarLiquidacion">Formulario para el registro de liquidación</p>
+  <p class="pl-4 pr-4" [hidden]="cambiarEditarLiquidacion">Formulario para la edición de liquidación</p>
+</div>
+<div class="modal-body">
+  <form (ngSubmit)="administrarTramo();" #LiquidacionGrabarForm="ngForm" [hidden]="!cambiarEditarLiquidacion">
+    <div class="row form-group">
+      <div class="col-md-3">
+        <label dlabels class="control-label">ESTADO LIQUIDACIÓN</label>
+      </div>
+      <div class="col-md-3">
+        <ng-select required [items]="estados" placeholder="Seleccione un estado" bindLabel="nombre_estado_liquidacion" bindValue="id_estado_liquidacion"
+          [(ngModel)]="entidadModal.estadoLiquidacion" #estadoLiquidacion="ngModel" (change)="SeleccionarEstado($event)" name="estadoLiquidacion">
+        </ng-select>
+        <div [hidden]="estadoLiquidacion.valid || estadoLiquidacion.pristine" class="alert alert-danger">
+          El estado liquidación es obligatorio
+        </div>
+      </div>
+      <div class="col-md-2">
+        <label dlabels class="control-label">FECHA</label>
+      </div>
+      <div class="col-md-4">
+        <input class="form-control" type='text' #fecha="ngModel" readonly="readonly" required name="fecha" placeholder="seleccione la Fecha"
+          [(ngModel)]="entidadModal.fecha" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es',containerClass: 'theme-red' }"
+        />
+        <div [hidden]="fecha.valid || fecha.pristine" class="alert alert-danger">
+          La fecha es obligatorio
+        </div>
+      </div>
+    </div>
+    <div class="row form-group">
+      <div class="col-md-3">
+        <label dlabels class="control-label">TIPO DOCUMENTO</label>
+      </div>
+      <div class="col-md-3">
+        <ng-select required [items]="documentos" placeholder="Seleccione Documento" bindLabel="nombre_tipo_documento_liquidacion"
+          bindValue="id_tipo_documento_liquidacion" [(ngModel)]="entidadModal.tipoDocumento" #tipoDocumento="ngModel" name="tipoDocumento">
+        </ng-select>
+        <div [hidden]="tipoDocumento.valid || tipoDocumento.pristine" class="alert alert-danger">
+          El tipo documento es obligatorio
+        </div>
+      </div>
+      <div class="col-md-2" [hidden]="desArchivo">
+        <label dlabels class="control-label">ARCHIVO</label>
+      </div>
+      <div class="col-md-4" [hidden]="desArchivo">
+        <app-input-file idComp="filebuscarLiquidacionAgregar" (onChange)="fileChangeEventSeguimiento($event)" IdTipoArchivo="{{IdTipoArchivoSeguimiento}}"
+          class="input-group"></app-input-file>
+      </div>
+    </div>
+    <div class="row form-group">
+      <div class="col-md-3">
+        <label dlabels class="control-label">OBSERVACIONES</label>
+      </div>
+      <div class="col-md-9">
+        <input dTextBox class="form-control" type='text' name="observaciones" placeholder="Ingrese la observación" [(ngModel)]="entidadModal.observaciones"
+        />
+      </div>
+    </div>
+    <!-- CUANDO ES APROBADO  -->
+    <div [hidden]="mostrarAprobar">
+      <div class="row form-group">
+        <div class="col-md-3">
+          <label dlabels class="control-label">RESOLUCIÓN DE LIQUIDACIÓN DE OBRA</label>
+        </div>
+        <div class="col-md-3">
+          <input dTextBox class="form-control" type='text' name="nombreLiquidacionObra" placeholder="Ingrese Resolución de liquidacion de obra"
+            [(ngModel)]="entidadModal.nombreLiquidacionObra" />
+        </div>
+        <div class="col-md-3">
+          <label dlabels class="control-label">FECHA DE LIQUIDACIÓN OBRA</label>
+        </div>
+        <div class="col-md-3">
+          <input class="form-control" type='text' readonly="readonly" name="fechaLiquidacionObra" placeholder="seleccione la Fecha"
+            [(ngModel)]="entidadModal.fechaLiquidacionObra" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es',containerClass: 'theme-red' }"
+          />
+        </div>
+      </div>
+      <div class="row form-group  ">
+        <div class="col-md-3">
+          <label dlabels class="control-label">MONTO DE LIQUIDACIÓN DE OBRA (S/)</label>
+        </div>
+        <div class="col-md-3">
+          <!-- <input dTextBox class="form-control" (keyup)="calcularMontoObra(entidadModal.textoMontoObra)" (keypress)="this.funciones.IsNumberKey($event)" type='text' name="textoMontoObra" placeholder="Ingrese monto de liquidacion de obra" [(ngModel)]="entidadModal.textoMontoObra"/> -->
+          <input dTextBox class="form-control" [textMask]="{mask: funciones.currencyMask}" type='text' name="textoMontoObra" placeholder="Ingrese monto de liquidacion de obra"
+            [(ngModel)]="entidadModal.textoMontoObra" />
+        </div>
+        <div class="col-md-3">
+          <label dlabels class="control-label">ARCHIVO DE LIQUIDACIÓN OBRA</label>
+        </div>
+        <div class="col-md-3">
+          <app-input-file idComp="filebuscarLiquidacionObraAgregar" (onChange)="fileChangeEventObra($event)" IdTipoArchivo="{{IdTipoArchivoObra}}"
+            class="input-group"></app-input-file>
+        </div>
+      </div>
+      <div [hidden]="supervisor===null">
+        <div class="row form-group">
+          <div class="col-md-3">
+            <label dlabels class="control-label">RESOLUCIÓN DE LIQUIDACIÓN DE SUPERVISIÓN</label>
+          </div>
+          <div class="col-md-3">
+            <input dTextBox class="form-control" type='text' name="nombreLiquidacionSupervision" placeholder="Ingrese Resolución de liquidacion de supervisión"
+              [(ngModel)]="entidadModal.nombreLiquidacionSupervision" />
+          </div>
+          <div class="col-md-3">
+            <label dlabels class="control-label">FECHA DE LIQUIDACIÓN SUPERVISIÓN</label>
+          </div>
+          <div class="col-md-3">
+            <input class="form-control" type='text' readonly="readonly" name="fechaLiquidacionSupervision" placeholder="seleccione la Fecha"
+              [(ngModel)]="entidadModal.fechaLiquidacionSupervision" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es',containerClass: 'theme-red' }"
+            />
+          </div>
+        </div>
+        <div class="row form-group">
+          <div class="col-md-3">
+            <label dlabels class="control-label">MONTO DE LIQUIDACIÓN DE SUPERVISIÓN (S/)</label>
+          </div>
+          <div class="col-md-3">
+            <!-- <input dTextBox class="form-control" (keyup)="calcularMontoSupervision(entidadModal.textoMontoSupervision)" (keypress)="this.funciones.IsNumberKey($event)" type='text' name="textoMontoSupervision" placeholder="Ingrese monto de liquidacion de supervisión" [(ngModel)]="entidadModal.textoMontoSupervision"/> -->
+            <input dTextBox class="form-control" [textMask]="{mask: funciones.currencyMask}" type='text' name="textoMontoSupervision"
+              placeholder="Ingrese monto de liquidacion de supervisión" [(ngModel)]="entidadModal.textoMontoSupervision" />
+          </div>
+          <div class="col-md-3">
+            <label dlabels class="control-label">ARCHIVO DE LIQUIDACIÓN SUPERVISIÓN</label>
+          </div>
+          <div class="col-md-3">
+            <app-input-file idComp="filebuscarLiquidacionSupervisionAgregar" (onChange)="fileChangeEventSupervision($event)" IdTipoArchivo="{{IdTipoArchivoSupervision}}"
+              class="input-group"></app-input-file>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-danger" type="submit" id="btnGuardar" [disabled]="!LiquidacionGrabarForm.form.valid">
+        <i class="fa fa-save"></i> Guardar</button>
+      <button class="btn btn-plomo" id="btnCancelar" type="button" (click)="closeModal()">
+        <i class="fa fa-arrow-left"></i> Cancelar</button>
+    </div>
+  </form>
+  <form (ngSubmit)="administrarTramo();" #LiquidacionEditarForm="ngForm" [hidden]="cambiarEditarLiquidacion">
+    <div class="row form-group">
+      <div class="col-md-3">
+        <label dlabels class="control-label">ESTADO LIQUIDACIÓN</label>
+      </div>
+      <div class="col-md-3">
+        <ng-select required [items]="estados" placeholder="Seleccione un estado" bindLabel="nombre_estado_liquidacion" bindValue="id_estado_liquidacion"
+          [(ngModel)]="entidadModal.estadoLiquidacion" #estadoLiquidacion="ngModel" (change)="SeleccionarEstado($event)" name="estadoLiquidacion">
+        </ng-select>
+        <div [hidden]="estadoLiquidacion.valid || estadoLiquidacion.pristine" class="alert alert-danger">
+          El estado liquidación es obligatorio
+        </div>
+      </div>
+      <div class="col-md-3">
+        <label dlabels class="control-label">FECHA</label>
+      </div>
+      <div class="col-md-3">
+        <input class="form-control" type='text' #fecha="ngModel" readonly="readonly" required name="fecha" placeholder="seleccione la Fecha"
+          [(ngModel)]="entidadModal.fecha" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es',containerClass: 'theme-red' }"
+        />
+        <div [hidden]="fecha.valid || fecha.pristine" class="alert alert-danger">
+          La fecha es obligatorio
+        </div>
+      </div>
+    </div>
+    <div class="row form-group">
+      <div class="col-md-3">
+        <label dlabels class="control-label">TIPO DOCUMENTO</label>
+      </div>
+      <div class="col-md-3">
+        <ng-select required [items]="documentos" placeholder="Seleccione un estado" bindLabel="nombre_tipo_documento_liquidacion"
+          bindValue="id_tipo_documento_liquidacion" [(ngModel)]="entidadModal.tipoDocumento" #tipoDocumento="ngModel" name="tipoDocumento">
+        </ng-select>
+        <div [hidden]="tipoDocumento.valid || tipoDocumento.pristine" class="alert alert-danger">
+          El tipo documento es obligatorio
+        </div>
+      </div>
+      <div class="col-md-3" [hidden]="desArchivo">
+        <label dlabels class="control-label">ARCHIVO</label>
+      </div>
+      <div class="col-md-3 text-truncate" [hidden]="desArchivo">
+        <app-input-file idComp="filebuscarLiquidacionEditar" Value={{ruta_seguimiento}} (onChange)="fileChangeEventSeguimiento($event)"
+          IdTipoArchivo="{{IdTipoArchivoSeguimiento}}" class="input-group"></app-input-file>
+      </div>
+    </div>
+    <div class="row form-group">
+      <div class="col-md-3">
+        <label dlabels class="control-label">OBSERVACIONES</label>
+      </div>
+      <div class="col-md-9">
+        <input dTextBox class="form-control" type='text' name="observaciones" placeholder="Ingrese la observación" [(ngModel)]="entidadModal.observaciones"
+        />
+      </div>
+    </div>
+    <!-- CUANDO ES APROBADO  -->
+    <div [hidden]="mostrarAprobar">
+      <div class="row form-group">
+        <div class="col-md-3">
+          <label dlabels class="control-label">RESOLUCIÓN DE LIQUIDACIÓN DE OBRA</label>
+        </div>
+        <div class="col-md-3">
+          <input dTextBox class="form-control" type='text' name="nombreLiquidacionObra" placeholder="Ingrese Resolución de liquidacion de obra"
+            [(ngModel)]="entidadModal.nombreLiquidacionObra" />
+        </div>
+        <div class="col-md-3">
+          <label dlabels class="control-label">FECHA DE LIQUIDACIÓN OBRA</label>
+        </div>
+        <div class="col-md-3">
+          <input class="form-control" type='text' readonly="readonly" name="fechaLiquidacionObra" placeholder="seleccione la Fecha"
+            [(ngModel)]="entidadModal.fechaLiquidacionObra" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es',containerClass: 'theme-red' }"
+          />
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-md-3">
+          <label dlabels class="control-label">MONTO DE LIQUIDACIÓN DE OBRA (S/)</label>
+        </div>
+        <div class="col-md-3">
+          <!-- <input dTextBox class="form-control" (keyup)="calcularMontoObra(entidadModal.textoMontoObra)" (keypress)="this.funciones.IsNumberKey($event)" type='text' name="textoMontoObra" placeholder="Ingrese monto de liquidacion de obra" [(ngModel)]="entidadModal.textoMontoObra"/> -->
+          <input dTextBox class="form-control" [textMask]="{mask: funciones.currencyMask}" type='text' name="textoMontoObra" placeholder="Ingrese monto de liquidacion de obra"
+            [(ngModel)]="entidadModal.textoMontoObra" />
+        </div>
+        <div class="col-md-3">
+          <label dlabels class="control-label">ARCHIVO DE LIQUIDACIÓN OBRA</label>
+        </div>
+        <div class="col-md-3 text-truncate">
+          <app-input-file idComp="filebuscarLiquidacionObraEditar" Value={{ruta_obra}} (onChange)="fileChangeEventObra($event)" IdTipoArchivo="{{IdTipoArchivoObra}}"
+            class="input-group"></app-input-file>
+        </div>
+      </div>
+      <div [hidden]="supervisor===null">
+        <div class="row form-group">
+          <div class="col-md-3">
+            <label dlabels class="control-label">RESOLUCIÓN DE LIQUIDACIÓN DE SUPERVISIÓN</label>
+          </div>
+          <div class="col-md-3">
+            <input dTextBox class="form-control" type='text' name="nombreLiquidacionSupervision" placeholder="Ingrese Resolución de liquidacion de supervisión"
+              [(ngModel)]="entidadModal.nombreLiquidacionSupervision" />
+          </div>
+          <div class="col-md-3">
+            <label dlabels class="control-label">FECHA DE LIQUIDACIÓN SUPERVISIÓN</label>
+          </div>
+          <div class="col-md-3">
+            <input class="form-control" type='text' readonly="readonly" name="fechaLiquidacionSupervision" placeholder="seleccione la Fecha"
+              [(ngModel)]="entidadModal.fechaLiquidacionSupervision" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es',containerClass: 'theme-red' }"
+            />
+          </div>
+        </div>
+        <div class="row form-group">
+          <div class="col-md-3">
+            <label dlabels class="control-label">MONTO DE LIQUIDACIÓN DE SUPERVISIÓN (S/)</label>
+          </div>
+          <div class="col-md-3">
+            <!-- <input dTextBox class="form-control" (keyup)="calcularMontoSupervision(entidadModal.textoMontoSupervision)" (keypress)="this.funciones.IsNumberKey($event)" type='text' name="textoMontoSupervision" placeholder="Ingrese monto de liquidacion de supervisión" [(ngModel)]="entidadModal.textoMontoSupervision"/> -->
+            <input dTextBox class="form-control" [textMask]="{mask: funciones.currencyMask}" type='text' name="textoMontoSupervision"
+              placeholder="Ingrese monto de liquidacion de supervisión" [(ngModel)]="entidadModal.textoMontoSupervision" />
+          </div>
+          <div class="col-md-3">
+            <label dlabels class="control-label">ARCHIVO DE LIQUIDACIÓN SUPERVISIÓN</label>
+          </div>
+          <div class="col-md-3 text-truncate">
+            <app-input-file idComp="filebusucarLiquidacionSupervisionEditar" Value={{ruta_supervision}} (onChange)="fileChangeEventSupervision($event)"
+              IdTipoArchivo="{{IdTipoArchivoSupervision}}" class="input-group"></app-input-file>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-danger" type="submit" id="btnGuardar1" [disabled]="!LiquidacionEditarForm.form.valid">
+        <i class="fa fa-save"></i> Guardar</button>
+      <button class="btn btn-plomo" id="btnCancelar1" type="button" (click)="closeModal()">
+        <i class="fa fa-arrow-left"></i> Cancelar</button>
+    </div>
+  </form>
+</div>

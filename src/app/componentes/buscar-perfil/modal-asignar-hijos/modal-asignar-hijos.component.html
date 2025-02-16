@@ -1,0 +1,28 @@
+<div class="modal-header">
+    <h4 class="modal-title">Asignar perfiles hijosssss</h4>
+    <p class="pl-4 pr-4">Perfiles a los cuales puede dar acceso el <b>{{PerfilPadre}}</b></p>
+  </div>
+  <div class="modal-body mr-5 ml-5">
+      <div class="row form-group">
+          <label dlabels class="col-sm-2 control-label">Perfil:</label>
+          <div class="col-sm-10">
+            <ng-select 
+            [items]="ListadoPerfiles" 
+            placeholder="Seleccione perfil" 
+            bindLabel="nombre_perfil" 
+            bindValue="id_perfil"
+            [(ngModel)]="idPerfilHijo"
+            (change)="SeleccionarItem($event)"
+            >
+          </ng-select>
+
+          </div>
+        </div>
+
+    </div>
+    <div>
+    <div class="modal-footer">
+      <button class="btn btn-danger" type="submit" (click)="Guardar()" [disabled]="btnGuardarDisabled"><i class="fa fa-save"></i> Guardar</button>
+      <button class="btn btn-plomo" type="button" (click)="closeModal()"><i class="fa fa-arrow-left"></i> Cancelar</button>
+    </div>
+  </div>

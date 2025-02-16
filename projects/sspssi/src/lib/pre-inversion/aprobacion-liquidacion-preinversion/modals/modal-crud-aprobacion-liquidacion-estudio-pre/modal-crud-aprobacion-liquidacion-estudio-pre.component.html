@@ -1,0 +1,124 @@
+<div class="modal-header">
+  <h4 class="modal-title" *ngIf="!cambiarEditar">REGISTRO DE LIQUIDACIÓN DEL ESTUDIO</h4>
+  <h4 class="modal-title" *ngIf="cambiarEditar">EDICIÓN DE LIQUIDACIÓN DEL ESTUDIO</h4>
+</div>
+<div class="modal-body">
+  <form [formGroup]="formRegistroLiquidacion" (ngSubmit)="registrarLiquidacionEstudio()" autocomplete="off">
+    <div class="row form-group">
+      <label class="col-12 col-md-3 mb-2 form-label" for="fecha_informe_aprobacion">(*) FECHA DE INFORME DE
+        APROBACIÓN</label>
+      <div class="col-12 col-md-3 mb-2">
+        <div class="inner-addon left-addon">
+          <i class="icono material-icons">event</i>
+          <input class="form-control" #dpYMD="bsDatepicker" bsDatepicker [readonly]="true" id="fecha_informe_aprobacion"
+            placeholder="__/__/____"
+            [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es', showWeekNumbers: false, containerClass: 'theme-red' }"
+            formControlName="fecha_informe_aprobacion"
+            [ngClass]="{'is-invalid': formRegistroLiquidacion.get('fecha_informe_aprobacion').invalid && (formRegistroLiquidacion.get('fecha_informe_aprobacion').dirty || formRegistroLiquidacion.get('fecha_informe_aprobacion').touched),
+            'ng-inicio': formRegistroLiquidacion.get('fecha_informe_aprobacion').invalid && formRegistroLiquidacion.get('fecha_informe_aprobacion').untouched}">
+        </div>
+        <div
+          *ngIf="formRegistroLiquidacion.get('fecha_informe_aprobacion').invalid && (formRegistroLiquidacion.get('fecha_informe_aprobacion').dirty || formRegistroLiquidacion.get('fecha_informe_aprobacion').touched)">
+          <strong *ngIf="formRegistroLiquidacion.get('fecha_informe_aprobacion').errors.required"
+            class="text-danger">Fecha del Informe es
+            obligatorio</strong>
+        </div>
+      </div>
+      <label class="col-12 col-md-3 mb-2 form-label" for="fileDocumentoInformeAprobacion">(*) SUBIR INFORME DE
+        APROBACIÓN</label>
+      <div class="col-12 col-md-3 mb-2">
+        <app-input-file idComp="fileDocumentoInformeAprobacion" (onChange)="fileChangeEventInformeAprobacion($event)"
+          class="input-group" IdTipoArchivo="{{tipoArchivoInformeAprobacion}}"
+          Value="{{ nombreDocumentoInformeAprobacion }}"
+          [ngClass]="{'is-invalid': formRegistroLiquidacion.get('nombre_documento_informe_aprobacion').invalid && (formRegistroLiquidacion.get('nombre_documento_informe_aprobacion').dirty || formRegistroLiquidacion.get('nombre_documento_informe_aprobacion').touched), 
+          'ng-inicio': formRegistroLiquidacion.get('nombre_documento_informe_aprobacion').invalid && formRegistroLiquidacion.get('nombre_documento_informe_aprobacion').untouched}">
+        </app-input-file>
+        <div
+          *ngIf="formRegistroLiquidacion.get('nombre_documento_informe_aprobacion').invalid && (formRegistroLiquidacion.get('nombre_documento_informe_aprobacion').dirty || formRegistroLiquidacion.get('nombre_documento_informe_aprobacion').touched)">
+          <strong *ngIf="formRegistroLiquidacion.get('nombre_documento_informe_aprobacion').errors.required"
+            class="text-danger">Informe de
+            aprobación es obligatorio</strong>
+        </div>
+      </div>
+      <label class="col-12 col-md-3 mb-2 form-label" for="fecha_aprobacion_resolucion">(*) FECHA INFORME APROBACIÓN
+        DIRECCIÓN</label>
+      <div class="col-12 col-md-3 mb-2">
+        <div class="inner-addon left-addon">
+          <i class="icono material-icons">event</i>
+          <input class="form-control" #dpYMD="bsDatepicker" bsDatepicker [readonly]="true"
+            id="fecha_aprobacion_resolucion" placeholder="__/__/____"
+            [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es',showWeekNumbers: false, containerClass: 'theme-red' }"
+            formControlName="fecha_aprobacion_resolucion"
+            [ngClass]="{'is-invalid': formRegistroLiquidacion.get('fecha_aprobacion_resolucion').invalid && (formRegistroLiquidacion.get('fecha_aprobacion_resolucion').dirty || formRegistroLiquidacion.get('fecha_aprobacion_resolucion').touched),
+            'ng-inicio': formRegistroLiquidacion.get('fecha_aprobacion_resolucion').invalid && formRegistroLiquidacion.get('fecha_aprobacion_resolucion').untouched}">
+        </div>
+        <div
+          *ngIf="formRegistroLiquidacion.get('fecha_aprobacion_resolucion').invalid && (formRegistroLiquidacion.get('fecha_aprobacion_resolucion').dirty || formRegistroLiquidacion.get('fecha_aprobacion_resolucion').touched)">
+          <strong *ngIf="formRegistroLiquidacion.get('fecha_aprobacion_resolucion').errors.required"
+            class="text-danger">Fecha de Aprobación es
+            obligatorio</strong>
+        </div>
+      </div>
+      <label class="col-12 col-md-3 mb-2 form-label" for="fileDocumentoAprobacionResolucion">(*) SUBIR INFORME DE
+        APROBACIÓN DIRECCIÓN</label>
+      <div class="col-12 col-md-3 mb-2">
+        <app-input-file idComp="fileDocumentoAprobacionResolucion"
+          (onChange)="fileChangeEventInformeDireccionAprobacion($event)" class="input-group"
+          IdTipoArchivo="{{tipoArchivoInformeAprobacionDireccion}}"
+          Value="{{ nombreDocumentoInformeDireccionAprobacion }}"
+          [ngClass]="{'is-invalid': formRegistroLiquidacion.get('nombre_documento_resolucion_aprobacion').invalid && (formRegistroLiquidacion.get('nombre_documento_resolucion_aprobacion').dirty || formRegistroLiquidacion.get('nombre_documento_resolucion_aprobacion').touched), 
+          'ng-inicio': formRegistroLiquidacion.get('nombre_documento_resolucion_aprobacion').invalid && formRegistroLiquidacion.get('nombre_documento_resolucion_aprobacion').untouched}">
+        </app-input-file>
+        <div
+          *ngIf="formRegistroLiquidacion.get('nombre_documento_resolucion_aprobacion').invalid && (formRegistroLiquidacion.get('nombre_documento_resolucion_aprobacion').dirty || formRegistroLiquidacion.get('nombre_documento_resolucion_aprobacion').touched)">
+          <strong *ngIf="formRegistroLiquidacion.get('nombre_documento_resolucion_aprobacion').errors.required"
+            class="text-danger">Informe de
+            Dirección es obligatorio</strong>
+        </div>
+      </div>
+      <label class="col-12 col-md-3 mb-2 form-label" for="resolucion_liquidacion">RESOLUCIÓN DE LIQUIDACIÓN DE
+        ELABORACIÓN DEL ESTUDIO</label>
+      <div class="col-12 col-md-3 mb-2">
+        <input type="text" class="form-control" formControlName="resolucion_liquidacion">
+      </div>
+      <label class="col-12 col-md-3 mb-2 form-label" for="fecha_resolucion_liquidacion">FECHA DE RESOLUCIÓN LIQUIDACIÓN
+        DE ELABORACIÓN DEL ESTUDIO</label>
+      <div class="col-12 col-md-3 mb-2">
+        <div class="inner-addon left-addon">
+          <i class="icono material-icons">event</i>
+          <input class="form-control" #dpYMD="bsDatepicker" bsDatepicker [readonly]="true"
+            id="fecha_resolucion_liquidacion" placeholder="__/__/____"
+            [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es',showWeekNumbers: false, containerClass: 'theme-red' }"
+            formControlName="fecha_resolucion_liquidacion">
+        </div>
+      </div>
+      <label class="col-12 col-md-3 mb-2 form-label" for="monto_liquidacion">MONTO DE LIQUIDACIÓN DE ELABORACIÓN DEL
+        ESTUDIO</label>
+      <div class="col-12 col-md-3 mb-2">
+        <input type="text" class="form-control" formControlName="monto_liquidacion"
+          [textMask]="{mask: funciones.currencyMask}">
+      </div>
+      <label class="col-12 col-md-3 mb-2 form-label" for="fileDocumentoLiquidacion">SUBIR RESOLUCIÓN DE LIQUIDACIÓN DE
+        ELABORACIÓN DEL ESTUDIO</label>
+      <div class="col-12 col-md-3 mb-2">
+        <app-input-file idComp="fileDocumentoLiquidacion" (onChange)="fileChangeEvent($event)" class="input-group"
+          IdTipoArchivo="{{tipoArchivo}}" Value="{{ nombreDocumentoLiquidacion }}">
+        </app-input-file>
+      </div>
+    </div>
+    <strong class="text-danger">(*) Campos Obligatorios</strong>
+    <div class="row form-group">
+      <div class="col-12 clearfix">
+        <ng-container>
+          <div class="float-right">
+            <button class="btn btn-danger" type="submit" [disabled]="formRegistroLiquidacion.invalid">
+              <i [ngClass]=" (cambiarEditar)? 'fa fa-edit' : 'fa fa-save'"></i>
+              Guardar</button>
+            <button class="btn btn-plomo ml-1" type="button" (click)="closeModal()"><i class="fa fa-arrow-left"></i>
+              Cerrar</button>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </form>
+</div>

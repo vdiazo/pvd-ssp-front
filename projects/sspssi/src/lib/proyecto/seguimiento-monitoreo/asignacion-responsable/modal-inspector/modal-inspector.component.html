@@ -1,0 +1,453 @@
+<div class="modal-header">
+  <h4 class="modal-title">Inspector de obra</h4>
+  <p class="pb-2 pl-4 pr-4">Registro y listado de Inspector de la obra</p>
+</div>
+<div class="modal-body">
+  <div class="group-box" *hasClaim="'monitoreo_tabSeg_responsable_divInspector_eje_dir'">
+    <form [formGroup]="formGroupInspector" (ngSubmit)="registrarInspector()" autocomplete="off">
+      <div class="row">
+        <div class="col-sm-9">
+          <div class="row form-group">
+            <div class="col-sm-12">
+              <div class="inner-addon right-addon">
+                <label *ngIf="!cambiarEditar" class="btn mb-0 rounded-left" title="Validar con RENIEC" for="dni"
+                  (click)="validarInformacionReniec()"><i class="icono material-icons">search</i></label>
+                <input *ngIf="!cambiarEditar" type="text" formControlName="dni" id="dni" placeholder="Número de DNI"
+                  type="text" maxlength="8" class="form-control" (keypress)="funciones.IsNumberKey($event);"
+                  (ngModelChange)="validarDNI()" required>
+                <label *ngIf="cambiarEditar" class="mb-0 rounded-left" for="dni"><i
+                    class="icono material-icons">search</i></label>
+                <input *ngIf="cambiarEditar" type="text" formControlName="dni" id="dni" type="text"
+                  (ngModelChange)="validarDNI()" class="form-control" style="background: #e9ecef" readonly>
+              </div>
+              <span class="invalid-feedback">
+                <span *ngIf="formGroupInspector.get('dni').errors?.required">
+                  DNI es obligatorio.
+                </span>
+              </span>
+            </div>
+          </div>
+          <div class="row form-group">
+            <div class="col-sm-12">
+              <input type="text" formControlName="apellido_paterno" placeholder="Apellido Paterno" class="form-control"
+                readonly>
+            </div>
+          </div>
+          <div class="row form-group">
+            <div class="col-sm-12">
+              <input type="text" formControlName="apellido_materno" placeholder="Apellido Materno" class="form-control"
+                readonly>
+            </div>
+          </div>
+          <div class="row form-group">
+            <div class="col-sm-12">
+              <input type="text" formControlName="nombres" placeholder="Nombre(s)" class="form-control" readonly>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div style="height: 100%;width:163.43px;border:1px solid rgba(0, 0, 0, 0.2)">
+            <img id="imgFoto" name="imgFoto" />
+          </div>
+        </div>
+      </div>
+      <!-- <div class="row form-group">
+            <div class="col-sm-2">
+              <label class="control-label" for="dni">DNI (*):</label>
+            </div>
+            <div class="col-md-4">
+              <input type="text" id="dni" class="form-control" formControlName="dni" maxlength="8"
+                (keypress)="funciones.IsNumberKey($event);"
+                [ngClass]="{'is-invalid': (formGroupInspector.get('dni').touched || formGroupInspector.get('dni').dirty) && formGroupInspector.get('dni').invalid }">
+              <span [hidden]="formGroupInspector.get('dni').valid || formGroupInspector.get('dni').pristine"
+                class="invalid-tooltip">
+                <span *ngIf="formGroupInspector.get('dni').errors?.required">
+                  DNI es obligatorio.
+                </span>
+              </span>
+            </div>
+            <div class="col-sm-2">
+              <label class="control-label" for="apellidos">Apellidos (*):</label>
+            </div>
+            <div class="col-md-4">
+              <input type="text" id="apellidos" class="form-control text-uppercase" formControlName="apellidos"
+                [ngClass]="{'is-invalid': (formGroupInspector.get('apellidos').touched || formGroupInspector.get('apellidos').dirty) && formGroupInspector.get('apellidos').invalid }">
+              <span
+                [hidden]="formGroupInspector.get('apellidos').valid || formGroupInspector.get('apellidos').pristine"
+                class="invalid-tooltip">
+                <span *ngIf="formGroupInspector.get('apellidos').errors?.required">
+                  Apellidos es obligatorio.
+                </span>
+              </span>
+            </div>
+          </div> 
+          <div class="row form-group">
+            <div class="col-sm-2">
+              <label class="control-label" for="nombres">Nombre(s) (*):</label>
+            </div>
+            <div class="col-md-4">
+              <input type="text" id="nombres" class="form-control text-uppercase" formControlName="nombres"
+                [ngClass]="{'is-invalid': (formGroupInspector.get('nombres').touched || formGroupInspector.get('nombres').dirty) && formGroupInspector.get('nombres').invalid }">
+              <span [hidden]="formGroupInspector.get('nombres').valid || formGroupInspector.get('nombres').pristine"
+                class="invalid-tooltip">
+                <span *ngIf="formGroupInspector.get('nombres').errors?.required">
+                  Nombre(s) es obligatorio.
+                </span>
+              </span>
+            </div>
+            <label class="col-sm-2 control-label" for="id_tipo_colegiatura">Tipo de Colegiatura (*):</label>
+            <div class="col-sm-4">
+              <ng-select [items]="listColegiatura" bindLabel="tipo_colegiatura" bindValue="id_tipo_colegiatura"
+                formControlName="id_tipo_colegiatura" placeholder="Seleccione"
+                [ngClass]="{'is-invalid': (formGroupInspector.get('id_tipo_colegiatura').touched || formGroupInspector.get('id_tipo_colegiatura').dirty) && formGroupInspector.get('id_tipo_colegiatura').invalid }">
+              </ng-select>
+              <span class="invalid-feedback" style="width: 200px;">
+                <span *ngIf="formGroupInspector.get('id_tipo_colegiatura').errors?.required">
+                  Tipo de Colegiatura es obligatorio.
+                </span>
+              </span>
+            </div>
+          </div>-->
+      <br>
+      <div class="row form-group">
+        <label class="col-sm-2 control-label" for="id_tipo_colegiatura">Tipo de Colegiatura (*):</label>
+        <div class="col-sm-4">
+          <ng-select [items]="listColegiatura" bindLabel="tipo_colegiatura" bindValue="id_tipo_colegiatura"
+            formControlName="id_tipo_colegiatura" placeholder="Seleccione"
+            [ngClass]="{'is-invalid': (formGroupInspector.get('id_tipo_colegiatura').touched || formGroupInspector.get('id_tipo_colegiatura').dirty) && formGroupInspector.get('id_tipo_colegiatura').invalid }">
+          </ng-select>
+          <span class="invalid-feedback" style="width: 200px;">
+            <span *ngIf="formGroupInspector.get('id_tipo_colegiatura').errors?.required">
+              Tipo de Colegiatura es obligatorio.
+            </span>
+          </span>
+        </div>
+        <div class="col-sm-2">
+          <label class="control-label" for="nro_colegiatura">N° de Colegiatura (*):</label>
+        </div>
+        <div class="col-md-4">
+          <input type="text" id="nro_colegiatura" class="form-control" formControlName="nro_colegiatura"
+            (keypress)="funciones.IsNumberKey($event);"
+            [ngClass]="{'is-invalid': (formGroupInspector.get('nro_colegiatura').touched || formGroupInspector.get('nro_colegiatura').dirty) && formGroupInspector.get('nro_colegiatura').invalid }">
+          <span
+            [hidden]="formGroupInspector.get('nro_colegiatura').valid || formGroupInspector.get('nro_colegiatura').pristine"
+            class="invalid-tooltip">
+            <span *ngIf="formGroupInspector.get('nro_colegiatura').errors?.required">
+              DNI es obligatorio.
+            </span>
+          </span>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-2">
+          <label class="control-label" for="fecha_designacion">Fecha de Designación (*):</label>
+        </div>
+        <div class="col-sm-4">
+          <div class="inner-addon left-addon">
+            <i class="icono material-icons">event</i>
+            <input type="text" id="fecha_designacion" class="form-control" formControlName="fecha_designacion"
+              placeholder="dd/mm/aaaa" bsDatepicker
+              [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es', containerClass: 'theme-red' }"
+              [minDate]="fecha_inicio_contractual" readonly
+              [ngClass]="{'is-invalid': (formGroupInspector.get('fecha_designacion').touched || formGroupInspector.get('fecha_designacion').dirty) && formGroupInspector.get('fecha_designacion').invalid }">
+          </div>
+          <span
+            [hidden]="formGroupInspector.get('fecha_designacion').valid || formGroupInspector.get('fecha_designacion').pristine"
+            class="invalid-tooltip">
+            <span *ngIf="formGroupInspector.get('fecha_designacion').errors?.required">
+              Fecha de designación es obligatorio.
+            </span>
+          </span>
+        </div>
+        <div class="col-sm-2">
+          <label class="control-label" for="telefono">N° de Teléfono (*):</label>
+        </div>
+        <div class="col-md-4">
+          <input type="text" id="telefono" class="form-control" formControlName="telefono"
+            (keypress)="funciones.IsNumberKey($event);"
+            [ngClass]="{'is-invalid': (formGroupInspector.get('telefono').touched || formGroupInspector.get('telefono').dirty) && formGroupInspector.get('telefono').invalid }">
+          <span [hidden]="formGroupInspector.get('telefono').valid || formGroupInspector.get('telefono').pristine"
+            class="invalid-tooltip">
+            <span *ngIf="formGroupInspector.get('telefono').errors?.required">
+              Nro. de teléfono es obligatorio.
+            </span>
+          </span>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-2">
+          <label class="control-label" for="email">Correo Electrónico (*):</label>
+        </div>
+        <div class="col-md-4">
+          <input type="text" id="email" class="form-control" formControlName="email"
+            [ngClass]="{'is-invalid': (formGroupInspector.get('email').touched || formGroupInspector.get('email').dirty) && formGroupInspector.get('email').invalid }">
+          <span [hidden]="formGroupInspector.get('email').valid || formGroupInspector.get('email').pristine"
+            class="invalid-tooltip">
+            <span *ngIf="formGroupInspector.get('email').errors?.required">
+              Correo Electrónico es obligatorio.
+            </span>
+            <span *ngIf="formGroupInspector.get('email').errors?.email">
+              No es un email valido.
+            </span>
+          </span>
+        </div>
+        <div class="col-sm-2">
+          <label class="control-label">Documento de Designación (*):</label>
+        </div>
+        <div class="col-sm-4">
+          <app-input-file idComp="fileInspectorobra" (onChange)="fileChangeEvent($event)" class="input-group"
+            IdTipoArchivo="{{tipoArchivo}}" Value="{{ nombreArchivo }}"
+            [ngClass]="{'is-invalid': (formGroupInspector.get('nombre_archivo').touched || formGroupInspector.get('nombre_archivo').dirty) && !formGroupInspector.get('nombre_archivo').valid }">
+          </app-input-file>
+          <span
+            [hidden]="formGroupInspector.get('nombre_archivo').valid || formGroupInspector.get('nombre_archivo').pristine"
+            class="invalid-tooltip">
+            <span *ngIf="formGroupInspector.get('nombre_archivo').errors?.required">
+              Documento de designación es obligatorio.
+            </span>
+          </span>
+          <p></p>
+        </div>
+      </div>
+      <span class="comentario">(*)Campos Obligatorios</span>
+      <div class="modal-footer" [hidden]=!bEstado>
+        <button type="submit" class="btn btn-danger" id="btnGuardar" readonly
+          *hasClaim="'monitoreo_tabSeg_responsable_regSupervisor_eje_dir'" [hidden]=bMostrar
+          [disabled]="!formGroupInspector.valid"><i class="fa fa-save"></i> Guardar</button>
+        <button class="btn btn-danger" type="button" [hidden]=!bMostrar>
+          <i class="fa fa-save"></i> ....Procesando</button>
+        <button type="button" id="btnLimpiar" (click)="formGroupInspector.reset();setControles()"
+          class="btn btn-default"> <i class="icon icon-limpiar"></i>
+          Limpiar</button>
+      </div>
+    </form>
+    <!-- <form (ngSubmit)="modificarInspector(model,inspectorForm)" #inspectorForm="ngForm">
+      <div class="row form-group">
+        <input [hidden]="true" type='text' name="id_inspector_seguimiento_obra" id="id_inspector_seguimiento_obra"
+          [(ngModel)]="model.id_inspector_seguimiento_obra" #id_inspector_seguimiento_obra="ngModel" />
+        <div class="col-sm-2">
+          <label dlabels class="control-label" for="dni">DNI (*):</label>
+        </div>
+        <div class="col-sm-4">
+          <input dTextBox class="form-control" type='text' name="dni" id="dni" placeholder="DNI" [(ngModel)]="model.dni"
+            maxlength="8" #dni="ngModel" required (keypress)="funciones.IsNumberKey($event)" />
+          <div [hidden]="dni.valid || dni.pristine" class="alert alert-danger">
+            DNI del Inspector de la obra es obligatorio
+          </div>
+        </div>
+        <div class="col-sm-2">
+          <label dlabels class="control-label" for="apellidos">Apellidos (*):</label>
+        </div>
+        <div class="col-sm-4">
+          <input dTextBox class="form-control" type='text' name="apellidos" id="apellidos" placeholder="Apellidos"
+            [(ngModel)]="model.apellidos" #apellidos="ngModel" required pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+" />
+          <div [hidden]="apellidos.valid || apellidos.pristine" class="alert alert-danger">
+            Apellidos del Inspector de la obra es obligatorio
+          </div>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-2">
+          <label dlabels class="control-label" for="nombres">Nombres (*):</label>
+        </div>
+        <div class="col-sm-4">
+          <input dTextBox class="form-control" type='text' name="nombres" id="nombres" placeholder="Nombres"
+            [(ngModel)]="model.nombres" #nombres="ngModel" required pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+" />
+          <div [hidden]="nombres.valid || nombres.pristine" class="alert alert-danger">
+            Nombres del Inspector de la obra es obligatorio
+          </div>
+        </div>
+        <div class="col-sm-2">
+          <label dlabels class="control-label" for="id_tipo_colegiatura">Tipo de Colegiatura (*):</label>
+        </div>
+        <div class="col-sm-4">
+          <ng-select [items]="listColegiatura" placeholder="Seleccione un tipo de colegiatura"
+            bindLabel="tipo_colegiatura" bindValue="id_tipo_colegiatura" [(ngModel)]="model.id_tipo_colegiatura"
+            name="tipo_colegiatura" id="tipo_colegiatura">
+          </ng-select>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-2">
+          <label dlabels class="control-label" for="nro_colegiatura">Nº de Colegiatura (*):</label>
+        </div>
+        <div class="col-sm-4">
+          <input dTextBox class="form-control" type='text' name="nro_colegiatura" id="nro_colegiatura"
+            placeholder="Nº de Colegiatura" [(ngModel)]="model.nro_colegiatura" #nro_colegiatura="ngModel" required
+            maxlength="12" />
+          <div [hidden]="nro_colegiatura.valid || nro_colegiatura.pristine" class="alert alert-danger">
+            Nº de Colegiatura del Inspector de la obra es obligatorio
+          </div>
+        </div>
+        <div class="col-sm-2">
+          <label dlabels class="control-label" for="fecha_designacion">Fecha Designación (*):</label>
+        </div>
+        <div class="col-sm-4">
+          <input dTextBox class="form-control" type='text' name="fecha_designacion" id="fecha_designacion"
+            placeholder="dd/mm/aaaa" bsDatepicker required
+            [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es', containerClass: 'theme-red' }"
+            [(ngModel)]="model.fecha_designacion" #fecha_designacion="ngModel" readonly="readonly" />
+          <div [hidden]="fecha_designacion.valid || fecha_designacion.pristine" class="alert alert-danger">
+            Fecha Designación es obligatorio
+          </div>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-2">
+          <label dlabels class="control-label">Nº de Teléfono (*):</label>
+        </div>
+        <div class="col-sm-4">
+          <input dTextBox class="form-control" type='text' name="telefono" id="telefono" placeholder="Nº de Teléfono"
+            maxlength="10" [(ngModel)]="model.telefono" #telefono="ngModel" required
+            (keypress)="funciones.IsNumberKey($event)" />
+          <div [hidden]="telefono.valid || telefono.pristine" class="alert alert-danger">
+            Nº de Teléfono del Inspector de la obra es obligatorio
+          </div>
+        </div>
+        <div class="col-sm-2">
+          <label dlabels class="control-label" for="observacion">Correo Electrónico (*):</label>
+        </div>
+        <div class="col-sm-4">
+          <input dTextBox class="form-control" type='text' name="email" id="email" placeholder="Correo Electrónico"
+            [(ngModel)]="model.email" #email="ngModel" required pattern="^[^\s@]+@[^\s@]+\.[^\s@]{2,}$" />
+          <div [hidden]="email.valid || email.pristine" class="alert alert-danger">
+            Correo Electrónico del Inspector de la obra es obligatorio
+          </div>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-2">
+          <label dlabels class="control-label">Documento Nombramiento (*):</label>
+        </div>
+        <div class="col-sm-4">
+          <div class="input-group">
+            <app-input-file-listado idComp="fileinspector" (onChange)="fileChangeEvent($event)" class="input-group"
+              Value="{{model.nombre_archivo}}"></app-input-file-listado>
+          </div>
+        </div>
+      </div>
+      <span class="comentario">(*)Campos Obligatorios</span>
+      <div class="modal-footer" [hidden]=!bEstado>
+        <button type="submit" id="btnGuardar" readonly class="btn btn-danger" [hidden]=bMostrar
+          *hasClaim="'monitoreo_tabSeg_responsable_regInspector_eje_dir'"
+          [disabled]="!inspectorForm.form.valid || model.dni.length!=8  || model.id_tipo_colegiatura == null || file == undefined && model.nombre_archivo == undefined"><i
+            class="fa fa-save"></i> Guardar</button>
+        <button class="btn btn-danger" type="button" [hidden]=!bMostrar>
+          <i class="fa fa-save"></i> ....Procesando</button>
+        <button type="button" id="btnLimpiar" (click)="inspectorForm.reset();setControles()" class="btn btn-default"><i
+            class="icon icon-limpiar"></i> Limpiar</button>
+      </div>
+    </form> -->
+  </div>
+  <div class="row form-group">
+    <div class="col-12 container-scroll">
+      <table class="table table-hover table-responsive">
+        <thead class="table-active">
+          <tr>
+            <th *ngIf="false">id</th>
+            <th *ngIf="false">id_seguimiento_monitoreo_obra</th>
+            <th *ngIf="false">id_tipo_colegiatura</th>
+            <th>DNI</th>
+            <th>Inspector</th>
+            <th>Tipo Colegiatura</th>
+            <th>Colegiatura</th>
+            <th>Fecha de Designación</th>
+            <th>Teléfono</th>
+            <th>Correo Electrónico</th>
+            <th>Doc.</th>
+            <th [hidden]=!bEstado></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let inspector of listInspector">
+            <td *ngIf="false">{{inspector.id_inspector_seguimiento_obra}}</td>
+            <td *ngIf="false">{{inspector.id_seguimiento_monitoreo_obra}}</td>
+            <td *ngIf="false">{{inspector.id_tipo_colegiatura}}</td>
+            <td class="xs-hidden text-left">{{inspector.dni}}</td>
+            <td class="xs-hidden text-left">{{inspector.apellido_paterno}} {{inspector.apellido_materno}},
+              {{inspector.nombres}}</td>
+            <td class="xs-hidden text-left">{{inspector.nombre_tipo_colegiatura}}</td>
+            <td class="xs-hidden text-right">{{inspector.nro_colegiatura}}</td>
+            <td class="xs-hidden">{{inspector.fecha_designacion | formatoFecha}}</td>
+            <td class="xs-hidden text-left">{{inspector.telefono}}</td>
+            <td class="text-left">
+              <div class="xs-hidden">
+                {{inspector.email}}
+              </div>
+              <div class="xs-display">
+                <div class="xs-th">DNI: {{inspector.dni}}</div>
+                <div class="xs-th">{{inspector.apellidos}}, {{inspector.nombres}}</div>
+                <div class="xs-th">Tipo Colegiatura</div>
+                <div>{{inspector.nombre_tipo_colegiatura}}</div>
+                <div class="xs-th">Colegiatura</div>
+                <div>{{inspector.nro_colegiatura}}</div>
+                <div class="xs-th">Fecha de Designación</div>
+                <div>{{inspector.fecha_designacion | formatoFecha}}</div>
+                <div class="xs-th">Teléfono</div>
+                <div>{{inspector.telefono}}</div>
+                <div class="xs-th">Correo Electrónico</div>
+                <div>{{inspector.email}}</div>
+              </div>
+            </td>
+            <td>
+              <div class="xs-hidden">
+                <div *ngIf="inspector.nombre_archivo != '' && inspector.nombre_archivo != null; else templateicono">
+                  <a href="{{inspector.ruta_archivo}}" target="_blank" class="btn-icon" [LinkNube]="inspector.nombre_archivo" [Ruta]="inspector.ruta_archivo">
+                    <i class="fa fa-15x">
+                      <img src="assets/img/icons/file.svg" alt="archivo">
+                    </i>
+                  </a>
+                </div>
+                <ng-template #templateicono>
+                </ng-template>
+              </div>
+            </td>
+            <td class="xs-footer-lista xs-text-right" [hidden]=!bEstado>
+              <div class="xs-hidden pre-wrap">
+                <a href="javascript:void(0)" (click)="editarInspector(inspector)" class="btn btn-sm btn-icon"
+                  *hasClaim="'monitoreo_tabSeg_responsable_modInspector_eje_dir'">
+                  <i class="fa fa-15x">
+                    <img src="assets/img/icons/pencil.svg" alt="editar">
+                  </i>
+                </a>
+                <a href="javascript:void(0)" (click)="eliminarInspector(inspector)" class="btn btn-sm btn-icon"
+                  *hasClaim="'monitoreo_tabSeg_responsable_eliInspector_eje_dir'">
+                  <i class="fa fa-15x">
+                    <img src="assets/img/icons/trash.svg" alt="eliminar">
+                  </i>
+                </a>
+              </div>
+              <div class="xs-display">
+                <span *ngIf="inspector.nombre_archivo != '' && inspector.nombre_archivo != null;">
+                  <a href="{{inspector.ruta_archivo}}" target="_blank" class="btn-icon mr-1" [LinkNube]="inspector.nombre_archivo" [Ruta]="inspector.ruta_archivo">
+                    <i class="fa fa-file"></i>
+                  </a>
+                </span>
+                <a href="javascript:void(0)" (click)="editarInspector(inspector)" class="btn-icon mr-1"
+                  *hasClaim="'monitoreo_tabSeg_responsable_modInspector_eje_dir'">
+                  <i class="fa fa-pencil"></i>
+                </a>
+                <a href="javascript:void(0)" (click)="eliminarInspector(inspector)" class="btn-icon"
+                  *hasClaim="'monitoreo_tabSeg_responsable_eliInspector_eje_dir'">
+                  <i class="fa fa-trash"></i>
+                </a>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-12">
+      <nav class="pt-4 pl-3 pull-right">
+        <pagination [totalItems]="totalRegistros" [itemsPerPage]="numPaginasMostrar" [boundaryLinks]="true"
+          previousText="&lsaquo;" nextText="&rsaquo;" [rotate]="false" firstText="&laquo;" lastText="&raquo;"
+          [maxSize]="5" (pageChanged)="cambiarPagina($event)">
+        </pagination>
+      </nav>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-plomo" id="btnCancelar" type="button" (click)="closeModal()"><i class="fa fa-arrow-left"></i>
+    Cerrar</button>
+</div>

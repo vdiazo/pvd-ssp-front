@@ -1,0 +1,95 @@
+<div class="tab-content" id="nav-tabContent">
+  <div class="tab-pane fade show active jumbotron container-fluid pt-4" id="nav-home" role="tabpanel"
+    aria-labelledby="nav-home-tab">
+    <accordion>
+      <div class="row">
+        <div class="col-12">
+          <accordion-group [isOpen]=true [panelClass]="separator">
+            <button class="btn btn-link btn-block clearfix" accordion-heading>
+              <div class="pull-left float-left">1. Información General</div>
+              <span class="badge float-right pull-right">
+                <i class="fa fa-circle-o"></i>
+              </span>
+            </button>
+            <div class="row">
+              <div class="col-md-2">
+                <strong>Nombre PIP</strong>
+              </div>
+              <div class="col-md-10">{{EntidadInfoProyecto.general?.nombre}}</div>
+            </div><br>
+            <div class="row">
+              <div class="col-md-2">
+                <strong>Ubicación del Proyecto</strong>
+              </div>
+              <div class="col-md-10">
+                <ng-container *ngFor="let ubigeo of EntidadInfoProyecto.general?.ubicacion">
+                  <div>{{ "Región: " + ubigeo.departamento + " - Provincia: " + ubigeo.provincia + " - Distrito: " +
+                    ubigeo.distrito}}</div>
+                </ng-container>
+              </div>
+            </div><br>
+            <div class="row">
+              <div class="col-md-2">
+                <strong>Cadena Funcional</strong>
+              </div>
+              <div class="col-md-10">{{EntidadInfoProyecto.general?.cadena}}</div>
+            </div><br>
+            <div class="row">
+              <div class="col-md-2">
+                <strong>Unidad Formuladora (UF)</strong>
+              </div>
+              <div class="col-md-10">
+                <span>{{EntidadInfoProyecto.general?.unidadformuladora}}</span>
+              </div>
+            </div><br>
+          </accordion-group>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12">
+          <accordion-group [isOpen]=false [panelClass]="separator">
+            <button class="btn btn-link btn-block clearfix" accordion-heading>
+              <div class="pull-left float-left">2. Información de Estudio de Pre Inversión</div>
+              <span class="badge float-right pull-right">
+                <i class="fa fa-circle-o"></i>
+              </span>
+            </button>
+            <div class="row">
+              <div class="col-md-2">
+                <strong>Nivel de Estudio de Pre Inversión Recomendado</strong>
+              </div>
+              <div class="col-md-10">
+                {{EntidadInfoProyecto.estudio?.nivelestudio}}
+              </div>
+            </div><br>
+            <div class="row">
+              <div class="col-md-2">
+                <strong>Estado</strong>
+              </div>
+              <div class="col-md-10">
+                {{EntidadInfoProyecto.estudio?.estado}}
+              </div>
+            </div><br>
+            <div class="row">
+              <div class="col-md-2">
+                <strong>Fecha de viabilidad</strong>
+              </div>
+              <div class="col-md-10">
+                {{EntidadInfoProyecto.estudio?.fechaviabilidad}}
+              </div>
+            </div><br>
+            <div class="row">
+              <div class="col-md-2">
+                <strong>Monto Viable </strong>
+              </div>
+              <div class="col-md-10">
+                {{EntidadInfoProyecto.estudio?.montoviable | currency:" S/ "}}
+              </div>
+            </div><br>
+          </accordion-group>
+        </div>
+      </div>
+    </accordion>
+  </div>
+</div>

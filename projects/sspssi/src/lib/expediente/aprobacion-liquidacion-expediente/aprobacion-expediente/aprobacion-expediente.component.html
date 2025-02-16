@@ -1,0 +1,201 @@
+<div class="row form-group">
+  <label class="col-sm-12 control-label">1.1. Registro de Aprobación de Expediente Técnico</label>
+</div>
+<div class="row form-group" *hasClaim="'monitoreo_tabRYL_regAprobExpediente_nuevAprobExpediente_exp_tec_eje_dir'">
+  <div class="col-6" [hidden]=!bEstado>
+    <button class="btn btn-plomo" (click)="nuevaAprobacionExpediente()" type="button" [hidden]="existeAprobacion">
+      <i class="fa fa-plus"></i> Nuevo
+    </button>
+  </div>
+  <div class="col-6 text-right">
+    <label dlabels class="control-label">Última Actualización:</label>&nbsp;
+    <span>{{ultimaActualizacionAprobacionExpediente}}</span>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-12 container-scroll">
+    <table class="table table-hover table-bordered table-responsive table-full-detalle">
+      <thead class="table-danger">
+        <tr>
+          <th>Fecha de Aprobacion Liquidacion</th>
+          <th>Nro. Resolución</th>
+          <th>Fecha Presupuesto</th>
+          <th>Monto Presupuesto</th>
+          <th>Documento Aprob. Liquidacion</th>
+          <th [hidden]=!bEstado></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of listaAprobacionExpediente">
+          <td class="xs-hidden text-center">{{ item.fecha_aprobacion | formatoFecha }}</td>
+          <td class="xs-hidden text-center">{{item.resolucion_aprobacion}}</td>
+          <td class="xs-hidden text-center">{{item.fecha_presupuesto_expediente | formatoFecha}}</td>
+          <td class="xs-hidden text-center">{{item.monto_presupuesto_expediente | formatoMoneda}}</td>
+          <td>
+            <div class="xs-hidden">
+              <div *ngIf="item.nombre_archivo_expediente != '' ; else templateicono">
+                <a href="{{item.ruta_archivo}}" target="_blank" class="btn-icon" [LinkNube]="item.nombre_archivo_expediente" [Ruta]="item.ruta_archivo">
+                  <i class="fa fa-15x">
+                    <img src="assets/img/icons/file.svg" alt="archivo">
+                  </i>
+                </a>
+              </div>
+              <ng-template #templateicono>
+              </ng-template>
+            </div>
+            <div class="xs-display">
+              <div class="xs-th f-s-13"><i class="fa fa-calendar"></i> Fecha de Aprobación:</div>
+              <div>{{item.fecha_aprobacion | formatoFecha}}</div>
+              <div class="xs-th f-s-13">Nro. de Resolución:</div>
+              <div>{{item.resolucion_aprobacion}}</div>
+              <div class="xs-th f-s-13">Fecha Presupuesto:</div>
+              <div>{{item.fecha_presupuesto_expediente | formatoFecha}}</div>
+              <div class="xs-th f-s-13">Monto Presupuesto:</div>
+              <div>{{item.monto_presupuesto_expediente | formatoMoneda}}</div>
+            </div>
+          </td>
+          <td width="100" class="xs-footer-lista xs-100 xs-text-right pre-wrap" [hidden]=!bEstado>
+            <div class="xs-hidden">
+              <span *hasClaim="'monitoreo_tabRYL_regAprobExpediente_editAprobExpediente_exp_tec_eje_dir'"
+                class="btn btn-sm btn-opt btn-icon" (click)="modalEditarAprobacion(item)">
+                <i class="fa fa-15x">
+                  <img src="assets/img/icons/pencil.svg" alt="editar">
+                </i>
+              </span>
+              <span *hasClaim="'monitoreo_tabRYL_regAprobExpediente_eliAprobExpediente_exp_tec_eje_dir'"
+                class="btn btn-sm btn-opt btn-icon" (click)="anularAprobacionExpediente(item.id_aprobacion_expediente)">
+                <i class="fa fa-15x">
+                  <img src="assets/img/icons/trash.svg" alt="eliminar">
+                </i>
+              </span>
+            </div>
+            <div class="xs-display">
+              <span>
+                <a *ngIf="item.nombre_archivo_seguimiento != ''" href="{{item.nombre_archivo_seguimiento}}"
+                  target="_blank" class="btn-icon mr-1" [LinkNube]="item.nombre_archivo_expediente" [Ruta]="item.ruta_archivo">
+                  <i class="fa fa-file"></i>
+                </a>
+              </span>
+              <span *hasClaim="'monitoreo_tabRYL_regAprobExpediente_editAprobExpediente_exp_tec_eje_dir'"
+                class="btn-icon mr-1" (click)="modalEditarAprobacion(item)">
+                <i class="fa fa-pencil"></i>
+              </span>
+              <span *hasClaim="'monitoreo_tabRYL_regAprobExpediente_eliAprobExpediente_exp_tec_eje_dir'"
+                class="btn-icon" (click)="anularAprobacionExpediente(item.id_aprobacion_expediente)">
+                <i class="fa fa-trash"></i>
+              </span>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-12">
+    <nav class="pt-4 pl-3 pull-right">
+      <pagination [totalItems]="totalRegistros" [boundaryLinks]="true" previousText="&lsaquo;" nextText="&rsaquo;"
+        [rotate]="false" firstText="&laquo;" lastText="&raquo;" [itemsPerPage]="numPaginasMostrar"
+        (pageChanged)="cambiarPagina($event)">
+      </pagination>
+    </nav>
+  </div>
+</div>
+<div *ngIf="existeAprobacion">
+  <div class="row form-group">
+    <label class="col-sm-12 control-label">1.2. Registro de Metas del Proyecto</label>
+  </div>
+  <div class="row form-group" *hasClaim="'monitoreo_tabRYL_regMetasProyecto_nuevRegistroMetaProyecto_exp_tec_eje_dir'">
+    <div class="col-6">
+      <button type="button" (click)="registrarMetasProyecto()" class="btn btn-dark" [hidden]="existeMetasProyecto"><i
+          class="fa fa-list-ol"></i> Registrar Metas</button>
+    </div>
+    <div class="col-6 text-right">
+      <label dlabels class="control-label">Última Actualización:</label>&nbsp;
+      <span>{{ultimaActualizacionMetasProyecto}}</span>
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-12 container-scroll">
+      <table class="table table-hover table-bordered table-responsive table-full-detalle">
+        <thead>
+          <tr>
+            <th>Tipo de Infraestructura</th>
+            <th>Tipo de Via</th>
+            <th>Longitud</th>
+            <th>Plazo de Ejecución</th>
+            <th>Ancho de la Via</th>
+            <th>Número de Carriles</th>
+            <th>Codigo(s) de ruta</th>
+            <th>Observacion</th>
+            <th [hidden]=!bEstado></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let meta of listaMetasProyectoExpediente">
+            <td>
+              <div class="xs-hidden text-center">{{meta.nombre_tipo_infraestructura}}</div>
+              <div class="xs-display">
+                <div class="xs-th f-s-13">Tipo de infraestructura:</div>
+                <span>{{meta.nombre_tipo_infraestructura}}</span>
+                <div class="xs-th f-s-13">Tipo de Via:</div>
+                <span>{{meta.nombre_tipo_via}}</span>
+                <div class="xs-th f-s-13">Longitud:</div>
+                <span>{{meta.longitud}} {{meta.nombre_unidad_medida}}</span>
+                <div class="xs-th f-s-13">Plazo de Ejecución:</div>
+                <span>{{meta.plazo_ejecucion}} D.C.</span>
+                <div class="xs-th f-s-13">Ancho de vía:</div>
+                <span>{{meta.ancho_infraestructura}} m.</span>
+                <div class="xs-th f-s-13">Num. de carriles:</div>
+                <span>{{meta.num_carriles}}</span>
+                <div class="xs-th f-s-13">Cod. de ruta:</div>
+                <span>{{meta.codigo_ruta}}</span>
+                <div class="xs-th f-s-13">Observación:</div>
+                <div>{{meta.observacion}}</div>
+              </div>
+            </td>
+            <td class="xs-hidden text-center">{{meta.nombre_tipo_via}}</td>
+            <td class="xs-hidden text-center">{{meta.longitud}} {{meta.nombre_unidad_medida}}</td>
+            <td class="xs-hidden text-center">{{meta.plazo_ejecucion}} D.C.</td>
+            <td class="xs-hidden text-center">{{meta.ancho_infraestructura}} m.</td>
+            <td class="xs-hidden text-center">{{meta.num_carriles}}</td>
+            <td class="xs-hidden text-center">{{meta.codigo_ruta}}</td>
+            <td class="xs-hidden text-center">{{meta.observacion}}</td>
+            <td width="100" class="xs-footer-lista xs-100 xs-text-right pre-wrap" [hidden]=!bEstado>
+              <div class="xs-hidden">
+                <span *hasClaim="'monitoreo_tabRYL_regMetasProyecto_editRegistroMetaProyecto_exp_tec_eje_dir'"
+                  class="btn btn-sm btn-opt btn-icon" (click)="modificarMetasProyecto(meta)">
+                  <i class="fa fa-15x">
+                    <img src="assets/img/icons/pencil.svg" alt="editar">
+                  </i>
+                </span>
+                <span *hasClaim="'monitoreo_tabRYL_regMetasProyecto_eliRegistroMetaProyecto_exp_tec_eje_dir'"
+                  class="btn btn-sm btn-opt btn-icon" (click)="anularMetaProyectoExpediente(meta.id_meta_proyecto)">
+                  <i class="fa fa-15x">
+                    <img src="assets/img/icons/trash.svg" alt="eliminar">
+                  </i>
+                </span>
+              </div>
+              <div class="xs-display">
+                <span *hasClaim="'monitoreo_tabRYL_regMetasProyecto_editRegistroMetaProyecto_exp_tec_eje_dir'"
+                  class="btn-icon mr-1" (click)="modificarMetasProyecto(meta)">
+                  <i class="fa fa-pencil"></i>
+                </span>
+                <span *hasClaim="'monitoreo_tabRYL_regMetasProyecto_eliRegistroMetaProyecto_exp_tec_eje_dir'"
+                  class="btn-icon" (click)="anularMetaProyectoExpediente(meta.id_meta_proyecto)">
+                  <i class="fa fa-trash"></i>
+                </span>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-12">
+      <nav class="pt-4 pl-3 pull-right">
+        <pagination [totalItems]="totalRegistrosMeta" [boundaryLinks]="true" previousText="&lsaquo;" nextText="&rsaquo;"
+          [rotate]="false" firstText="&laquo;" lastText="&raquo;" [itemsPerPage]="numPaginasMostrarMetas"
+          (pageChanged)="cambiarPaginaMetas($event)">
+        </pagination>
+      </nav>
+    </div>
+  </div>
+</div>

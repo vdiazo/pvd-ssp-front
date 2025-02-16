@@ -1,0 +1,113 @@
+<div class="container-fluid">
+  <p class="page-title">Perfil</p>
+  </div>
+
+  <div class="container-fluid">
+      <div class="container">
+      <div class="card">
+          <div class="card-body text-center">
+            <img src="assets/img/man-1.svg" width="150" alt="usuario">
+          </div>
+      </div>
+
+
+
+  <div class="row">
+    <div class="col-md-6">
+  <div class="card">
+    <div class="card-header">
+      <h5 class="card-title"> Datos Personales</h5>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="container-fluid">
+          <div class="row form-group">
+            <label dlabels class="col-sm-4 control-label">Nombre:</label>
+            <div class="col-sm-8">
+              <input dTextBox class="form-control" type='text' placeholder="NO HA INGRESADO NOMBRE" name="nombreUsuario" [(ngModel)]="entidad.nombreUsuario" />
+            </div>
+          </div>
+          <div class="row form-group">
+            <label dlabels class="col-sm-4 control-label">DNI:</label>
+            <div class="col-sm-8">
+              <input class="form-control" readonly type='text' placeholder="NO HA INGRESADO DNI" name="dni" [(ngModel)]="entidad.dni" />
+            </div>
+          </div>
+          <div class="row form-group">
+            <label dlabels class="col-sm-4 control-label">Municipalidad:</label>
+            <div class="col-sm-8">
+              <input class="form-control" readonly type='text' placeholder="NO TIENE MUNICIPALIDAD" name="municipalidad" [(ngModel)]="entidad.municipalidad"/>
+            </div>
+          </div>
+          <div class="row form-group">
+            <label dlabels class="col-sm-4 control-label">Correo:</label>
+            <div class="col-sm-8">
+              <input class="form-control" type='email' [email]="true" #correo="ngModel" placeholder="NO HA INGRESADO CORREO" name="correo" [(ngModel)]="entidad.correo" />
+            </div>
+          </div>
+          <div class="row form-group">
+            <label dlabels class="col-sm-4 control-label">Celular:</label>
+            <div class="col-sm-8">
+              <input class="form-control" type='text' (keypress)="this.funciones.IsNumberKey($event)" placeholder="NO SE HA INGRESADO NÚMERO DE CELULAR" name="celular" [(ngModel)]="entidad.celular" />
+            </div>
+          </div>
+          <div class="row form-group" [hidden]="desGerencia">
+              <label dlabels class="col-sm-4 control-label">Gerencia u Oficina Responsable de la Ejecución del Proyecto:</label>
+              <div class="col-sm-8">
+                <input class="form-control" type='text' (keypress)="this.funciones.IsNumberKey($event)" placeholder="NO SE HA INGRESADO NÚMERO DE GERENCIA U OFICINA RESPONSABLE" name="gerencia" [(ngModel)]="entidad.gerencia" />
+              </div>
+          </div>
+          <div class="row form-group">
+            <div class="col-sm-12">
+              <div class=" pull-right">
+                  <button class="btn btn-danger" type="button" id="btnGuardar" (click)="preguntarCambios()" [disabled]="!correo.valid"> Guardar Cambios</button>
+              </div>
+            </div>
+          </div>
+        </div>        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="col-md-6">
+  <div class="card card-auto">
+      <div class="card-header">
+          <h5 class="card-title"> Cambiar Contraseña</h5>
+      </div>
+      <div class="card-body">
+          <form (ngSubmit)="administrarClave();" class="row" #claveForm="ngForm">
+              <div class="container-fluid">
+                  <div class="row form-group">
+                    <label dlabels class="col-sm-4 control-label">Nueva Contraseña:</label>
+                    <div class="col-sm-8">
+                      <input dTextBox class="form-control" required type='password' #nuevaClave="ngModel" placeholder="INGRESE LA NUEVA CONTRASEÑA" name="nuevaClave" [(ngModel)]="entidadClave.nuevaClave"/>
+                      <div [hidden]="nuevaClave.valid || nuevaClave.pristine" class="alert alert-danger">
+                          la nueva contraseña es obligatorio
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row form-group">
+                    <label dlabels class="col-sm-4 control-label">Repetir Contraseña:</label>
+                    <div class="col-sm-8">
+                      <input class="form-control" type='password' #repetirClave="ngModel" required placeholder="VUELVA A REPETIR LA CONTRASEÑA" name="repetirClave" [(ngModel)]="entidadClave.repetirClave"/>
+                      <div [hidden]="repetirClave.valid || repetirClave.pristine" class="alert alert-danger">
+                          El repetir contraseña es obligatorio
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row form-group">
+                    <div class="col-sm-12">
+                      <div class=" pull-right">
+                          <button class="btn btn-danger" type="submit" id="btnGuardar" [disabled]="!claveForm.form.valid"> Guardar</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+          </form>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+</div>

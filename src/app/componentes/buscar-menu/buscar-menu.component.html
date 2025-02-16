@@ -1,0 +1,129 @@
+<div class="container-fluid">
+    <p class="page-title">Menus</p>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-8">
+          <div class="card card-white">
+            <div class="card-header"></div>
+            <div class="card-body">
+                <div class="row form-group">
+                    <label dlabels class="col-sm-2 control-label">Sistema:</label>
+                    <div class="col-sm-10">
+                        <ng-select [items]="ListadoSistemas" 
+                        placeholder="Selecciones Sistema" 
+                        bindLabel="nombre_modulo"
+                        bindValue="id_modulo"
+                        (change)="CargarListadoMenus($event)"
+                        [(ngModel)]="campoBusquedaSistema"
+                        >
+                      </ng-select>
+                    </div>
+                  </div>
+
+                <div class="row form-group">
+                    <label dlabels class="col-sm-2 control-label">Menu:</label>
+                    <div class="col-sm-10">
+                      <ng-select [items]="menus"
+                        placeholder="Seleccione un Menu"
+                        bindLabel="nombre_menu"
+                        bindValue="id_menu"
+                        [(ngModel)]="campoBusqueda"
+                        name="campoBusqueda">
+                      </ng-select>
+                    </div>
+                  </div>
+                  <div class="row form-group">
+                    <div class="col-sm-12">
+                      <div class=" pull-right">
+                          <button type="button" id="btnBuscar" class="btn pull-left btn-plomo" (click)="busqueda()"><i class="fa fa-search"></i> Buscar</button>
+                          <button type="button" id="btnNuevoRegistro" class="btn pull-left ml-1 btn-danger" (click)="modalAgregarMenu()"> Nuevo Registro</button>
+                      </div>
+                    </div>
+                  </div>
+            </div>
+          </div>
+        </div>
+          <div class="col-lg-4"><div class="card card-auto bg-cyan-600"><div class="card-body"><div class="div-centrado text-center c-white"><div class="f-s-5rem l-h-100">{{totalMenu}}</div><div>Menus</div></div></div></div></div>
+      </div>
+  </div>
+  <div class="container-fluid">
+    <div class="card card-principal">
+      <div class="card-head"></div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12 container-scroll">
+          <table class="table table-hover table-responsive table-normal">
+            <thead>
+              <tr>
+                <th>SISTEMA</th>
+                <th>Menu</th>
+                <th>URL</th>
+                <th>NIVEL</th>
+                <th>ORDEN</th>
+                <th>ICONO</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr  id="ancla{{campos.id_menu}}" *ngFor="let campos of lstParametrosHijoParametro" [class.seleccionado]="campos.id_menu === menu_seleccionado">
+                <td class="xs-hidden text-left">{{campos.codigo_modulo}}</td>
+                <td class="xs-hidden text-left pre-wrap">{{campos.nombre_menu}}</td>
+                <td class="xs-hidden text-left">{{campos.url}}</td>
+                <td class="xs-hidden text-left">{{campos.nivel}}</td>
+                <td class="xs-hidden text-left">{{campos.orden}}</td>  
+                <td>
+                  <div class="xs-hidden text-left">
+                      {{campos.icono}}
+                  </div>
+                  <div class="xs-display">
+                      <div class="xs-th f-s-8">{{campos.codigo_modulo}}</div>
+                      <div class="xs-th f-s-8">{{campos.nombre_menu}}</div>
+                      <div class="xs-th f-s-13">{{campos.url}}</div>
+                      <div class="mt-1 mb-1">
+                        <span class="xs-th">Nivel: </span>&nbsp;&nbsp;
+                        <span>{{campos.nivel}}</span>
+                      </div>
+                        <div class="mt-1">
+                            <span class="xs-th">Orden: </span>&nbsp;&nbsp;
+                            <span>{{campos.orden}}</span>
+                          </div>
+                  </div>
+                </td>
+                <td width="140" class="xs-footer-lista xs-100 xs-text-right pre-wrap">
+                    <div class="xs-hidden">
+                        <span class="btn btn-sm btn-opt btn-icon" (click)="modalAgregarMenuPadre(campos)"><i class="fa fa-15x"><img src="assets/img/icons/plus.svg" alt="modalAgregarMenu"></i></span>
+                        <span class="btn btn-sm btn-opt btn-icon" (click)="modalEditarMenu(campos)"><i class="fa fa-15x"><img src="assets/img/icons/pencil.svg" alt="editar"></i></span>
+                        <span class="btn btn-sm btn-opt btn-icon" (click)="mostrarAlerta(campos.id_menu)"><i class="fa fa-15x"><img src="assets/img/icons/trash.svg" alt="eliminar"></i></span>
+                    </div>
+                    <div class="xs-display">
+                        <span class="btn-icon mr-1" (click)="modalEditarMenu(campos)"><i class="fa fa-pencil"></i></span>
+                        <span class="btn-icon" (click)="mostrarAlerta(campos.id_menu)"><i class="fa fa-trash"></i></span>
+                    </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          </div>
+        </div>
+        <!-- <div class="row">
+          <div class="col-12">            
+              <nav class="pt-4 pl-3 pull-right">
+              <pagination [totalItems]="totalMenu"
+                  [boundaryLinks]="true"
+                  previousText="&lsaquo;"
+                  nextText="&rsaquo;"
+                  [rotate]="false"
+                  firstText="&laquo;"
+                  lastText="&raquo;"
+                  [maxSize]="5"
+                  [(ngModel)]="paginaActual"
+                  (pageChanged)="cambiarPagina($event)">
+                </pagination>
+            </nav>
+          </div>
+        </div> -->
+      </div>
+    </div>
+  </div>

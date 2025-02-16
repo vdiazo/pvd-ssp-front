@@ -1,0 +1,93 @@
+<!--<div class="contenedor">
+    <p-accordion [multiple]="true">
+      <p-accordionTab header="1. Costo del proyecto">
+          <set-costo-proyecto *ngIf="_BE_Snip" [listCostoProyecto]="_BE_Snip"></set-costo-proyecto>
+      </p-accordionTab>
+      <p-accordionTab header="2. Montos según convenio y adenda">
+          <set-monto-convenio></set-monto-convenio>
+      </p-accordionTab>
+      <p-accoedionTab header="3. Montos Totales transferidos por el MTC">
+          <set-monto-transferido></set-monto-transferido>
+      </p-accoedionTab>
+      <p-accordionTab header="4. Seguimiento financiero según (SSI)">
+          <set-fuente-financiera *ngIf="fteFinanciera" [listFteFinanciera]="fteFinanciera"></set-fuente-financiera>
+            <div>Fuente | <span class="c-dark-blue">Sistema de Seguimiento de Inversiones (SSI) - Consulta Amigable</span></div>
+            <hr>
+            <set-informacion-financiera *ngIf="infoFinanciera" [listInfoFinanciera]="infoFinanciera"></set-informacion-financiera>
+            <div>Fuente | <span class="c-dark-blue">Sistema de Seguimiento de Inversiones (SSI) - Consulta Amigable</span></div>
+      </p-accordionTab>
+    </p-accordion>
+</div>-->
+
+<div class="tab-content" id="nav-tabContent">
+  <div class="tab-pane fade show active jumbotron container-fluid pt-4" id="nav-home" role="tabpanel"
+    aria-labelledby="nav-home-tab">
+    <accordion>
+      <div class="row">
+        <div class="col-12">
+          <accordion-group [isOpen]=true [panelClass]="separator">
+            <button class="btn btn-link btn-block clearfix" accordion-heading>
+              <div class="pull-left float-left">1. Costo del proyecto</div>  
+              <span class="badge float-right pull-right">
+                <i class="fa fa-circle-o"></i>
+              </span>
+            </button>
+            <set-costo-proyecto *ngIf="_BE_Snip" [listCostoProyecto]="_BE_Snip"></set-costo-proyecto>
+            <div class="mt-2">Fuente | <span class="c-dark-blue">Sistema de Seguimiento de Inversiones (SSI)</span>
+            </div>
+          </accordion-group>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12">
+          <accordion-group [isOpen]=false [panelClass]="separator">
+            <button class="btn btn-link btn-block clearfix" accordion-heading>
+              <div class="pull-left float-left">2. Montos según convenio y adenda</div>
+              <span class="badge float-right pull-right">
+                <i class="fa fa-circle-o"></i>
+              </span>
+            </button>
+            <set-monto-convenio></set-monto-convenio>
+          </accordion-group>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <accordion-group [isOpen]=false [panelClass]="separator">
+            <button class="btn btn-link btn-block clearfix" accordion-heading>
+              <div class="pull-left float-left">3. Montos Totales transferidos por el MTC</div>
+              <span class="badge float-right pull-right">
+                <i class="fa fa-circle-o"></i>
+              </span>
+            </button>
+            <set-monto-transferido></set-monto-transferido>
+          </accordion-group>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <accordion-group [isOpen]=false [panelClass]="separator">
+            <button class="btn btn-link btn-block clearfix" accordion-heading>
+              <div class="pull-left float-left">4. Seguimiento financiero según (SOSEM)</div>
+              <span class="badge float-right pull-right">
+                <i class="fa fa-circle-o"></i>
+              </span>
+            </button>
+            <!-- <set-fuente-financiera *ngIf="fteFinanciera" [listFteFinanciera]="fteFinanciera"></set-fuente-financiera>
+            <div>Fuente | <span class="c-dark-blue">Sistema de Seguimiento de Inversiones (SSI) - Consulta Amigable</span></div>
+
+            <hr>
+            <set-informacion-financiera *ngIf="infoFinanciera" [listInfoFinanciera]="infoFinanciera"></set-informacion-financiera> -->
+            <ng-container class="row form-group" *ngFor="let detalle of infoFinanciera">
+              <set-informacion-financiera [listInfoFinanciera]="detalle"></set-informacion-financiera>
+            </ng-container>
+            <div>Fuente | <span class="c-dark-blue">Sistema de Seguimiento de Inversiones (SSI) - Consulta
+                Amigable</span></div>
+
+          </accordion-group>
+        </div>
+      </div>
+    </accordion>
+  </div>
+</div>

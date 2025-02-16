@@ -1,0 +1,230 @@
+<div class="modal-header">
+    <h4 class="modal-title" [hidden] ="!cambiarEditar">Nuevo Acceso</h4>
+    <h4 class="modal-title" [hidden] ="cambiarEditar">Editar Acceso</h4>
+    <p class="pl-4 pr-4" [hidden] ="!cambiarEditar">Formulario para el registro de acceso</p>
+    <p class="pl-4 pr-4" [hidden] ="cambiarEditar">Formulario para la edición de acceso</p>
+  </div>
+  <div class="modal-body">
+    <form (ngSubmit)="administrarTramo();" #tramoGrabarForm="ngForm" [hidden] ="!cambiarEditar">
+    <div class="row form-group">
+      <label dlabels class="col-md-2 control-label">Usuario:</label>
+      <div class="col-md-10">
+        <ng-select required [items]="usuarios"
+          placeholder="Seleccione un usuario"
+          bindLabel="usuario"
+          bindValue="id_usuario"
+          [(ngModel)]="entidadModal.codUsuario"
+          #codUsuario="ngModel"
+          name="codUsuario"
+          (change)="validarPerfiles($event)">
+        </ng-select>
+        <div [hidden]="codUsuario.valid || codUsuario.pristine" class="alert alert-danger">
+          El Usuario es obligatorio
+        </div>
+      </div>
+    </div>
+    <div class="row form-group" *ngIf="esSSP">
+      <div class="col-md-10">
+        <input type='checkbox' [disabled]="desCheck" (change)="validarMuni(entidadModal.bolMunicipalidad)" name="bolMunicipalidad" [(ngModel)]="entidadModal.bolMunicipalidad"/> Es municipalidad?
+      </div>
+    </div>
+    <div class="row form-group">
+        <label dlabels class="col-sm-2 control-label">Sistema:</label>
+        <div class="col-sm-10">
+            <ng-select [items]="ListadoSistemas" 
+            placeholder="Selecciones Sistema" 
+            bindLabel="nombre_modulo"
+            bindValue="id_modulo"
+            (change)="CargarPerfiles($event)"
+            #buscarCombosistema
+            [(ngModel)]="entidadModal.id_modulo"
+            name="id_modulo"
+            >
+          </ng-select>
+        </div>
+      </div>
+    <div class="row form-group">
+      <div class="col-md-2">
+        <label dlabels class="control-label">Perfil</label>
+      </div>
+      <div class="col-md-10">
+        <ng-select required [items]="perfiles"
+          placeholder="Seleccione un perfil"
+          bindLabel="nombre_perfil"
+          bindValue="id_perfil"
+          [(ngModel)]="entidadModal.codPerfil"
+          #comboPerfiles
+          name="codPerfil"
+          (change)="validarPerfiles($event)"
+          [disabled]="entidadModal.bolMunicipalidad"
+          >
+        </ng-select>
+        <div [hidden]="codPerfil.valid || codPerfil.pristine" class="alert alert-danger">
+          El Perfil es obligatorio
+        </div>
+      </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-md-2">
+          <label dlabels class="control-label">Zonal</label>
+        </div>
+        <div class="col-md-10">
+          <ng-select [items]="zonales"
+            placeholder="Seleccione una Zona"
+              bindLabel="nombre_zona"
+              bindValue="id_zona"
+              [(ngModel)]="entidadModal.codZonal"
+              [disabled]="desZonal"
+              name="codZonal">
+            </ng-select>
+        </div>
+      </div>
+      <div class="row form-group">
+          <div class="col-md-2">
+            <label dlabels class="control-label">Departamento</label>
+          </div>
+          <div class="col-md-10">
+            <ng-select [items]="departamentos"
+              placeholder="Seleccione un departamento"
+                bindLabel="departamento"
+                bindValue="coddepa"
+                [multiple]="true"
+                [(ngModel)]="entidadModal.codDepartamento"
+                [disabled]="desDepartamento"
+                name="codDepartamento">
+              </ng-select>
+          </div>
+        </div>
+    <div class="row form-group">
+      <div class="col-md-2">
+        <label dlabels class="control-label">Municipalidad</label>
+      </div>
+      <div class="col-md-10">      
+        <ng-select [items]="municipalidades"
+          placeholder="Seleccione Municipalidad"
+            bindLabel="nombre_municipalidad"
+            bindValue="id_municipalidad"
+            [(ngModel)]="entidadModal.codMunicipalidad"
+            [disabled]="desMuni"
+            name="nomUniEjecutora">
+          </ng-select>
+      </div>
+    </div>
+    <div class="modal-footer">
+    <button class="btn btn-danger" type="submit" id="btnGuardar" [disabled]="!tramoGrabarForm.form.valid"><i class="fa fa-save"></i> Guardar</button>
+    <button class="btn btn-plomo" id="btnCancelar" type="button" (click)="closeModal()"><i class="fa fa-arrow-left"></i> Cancelar</button>
+    </div>
+    </form>
+    <form (ngSubmit)="administrarTramo();" #tramoEditarForm="ngForm" [hidden] ="cambiarEditar">
+      <div class="row form-group">
+        <label dlabels class="col-md-2 control-label">Usuario:</label>
+        <div class="col-md-10">
+            <ng-select required [items]="usuarios"
+              placeholder="Seleccione un usuario"
+              bindLabel="usuario"
+              bindValue="id_usuario"
+              [(ngModel)]="entidadModal.codUsuario"
+              #codUsuario="ngModel"
+              name="codUsuario"
+              (change)="validarPerfiles($event)">
+            </ng-select>
+            <div [hidden]="codUsuario.valid || codUsuario.pristine" class="alert alert-danger">
+              El Usuario es obligatorio
+            </div>
+          </div>
+      </div>
+      <div class="row form-group" *ngIf="esSSP">
+        <div class="col-md-10">
+          <input type='checkbox' [disabled]="desCheck" (change)="validarMuni(entidadModal.bolMunicipalidad)" name="bolMunicipalidad" [(ngModel)]="entidadModal.bolMunicipalidad"/> Es municipalidad?
+        </div>
+      </div>
+
+      <div class="row form-group">
+          <label dlabels class="col-sm-2 control-label">Sistema:</label>
+          <div class="col-sm-10">
+              <ng-select [items]="ListadoSistemas" 
+              placeholder="Selecciones Sistema" 
+              bindLabel="nombre_modulo"
+              bindValue="id_modulo"
+              (change)="CargarPerfiles($event)"
+              [(ngModel)]="entidadModal.id_modulo"
+              name="id_modulo"
+              #editarCombosistema
+              >
+            </ng-select>
+          </div>
+        </div>
+
+      <div class="row form-group">
+          <div class="col-md-2">
+            <label dlabels class="control-label">Perfil EDITAR</label>
+          </div>
+          <div class="col-md-10">
+            <ng-select required [items]="perfiles"
+              placeholder="Seleccione un perfil"
+              bindLabel="nombre_perfil"
+              bindValue="id_perfil"
+              [(ngModel)]="entidadModal.codPerfil"
+              #codPerfil="ngModel"
+              name="codPerfil"
+              (change)="validarPerfiles($event)"
+              [disabled]="entidadModal.bolMunicipalidad"
+              >
+            </ng-select>
+            <div [hidden]="codPerfil.valid || codPerfil.pristine" class="alert alert-danger">
+              El Perfil es obligatorio
+            </div>
+          </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-2">
+              <label dlabels class="control-label">Zonal</label>
+            </div>
+            <div class="col-md-10">
+              <ng-select [items]="zonales"
+                placeholder="Seleccione una Zona"
+                  bindLabel="nombre_zona"
+                  bindValue="id_zona"
+                  [(ngModel)]="entidadModal.codZonal"
+                  [disabled]="desZonal"
+                  name="codZonal">
+                </ng-select>
+            </div>
+          </div>
+          <div class="row form-group">
+              <div class="col-md-2">
+                <label dlabels class="control-label">Departamento</label>
+              </div>
+              <div class="col-md-10">
+                <ng-select [items]="departamentos"
+                  placeholder="Seleccione un departamento"
+                    bindLabel="departamento"
+                    bindValue="coddepa"
+                    [multiple]="true"
+                    [(ngModel)]="entidadModal.codDepaArray"
+                    [disabled]="desDepartamento"
+                    name="codDepaArray">
+                  </ng-select>
+              </div>
+            </div>
+        <div class="row form-group">
+          <div class="col-md-2">
+            <label dlabels class="control-label">Municipalidad</label>
+          </div>
+          <div class="col-md-10">      
+            <ng-select [items]="municipalidades"
+              placeholder="Seleccione Municipalidad"
+                bindLabel="nombre_municipalidad"
+                bindValue="id_municipalidad"
+                [(ngModel)]="entidadModal.codMunicipalidad"
+                [disabled]="desMuni"
+                name="nomUniEjecutora">
+              </ng-select>
+          </div>
+        </div>
+      <div class="modal-footer">
+      <button class="btn btn-danger" type="submit" id="btnGuardar" [disabled]="!tramoEditarForm.form.valid"><i class="fa fa-save"></i> Guardar</button>
+      <button class="btn btn-plomo" id="btnCancelar" type="button" (click)="closeModal()"><i class="fa fa-arrow-left"></i> Cancelar</button>
+      </div>
+    </form>
+  </div>

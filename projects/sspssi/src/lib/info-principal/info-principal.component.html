@@ -1,0 +1,606 @@
+<div class="container-fluid">
+  <div class="title-block">
+    <p class="page-title">Seguimiento y Monitoreo</p>
+  </div>
+</div>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-9">
+      <div class="card">
+        <div class="card-header"></div>
+        <div class="card-body">
+          <div class="row form-group">
+            <div class="col-sm-2 col-3">
+              <label dlabels class="control-label">GL / GR:</label>
+            </div>
+            <div class="col-sm-10 col-9">
+              <input [readonly]="estado_perfil" dTextBox class="form-control" style="text-transform: uppercase;"
+                type='text' name="txtNombreMunicipalidad" (keyup.enter)="mostrarProyectoInicial(beProyecto)"
+                (focus)="limpiarAutocompleteMunicipalidad()" matInput [formControl]="buscarMunicipalidad"
+                [matAutocomplete]="aNombreProyecto" [(ngModel)]="beProyecto.nombre_municipalidad"
+                placeholder="GR / GL:" />
+              <mat-autocomplete #aNombreProyecto="matAutocomplete"
+                (optionSelected)='mostrarMunicipalidadSeleccionado($event.option.value)'>
+                <mat-option *ngFor="let itemMunicipalidad of unidadesEjecutoras"
+                  [value]="itemMunicipalidad.id_municipalidad + '|' + itemMunicipalidad.nombre_municipalidad">
+                  {{ itemMunicipalidad.nombre_municipalidad }}
+                </mat-option>
+              </mat-autocomplete>
+            </div>
+          </div>
+          <div class="row form-group">
+            <div class="col-sm-2 col-3 pr-0">
+              <input dTextBox maxlength="20" (keypress)="funciones.IsNumberKey($event)" class="form-control" type='text'
+                name="txtCodigoSnip" (keyup.enter)="mostrarProyectoInicial(beProyecto)"
+                [(ngModel)]="beProyecto.cod_snip_texto" placeholder="SNIP / C.U." />
+            </div>
+            <div class="col-sm-10 col-9">
+              <input dTextBox class="form-control" style="text-transform: uppercase;" type='text'
+                name="txtNombreProyecto" (keyup.enter)="mostrarProyectoInicial(beProyecto)"
+                (focus)="limpiarAutocomplete()" matInput [formControl]="buscarProyecto" [matAutocomplete]="auto"
+                [(ngModel)]="beProyecto.nombre_proyecto" placeholder="Nombre del Proyecto" />
+              <mat-autocomplete #auto="matAutocomplete"
+                (optionSelected)='mostrarProyectoSeleccionado($event.option.value)'>
+                <mat-option *ngFor="let itemProyecto of proyects"
+                  [value]="itemProyecto.id_proyecto + '|' + itemProyecto.nombre_proyecto">
+                  {{ itemProyecto.nombre_proyecto }}
+                </mat-option>
+              </mat-autocomplete>
+            </div>
+          </div>
+          <div class="row form-group d-flex align-items-center">
+            <label class="col-md-2 control-label">Región:</label>
+            <div class="col-md-2">
+              <ng-select [items]="listRegiones" placeholder="TODAS LAS REGIONES" bindLabel="departamento"
+                bindValue="coddepa" [(ngModel)]="codDepa" name="region" id="region">
+              </ng-select>
+            </div>
+            <label class="col-md-1 control-label" for="">Tipo Fase:</label>
+            <div class="col-sm-3">
+              <ng-select [items]="lstTiposFase" placeholder="SELECCIONE TIPO FASE" bindLabel="nombre_tipo_fase"
+                bindValue="id_tipo_fase" [(ngModel)]="numIdfase" name="fase" id="fase">
+              </ng-select>
+            </div>
+            <label class="col-md-1 control-label" for="">Estado:</label>
+            <div class="col-sm-3">
+              <ng-select [items]="listEstado" placeholder="SELECCIONE UN ESTADO DE PROYECTO" bindLabel="nombre_estado"
+                bindValue="codigo_estado" [(ngModel)]="codigo_estado" name="codigo_estado" id="codigo_estado">
+              </ng-select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <div class="pull-right">
+                <button class="btn btn-plomo mr-1" (click)="ConsultaPrincipal(beProyecto)" type="button" id="btnBuscar">
+                  <i class="fa fa-search"></i> Buscar</button>
+                <button class="btn mr-1" (click)="LimpiarControles()" type="button" id="btnLimpiar">
+                  <i class="icon icon-limpiar"></i> Limpiar</button>
+                <!-- <span *hasClaim="'monitoreo_listSeg_verReporte'"> -->
+                <span style="color: #00a3e8">
+                  <!-- (click)="exportarReportePrincipalGeneral()" -->
+                  <button class="btn btn-exportar" (click)="exportarReportePrincipalGeneral()" type="button"
+                    id="btnExportarGeneral">
+                    <i class="icon icon-excel"></i> Exportar</button>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3">
+      <div class="card card-auto card-white bg-lightblue-600">
+        <div class="card-body">
+          <div class="div-centrado text-center c-white">
+            <div class="f-s-5rem l-h-100">{{totalfilasPorPagina}}</div>
+            <div>Proyectos</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid">
+  <div class="card card-default card-principal">
+    <div class="card-body">
+      <div class="group-box">
+        <div class="row mb-3 text-center">
+          <div class="col-2 flex-leyenda"><span style="background-color: #212123" class="icon-leyenda"></span>
+            <a (click)="busquedaEstado('ActuacionesPreparatorias')">Actos Preparatorios</a> </div>
+          <div class="col-2 flex-leyenda"><span style="background-color: #FFEB3B" class="icon-leyenda"></span>
+            <a (click)="busquedaEstado('ProcedimientoSeleccion')">Proceso de Selección</a> </div>
+          <div class="col-2 flex-leyenda"><span style="background-color: #757575" class="icon-leyenda"></span>
+            <a (click)="busquedaEstado('ContratoSuscrito')">Contrato Suscrito</a></div>
+          <div class="col-2 flex-leyenda"><span style="background-color: #00c853" class="icon-leyenda"></span>
+            <a (click)="busquedaEstado('EnEjecucion')">En Ejecución</a></div>
+          <div class="col-2 flex-leyenda"><span style="background-color: #1e88e5" class="icon-leyenda"></span>
+            <a (click)="busquedaEstado('Culminado')">Culminado</a></div>
+          <div class="col-2 flex-leyenda"><span style="background-color: #db4437" class="icon-leyenda"></span>
+            <a (click)="busquedaEstado('Paralizada')">Paralizada</a></div>
+          <!-- <div class="col-2 flex-leyenda"><span style="background-color: #FF8C33" class="icon-leyenda"></span> Suspendida</div> -->
+        </div>
+        <div class="row">
+          <div class="col-12 container-scroll">
+            <table class="table table-hover table-bordered table-responsive table-principal">
+              <thead class="table-active">
+                <tr>
+                  <th rowspan="2">C.U.</th>
+                  <th rowspan="2">Snip/Codigo Idea</th>
+                  <th rowspan="2">Nombre del Proyecto / Tramo</th>
+                  <th rowspan="2">GL / GR</th>
+                  <th rowspan="2">Costo Proyecto S/</th>
+                  <th [attr.colspan]="numFases">
+                    Fase Financiada
+                  </th>
+                  <th colspan="2">Periodo de Ejecución</th>
+                  <th rowspan="2">
+                    <span *hasClaim="'monitoreo_listSeg_verReporte_eje_dir'">Reporte</span>
+                  </th>
+                </tr>
+                <tr>
+                  <th *ngFor="let cabecera of lstTiposFase; index as c">
+                    {{ (cabecera.nombre_tipo_fase) ? (cabecera.nombre_tipo_fase) :"" }}
+                  </th>
+                  <th>Fecha de Inicio</th>
+                  <th>Fecha de Término</th>
+                </tr>
+              </thead>
+              <tbody *ngFor="let item of proyectos; index as i" class="panel">
+                <tr [style.background-color]="i%2==0 ? 'white': '#fafafa'" data-toggle="collapse"
+                  attr.data-target="#{{item.id_proyecto}}" data-parent="#myTable">
+                  <td>
+                    <div class="xs-display">
+                      <span class="xs-th">Proyecto</span>&nbsp;&nbsp;&nbsp;
+                      <span class="pull-right f-s-10">
+                        <a style="color: #4285f4;" (click)="abrirConsultaSnip(item.cod_snip)">SNIP:
+                          {{item.cod_snip}}</a>
+                      </span>
+                      <div class="text-justify">
+                        {{ item.nombre_proyecto}}
+                      </div>
+                      <div *ngIf="CompararEquidadNombreTramoProyecto(item.nombre_proyecto,item.nombre_tramo)">
+                        <div>
+                          <label dlabels class="control-label">Tramo: </label>
+                          {{ item.nombre_tramo }}
+                        </div>
+                      </div>
+                      <hr class="mt-2 mb-2">
+                    </div>
+                    <div class="xs-th">C.U</div>
+                    <div>
+                      <!-- <a style="cursor: pointer;" (click)="verTramos(item.id_proyecto)">
+                            <i *ngIf="item.numero_tramos > 1 && getProyectoSeleccionado(item.id_proyecto)" class="fa fa-caret-right fa-2x" aria-hidden="true"></i>
+                          </a>
+                          <a style="cursor: pointer;" (click)="verTramos(item.id_proyecto)">
+                            <i *ngIf="item.numero_tramos > 1 && !getProyectoSeleccionado(item.id_proyecto)" class="fa fa-caret-down fa-2x" aria-hidden="true"></i>
+                          </a> -->
+                      &nbsp; <a style="color: #4285f4;"
+                        (click)="abrirConsultaSnip(item.cod_unificado)">{{item.cod_unificado}}</a>
+                      <div class="xs-hidden">
+                        <div>
+                          <span class="btnTramo" (click)="verTramos(item.id_proyecto)"
+                            *ngIf="item.numero_tramos > 1 && getProyectoSeleccionado(item.id_proyecto)">
+                            ver tramos
+                          </span>
+                          <span class="btnTramo" (click)="verTramos(item.id_proyecto)"
+                            *ngIf="item.numero_tramos > 1 && !getProyectoSeleccionado(item.id_proyecto)">
+                            ocultar tramos
+                          </span>
+                        </div>
+
+                        <div class="pre-wrap">
+                          <span *hasClaim="'monitoreo_listSeg_verMapa_eje_dir'">
+                            <span *ngIf="item.id_geo_tramo > 0">
+                              <span (click)="modalMapa(item)" class="btn p-1">
+                                <span class="btn-marker-info-principal">
+                                  <i class="fa fa-map-marker c-red-2"></i>
+                                </span>
+                              </span>
+                            </span>
+                          </span>
+
+                          <span *hasClaim="'monitoreo_listSeg_verAyudaMemoria_eje_dir'">
+                            <span (click)="modalPDF(item)" class="btn p-1">
+                              <span class="btn-pdf-info-principal">
+                                AM
+                              </span>
+                            </span>
+                          </span>
+                        </div>
+                      </div>
+                      <span class="xs-display xs-inline-block">
+                        &nbsp;&nbsp;&nbsp;<span class="btnTramo" (click)="verTramos(item.id_proyecto)"
+                          *ngIf="item.numero_tramos > 1 && getProyectoSeleccionado(item.id_proyecto)">
+                          ver tramos
+                        </span>
+                        <span class="btnTramo" (click)="verTramos(item.id_proyecto)"
+                          *ngIf="item.numero_tramos > 1 && !getProyectoSeleccionado(item.id_proyecto)">
+                          ocultar tramos
+                        </span>
+                        <span *hasClaim="'monitoreo_listSeg_verMapa_eje_dir'">
+                          <span *ngIf="item.id_geo_tramo > 0">
+                            <span (click)="modalMapa(item)" class="btn p-1"><span class="btn-marker-info-principal"><i
+                                  class="fa fa-map-marker c-red-2"></i></span></span>
+                          </span></span>
+                        <span *hasClaim="'monitoreo_listSeg_verAyudaMemoria_eje_dir'">
+                          <span (click)="modalPDF(item)" class="btn p-1"><span
+                              class="btn-pdf-info-principal">AM</span></span>
+                        </span>
+                      </span>
+                    </div>
+
+                    <div class="xs-display">
+                      <div>
+                        <span class="xs-th">GL / GL:</span>&nbsp;&nbsp;
+                        <span> {{ item.nombre_municipalidad}}</span>
+                      </div>
+                      <div>
+                        Costo Proyecto: {{ ((item.costo_proyecto) ? (item.costo_proyecto) :"") | formatoMoneda }}
+                      </div>
+                      <!-- <div>
+                        Monto Convenio: {{ ((item.monto_convenio) ? (item.monto_convenio) :"") | currency:" S/" }}
+                      </div>
+                      <div>
+                        Monto Transferido: {{ ((item.monto_transferencia) ? (item.monto_transferencia) :"") |
+                        currency:" S/" }}
+                      </div> -->
+                      <span class="f-s-10">
+                        <span class="xs-th">Periodo de Ejecución:</span>&nbsp;&nbsp;
+                        <span *ngIf="item.id_tipo_fase==5">
+                          <i class="fa fa-calendar"></i> {{ item.fecha_inicio_obra | date: 'dd/MM/yyyy' }} -
+                          {{item.fecha_termino_obra | date: 'dd/MM/yyyy'}}
+                        </span>
+                        <span *ngIf="item.id_tipo_fase==4">
+                          <i class="fa fa-calendar"></i> {{ item.fecha_inicio_expediente | date: 'dd/MM/yyyy' }} -
+                          {{item.fecha_termino_expediente | date: 'dd/MM/yyyy'}}
+                        </span>
+                        <span *ngIf="item.id_tipo_fase==1">
+                          <i class="fa fa-calendar"></i> {{ item.fecha_inicio_preinversion | date: 'dd/MM/yyyy' }} -
+                          {{item.fecha_termino_preinversion | date: 'dd/MM/yyyy'}}
+                        </span>
+                      </span>
+                    </div>
+                  </td>
+                  <td class="xs-hidden">
+                    <a style="color: #4285f4;" (click)="abrirConsultaSnip(item.cod_snip)">{{item.cod_snip}}</a>
+                  </td>
+                  <td class="text-justify xs-hidden">
+                    <div>
+                      {{ item.nombre_proyecto}}
+                    </div>
+                    <div *ngIf="CompararEquidadNombreTramoProyecto(item.nombre_proyecto,item.nombre_tramo)">
+                      <div>
+                        <label dlabels class="control-label">Tramo: </label>
+                        {{ item.nombre_tramo }}
+                      </div>
+                    </div>
+                  </td>
+                  <td class="xs-hidden text-left">
+                    {{ item.nombre_municipalidad}}
+                  </td>
+                  <td class="xs-hidden  text-left">
+                    <div class="">
+                      <div class="pre-wrap">
+                        Costo Proyecto &nbsp; &nbsp; &nbsp; : {{ ((item.costo_proyecto) ? (item.costo_proyecto) :"") |
+                        formatoMoneda }}
+                      </div>
+                      <!-- <div class="pre-wrap">
+                        Monto Convenio &nbsp; &nbsp; : {{ ((item.monto_convenio) ? (item.monto_convenio) :"") |
+                        currency:" S/" }}
+                      </div>
+                      <div class="pre-wrap">
+                        Monto Transferido : {{ ((item.monto_transferencia) ? (item.monto_transferencia) :"") |
+                        currency:" S/" }}
+                      </div> -->
+                    </div>
+                  </td>
+                  <td class="td-xs-d-tc td-xs-b-0 text-center" *ngFor="let faseNumPor of item.fases; index as k"
+                    style="background:rgba(218, 239, 253, 0.3)">
+                    <div class="xs-th xs-text-center">{{faseNumPor.nombre_tipo_fase}}</div>
+                    <div *ngIf="faseNumPor.id_tipo_fase!=null; else templateSinFase">
+                      <div [ngSwitch]="faseNumPor.id_tipo_fase">
+                        <div *ngSwitchCase="5">
+                          <a style="cursor: pointer;"
+                            class="btnObraFase btnObraFase-{{faseNumPor.estado_obra}} btn-icon"
+                            (click)="IrEjecucionEstado(getDatosFaseProyectoIdSegMonitoreo(item.fases,faseNumPor.id_tipo_fase),item.id_tramo,getDatosFaseProyectoIdFase(item.fases,faseNumPor.id_tipo_fase), item.id_proyecto, faseNumPor.id_tipo_fase,item.cod_snip,item.id_municipalidad,faseNumPor.nombre_tipo_fase)">
+                            <span>
+                              {{getFasePorProyectoDetalle(faseNumPor.porcentaje_avance) ?
+                              (getFasePorProyectoDetalle(faseNumPor.porcentaje_avance) + "%")
+                              : "0%"}}
+                            </span>
+                            <i aria-hidden="true"
+                              class="fa {{item.numero_tramos > 1 ? 'icon-obra-fase-x' : 'icon-obra-fase'}} "></i>
+                          </a>
+                        </div>
+                        <div *ngSwitchCase="4">
+                          <a style="cursor: pointer;"
+                            class="btnObraFase btnObraFase-{{faseNumPor.estado_expediente}} btn-icon"
+                            (click)="IrEjecucionEstado(getDatosFaseProyectoIdSegMonitoreo(item.fases,faseNumPor.id_tipo_fase),item.id_tramo,getDatosFaseProyectoIdFase(item.fases,faseNumPor.id_tipo_fase), item.id_proyecto, faseNumPor.id_tipo_fase,item.cod_snip,item.id_municipalidad,faseNumPor.nombre_tipo_fase)">
+                            <span>
+                              {{getFasePorProyectoDetalle(faseNumPor.porcentaje_avance_expediente) ?
+                                  (getFasePorProyectoDetalle(faseNumPor.porcentaje_avance_expediente) + "%")
+                                  : "0%"}}
+                            </span>
+                            <i aria-hidden="true"
+                              class="fa {{item.numero_tramos > 1 ? 'icon-obra-fase-x' : 'icon-obra-fase'}} "></i>
+                          </a>
+                        </div>
+                        <div *ngSwitchCase="1">
+                          <a style="cursor: pointer;"
+                            class="btnObraFase btnObraFase-{{faseNumPor.estado_preinversion}} btn-icon"
+                            (click)="IrEjecucionEstado(getDatosFaseProyectoIdSegMonitoreo(item.fases,faseNumPor.id_tipo_fase),item.id_tramo,getDatosFaseProyectoIdFase(item.fases,faseNumPor.id_tipo_fase), item.id_proyecto, faseNumPor.id_tipo_fase,item.cod_snip,item.id_municipalidad,faseNumPor.nombre_tipo_fase)">
+                            <span>
+                              {{getFasePorProyectoDetalle(faseNumPor.porcentaje_avance_preinversion) ?
+                                  (getFasePorProyectoDetalle(faseNumPor.porcentaje_avance_preinversion) + "%")
+                                  : "0%"}}
+                            </span>
+                            <i aria-hidden="true"
+                              class="fa {{item.numero_tramos > 1 ? 'icon-obra-fase-x' : 'icon-obra-fase'}} "></i>
+                          </a>
+                        </div>
+                        <div *ngSwitchDefault>
+                          <a style="cursor: pointer;"
+                            class="btnObraFase btnObraFase-{{faseNumPor.estado_tramo}} btn-icon"
+                            (click)="IrEjecucionEstado(getDatosFaseProyectoIdSegMonitoreo(item.fases,faseNumPor.id_tipo_fase),item.id_tramo,getDatosFaseProyectoIdFase(item.fases,faseNumPor.id_tipo_fase), item.id_proyecto, faseNumPor.id_tipo_fase,item.cod_snip,item.id_municipalidad,faseNumPor.nombre_tipo_fase)">
+                            <span>
+                              0%
+                            </span>
+                            <i aria-hidden="true"
+                              class="fa {{item.numero_tramos > 1 ? 'icon-obra-fase-x' : 'icon-obra-fase'}} "></i>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                    <ng-template #templateSinFase>
+                    </ng-template>
+                  </td>
+                  <td class="xs-hidden">
+                    <span *ngIf="item.id_tipo_fase==5">
+                      {{ item.fecha_inicio_obra == null ? '' : item.fecha_inicio_obra | date: 'dd/MM/yyyy' }}
+                    </span>
+                    <span *ngIf="item.id_tipo_fase==4">
+                      {{ item.fecha_inicio_expediente == null ? '' : item.fecha_inicio_expediente | date: 'dd/MM/yyyy' }}
+                    </span>
+                    <span *ngIf="item.id_tipo_fase==1">
+                      {{ item.fecha_inicio_preinversion == null ? '' : item.fecha_inicio_preinversion | date: 'dd/MM/yyyy' }}
+                    </span>
+                  </td>
+                  <td class="xs-hidden">
+                    <span *ngIf="item.id_tipo_fase==5">
+                      {{ item.fecha_termino_obra == null ? '' : item.fecha_termino_obra | date: 'dd/MM/yyyy' }}
+                    </span>
+                    <span *ngIf="item.id_tipo_fase==4">
+                      {{ item.fecha_termino_expediente == null ? '' : item.fecha_termino_expediente | date: 'dd/MM/yyyy' }}
+                    </span>
+                    <span *ngIf="item.id_tipo_fase==1">
+                      {{ item.fecha_termino_preinversion == null ? '' : item.fecha_termino_preinversion | date: 'dd/MM/yyyy' }}
+                    </span>
+                  </td>
+                  <td class="xs-footer-lista xs-text-right">
+                    <div class="xs-hidden">
+                      <span *hasClaim="'monitoreo_listSeg_verReporte_eje_dir'">
+                        <a href="javascript:void(0)" (click)="exportarReportePrincipal(item)" class="btn-icon"
+                          target="_blank">
+                          <i aria-hidden="true" class="fa fa-15x"><img src="assets/img/icons/excel.svg"
+                              alt="exportar excel"></i>
+                        </a>
+                      </span>
+                    </div>
+                    <div class="xs-display">
+                      <span *hasClaim="'monitoreo_listSeg_verReporte_eje_dir'">
+                        <a href="javascript:void(0)" (click)="exportarReportePrincipal(item)" class="btn-icon"
+                          target="_blank">
+                          <i class="icon icon-excel" aria-hidden="true"></i>
+                        </a>
+                      </span>
+                    </div>
+                  </td>
+                </tr>
+                <tr *ngFor="let proyectoSeleccionado of arrProyectosSeleccionados; index as s" class="xs-grid-detalle">
+                  <td *ngIf="mostrarFila(proyectoSeleccionado,item.id_proyecto)" [attr.colspan]="numColumnasDetalle"
+                    style="padding-right: 50px;padding-top: 30px;padding-bottom: 30px;padding-left: 20px;background-color: #fafafa;">
+                    <table style="box-shadow: 10px 5px 5px #9e9e9e;"
+                      class="table table-hover table-bordered table-responsive">
+                      <thead class="table-active">
+                        <tr>
+                          <th rowspan="2">Tramo</th>
+                          <th rowspan="2">GL / GR</th>
+                          <th rowspan="2">Costo Proyecto S/</th>
+                          <th [attr.colspan]="numFases">Fase Financiada</th>
+                          <th colspan="2">Periodo de Ejecución</th>
+                          <th rowspan="2">
+                            <span *hasClaim="'monitoreo_listSeg_detalle_listSeg_verReporte_eje_dir'">Reporte</span>
+                          </th>
+                        </tr>
+                        <tr>
+                          <th *ngFor="let cabeceraDetalle of lstTiposFase; index as c">
+                            {{cabeceraDetalle.nombre_tipo_fase}}
+                          </th>
+                          <th>Fecha de Inicio</th>
+                          <th>Fecha de Término</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let tramo of getDetalleTramo(proyectoSeleccionado); index as j"
+                          [style.background-color]="j%2==0 ? 'white': '#fafafa'">
+
+                          <td class="text-justify">
+                            <div class="xs-hidden">
+                              {{ tramo.nombre_tramo}}
+                            </div>
+                            <div>
+
+                              <div class="pre-wrap">
+                                <span *ngIf="tramo.id_geo_tramo > 0">
+                                  <span (click)="modalMapa(tramo)" class="btn p-1"><span
+                                      class="btn-marker-info-principal"><i
+                                        class="fa fa-map-marker c-red-2"></i></span></span>
+                                </span>
+                                <span (click)="modalPDF(tramo)" class="btn p-1"><span
+                                    class="btn-pdf-info-principal">AM</span></span>
+                              </div>
+                            </div>
+                            <div class="xs-display responsivo">
+                              <span class="xs-th">Tramo</span>&nbsp;&nbsp;&nbsp;
+                              <span class="f-s-10 pull-right">
+                                <i class="fa fa-calendar"></i>
+                                <span *ngIf="item.id_tipo_fase==5">
+                                  {{ tramo.fecha_inicio_obra == null ? '' : tramo.fecha_inicio_obra | date: 'dd/MM/yyyy'}}
+                                </span>
+                                <span *ngIf="item.id_tipo_fase==4">
+                                  {{ tramo.fecha_inicio_expediente == null ? '' : tramo.fecha_inicio_expediente | date: 'dd/MM/yyyy'}}
+                                </span>
+                                <span *ngIf="item.id_tipo_fase==1">
+                                  {{ tramo.fecha_inicio_pre_inversion == null ? '' : tramo.fecha_inicio_pre_inversion | date: 'dd/MM/yyyy'}}
+                                </span>
+                                -
+                                <span *ngIf="item.id_tipo_fase==5">
+                                  {{tramo.fecha_termino_obra == null ? '' : tramo.fecha_termino_obra | date: 'dd/MM/yyyy'}}
+                                </span>
+                                <span *ngIf="item.id_tipo_fase==4">
+                                  {{tramo.fecha_termino_expediente == null ? '' : tramo.fecha_termino_expediente | date: 'dd/MM/yyyy'}}</span>
+                                <span *ngIf="item.id_tipo_fase==1">
+                                  {{tramo.fecha_termino_pre_inversion == null ? '' : tramo.fecha_termino_pre_inversion | date: 'dd/MM/yyyy'}}</span>
+                              </span>
+                              <div class="text-justify">
+                                {{ tramo.nombre_tramo}}
+                              </div>
+                              <div>
+                                <span class="xs-th">GL / GR:</span>&nbsp;&nbsp;
+                                <span>{{tramo.nombre_municipalidad}}</span>
+                              </div>
+                            </div>
+                          </td>
+                          <td class="xs-hidden text-left">
+                            {{tramo.nombre_municipalidad}}
+                          </td>
+                          <td class="text-left">
+                            <div class="pre-wrap">Costo Proyecto &nbsp; &nbsp;&nbsp;&nbsp; : {{ ((tramo.costo_proyecto)
+                              ? (tramo.costo_proyecto) :"") | formatoMoneda }}</div>
+                            <!-- <div class="pre-wrap">Monto Convenio &nbsp; &nbsp;&nbsp;: {{ ((tramo.monto_convenio) ?
+                              (tramo.monto_convenio) :"") | currency:" S/" }}</div>
+                            <div class="pre-wrap">Monto Transferido : {{ ((tramo.monto_transferencia) ?
+                              (tramo.monto_transferencia) :"") | currency:" S/" }} </div> -->
+                          </td>
+                          <td class="td-xs-d-tc td-xs-b-0" *ngFor="let faseDetalleNumPor of tramo.fases; index as t">
+                            <div class="xs-th">{{faseDetalleNumPor.nombre_tipo_fase}}</div>
+                            <div *ngIf="faseDetalleNumPor.id_tipo_fase!=null; else templateSinFase">
+                              <!--si tiene seguimiento monitoreo-->
+                              <div [ngSwitch]="faseDetalleNumPor.id_tipo_fase">
+                                <div *ngSwitchCase="5">
+                                  <a style="cursor: pointer;"
+                                    class="btnObraFase btnObraFase-{{faseDetalleNumPor.estado_tramo}} btn-icon"
+                                    (click)="IrEjecucionEstado(getDatosFaseProyectoIdSegMonitoreo(tramo.fases,faseDetalleNumPor.id_tipo_fase),tramo.id_tramo,getDatosFaseProyectoIdFase(tramo.fases,faseDetalleNumPor.id_tipo_fase), item.id_proyecto,faseDetalleNumPor.id_tipo_fase,item.cod_snip,tramo.id_municipalidad,faseDetalleNumPor.nombre_tipo_fase)">
+                                    <span>
+                                      {{getFasePorProyectoDetalle(faseDetalleNumPor.porcentaje_avance) ?
+                                        (getFasePorProyectoDetalle(faseDetalleNumPor.porcentaje_avance)
+                                        + "%") : "0%"}}
+                                    </span>
+                                    <i aria-hidden="true" class="fa icon-obra-fase"></i>
+                                  </a>
+                                </div>
+                                <div *ngSwitchCase="4">
+                                  <a style="cursor: pointer;"
+                                    class="btnObraFase btnObraFase-{{faseDetalleNumPor.estado_expediente}} btn-icon"
+                                    (click)="IrEjecucionEstado(getDatosFaseProyectoIdSegMonitoreo(tramo.fases,faseDetalleNumPor.id_tipo_fase),tramo.id_tramo,getDatosFaseProyectoIdFase(tramo.fases,faseDetalleNumPor.id_tipo_fase), item.id_proyecto,faseDetalleNumPor.id_tipo_fase,item.cod_snip,tramo.id_municipalidad,faseDetalleNumPor.nombre_tipo_fase)">
+                                    <span>
+                                      {{getFasePorProyectoDetalle(faseDetalleNumPor.porcentaje_avance_expediente) ?
+                                        (getFasePorProyectoDetalle(faseDetalleNumPor.porcentaje_avance_expediente)
+                                        + "%") : "0%"}}
+
+                                    </span>
+                                    <i aria-hidden="true" class="fa icon-obra-fase"></i>
+                                  </a>
+                                </div>
+                                <div *ngSwitchCase="1">
+                                  <a style="cursor: pointer;"
+                                    class="btnObraFase btnObraFase-{{faseDetalleNumPor.estado_preinversion}} btn-icon"
+                                    (click)="IrEjecucionEstado(getDatosFaseProyectoIdSegMonitoreo(tramo.fases,faseDetalleNumPor.id_tipo_fase),tramo.id_tramo,getDatosFaseProyectoIdFase(tramo.fases,faseDetalleNumPor.id_tipo_fase), item.id_proyecto,faseDetalleNumPor.id_tipo_fase,item.cod_snip,tramo.id_municipalidad,faseDetalleNumPor.nombre_tipo_fase)">
+                                    <span>
+                                      {{getFasePorProyectoDetalle(faseDetalleNumPor.porcentaje_avance_preinversion) ?
+                                        (getFasePorProyectoDetalle(faseDetalleNumPor.porcentaje_avance_preinversion)
+                                        + "%") : "0%"}}
+
+                                    </span>
+                                    <i aria-hidden="true" class="fa icon-obra-fase"></i>
+                                  </a>
+                                </div>
+                                <div *ngSwitchDefault>
+                                  <a style="cursor: pointer;"
+                                    class="btnObraFase btnObraFase-{{faseDetalleNumPor.estado_tramo}} btn-icon"
+                                    (click)="IrEjecucionEstado(getDatosFaseProyectoIdSegMonitoreo(tramo.fases,faseDetalleNumPor.id_tipo_fase),tramo.id_tramo,getDatosFaseProyectoIdFase(tramo.fases,faseDetalleNumPor.id_tipo_fase), item.id_proyecto,faseDetalleNumPor.id_tipo_fase,item.cod_snip,tramo.id_municipalidad,faseDetalleNumPor.nombre_tipo_fase)">
+                                    <span>
+                                      &nbsp;
+                                    </span>
+                                    <i aria-hidden="true" class="fa icon-obra-fase"></i>
+                                  </a>
+                                </div>
+                              </div>
+                            </div>
+                            <ng-template #templateSinFase>
+                            </ng-template>
+                          </td>
+                          <td>
+                            <div class="xs-th">Fecha de Inicio</div>
+                            <span *ngIf="item.id_tipo_fase==5">
+                              {{ tramo.fecha_inicio_obra == null ? '' : tramo.fecha_inicio_obra | date: 'dd/MM/yyyy' }}
+                            </span>
+                            <span *ngIf="item.id_tipo_fase==4">
+                              {{ tramo.fecha_inicio_expediente == null ? '' : tramo.fecha_inicio_expediente | date: 'dd/MM/yyyy' }}
+                            </span>
+                          </td>
+                          <td>
+                            <div class="xs-th">Fecha de Término</div>
+                            <span *ngIf="item.id_tipo_fase==5">
+                              {{ tramo.fecha_termino_obra == null ? '' : tramo.fecha_termino_obra | date: 'dd/MM/yyyy' }}
+                            </span>
+                            <span *ngIf="item.id_tipo_fase==4">
+                              {{ tramo.fecha_termino_expediente == null ? '' : tramo.fecha_termino_expediente | date: 'dd/MM/yyyy' }}
+                            </span>
+                          </td>
+                          <td class="xs-text-right">
+                            <div class="xs-hidden">
+                              <span *hasClaim="'monitoreo_listSeg_detalle_listSeg_verReporte_eje_dir'">
+                                <a href="javascript:void(0)" class="btn-icon" target="_blank"
+                                  (click)="exportarReportePrincipal(tramo)">
+                                  <i aria-hidden="true" class="fa fa-15x"><img src="assets/img/icons/excel.svg"
+                                      alt="exportar excel"></i>
+                                </a>
+                              </span>
+
+                            </div>
+                            <div class="xs-display text-right">
+                              <span *hasClaim="'monitoreo_listSeg_detalle_listSeg_verReporte_eje_dir'">
+                                <a href="javascript:void(0)" class="btn-icon" target="_blank"
+                                  (click)="exportarReportePrincipal(tramo)">
+                                  <i aria-hidden="true" class="icon icon-excel"></i>
+                                </a></span>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <!-- pager -->
+        <div class="row">
+          <div class="col-12">
+            <nav class="pt-4 pl-3 pull-right">
+              <pagination [totalItems]="totalfilasPorPagina" [itemsPerPage]="beProyecto.num_filas"
+                [boundaryLinks]="true" previousText="&lsaquo;" nextText="&rsaquo;" [rotate]="false" firstText="&laquo;"
+                lastText="&raquo;" [(ngModel)]="paginaActiva" [maxSize]="5"
+                (pageChanged)="cambiarPaginaPrincipal($event)">
+              </pagination>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

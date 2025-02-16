@@ -1,0 +1,92 @@
+<div class="group-box">
+  <form [formGroup]="formRegistroSeguimiento" (ngSubmit)="modificarSegMonitoreoPreinversion()" novalidate>
+    <div class="row form-group">
+      <label class="col-12 col-lg-3 control-label" for="fecha_inicio_pre_inversion">Fecha de inicio del Servicio
+        (*):</label>
+      <div class="col-12 col-lg-3 pb-2">
+        <div class="inner-addon left-addon">
+          <i class="icono material-icons">event</i>
+          <input class="form-control" type="text" name="fecha_inicio_pre_inversion" id="fecha_inicio_pre_inversion"
+            placeholder="dd/mm/aaaa" bsDatepicker formControlName="fecha_inicio_pre_inversion"
+            [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es', containerClass: 'theme-red' }" readonly
+            [ngClass]="{'is-invalid': f.fecha_inicio_pre_inversion.invalid && (f.fecha_inicio_pre_inversion.dirty || f.fecha_inicio_pre_inversion.touched), 
+          'ng-inicio': f.fecha_inicio_pre_inversion.invalid && f.fecha_inicio_pre_inversion.untouched }">
+          <div
+            *ngIf="f.fecha_inicio_pre_inversion.invalid && (f.fecha_inicio_pre_inversion.dirty || f.fecha_inicio_pre_inversion.touched)">
+            <span *ngIf="f.fecha_inicio_pre_inversion.errors.required" class="alert alert-danger">Fecha de Inicio es
+              obligatorio</span>
+          </div>
+        </div>
+      </div>
+      <label class="control-label col-12 col-lg-3" for="plazo_ejecucion">Plazo del Servicio (Días Calendario)
+        (*):</label>
+      <div class="col-12 col-lg-3">
+        <input (keypress)="funciones.IsNumberKey($event);" class="form-control" type="text" placeholder="Días"
+          formControlName="plazo_ejecucion" min="1" max="10000" id="plazo_ejecucion" name="plazo_ejecucion" [ngClass]="{'is-invalid': f.plazo_ejecucion.invalid && (f.plazo_ejecucion.dirty || f.plazo_ejecucion.touched), 
+          'ng-inicio': f.plazo_ejecucion.invalid && f.plazo_ejecucion.untouched }">
+        <div *ngIf="f.plazo_ejecucion.invalid && (f.plazo_ejecucion.dirty || f.plazo_ejecucion.touched)">
+          <span *ngIf="f.plazo_ejecucion.errors.required" class="alert alert-danger">Plazo del Servicio es
+            obligatorio</span>
+        </div>
+      </div>
+      <ng-container *ngIf="divSegMonitoreo">
+        <label class="control-label col-12 col-lg-3" for="fecha_termino_pre_inversion">Fecha de término
+          Servicio:</label>
+        <div class="col-12 col-lg-3 pb-2">
+          <div class="inner-addon left-addon">
+            <i class="icono material-icons">event</i>
+            <input class="form-control" type="text" name="fecha_termino_pre_inversion" id="fecha_termino_pre_inversion"
+              placeholder="dd/mm/aaaa" bsDatepicker formControlName="fecha_termino_pre_inversion"
+              [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es', containerClass: 'theme-red' }" readonly>
+          </div>
+        </div>
+        <label class="control-label col-12 col-lg-3">Ampliación (Días Calendario) :</label>
+        <div class="col-12 col-lg-3 pb-2">
+          <div class="input-group">
+            <input class="form-control" type="text" id="ampliacion" name="ampliacion" placeholder="Días"
+              formControlName="ampliacion" readonly>
+            <span class="input-group-btn">
+              <button class="btn btn-secondary" type="button" id="btnVerDetalleAmpliacion"
+                (click)="opnModRegAmpliacion()" *hasClaim="'monitoreo_tabSeg_infObra_verAmpliacion_eje_dir'">
+                Ver</button>
+            </span>
+          </div>
+        </div>
+        <label class="control-label col-12 col-lg-3" for="fecha_termino_ampliacion">Fecha de término Servicio-Ampl.
+          :</label>
+        <div class="col-12 col-lg-3 pb-2">
+          <div class="inner-addon left-addon">
+            <i class="icono material-icons">event</i>
+            <input class="form-control" type="text" name="fecha_termino_ampliacion" id="fecha_termino_ampliacion"
+              placeholder="dd/mm/aaaa" bsDatepicker formControlName="fecha_termino_ampliacion"
+              [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es', containerClass: 'theme-red' }" readonly>
+          </div>
+        </div>
+        <label class="control-label col-12 col-lg-3">Monto de Adelanto Directo:</label>
+        <div class="col-12 col-lg-3 pb-2">
+          <div class="input-group">
+            <input type="text" class="form-control" formControlName="monto_adelanto_directo"
+              [textMask]="{mask: funciones.currencyMask}">
+            <span class="input-group-btn">
+              <button class="btn btn-secondary" type="button" id="btnVerDetalleAdelantoDirecto"
+                (click)="opnModAdelantoDirecto()">Ver</button>
+            </span>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+    <div class="row form-group">
+      <div class="col-6" [hidden]=!bEstado>
+        <button class="btn btn-danger" type="submit" id="btnGuardar" [disabled]="formRegistroSeguimiento.invalid"
+          [hidden]=bMostrar *hasClaim="'monitoreo_tabSeg_infEstudio_regInfEstudio_pre_inv_eje_dir'">
+          <i class="fa fa-save"></i> Guardar</button>
+        <button class="btn btn-danger" type="button" [hidden]=!bMostrar>
+          <i class="fa fa-save"></i> ....Procesando</button>
+      </div>
+      <div class="col-6 text-right">
+        <label class="control-label">Última Actualización:</label> &nbsp;
+        <span>{{UltimaActualizacionInfEstudio}}</span>
+      </div>
+    </div>
+  </form>
+</div>

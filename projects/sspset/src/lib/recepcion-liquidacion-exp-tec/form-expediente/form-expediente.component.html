@@ -1,0 +1,23 @@
+<!--<div class="bg-darkblue c-white pt-4 pb-2">
+      <div class="mb-2">
+        <h3>Registros</h3>
+      </div>
+
+</div>
+<hr>-->
+<div class="container-fluid">
+  <div class="row form-group"><!--*hasClaim="'monitoreo_tabRYL_RecObra_regRecepcion_exp_tec'"-->
+    <div class="col-sm-6">
+      <div class="col-3 text-right">
+        <a class="ml-1" href="{{rutaDocumento}}" target="_blank" *ngIf="mostrarRutaDescarga">Link de Descarga</a>
+      </div>
+      <button class="btn btn-plomo" type="button" id="btnDescargarComponente" (click)="descargarComponente()">
+        <i class="fa fa-download"></i>Generar Link para Descarga</button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 app-expediente-acordion">
+      <set-item-expediente [item]="requisitos" [orden]=""></set-item-expediente>
+    </div>
+  </div>
+</div>

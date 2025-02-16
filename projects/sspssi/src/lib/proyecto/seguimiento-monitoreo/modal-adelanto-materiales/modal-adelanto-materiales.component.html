@@ -1,0 +1,191 @@
+<div class="modal-header">
+  <h4 class="modal-title">Adelanto Materiales</h4>
+  <p class="pb-2 pl-4 pr-4">Registro de Adelanto Materiales</p>
+</div>
+<div class="modal-body">
+  <div class="group-box" *hasClaim="'monitoreo_tabSeg_infObra_divAdeMateriales_eje_dir'">
+    <form [formGroup]="formGroup" (ngSubmit)="grabar()" autocomplete="off">
+      <div class="row form-group">
+        <div class="col-md-2">
+          <label class="control-label">Descripción (*):</label>
+        </div>
+        <div class="col-md-6">
+          <input type="text" id="txtDescripcion" class="form-control text-uppercase"
+            formControlName="nombre_adelanto_materiales"
+            [ngClass]="{'is-invalid': (formGroup.get('nombre_adelanto_materiales').touched || formGroup.get('nombre_adelanto_materiales').dirty) && !formGroup.get('nombre_adelanto_materiales').valid }">
+          <span class="invalid-feedback" style="width: 200px;">
+            <span *ngIf="formGroup.get('nombre_adelanto_materiales').errors?.required">
+              El campo Descripción es obligatorio.
+            </span>
+          </span>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-md-2">
+          <label class="control-label">Monto de Adelanto (*):</label>
+        </div>
+        <div class="col-md-2">
+          <input type="text" id="txtMontoAdelanto" class="form-control" formControlName="monto_adelanto"
+            [textMask]="{mask: funciones.currencyMask}"
+            [ngClass]="{'is-invalid': (formGroup.get('monto_adelanto').touched || formGroup.get('monto_adelanto').dirty) && !formGroup.get('monto_adelanto').valid }">
+
+          <span class="invalid-feedback" style="width: 250px;">
+            <span *ngIf="formGroup.get('monto_adelanto').errors?.required">
+              El campo Monto de Adelanto es obligatorio.
+            </span>
+          </span>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-md-2">
+          <label class="control-label">Entidad Financiera (*):</label>
+        </div>
+        <div class="col-md-6">
+          <input type="text" id="txtEntidadFinanciera" class="form-control text-uppercase"
+            formControlName="entidad_financiera"
+            [ngClass]="{'is-invalid': (formGroup.get('entidad_financiera').touched || formGroup.get('entidad_financiera').dirty) && !formGroup.get('entidad_financiera').valid }">
+          <span class="invalid-feedback" style="width: 200px;">
+            <span *ngIf="formGroup.get('entidad_financiera').errors?.required">
+              El campo Entidad Financiera es obligatorio.
+            </span>
+          </span>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-md-2">
+          <label class="control-label">Fecha Inicio (*):</label>
+        </div>
+        <div class="col-md-2">
+          <input type="text" id="txtFechaInicio" [maxDate]="maxDate" class="form-control" formControlName="fecha_inicio"
+            placeholder="dd/mm/aaaa" bsDatepicker
+            [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es', containerClass: 'theme-red' }" readonly
+            [ngClass]="{'is-invalid': (formGroup.get('fecha_inicio').touched || formGroup.get('fecha_inicio').dirty) && !formGroup.get('fecha_inicio').valid }">
+          <span class="invalid-feedback" style="width: 200px;">
+            <span *ngIf="formGroup.get('fecha_inicio').errors?.required">
+              El campo Fecha Inicio es obligatorio.
+            </span>
+          </span>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-md-2">
+          <label class="control-label">Fecha Fin (*):</label>
+        </div>
+        <div class="col-md-2">
+          <input type="text" id="txtFechaFin" class="form-control" formControlName="fecha_termino"
+            placeholder="dd/mm/aaaa" bsDatepicker [minDate]="minDate"
+            [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es', containerClass: 'theme-red' }" readonly
+            [ngClass]="{'is-invalid': (formGroup.get('fecha_termino').touched || formGroup.get('fecha_termino').dirty) && !formGroup.get('fecha_termino').valid }">
+          <span class="invalid-feedback" style="width: 200px;">
+            <span *ngIf="formGroup.get('fecha_termino').errors?.required">
+              El campo Fecha Fin es obligatorio.
+            </span>
+          </span>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-md-2">
+          <label class="control-label">Monto de la Garantia (*):</label>
+        </div>
+        <div class="col-md-2">
+          <input type="text" id="txtMontoGarantia" class="form-control" formControlName="monto_garantia"
+            [textMask]="{mask: funciones.currencyMask}"
+            [ngClass]="{'is-invalid': (formGroup.get('monto_garantia').touched || formGroup.get('monto_garantia').dirty) && !formGroup.get('monto_garantia').valid }">
+          <span class="invalid-feedback" style="width: 200px;">
+            <span *ngIf="formGroup.get('monto_garantia').errors?.required">
+              El campo Monto de la Garantia es obligatorio.
+            </span>
+          </span>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-md-2">
+          <label class="control-label">Documento (*):</label>
+        </div>
+        <div class="col-md-5">
+          <app-input-file idComp="fileInsert" (onChange)="fileChangeEvent($event)" class="input-group"
+            IdTipoArchivo="{{tipoArchivo}}" Value="{{ nombreArchivo }}"
+            [ngClass]="{'is-invalid': (formGroup.get('nombre_archivo').touched || formGroup.get('nombre_archivo').dirty) && !formGroup.get('nombre_archivo').valid }">
+          </app-input-file>
+          <p></p>
+        </div>
+      </div>
+      <div class="modal-footer" [hidden]=!bEstado>
+        <button type="submit" id="btnGuardar" class="btn btn-danger" [hidden]=bMostrar [disabled]="!formGroup.valid"
+          *hasClaim="'monitoreo_tabSeg_infObra_regAdelantoMateriales_eje_dir'"><i class="fa fa-save"></i>
+          Guardar</button>
+        <button class="btn btn-danger" type="button" [hidden]=!bMostrar>
+          <i class="fa fa-save"></i> ....Procesando</button>
+        <button type="button" id="btnLimpiar" class="btn btn-default" (click)="formGroup.reset(); nombreArchivo = ''"
+          *hasClaim="'monitoreo_tabSeg_infObra_resetAdelantoMateriales_eje_dir'"><i class="icon icon-limpiar"></i>
+          Limpiar</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="row form-group">
+    <div class="col-12 container-scroll">
+      <table class="table table-hover table-responsive">
+        <thead class="table-active">
+          <tr>
+            <th>DESCRIPCIÓN</th>
+            <th>MONTO DE ADELANTO</th>
+            <th>ENTIDAD FINANCIERA</th>
+            <th>FECHA DE VIGENCIA</th>
+            <th>MONTO DE LA GARANTIA</th>
+            <th>DOCUMENTO</th>
+            <th [hidden]=!bEstado></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of listaAdelantoMateriales">
+            <td class="xs-hidden text-left">{{ item.nombre_adelanto_materiales }}</td>
+            <td class="xs-hidden text-right">{{ item.monto_adelanto | formatoMoneda }}</td>
+            <td class="xs-hidden text-left">{{ item.entidad_financiera }}</td>
+            <td class="xs-hidden text-center">{{ item.fecha_inicio }} - {{ item.fecha_termino }}</td>
+            <td class="xs-hidden text-right">{{ item.monto_garantia | formatoMoneda }}</td>
+            <td class="xs-hidden text-center">
+              <div *ngIf="item.ruta_archivo; else templateicono">
+                <a href="{{ item.ruta_archivo }}" target="_blank" class="btn-icon mr-1" [LinkNube]="item.nombre_archivo" [Ruta]="item.ruta_archivo">
+                  <i class="fa fa-15x">
+                    <img src="assets/img/icons/file.svg" alt="archivo">
+                  </i>
+                </a>
+              </div>
+              <ng-template #templateicono>
+              </ng-template>
+            </td>
+            <td class="xs-footer-lista xs-text-right" [hidden]=!bEstado>
+              <div class="xs-hidden pre-wrap">
+                <a href="javascript:void(0)" (click)="editarAdelantoMaterial(item)" class="btn btn-sm btn-icon"
+                  *hasClaim="'monitoreo_tabSeg_infObra_editAdelantoMateriales_eje_dir'">
+                  <i class="fa fa-15x">
+                    <img src="assets/img/icons/pencil.svg" alt="editar">
+                  </i>
+                </a>
+                <a href="javascript:void(0)" (click)="eliminarAdelantoMaterial(item)" class="btn btn-sm btn-icon"
+                  *hasClaim="'monitoreo_tabSeg_infObra_delAdelantoMateriales_eje_dir'">
+                  <i class="fa fa-15x">
+                    <img src="assets/img/icons/trash.svg" alt="eliminar">
+                  </i>
+                </a>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-12">
+      <nav class="pt-4 pl-3 pull-right">
+        <pagination [totalItems]="totalRegistros" [itemsPerPage]="numPaginasMostrar" [boundaryLinks]="true"
+          previousText="&lsaquo;" nextText="&rsaquo;" [rotate]="false" firstText="&laquo;" lastText="&raquo;"
+          [maxSize]="5" (pageChanged)="cambiarPagina($event)">
+        </pagination>
+      </nav>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-plomo" id="btnCancelar" type="button" (click)="closeModal()"><i class="fa fa-arrow-left"></i>
+    Cerrar</button>
+</div>

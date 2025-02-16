@@ -1,0 +1,279 @@
+<!--<div *ngIf="monitoreo_tabSeg_suspension_listSuspension">-->
+<div>
+    <div class="row form-group">
+      <div class="col-sm-12">
+        <label dlabels class="control-label">6.0. Registro de suspensiones</label>
+      </div>
+    </div>
+    <div class="row form-group" *ngIf="monitoreo_tabSeg_suspension_regSuspension_susp">
+      <div class="col-sm-6" [hidden]=!bEstado>
+        <button class="btn btn-plomo" (click)="opnModNuevaSuspension()" type="button" id="btnNuevaSuspension" *ngIf="monitoreo_tabSeg_obraValorizaciones_nuevObraValorizaciones_susp">
+          <i class="fa fa-plus"></i> Nuevo</button>
+      </div>
+      <div class="col-6 text-right">
+        <label dlabels class="control-label">Última Actualización:</label> &nbsp;
+        <span>{{UltimaActualizacionSuspension}}</span>
+      </div>
+    </div>
+    <div class="row form-group">
+      <div class="col-12">
+        <table class="table table-hover table-bordered table-responsive table-full-detalle" border="1">
+          <thead class="table-active">
+            <tr>
+              <th *ngIf="false">id_suspension_obra</th>
+              <th *ngIf="false">id_seguimiento_monitoreo_obra</th>
+              <th colspan="2">Acciones</th>
+              <th>Motivo de Suspensión</th>
+              <th>Fecha de Inicio</th>
+              <th *ngIf="false">Fecha de Término Sugerido</th>
+              <th>Fecha Probable de Término</th>
+              <th>Doc.</th>
+              <th></th>
+              <th [hidden]=!bEstado></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let suspension of listSuspension">
+              <td *ngIf="false">
+                <div class="xs-hidden">
+                  {{suspension.id_suspension_obra}}
+                </div>
+              </td>
+              <td *ngIf="false">{{suspension.id_seguimiento_monitoreo_obra}}</td>
+              <td class="xs-hidden">
+                <a href="javascript:void(0)" (click)="ObtenerDetalleAccionesSuspension(suspension.id_suspension_obra)" class="btn-icon">
+                  <i class="fa fa-search fa-15x"></i>
+                </a>
+              </td>
+              <td class="xs-hidden">
+                <span *ngIf="monitoreo_tabSeg_suspension_listSuspension_regDetalleSuspension_susp" [hidden]=!bEstado>
+                  <a href="javascript:void(0)" (click)="openModalAccSuspension(suspension)" class="btn-icon">
+                    <i class="fa fa-plus fa-15x"></i>
+                  </a>
+                </span>
+              </td>
+              <td class="text-left">
+                <div class="xs-hidden">{{suspension.motivo_suspension}}</div>
+                <div class="xs-display">
+                  <div>
+                    <span class="xs-th f-s-8">
+                      <i class="fa fa-calendar"></i> Fecha Inicio - Fecha Término</span>
+                  </div>
+                  <div class="xs-th f-s-14">
+                    {{suspension.fecha_inicio}} - {{suspension.fecha_termino}}
+                  </div>
+                  <div class="xs-th">
+                    Motivo:
+                  </div>
+                  <div class="text-justify">
+                    {{suspension.motivo_suspension}}
+                  </div>
+                </div>
+              </td>
+              <td class="xs-hidden">{{suspension.fecha_inicio}}</td>
+              <td class="xs-hidden" *ngIf="false">{{suspension.fecha_termino_sugerido}}</td>
+              <td class="xs-hidden">{{suspension.fecha_termino}}</td>
+              <td class="xs-hidden">
+                <div *ngIf="suspension.nombre_archivo != '' ; else templateicono">
+                  <a href="{{suspension.nombre_archivo}}" target="_blank" class="btn-icon" [LinkNube]="suspension.nombre_archivo" [Ruta]="suspension.ruta">
+                    <i class="fa fa-15x">
+                      <img src="assets/img/icons/file.svg" alt="archivo">
+                    </i>
+                  </a>
+                </div>
+                <ng-template #templateicono>
+                </ng-template>
+              </td>
+              <td>
+                  <div *ngIf="suspension.reinicio_obra != 0;else templateIconoReinicioObra">
+                      <i class="fa fa-15x">
+                        <img src="assets/img/icons/play.svg" alt="Reinicio de Obra">
+                      </i>
+                  </div>
+                  <ng-template #templateIconoReinicioObra>
+                    <i class="fa fa-15x">
+                      <img src="assets/img/icons/pause.svg" alt="Suspensión de Obra">
+                    </i>
+                  </ng-template>
+              </td>
+              <td class="icon-group xs-footer-lista xs-text-right" [hidden]=!bEstado>
+                <div class="xs-hidden">
+                  <a href="javascript:void(0)" (click)="editarSuspension(suspension)" class="btn btn-sm btn-icon" *ngIf="monitoreo_tabSeg_obraValorizaciones_editObraValorizaciones_susp">
+                    <i class="fa fa-15x">
+                      <img src="assets/img/icons/pencil.svg" alt="editar">
+                    </i>
+                  </a>
+                  <a href="javascript:void(0)" (click)="eliminarSuspension(suspension)" class="btn btn-sm btn-icon" *ngIf="monitoreo_tabSeg_obraValorizaciones_eliObraValorizaciones_susp">
+                    <i class="fa fa-15x">
+                      <img src="assets/img/icons/trash.svg" alt="eliminar">
+                    </i>
+                  </a>
+                </div>
+                <div class="xs-display">
+                  <a href="javascript:void(0)" (click)="ObtenerDetalleAccionesSuspension(suspension.id_suspension_obra)" class="btn-icon mr-1">
+                    <i class="fa fa-search"></i>
+                  </a>
+                  <a href="javascript:void(0)" (click)="openModalAccSuspension(suspension)" class="btn-icon mr-1" *ngIf="monitoreo_tabSeg_suspension_listSuspension_regDetalleSuspension_susp">
+                    <i class="fa fa-plus"></i>
+                  </a>
+                  <a *ngIf="suspension.nombre_archivo != ''" href="{{suspension.nombre_archivo}}" target="_blank" class="btn-icon mr-1" [LinkNube]="suspension.nombre_archivo" [Ruta]="suspension.ruta">
+                    <i class="fa fa-file"></i>
+                  </a>
+                  <a href="javascript:void(0)" (click)="editarSuspension(suspension)" class="btn-icon mr-1" *ngIf="monitoreo_tabSeg_obraValorizaciones_editObraValorizaciones_susp"> 
+                    <i class="fa fa-pencil"></i>
+                  </a>
+                  <a href="javascript:void(0)" (click)="eliminarSuspension(suspension)" class="btn-icon" *ngIf="monitoreo_tabSeg_obraValorizaciones_eliObraValorizaciones_susp">
+                    <i class="fa fa-trash"></i>
+                  </a>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-12">
+        <nav class="pt-4 pl-3 pull-right">
+          <pagination [totalItems]="totalRegistrosSuspension" [itemsPerPage]="numPaginasMostrar" [boundaryLinks]="true" previousText="&lsaquo;"
+            nextText="&rsaquo;" [rotate]="false" firstText="&laquo;" lastText="&raquo;" [maxSize]="5" (pageChanged)="cambiarPaginaSuspension($event)">
+          </pagination>
+        </nav>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="row form-group">
+      <div class="col-6">
+        <label dlabels class="control-label">6.0.1. Acciones de seguimiento y monitoreo del periodo de suspensiones
+        </label>
+      </div>
+      <div class="col-6 text-right" [hidden]="mostrarAuditoriaAccionSuspension">
+        <label dlabels class="control-label">Última Actualización:</label> &nbsp;
+        <span>{{UltimaActualizacionAccionSuspension}}</span>
+      </div>
+    </div>
+    <div class="row form-group">
+      <div class="col-12">
+        <table class="table table-hover table-bordered table-responsive table-full-detalle">
+          <thead class="table-active">
+            <tr>
+              <th *ngIf="false">id_suspension_accion_obra</th>
+              <th *ngIf="false">id_suspension_obra</th>
+              <th *ngIf="false">id_tipo_documento</th>
+              <th>Acciones de seguimiento y monitoreo</th>
+              <th>Fecha</th>
+              <th>Tipo de Documento</th>
+              <th>Observación</th>
+              <th>Doc.</th>
+              <!--<th></th>-->
+              <th [hidden]=!bEstado></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let accionSuspension of listAccionSuspension">
+              <td *ngIf="false">{{accionSuspension.id_suspension_accion_obra}}</td>
+              <td *ngIf="false">{{accionSuspension.id_suspension_obra}}</td>
+              <td *ngIf="false">{{accionSuspension.id_tipo_documento}}</td>
+              <td *ngIf="false">{{accionSuspension.id_tipo_suspension_accion_obra}}</td>
+              <td class="text-left">
+                <div class="xs-hidden">
+                  {{accionSuspension.denominacion}}
+                </div>
+                <div class="xs-display">
+                  <div>
+                    <span class="xs-th f-s-8">
+                      <i class="fa fa-calendar"></i> Fecha</span>
+                  </div>
+                  <div class="xs-th f-s-14">
+                    {{accionSuspension.fecha}}
+                  </div>
+                  <div class="xs-th">
+                    Acción:
+                  </div>
+                  <div>
+                    {{accionSuspension.denominacion}}
+                  </div>
+                  <div class="xs-th">
+                    Tipo de Documento:
+                  </div>
+                  <div>
+                    {{accionSuspension.nombre_tipo_documento}}
+                  </div>
+                  <div class="xs-th">
+                    Observaciones:
+                  </div>
+                  <div>
+                    {{accionSuspension.observacion}}
+                  </div>
+                </div>
+              </td>
+              <td class="xs-hidden">{{accionSuspension.fecha}}</td>
+              <td class="text-left xs-hidden">{{accionSuspension.nombre_tipo_documento}}</td>
+              <td class="text-left xs-hidden">{{accionSuspension.observacion}}</td>
+              <td class="xs-hidden">
+                <div *ngIf="accionSuspension.nombre_archivo != '' ; else templateicono">
+                  <span>
+                    <a href="{{accionSuspension.nombre_archivo}}" target="_blank" class="btn-icon" [LinkNube]="accionSuspension.nombre_archivo" [Ruta]="accionSuspension.ruta">
+                      <i class="fa fa-15x">
+                        <img src="assets/img/icons/file.svg" alt="archivo">
+                      </i>
+                    </a>
+                  </span>
+                </div>
+                <ng-template #templateicono>
+                </ng-template>
+              </td>
+              <!--<td></td>-->
+              <td class="icon-group xs-footer-lista xs-text-right" [hidden]=!bEstado>
+                <div class="xs-hidden">
+                  <span *ngIf="monitoreo_tabSeg_suspension_listSuspension_editSuspension_susp">
+                    <a href="javascript:void(0)" (click)="editarAccionSuspension(accionSuspension)" class="btn btn-sm btn-icon">
+                      <i class="fa fa-15x">
+                        <img src="assets/img/icons/pencil.svg" alt="editar">
+                      </i>
+                    </a>
+                  </span>
+                    <span *ngIf="monitoreo_tabSeg_suspension_listSuspension_eliSuspension_susp">
+                    <a href="javascript:void(0)" (click)="eliminarAccionSuspension(accionSuspension)" class="btn btn-sm btn-icon">
+                      <i class="fa fa-15x">
+                        <img src="assets/img/icons/trash.svg" alt="eliminar">
+                      </i>
+                    </a>
+                  </span>
+                </div>
+                <div class="xs-display">
+                  <span>
+
+                      <ng-container *ngIf="accionSuspension.nombre_archivo != ''">
+                        <a  href="{{accionSuspension.nombre_archivo}}" target="_blank" class="btn-icon mr-1" [LinkNube]="accionSuspension.nombre_archivo" [Ruta]="accionSuspension.ruta">
+                          <i class="fa fa-file"></i>
+                        </a>                        
+                      </ng-container>
+
+                  </span>
+                  <span *ngIf="monitoreo_tabSeg_suspension_listSuspension_editSuspension_susp">
+                    <a href="javascript:void(0)" (click)="editarAccionSuspension(accionSuspension)" class="btn-icon mr-1">
+                      <i class="fa fa-pencil"></i>
+                    </a>
+                  </span>
+                  <span *ngIf="monitoreo_tabSeg_suspension_listSuspension_eliSuspension_susp">
+                    <a href="javascript:void(0)" (click)="eliminarAccionSuspension(accionSuspension)" class="btn-icon mr-1">
+                      <i class="fa fa-trash"></i>
+                    </a>
+                  </span>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-12">
+        <nav class="pt-4 pl-3 pull-right">
+          <pagination [totalItems]="totalRegistrosSuspensionAccion" [itemsPerPage]="numPaginasMostrarAccionSuspension" [boundaryLinks]="true"
+            previousText="&lsaquo;" nextText="&rsaquo;" [rotate]="false" firstText="&laquo;" lastText="&raquo;" [maxSize]="5"
+            (pageChanged)="cambiarPaginaAccionSuspension($event)">
+          </pagination>
+        </nav>
+      </div>
+    </div>
+  </div>

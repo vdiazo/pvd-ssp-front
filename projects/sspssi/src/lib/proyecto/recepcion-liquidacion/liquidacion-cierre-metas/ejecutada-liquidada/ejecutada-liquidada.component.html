@@ -1,0 +1,130 @@
+<div class="row form-group" *hasClaim="'monitoreo_tabRYL_CierreSeg_regCierreFisico_eje_dir'">
+  <div class="col-sm-6">
+    <button *ngIf="mostrarNuevoCierreTransferenciaFisica" class="btn btn-plomo" type="button"
+      id="btnNuevaCierreTransFisica" (click)="opnModNuevoCierreTransFisica()">
+      <i class="fa fa-plus"></i>
+      Nuevo
+    </button>
+  </div>
+
+  <div class="col-6 text-right">
+    <label dlabels="dlabels" class="control-label">Última Actualización:</label>
+
+    &nbsp;
+
+    <span>{{UltimaActualizacion}}</span>
+  </div>
+</div>
+
+<table class="table table-hover table-bordered table-responsive table-full-detalle">
+  <thead class="table-danger">
+    <tr>
+      <th>Estado de Cierre Fisico</th>
+      <th>Fecha</th>
+      <th>Tipo de Documento</th>
+      <th>Observaciones</th>
+      <th>Documento</th>
+      <th [hidden]="!bEstado"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let cierreFisico of lstCierreTransfFisica">
+      <td class="xs-hidden text-center">
+        {{cierreFisico.nombre_estado_cierre}}
+      </td>
+      <td class="xs-hidden">
+        {{cierreFisico.fecha | date:'dd/MM/yyyy' }}
+      </td>
+      <td class="xs-hidden text-center">
+        {{cierreFisico.nombre_tipo_documento_cierre}}
+      </td>
+      <td class="xs-hidden text-center">{{cierreFisico.observacion}}</td>
+      <td>
+        <div *hasClaim="'monitoreo_tabRYL_CierreSeg_verArchivoCierreFisico_eje_dir'" class="xs-hidden">
+          <a *ngIf="cierreFisico.nombre_archivo != ''" href="{{cierreFisico.nombre_archivo}}" target="_blank"
+            class="btn-icon" [LinkNube]="cierreFisico.nombre_archivo" [Ruta]="cierreFisico.ruta_archivo">
+            <i class="fa fa-15x">
+              <img src="assets/img/icons/file.svg" alt="archivo">
+            </i>
+          </a>
+        </div>
+
+        <div class="xs-display">
+          <div class="xs-th f-s-13">
+            {{cierreFisico.fecha | date:'dd/MM/yyyy' }}
+          </div>
+
+          <div>
+            <span class="xs-th">Estado de Cierre Fisico :</span>
+
+            <span>
+              {{cierreFisico.nombre_estado_cierre}}
+            </span>
+          </div>
+
+          <div>
+            <span class="xs-th">Tipo de documento &nbsp;:</span>
+
+            <span>
+              {{cierreFisico.nombre_tipo_documento_cierre }}
+            </span>
+          </div>
+
+          <div class="xs-th">
+            Observaciones &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
+          </div>
+
+          <div>{{cierreFisico.observacion }}</div>
+        </div>
+      </td>
+
+      <td class="xs-footer-lista" [hidden]="!bEstado">
+        <div class="xs-hidden pre-wrap">
+          <span *hasClaim="'monitoreo_tabRYL_CierreSeg_modCierreFisico_eje_dir'" class="btn btn-sm btn-opt btn-icon"
+            (click)="editarCierreTransFisica(cierreFisico)">
+            <i class="fa fa-15x">
+              <img src="assets/img/icons/pencil.svg" alt="editar">
+            </i>
+          </span>
+
+          <span *hasClaim="'monitoreo_tabRYL_CierreSeg_eliCierreFisico_eje_dir'" class="btn btn-sm btn-opt btn-icon"
+            (click)="anularAprobacion(cierreFisico)">
+            <i class="fa fa-15x">
+              <img src="assets/img/icons/trash.svg" alt="eliminar">
+            </i>
+          </span>
+        </div>
+
+        <div class="xs-display text-right">
+          <span *hasClaim="'monitoreo_tabRYL_CierreSeg_verArchivoCierreFisico_eje_dir'" class="mr-1">
+            <a *ngIf="cierreFisico.nombre_archivo != ''" href="{{cierreFisico.nombre_archivo}}" target="_blank"
+              class="btn-icon" [LinkNube]="cierreFisico.nombre_archivo" [Ruta]="cierreFisico.ruta_archivo">
+              <i class="fa fa-file"></i>
+            </a>
+          </span>
+
+          <a *hasClaim="'monitoreo_tabRYL_CierreSeg_modCierreFisico_eje_dir'" href="javascript:void(0)"
+            (click)="editarCierreTransFisica(cierreFisico)" class="btn-icon mr-1">
+            <i class="fa fa-pencil"></i>
+          </a>
+
+          <a *hasClaim="'monitoreo_tabRYL_CierreSeg_eliCierreFisico_eje_dir'" href="javascript:void(0)"
+            (click)="anularAprobacion(cierreFisico)" class="btn-icon">
+            <i class="fa fa-trash"></i>
+          </a>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="row">
+  <div class="col-12 xs-p-0">
+    <nav class="pt-2 pull-right">
+      <pagination [totalItems]="totalRegistrosCierreTransfFisica" [itemsPerPage]="numPaginasMostrar"
+        [boundaryLinks]="true" previousText="&lsaquo;" nextText="&rsaquo;" [rotate]="false" firstText="&laquo;"
+        lastText="&raquo;" [maxSize]="5" (pageChanged)="cambiarPagina($event)"></pagination>
+    </nav>
+  </div>
+</div>

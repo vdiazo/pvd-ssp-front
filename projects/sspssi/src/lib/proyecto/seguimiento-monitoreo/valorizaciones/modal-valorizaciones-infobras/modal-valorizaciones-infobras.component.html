@@ -1,0 +1,213 @@
+<div class="modal-header">
+  <div class="modal-cabecera-popups">
+    <button type="button" id="btnCerrar" class="btn btn-plomo" (click)="cerrarModal()"><i class="fa fa-arrow-left"></i>
+      &nbsp;Cerrar</button>
+  </div>
+  <div class="div-cabecera-info-obra">
+    <span class="modal-title-info-obra">VALORIZACIONES INFObras (SNIP: {{snip}})</span>
+  </div>
+</div>
+<div class="modal-body">
+  <div class="row form-group">
+    <table class="table table-hover table-bordered table-responsive table-full-detalle">
+      <tbody *ngFor="let listaObra of ListaIbfoObras">
+        <tr>
+          <th class="td-r">Código INFObras</th>
+          <td colspan="3" class="td-l">
+            <div class="xs-hidden">
+              {{listaObra.CodigoInfObra}}
+            </div>
+            <div class="xs-display">
+              <div>
+                <span class="xs-th">Código INFObras: &nbsp;&nbsp;</span>
+                <span>{{listaObra.CodigoInfObra}}</span>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <th class="td-r">Descripción de la Obra</th>
+          <td class="td-l" colspan="3">
+            <div class="xs-hidden">
+              {{listaObra.DescripcionObra}}
+            </div>
+            <div class="xs-display">
+              <div>
+                <span class="xs-th">Descripción de la Obra: &nbsp;&nbsp;</span>
+                <span>{{listaObra.DescripcionObra}}</span>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <th class="td-r">Dirección o referencia</th>
+          <td class="td-l" colspan="3">
+            <div class="xs-hidden">
+              {{listaObra.Direccion}}
+            </div>
+            <div class="xs-display">
+              <div>
+                <span class="xs-th">Dirección o referencia: &nbsp;&nbsp;</span>
+                <span>{{listaObra.Direccion}}</span>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <th class="td-r">Entidad que ejecuta</th>
+          <td class="td-l" colspan="3">
+            <div class="xs-hidden">
+              {{listaObra.Entidad}}
+            </div>
+            <div class="xs-display">
+              <div>
+                <span class="xs-th">Entidad que ejecuta: &nbsp;&nbsp;</span>
+                <span>{{listaObra.Entidad}}</span>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <th class="td-r">Residente</th>
+          <td class="td-l">
+            <div class="xs-hidden">
+              {{listaObra.Residente}}
+            </div>
+            <div class="xs-display">
+              <div>
+                <span class="xs-th">Residente: &nbsp;&nbsp;</span>
+                <span>{{listaObra.Residente}}</span>
+              </div>
+            </div>
+          </td>
+          <th class="td-c">Inicio de la Obra</th>
+          <td>
+            <div class="xs-hidden">
+              {{listaObra.InicioObra}}
+            </div>
+            <div class="xs-display">
+              <div>
+                <span class="xs-th">Inicio de la Obra: &nbsp;&nbsp;</span>
+                <span>{{listaObra.InicioObra}}</span>
+              </div>
+            </div>
+
+          </td>
+        </tr>
+        <tr class="xs-display" style="background-color:#2779ae; color:#fff; font-weight:bold;">
+          <td class="xs-display" style="background-color:#2779ae; color:#fff; font-weight:bold;">
+            <div class="xs-display" style="background-color:#2779ae; color:#fff; font-weight:bold;">
+              <span colspan="8" style="background-color:#2779ae; color:#fff; font-weight:bold;">Avances de Obra (CÓDIGO
+                INFObras : {{listaObra.CodigoInfObra}})</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="4" style="padding:10px 5px;border-left:none;">
+            <table class="table table-hover table-bordered table-responsive table-full-detalle">
+              <tbody>
+                <tr>
+                  <th colspan="8" style="background-color:#2779ae; color:#fff; font-weight:bold;">Avances de Obra
+                    (CÓDIGO INFObras : {{listaObra.CodigoInfObra}})</th>
+                </tr>
+                <tr>
+                  <th rowspan="2">N°</th>
+                  <th rowspan="2">Periodo</th>
+                  <th rowspan="2">Fecha</th>
+                  <th colspan="2">Avance Físico Acumulado</th>
+                  <th colspan="2">Avance Valorizado Acumulado</th>
+                </tr>
+                <tr>
+                  <th>Real</th>
+                  <th>Programado</th>
+                  <th>Real</th>
+                  <th>Programado</th>
+                </tr>
+                <tr *ngIf="listaObra.DetalleInfObras == null">
+                  <td colspan="7">
+                    No se encontraron registros de avance
+                  </td>
+                </tr>
+                <tr *ngFor="let detalle of listaObra.DetalleInfObras; index as i">
+                  <td>
+                    <div class="xs-hidden">
+                      {{("000" + (i + 1)).slice(-3)}}
+                    </div>
+                    <div class="xs-display">
+                      <div>
+                        <span class="xs-th">N°: &nbsp;&nbsp;</span>
+                        <span>{{("000" + (i + 1)).slice(-3)}}</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="xs-hidden">
+                      {{detalle.Periodo}}
+                    </div>
+                    <div class="xs-display">
+                      <div>
+                        <span class="xs-th">Periodo: &nbsp;&nbsp;</span>
+                        <span>{{detalle.Periodo}}</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="xs-hidden">{{detalle.Fecha}}</div>
+                    <div class="xs-display">
+                      <div>
+                        <span class="xs-th">Fecha: &nbsp;&nbsp;</span>
+                        <span>{{detalle.Fecha}}</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="td-r">
+                    <div class="xs-hidden">{{detalle.AvanceFisicoAcumuladoReal}} %</div>
+                    <div class="xs-display td-l">
+                      <div>
+                        <span class="xs-th">Avance Físico Acumulado Real: &nbsp;&nbsp;</span>
+                        <span>{{detalle.AvanceFisicoAcumuladoReal}} %</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="td-r">
+                    <div class="xs-hidden">{{detalle.AvanceFisicoAcumuladoProgramado}} %</div>
+                    <div class="xs-display td-l">
+                      <div>
+                        <span class="xs-th">Avance Físico Acumulado Programado: &nbsp;&nbsp;</span>
+                        <span>{{detalle.AvanceFisicoAcumuladoProgramado}} %</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="td-r">
+                    <div class="xs-hidden">S/ {{detalle.AvanceValorizadoAcumuladoReal | number}}</div>
+                    <div class="xs-display td-l">
+                      <div>
+                        <span class="xs-th">Avance Valorizado Acumulado Real: &nbsp;&nbsp;</span>
+                        <span>S/ {{detalle.AvanceValorizadoAcumuladoReal | number}}</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="td-r">
+                    <div class="xs-hidden">S/ {{detalle.AvanceValorizadoAcumuladoProgramado | number}}</div>
+                    <div class="xs-display td-l">
+                      <div>
+                        <span class="xs-th">Avance Valorizado Acumulado Programado: &nbsp;&nbsp;</span>
+                        <span>S/ {{detalle.AvanceValorizadoAcumuladoProgramado | number}}</span>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="modal-footer-info-obra">
+  <div class="modal-cabecera-popups">
+    <button type="button" id="btnCerrar" class="btn btn-plomo" (click)="cerrarModal()"><i class="fa fa-arrow-left"></i>
+      &nbsp;Cerrar</button>
+  </div>
+</div>

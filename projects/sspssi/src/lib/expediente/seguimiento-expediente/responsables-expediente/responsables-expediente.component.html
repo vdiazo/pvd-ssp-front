@@ -1,0 +1,40 @@
+<div class="row form-group">
+  <div class="col-sm-2">
+    <label dlabels class="control-label">Contratista (*):</label>
+  </div>
+  <div class="col-sm-4">
+    <div class="input-group">
+      <input dTextBox class="form-control" type='text' placeholder="Ingrese el Contratista" id="contratistaExpediente"
+        name="contratistaExpediente" [(ngModel)]="contratistaExpediente" readonly="readonly">
+      <span class="input-group-btn">
+        <button class="btn btn-secondary" type="button" id="btnVerContratista"
+          (click)="openModalContratista()">Ver</button>
+      </span>
+    </div>
+    <div class="input-group">
+      <label dlabels class="control-label">Última Actualización:</label> &nbsp;
+      <span>{{UltimaActualizacionContratista}}</span>
+    </div>
+  </div>
+  <div class="col-sm-2">
+    <label dlabels class="control-label">Administrador de Contrato (*):</label>
+  </div>
+  <div class="col-sm-4">
+    <div class="input-group">
+      <input dTextBox class="form-control" type='text' placeholder="Ingrese el Administrador de Contrato"
+        id="administradorContrato" name="administradorContrato" [(ngModel)]="administradorContrato" readonly="readonly">
+      <span class="input-group-btn">
+        <button class="btn btn-secondary" type="button" id="btnAgregarAdministradorContrato"
+          (click)="openModalAdministradorExpediente()"
+          *hasClaim="'monitoreo_tabSeg_responsable_residente_eje_dir'">Agregar</button>
+        <button class="btn btn-secondary" type="button" id="btnVerAdministradorContrato"
+          (click)="openModalAdministradorExpediente()"
+          *hasClaim="'monitoreo_tabSeg_responsable_residente_ver_eje_dir'">Ver</button>
+      </span>
+    </div>
+    <div class="input-group">
+      <label dlabels class="control-label">Última Actualización:</label> &nbsp;
+      <span>{{UltimaActualizacionAdministradorContrato}}</span>
+    </div>
+  </div>
+</div>

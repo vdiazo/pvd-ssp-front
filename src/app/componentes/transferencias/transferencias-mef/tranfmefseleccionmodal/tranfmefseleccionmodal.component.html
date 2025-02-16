@@ -1,0 +1,137 @@
+<div class="modal-header">
+  <h4 class="modal-title">DETALLE TRANSFERENCIA MEF</h4>
+</div>
+<div class="modal-body xs-p-0 xs-m-l-2 xs-m-r-2">
+  <div class="group-box">
+    <form (ngSubmit)="administrarConfirmarTransferencia(model);" #confirmarTransferenciaForm="ngForm">
+      <div class="row form-group">
+        <input *ngIf="false" type='text' name="id_transferencia" id="id_transferencia" [(ngModel)]="model.id_transferencia" #id_transferencia="ngModel"
+        />
+        <div class="col-sm-3">
+          <label dlabels class="control-label" for="txtdispositivo">Dispositivo:</label>
+        </div>
+        <div class="col-sm-5">
+          <input dTextBox class="form-control" type='text' name="txtdispositivo" id="txtdispositivo" placeholder="Ingrese Dispositivo"
+            [(ngModel)]="model.dispositivo" #txtdispositivo="ngModel" required />
+          <div [hidden]="txtdispositivo.valid || txtdispositivo.pristine" class="alert alert-danger">
+            El dispositivo es obligatorio
+          </div>
+        </div>
+        <div class="col-sm-2">
+          <label dlabels class="control-label" for="fecha">Fecha:</label>
+        </div>
+        <div class="col-sm-2">
+          <input dTextBox class="form-control" [maxDate]="maxDate" readonly="readonly" type='text' name="fecha" id="fecha" placeholder="dd/mm/aaaa" [(ngModel)]="model.fecha_publicacion"
+            #fecha="ngModel" bsDatepicker required [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es', containerClass: 'theme-red' }">
+          <div [hidden]="fecha.valid || fecha.pristine" class="alert alert-danger">
+            Fecha de Transferencia es obligatoria
+          </div>
+        </div>
+      </div>
+
+      <div class="row form-group" [hidden]="activarTransferencia">
+        <div class="col-sm-3">
+          <label dlabels class="control-label">Subir Dispositivos y Anexos:</label>
+        </div>
+        <div class="col-sm-3" [hidden]="activarTransferencia">
+          <app-input-file-listado idComp="fileTransferenciamodal" (onChange)="fileChangeEvent($event)" class="input-group"></app-input-file-listado>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-12">
+          <accordion>
+            <accordion-group [isOpen]="true">
+              <span class="btn btn-link btn-block clearfix" accordion-heading>
+                <div class="pull-left float-left">Listado de Archivos</div>
+                <span class="badge float-right pull-right">
+                  <i class="fa fa-circle-o"></i>
+                </span>
+              </span>
+              <!-- <mat-selection-list #shoes> -->
+              <mat-list>
+                <mat-list-item *ngFor="let shoe of listArchivosSeleccionados">
+                  <mat-icon mat-list-icon>folder_open</mat-icon>
+                  <h4 mat-line>{{shoe.nombre_archivo}}</h4>
+                  <a style="cursor: pointer;" [hidden]="activarTransferencia" (click)="eliminarArchivoSeleccionado(shoe)">
+                      <i class="fa fa-15x"> <img src="assets/img/icons/trash.svg" alt="elimunar"/></i>
+                  </a>
+                  <a style="cursor: pointer;" href="{{shoe.ruta}}" target="_blank" [hidden]="!activarTransferencia" (click)="verArchivoSeleccionado(shoe)" [LinkNube]="shoe.nombre_archivo" [Ruta]="shoe.ruta">
+                      <i class="material-icons">
+                          archive
+                      </i>
+                  </a>
+                </mat-list-item>
+              </mat-list>
+
+              <!-- </mat-selection-list> -->
+              <!-- <p>
+                Options selected: {{shoes.selectedOptions.selected.length}}
+              </p> -->
+            </accordion-group>
+          </accordion>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+
+
+      <table class="table table-hover table-bordered table-responsive table-full-detalle">
+        <thead class="table-danger">
+          <tr>
+            <th>Código del Proyecto</th>
+            <th>Código Snip</th>
+            <!-- <th>Nombre del Proyecto</th> -->
+            <!-- <th>F.F. Convenio</th> -->
+            <th>Unidad Ejecutora</th>
+            <!-- <th>Monto del Convenio S/</th> -->
+            <th>F.F. Transferencia</th>
+            <th>Monto de la Transferencia S/</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let transferencia of listSeleccionProyectos; let i = index">
+            <td class="xs-hidden">{{transferencia.cod_unificado}}</td>
+            <td class="xs-hidden">{{transferencia.cod_snip }}</td>
+            <!-- <td class="xs-hidden text-left">{{transferencia.nombre_proyecto }}</td> -->
+            <!-- <td class="xs-hidden text-left">{{transferencia.fuente_financiamiento_convenio }}</td> -->
+            <td class="xs-hidden text-left">{{transferencia.unidad_ejecutora }}</td>
+            <td>
+              <div class="xs-display">
+                <div><span class="xs-th">Código del Proyecto : </span><span>{{transferencia.cod_unificado}}</span></div>
+                <div><span class="xs-th">Código Snip : </span><span>{{transferencia.cod_snip }}</span></div>
+                <div class="xs-th">Unidad Ejecutora : </div>
+                <div>{{transferencia.unidad_ejecutora }}</div>
+            </div>
+              <div class="xs-display">F.F. Transferencia</div>
+              <ng-select [items]="lstFuenteFinanTransferencia" placeholder="F.F. Transferencia" bindLabel="nombre_fuente" bindValue="id_fuente_financiamiento"
+                [(ngModel)]="transferencia.id_fuente_financiamiento_transferencia" id="{{ 'fuente' +  i }}" required
+                name="{{ 'fuente' +  i }}">
+              </ng-select>
+              <div [hidden]="'fuente' +  i.valid || 'fuente' +  i.pristine" class="alert alert-danger">
+                El tipo de fuenre de financiamiento es obligatorio
+              </div>
+            </td>
+            <td>
+              <div class="xs-display">Monto de la Transferencia S/</div>
+              <input type="text" [textMask]="{mask: funciones.currencyMask}" placeholder="Monto Transferencia" id="{{ 'monto' +  i }}"
+                class="form-control" [(ngModel)]="transferencia.monto_transferido" name="{{ 'monto' +  i }}" required />
+              <div [hidden]="'monto' +  i.valid || 'monto' +  i.pristine" class="alert alert-danger">
+                El monto de transferencia es obligatorio
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+      <div class="modal-footer">
+       <span *hasClaim="'financiamiento_transferencia_RegistrarTransferencia_regTransferencia'">
+        <span>
+          <button type="submit" id="btnGuardar" [hidden]="activarTransferencia" [disabled]="!confirmarTransferenciaForm.form.valid" class="btn btn-danger"> Guardar</button>
+        </span>  
+       </span>
+        <button id="btnCancelar" type="button" (click)="closeModal()" class="btn btn-plomo">Cerrar</button>
+      </div>
+    </form>
+  </div>
+</div>

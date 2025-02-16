@@ -1,0 +1,77 @@
+<div class="modal-header">
+  <h4 class="modal-title" *ngIf="!cambiarEditar">Registro de Nueva Accion de Seguimiento y Monitoreo</h4>
+  <p class="pb-2 pl-4 pr-4" *ngIf="!cambiarEditar">Registrar Accion de Seguimiento y Monitoreo</p>
+  <h4 class="modal-title" *ngIf="cambiarEditar">Edición de Accion de Seguimiento y Monitoreo</h4>
+  <p class="pb-2 pl-4 pr-4" *ngIf="cambiarEditar">Actualizar Accion de Seguimiento y Monitoreo</p>
+</div>
+<div class="modal-body">
+  <form [formGroup]="formRegistroAccionMonitoreoEstudio" (ngSubmit)="registrarAccionMonitoreoEstudio()">
+    <div class="row form-group">
+      <label class="col-12 col-md-3 mb-2" for="id_accion_seguimiento">(*) ACCIÓN, SEGUIMIENTO Y MONITOREO:</label>
+      <div class="col-12 col-md-9 mb-2">
+        <ng-select [items]="lstAccionMonitoreo" placeholder="Seleccione" bindLabel="descripcion"
+          bindValue="id_accion_seguimiento" notFoundText="no se ha encontrado ningún item" id="id_accion_seguimiento"
+          formControlName="id_accion_seguimiento" [clearable]="false" [ngClass]="{'is-invalid': f.id_accion_seguimiento.invalid && (f.id_accion_seguimiento.dirty || f.id_accion_seguimiento.touched),
+          'ng-inicio': f.id_accion_seguimiento.invalid && f.id_accion_seguimiento.untouched}">
+        </ng-select>
+        <div
+          *ngIf="f.id_accion_seguimiento.invalid && (f.id_accion_seguimiento.dirty || f.id_accion_seguimiento.touched)">
+          <strong *ngIf="f.id_accion_seguimiento.errors.required" class="text-danger">Seleccione acción de
+            monitoreo</strong>
+        </div>
+      </div>
+      <label for="fecha_accion_seguimiento" class="col-12 col-md-3 mb-2">(*) FECHA:</label>
+      <div class="col-12 col-md-9 mb-2">
+        <div class="inner-addon left-addon">
+          <i class="icono material-icons">event</i>
+          <input class="form-control" #dpYMD="bsDatepicker" bsDatepicker [readonly]="true" placeholder="__/__/____"
+            [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es',showWeekNumbers: false, containerClass: 'theme-red' }"
+            formControlName="fecha_accion_seguimiento" id="obj.fecha_accion" [ngClass]="{'is-invalid': f.fecha_accion_seguimiento.invalid && (f.fecha_accion_seguimiento.dirty || f.fecha_accion_seguimiento.touched),
+            'ng-inicio': f.fecha_accion_seguimiento.invalid && f.fecha_accion_seguimiento.untouched}">
+        </div>
+        <div
+          *ngIf="f.fecha_accion_seguimiento.invalid && (f.fecha_accion_seguimiento.dirty || f.fecha_accion_seguimiento.touched)">
+          <strong *ngIf="f.fecha_accion_seguimiento.errors.required" class="text-danger">Seleccione fecha de la acción
+            de monitoreo</strong>
+        </div>
+      </div>
+      <label for="comentario" class="col-12 col-md-3 mb-6">COMENTARIOS:</label>
+      <div class="col-12 col-md-9 mb-2">
+        <textarea name="comentario" id="comentario" rows="2" class="form-control"
+          formControlName="comentario"></textarea>
+      </div>
+      <label for="id_tipo_documento" class="col-12 col-md-3 mb-2">(*) TIPO DE DOCUMENTO:</label>
+      <div class="col-12 col-md-9 mb-2">
+        <ng-select [items]="lstTipoDocumento" placeholder="Seleccione" bindLabel="descripcion"
+          bindValue="id_tipo_documento" notFoundText="no se ha encontrado ningún item" id="id_tipo_documento"
+          formControlName="id_tipo_documento" [ngClass]="{'is-invalid': f.id_tipo_documento.invalid && (f.id_tipo_documento.dirty || f.id_tipo_documento.touched),
+          'ng-inicio': f.id_tipo_documento.invalid && f.id_tipo_documento.untouched}">
+        </ng-select>
+        <div *ngIf="f.id_tipo_documento.invalid && (f.id_tipo_documento.dirty || f.id_tipo_documento.touched)">
+          <strong *ngIf="f.id_tipo_documento.errors.required" class="text-danger">Seleccione el tipo de
+            documento</strong>
+        </div>
+      </div>
+      <label for="fileaccionmonitoreomodal" class="col-12 col-md-3 mb-2">DOCUMENTO:</label>
+      <div class="col-12 col-md-9 mb-2">
+        <app-input-file idComp="fileaccionmonitoreomodal" (onChange)="fileChangeEvent($event)" class="input-group"
+          IdTipoArchivo="{{tipoArchivo}}" Value="{{ documentoAccion }}">
+        </app-input-file>
+      </div>
+    </div>
+    <strong class="text-danger">(*) Campos Obligatorios</strong>
+    <div class="row form-group">
+      <div class="col-12 clearfix">
+        <ng-container>
+          <div class="float-right">
+            <button class="btn btn-danger" type="submit" [disabled]="formRegistroAccionMonitoreoEstudio.invalid">
+              <i [ngClass]=" (cambiarEditar)? 'fa fa-edit' : 'fa fa-save'"></i>
+              Guardar</button>
+            <button class="btn btn-plomo ml-1" type="button" (click)="closeModal()"><i class="fa fa-arrow-left"></i>
+              Cerrar</button>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </form>
+</div>

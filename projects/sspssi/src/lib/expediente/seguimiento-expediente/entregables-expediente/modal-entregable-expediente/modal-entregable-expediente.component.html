@@ -1,0 +1,94 @@
+<div class="modal-header">
+  <h4 class="modal-title" *ngIf="!cambiarEditar">Registro de Avance - Elaboración Expediente Técnico</h4>
+  <p class="pb-2 pl-4 pr-4" *ngIf="!cambiarEditar">Registrar Avance Entrega de Informes</p>
+  <h4 class="modal-title" *ngIf="cambiarEditar">Edición de Avance - Elaboración Expediente Técnico</h4>
+  <p class="pb-2 pl-4 pr-4" *ngIf="cambiarEditar">Actualizar Avance Entrega de Informes</p>
+</div>
+<div class="modal-body">
+  <div class="group-box">
+    <form [formGroup]="formEdicionEntregable" autocomplete="off" (ngSubmit)="grabarEntregable()">
+      <div class="row form-group d-flex align-items-center">
+        <label class="col-sm-3 control-label" for="documento_aprobacion">Documento Aprobacion (*):</label>
+        <div class="col-sm-3">
+          <ng-select [items]="listaDocumentoAprobacion" [hidden]="cambiarEditar" bindLabel="denominacion"
+            bindValue="id_tipo_seguimiento_actividad" formControlName="documento_aprobacion" placeholder="Seleccione"
+            (change)="seleccionarCronograma($event)">
+          </ng-select>
+          <input class="form-control" type="text" formControlName="denominacion" readonly [hidden]="!cambiarEditar">
+        </div>
+        <label class="col-sm-3 control-label" for="id_informe">Nro. de informe (*):</label>
+        <div class="col-sm-3">
+          <ng-select [items]="listaInformes" bindLabel="nro_informe_expediente" bindValue="id_informe_expediente"
+            placeholder="Seleccione" formControlName="id_informe_expediente">
+          </ng-select>
+        </div>
+      </div>
+      <div class="row form-group d-flex align-items-center">
+        <label class="col-sm-3 control-label" for="fecha_presentacion">Fecha de presentación (*):</label>
+        <div class="col-sm-3">
+          <div class="inner-addon left-addon">
+            <i class="icono material-icons">event</i>
+            <input dTextBox class="form-control" type='text' name="fecha_presentacion" id="fecha_presentacion"
+              placeholder="dd/mm/aaaa" readonly formControlName="fecha_presentacion" bsDatepicker
+              [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es', containerClass: 'theme-red' }"
+              [minDate]="fecha_inicio_contractual" />
+          </div>
+          <span
+            [hidden]="formEdicionEntregable.get('fecha_presentacion').valid || formEdicionEntregable.get('fecha_presentacion').pristine"
+            class="alert alert-danger">
+            <span *ngIf="formEdicionEntregable.get('fecha_presentacion').errors?.required">
+              Este campo es obligatorio.
+            </span>
+          </span>
+        </div>
+        <label class="col-sm-3 control-label" for="nombre_archivo_presentacion">Subir Documento presentación:</label>
+        <div class="col-sm-3">
+          <app-input-file idComp="filedocumentopres" (onChange)="fileChangeEventDocumento($event)" class="input-group"
+            IdTipoArchivo="{{tipoArchivoDocumentoPresentacion}}" Value="{{ nombreArchivoDocumento }}"
+            [ngClass]="{'is-invalid': (formEdicionEntregable.get('nombre_archivo_presentacion').touched || formEdicionEntregable.get('nombre_archivo_presentacion').dirty) && !formEdicionEntregable.get('nombre_archivo_presentacion').valid }">
+          </app-input-file>
+        </div>
+      </div>
+      <div class="row form-group d-flex align-items-center">
+        <label class="col-sm-3 control-label" for="fecha_conformidad">Fecha de Conformidad:</label>
+        <div class="col-sm-3">
+          <div class="inner-addon left-addon">
+            <i class="icono material-icons">event</i>
+            <input dTextBox class="form-control" type='text' name="fecha_conformidad" id="fecha_conformidad"
+              placeholder="dd/mm/aaaa" readonly formControlName="fecha_conformidad" bsDatepicker
+              [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es', containerClass: 'theme-red' }"
+              [minDate]="fecha_inicio_contractual" />
+          </div>
+        </div>
+        <label class="col-sm-3 control-label" for="nombre_archivo_conformidad">Subir Documento Conformidad:</label>
+        <div class="col-sm-3">
+          <app-input-file idComp="filedocumentoaprob" (onChange)="fileChangeEventDocumentoAprob($event)"
+            class="input-group" IdTipoArchivo="{{tipoArchivoDocumentoAprob}}" Value="{{ nombreArchivoDocumentoAprob }}"
+            [ngClass]="{'is-invalid': (formEdicionEntregable.get('nombre_archivo_conformidad').touched || formEdicionEntregable.get('nombre_archivo_conformidad').dirty) && !formEdicionEntregable.get('nombre_archivo_conformidad').valid }">
+          </app-input-file>
+        </div>
+      </div>
+      <div class="row form-group d-flex align-items-center">
+        <label class="col-sm-3 control-label" for="monto_informe_neto">Monto de Informe Neto (*):</label>
+        <div class="col-sm-3">
+          <input class="form-control" type="text" id="monto_informe_neto" formControlName="monto_informe_neto"
+            placeholder="Ingrese Monto Neto" [textMask]="{mask: funciones.currencyMask}">
+        </div>
+      </div>
+      <div class="row form-group d-flex align-items-center">
+        <label class="col-sm-3 control-label" for="observacion">Observaciones:</label>
+        <div class="col-sm-9">
+          <textarea class="form-control" formControlName="observacion" name="observacion" id="observacion"
+            rows="5"></textarea>
+        </div>
+      </div>
+      <span class="comentario">(*)Campos Obligatorios</span>
+      <div class="modal-footer">
+        <button type="submit" id="btnGuardarEntregable" class="btn btn-danger"
+          [disabled]="formEdicionEntregable.invalid"><i class="fa fa-save"></i> Guardar</button>
+        <button class="btn btn-plomo" id="btnCancelar" type="button" (click)="closeModal()"><i
+            class="fa fa-arrow-left"></i> Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,107 @@
+<div class="row form-group">
+  <div class="col-6" [hidden]=!bEstado>
+    <button class="btn btn-plomo" (click)="nuevoRegistroAprobacionLiquidacionEstudio()"
+      *hasClaim="'monitoreo_tabRYL_regLiquidacion_nuevAprobLiquidacion_pre_inv_eje_dir'">
+      <i class="fa fa-plus"></i> Nuevo
+    </button>
+  </div>
+  <div class="col-6 text-right">
+    <label dlabels class="control-label">Última Actualización: </label>&nbsp;
+    <span>{{UltimaActualizacion}}</span>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-12 container-scroll">
+    <table class="table table-hover table-bordered table-responsive table-full-detalle">
+      <thead>
+        <tr>
+          <th>FECHA DE INFORME DE APROBACIÓN</th>
+          <th>INFORME DE APROBACIÓN</th>
+          <th>FECHA INFORME<br>APROBACIÓN - DIRECCIÓN EJECUTIVA </th>
+          <th>INFORME APROBACION - DIRECCIÓN</th>
+          <th *hasClaim="'monitoreo_tabRYL_regLiquidacion_editAprobLiquidacion_pre_inv_eje_dir'">ACCIONES</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let liquidacion of this.lstAprobacionLiquidacionEstudio">
+          <td>{{liquidacion.fecha_informe_aprobacion | date: 'dd/MM/yyyy'}}</td>
+          <td>
+            <div *ngIf="liquidacion.nombre_documento_informe_aprobacion != null ; else templateicono">
+              <a href="{{liquidacion.nombre_documento_informe_aprobacion}}" target="_blank" class="btn-icon" [LinkNube]="liquidacion.documento_accion_monitoreo" [Ruta]="liquidacion.ruta_documento_informe_aprobacion">
+                <i class="fa fa-15x">
+                  <img src="assets/img/icons/file.svg" alt="archivo">
+                </i>
+              </a>
+            </div>
+            <ng-template #templateicono>
+            </ng-template>
+          </td>
+          <td>{{liquidacion.fecha_aprobacion_resolucion | date: 'dd/MM/yyyy'}}</td>
+          <td>
+            <div *ngIf="liquidacion.nombre_documento_resolucion_aprobacion != null ; else templateicono">
+              <a href="{{liquidacion.ruta_documento_aprobacion_resolucion}}" target="_blank" class="btn-icon" [LinkNube]="liquidacion.nombre_documento_resolucion_aprobacion" [Ruta]="liquidacion.ruta_documento_aprobacion_resolucion">
+                <i class="fa fa-15x">
+                  <img src="assets/img/icons/file.svg" alt="archivo">
+                </i>
+              </a>
+            </div>
+            <ng-template #templateicono>
+            </ng-template>
+          </td>
+          <td *hasClaim="'monitoreo_tabRYL_regLiquidacion_editAprobLiquidacion_pre_inv_eje_dir'">
+            <a href="javascript:void(0)" (click)="modificarAprobacionLiquidacionEstudio(liquidacion)"
+              class="btn btn-sm btn-icon">
+              <i class="fa fa-15x">
+                <img src="assets/img/icons/pencil.svg" alt="editar">
+              </i>
+            </a>
+            <a href="javascript:void(0)" (click)="anularAprobacionLiquidacionEstudio(liquidacion.id_liquidacion)"
+              class="btn btn-sm btn-icon">
+              <i class="fa fa-15x">
+                <img src="assets/img/icons/trash.svg" alt="eliminar">
+              </i>
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-12">
+    <nav class="pt-4 pl-3 pull-right">
+      <pagination [totalItems]="totalRegistros" [boundaryLinks]="true" previousText="&lsaquo;" nextText="&rsaquo;"
+        [rotate]="false" firstText="&laquo;" lastText="&raquo;" [itemsPerPage]="itemsPerPage"
+        (pageChanged)="cambiarPagina($event)">
+      </pagination>
+    </nav>
+  </div>
+  <div *ngIf="aprobado" class="col-12">
+    <hr>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page">1.2. INFORMACIÓN DE LIQUIDACIÓN</li>
+      </ol>
+    </nav>
+    <div class="col-12">
+      <div class="row form-group">
+        <div class="col-sm-12 pt-3" *ngFor="let detalle of lstAprobacionLiquidacionEstudio">
+          <div class="pt-2">
+            <span class="f-w-6 f-s-12">FECHA:</span>
+            <span class="f-w-4 f-s-13"> {{detalle.fecha_resolucion_liquidacion | date: 'dd/MM/yyyy'}}</span>
+          </div>
+          <div>
+            <span class="f-w-6 f-s-12">MONTO DE LIQ.:</span>
+            <span class="f-w-4 f-s-13"> {{detalle.monto_liquidacion | currency: 'S/'}}</span>
+          </div>
+          <span class="f-w-6 f-s-12">RESOLUCIÓN DE LIQUIDACIÓN DE ELABORACIÓN DEL ESTUDIO DE
+            PREINVERSIÓN</span><br>
+          <span>
+            <a *ngIf="detalle.nombre_documento_liquidacion != ''" href="{{detalle.ruta_archivo_liquidacion_expediente}}"
+              target="_blank" class="mt-1 btn btn-secondary btn-sm btn-icon pt-0 pb-0 pr-2 pl-1" [LinkNube]="detalle.nombre_documento_liquidacion" [Ruta]="detalle.ruta_archivo_liquidacion_expediente">
+              <i class="mdi mdi-pdf-box"></i> {{detalle.resolucion_liquidacion}}
+            </a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

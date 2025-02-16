@@ -1,0 +1,30 @@
+{
+  "short_name": "SSP - MTC",
+  "name": "Sistema de Seguimiento de Proyectos - MTC",
+"background_color": "#dc3545",
+"theme_color": "#dc3545",
+"display":" fullscreen",
+  "icons": [
+    {
+      "src": "assets/img/icono.png",
+      "type": "image/png",
+      "sizes": "48x48"
+    },
+    {
+      "src": "assets/img/icono.png",
+      "type": "image/png",
+      "sizes": "96x96"
+    },
+    {
+      "src": "assets/img/icono.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "assets/img/icono.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "index.html?launcher=true"
+}

@@ -1,0 +1,101 @@
+<div class="modal-header">
+    <h4 class="modal-title">Edición de la Programación de Cronograma</h4>
+    <p class="pb-2 pl-4 pr-4">Edición de una programación valorizado de Ejecución de Obra</p>
+  </div>
+  
+  <div class="modal-body">
+    <div class="group-box">
+      <form (ngSubmit)="grabar()" [formGroup]="cronogramaForm">
+        <div class="row form-group" [hidden]="true">
+          <div class="col-sm-6">
+            <label class="control-label">Programación de Ejecución Financiera:</label>
+          </div>
+          <div class="col-sm-6">
+            <select class="form-control" name="cboProgramaEjecucionFinanciera" formControlName="id_programa_ejecucion_expediente">
+              <option value="0">Seleccione</option>
+              <option value="{{item.id_programa_ejecucion_expediente}}" *ngFor="let item of listaProgramaEjecucionFinanciera">
+                {{item.nombre_ejecucion_financiera_obra}}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="row form-group">
+          <div class="col-sm-6">
+            <label class="control-label">Documento de Aprobación:</label>
+          </div>
+          <div class="col-sm-6">
+            <select class="form-control" name="cboDocumentoAprobacion" #cboDocumentoAprobacion formControlName="id_documento_aprobacion_expediente">
+              <option value="0">Seleccione</option>
+              <option value="{{item.id_documento_aprobacion_expediente}}" *ngFor="let item of listaDocumentoAprobacion">
+                {{item.denominacion}}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="row form-group">
+          <div class="col-sm-6">
+            <label class="control-label" for="fecha_aprobación">Fecha de Aprobación</label>
+          </div>
+          <div class="col-sm-6">
+            <input type='text' class="form-control" name="fecha_aprobacion" id="fecha_aprobacion" placeholder="dd/mm/aaaa" bsDatepicker
+              [minDate]="fecha_inicio_contractual" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es', containerClass: 'theme-red' }"
+              readonly="readonly" formControlName="fecha_aprobacion" />
+          </div>
+        </div>
+        <div class="row form-group">
+          <div class="col-sm-6">
+            <label class="control-label">Documento:</label>
+          </div>
+          <div class="col-sm-6">
+              <set-input-file-listado idComp="fileInsert" (onChange)="fileChangeEvent($event)" class="input-group"  Value="{{Cronograma.nombre_archivo}}"></set-input-file-listado>
+            <!--<set-input-file idComp="fileInsert" (onChange)="fileChangeEvent($event)" class="input-group" IdTipoArchivo="{{tipoArchivo}}"  Value="{{Cronograma.archivo_convenio}}"></set-input-file>-->
+          </div>
+        </div>
+        <div class="row form-group">
+          <div class="col-sm-6">
+            <label class="control-label">Tipo de Definición:</label>
+          </div>
+          <div class="col-sm-6">
+            <label class="control-label">{{ Cronograma.tipo_actividad }}</label>
+          </div>
+        </div>
+  
+        <table class="table table-hover table-bordered table-responsive table-full-detalle">
+          <thead>
+            <th>ITEM</th>
+            <th>MES</th>
+            <th>VALORIZACIÓN PROGRAMADA</th>
+            <th>% DE AVANCE PROGRAMADO</th>
+          </thead>
+          <tbody formArrayName="lst_Detalle_Actividad_Ejecucion_Expediente" *ngFor="let item of getCronograma.controls; let i = index">
+            <tr [formGroupName]="i">
+              <td class="xs-hidden">{{ i + 1 }}</td>
+              <td>
+                <div class="xs-th">Mes :</div>{{ item.value.fecha_periodo }}</td>
+              <td>
+                <div class="xs-th">Valorización programada :</div>
+                <input type="text" id="{{ 'monto' + i }}" [textMask]="{mask: funciones.currencyMask}" class="form-control" formControlName="valoracion_programada"
+                />
+              </td>
+              <td>
+                <div class="xs-th">Avance programado :</div>
+                <input type="number" #avance min="0" max="100" step="0.01" (keyup)="avance.value = funciones.numberRange(avance.value,0,100)"
+                  (keypress)="funciones.IsFloat($event)" id="{{ 'avance' + i }}" class="form-control" formControlName="avance_programada"
+                  (blur)="validarSumaPorcentajes()" />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+  
+        <div class="modal-footer">
+          <button type="submit" id="btnGuardar" class="btn btn-danger" [disabled]="!esValidoSumaMontosAvanceProgramado" [hidden]=bMostrar>Guardar</button>
+          <button class="btn btn-danger" type="button" [hidden]=!bMostrar>
+            <i class="fa fa-save"></i> ....Procesando</button>
+          <button class="btn btn-plomo" id="btnCancelar" type="button" (click)="closeModal()">Cerrar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <!-- {{ Cronograma | json }} -->
+  <!-- {{ cronogramaForm.value | json }} -->

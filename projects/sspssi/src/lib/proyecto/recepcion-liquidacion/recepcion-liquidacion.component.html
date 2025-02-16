@@ -1,0 +1,45 @@
+<div class="tab-content" id="nav-tabContent">
+  <div class="tab-pane fade show active jumbotron container-fluid pt-4" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+    <accordion>
+      <div class="row" *hasClaim="'monitoreo_tabRYL_RecObra_listRecepcionObra_eje_dir'">
+        <div class="col-12">
+          <accordion-group [isOpen]="true">
+            <button class="btn btn-link btn-block clearfix" accordion-heading>
+              <div class="pull-left float-left">1. Recepción de la Obra</div>
+              <span class="badge float-right pull-right">
+                <i class="fa fa-circle-o"></i>
+              </span>
+            </button>
+            <ssi-recepcion-obra [idSeguimientoMonitoreoObra]="idSeguimientoMonitoreo" [bEstado]=true></ssi-recepcion-obra>
+          </accordion-group>
+        </div>
+      </div>
+      <div class="row" *hasClaim="'monitoreo_tabRYL_LiqSeg_listSegLiquidacion_eje_dir'">
+        <div class="col-12">
+          <accordion-group [isOpen]="false">
+            <button class="btn btn-link btn-block clearfix" accordion-heading>
+              <div class="pull-left float-left">2. Liquidación y Cierre Financiero</div>
+              <span class="badge float-right pull-right">
+                <i class="fa fa-circle-o"></i>
+              </span>
+            </button>
+            <ssi-seguimiento-liquidacion [idSeguimientoMonitoreoObra]="idSeguimientoMonitoreo" [bEstado]=true></ssi-seguimiento-liquidacion>
+          </accordion-group>
+        </div>
+      </div>
+      <div class="row" *hasClaim="'monitoreo_tabRYL_LiqSeg_listCierreProyecto_eje_dir'">
+        <div class="col-12">
+          <accordion-group [isOpen]="false">
+            <button class="btn btn-link btn-block clearfix" accordion-heading>
+              <div class="pull-left float-left">3. Cierre de Proyecto</div>
+              <span class="badge float-right pull-right">
+                <i class="fa fa-circle-o"></i>
+              </span>
+            </button>
+            <ssi-liquidacion-cierre-metas [idSeguimientoMonitoreoObra]="idSeguimientoMonitoreo" [bEstado]=true></ssi-liquidacion-cierre-metas>
+          </accordion-group>
+        </div>
+      </div>
+    </accordion>
+  </div>
+</div>

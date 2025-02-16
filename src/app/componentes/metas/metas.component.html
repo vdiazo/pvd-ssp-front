@@ -1,0 +1,166 @@
+<div class="container-fluid">
+  <div class="title-block">
+    <p class="page-title">Metas</p>
+  </div>
+</div>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-9">
+      <div class="card">
+        <div class="card-header"></div>
+        <div class="card-body">
+          <div class="row form-group">
+            <div class="col-sm-2 col-3">
+              <label dlabels class="control-label">GR / GL:</label>
+            </div>
+            <div class="col-sm-10 col-9">
+              <input [readonly]="estado_perfil" dTextBox class="form-control" style="text-transform: uppercase;" type='text'
+                name="txtNombreMunicipalidad" (keyup.enter)="mostrarProyectoInicial(beProyecto)" (focus)="limpiarAutocompleteMunicipalidad()"
+                matInput [formControl]="buscarMunicipalidad" [matAutocomplete]="aNombreProyecto" [(ngModel)]="beProyecto.nombre_municipalidad"
+                placeholder="GR / GL:" />
+              <mat-autocomplete #aNombreProyecto="matAutocomplete" (optionSelected)='mostrarMunicipalidadSeleccionado($event.option.value)'>
+                <mat-option *ngFor="let itemMunicipalidad of unidadesEjecutoras" [value]="itemMunicipalidad.id_municipalidad + '|' + itemMunicipalidad.nombre_municipalidad">
+                  {{ itemMunicipalidad.nombre_municipalidad }}
+                </mat-option>
+              </mat-autocomplete>
+            </div>
+          </div>
+          <div class="row form-group">
+            <div class="col-sm-2 col-3 pr-0">
+              <input dTextBox maxlength="20" (keypress)="funciones.IsNumberKey($event)" class="form-control" type='text'
+                name="txtCodigoSnip" (keyup.enter)="mostrarProyectoInicial(beProyecto)" [(ngModel)]="beProyecto.cod_snip_texto"
+                placeholder="SNIP / C.U." />
+            </div>
+            <div class="col-sm-10 col-9">
+              <input dTextBox class="form-control" style="text-transform: uppercase;" type='text' name="txtNombreProyecto"
+                (keyup.enter)="mostrarProyectoInicial(beProyecto)" (focus)="limpiarAutocomplete()" matInput
+                [formControl]="buscarProyecto" [matAutocomplete]="auto" [(ngModel)]="beProyecto.nombre_proyecto"
+                placeholder="Nombre del Proyecto" />
+              <mat-autocomplete #auto="matAutocomplete" (optionSelected)='mostrarProyectoSeleccionado($event.option.value)'>
+                <mat-option *ngFor="let itemProyecto of proyects" [value]="itemProyecto.id_proyecto + '|' + itemProyecto.nombre_proyecto">
+                  {{ itemProyecto.nombre_proyecto }}
+                </mat-option>
+              </mat-autocomplete>
+            </div>
+          </div>
+          <div class="row form-group">
+            <div class="col-md-2">
+              <label class="control-label">Región:</label>
+            </div>
+            <div class="col-md-8">
+              <ng-select [items]="listRegiones" placeholder="TODAS LAS REGIONES" bindLabel="departamento" bindValue="coddepa"
+                [(ngModel)]="beProyecto.cod_depa" name="region" id="region">
+              </ng-select>
+            </div>
+          </div>
+          <div class="row">
+
+            <div class="col-12">
+              <div class="pull-right">
+                <button class="btn btn-plomo mr-1" (click)="ConsultaPrincipal(beProyecto)" type="button" id="btnBuscar">
+                  <i class="fa fa-search"></i> Buscar</button>
+                <button class="btn mr-1" (click)="LimpiarControles()" type="button" id="btnLimpiar">
+                  <i class="icon icon-limpiar"></i> Limpiar</button>
+                <span *hasClaim="'monitoreo_listSeg_verReporte'">
+                  <button class="btn btn-exportar" (click)="exportarReportePrincipalGeneral()" type="button" id="btnExportarGeneral">
+                    <i class="icon icon-excel"></i> Exportar</button>
+                </span>
+
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3">
+      <div class="card card-auto card-white bg-lightblue-600">
+        <div class="card-body">
+          <div class="div-centrado text-center c-white">
+            <div class="f-s-5rem l-h-100">{{ListaProyecto.cantidad_registro}}</div>
+            <div>Proyectos</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid">
+  <div class="card card-default card-principal">
+    <div class="card-body">
+      <div class="group-box">
+        <div class="row">
+          <div class="col-12 container-scroll">
+ 
+            <table class="table table-hover table-bordered table-responsive table-principal">
+              <thead class="table-active">
+                <tr>
+                  <th rowspan="2">C.U.</th>
+                  <th rowspan="2">Snip</th>
+                  <th rowspan="2">Nombre del Proyecto</th>
+                  <th rowspan="2">Unidad Ejecutora</th>
+                  <th rowspan="2">
+                  </th>
+                </tr>
+              </thead>
+
+            <tbody *ngFor="let item of ListaProyecto.proyecto; index as i" class="panel">
+                <tr [style.background-color]="i%2==0 ? 'white': '#fafafa'" data-toggle="collapse" attr.data-target="#{{item.id_proyecto}}"
+                  data-parent="#myTable">
+<td class="xs-hidden">{{ item.cod_unificado}}</td>
+<td class="xs-hidden">{{ item.cod_snip }}</td>
+<td class="xs-hidden">{{ item.nombre_proyecto }}</td>
+<td class="xs-hidden">{{ item.nombre_municipalidad }}</td>
+<td class="xs-p-0">
+    <div class="xs-hidden">
+        <a class="btn-icon d-inline-block" href="javascript:void(0)" tooltip="Metas" (click)="AbrirModalMetas(item.id_proyecto)">
+          <i aria-hidden="true" class="fa fa-15x">
+            <img alt="exportar excel" src="assets/img/icons/metas.svg"></i></a>
+          
+          </div>
+
+
+          <div class="xs-display"><div class="p-4"><div>
+            <span class="xs-th">Proyecto</span>&nbsp;&nbsp;&nbsp; 
+            <span class="f-s-10"></span><span class="pull-right f-s-10"><a style="color: #4285f4;">SNIP: {{item.cod_snip}}</a></span>
+            <div class="text-justify"> {{ item.nombre_proyecto}} </div>
+            <hr class="mt-2 mb-2"></div>
+            <div>
+                <span class="xs-th">Unidad ejecutora:</span>&nbsp;&nbsp;
+                <span> {{ item.nombre_municipalidad}}</span>
+              </div></div>
+              <div class="xs-footer-lista xs-text-right p-2">
+                  <div class="xs-display">
+                    <span>
+                      <a href="javascript:void(0)" class="btn-icon" tooltip="Metas" (click)="AbrirModalMetas(item.id_proyecto)">
+                        <i class="icon"><img alt="exportar excel" src="assets/img/icons/metas.svg"></i>
+                      </a>
+                    </span>
+                  </div>
+                </div>
+              </div>
+</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <!-- pager -->
+        <div class="row">
+          <div class="col-12">
+            <nav class="pt-4 pl-3 pull-right">
+              <pagination [totalItems]="ListaProyecto.cantidad_registro" [itemsPerPage]="beProyecto.num_filas" [boundaryLinks]="true"
+                previousText="&lsaquo;" nextText="&rsaquo;" [rotate]="false" firstText="&laquo;" lastText="&raquo;" [(ngModel)]="paginaActiva"
+                [maxSize]="5" (pageChanged)="CambiarPagina($event)">
+              </pagination>
+            </nav>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

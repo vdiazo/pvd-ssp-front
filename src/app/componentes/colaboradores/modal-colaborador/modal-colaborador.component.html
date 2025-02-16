@@ -1,0 +1,146 @@
+<div class="modal-header">
+  <h4 class="modal-title">Registro de Colaboradores</h4>
+  <p class="pb-2 pl-4 pr-4">Registro y/o Actualización de un Colaborador</p>
+</div>
+
+<div class="modal-body">
+  <div class="group-box">
+    <form (ngSubmit)="procesarUsuarioColaborador()" [formGroup]="formGroup">
+      <fieldset formGroupName="colaboradorGroup">
+        <div class="form-group row">
+          <div class="col-md-2">
+            <label class="col-form-label">Usuario:</label>
+          </div>
+          <div class=" col-md-4">
+            <input type="text" id="txtUsuario" formControlName="usuario" class="form-control" [ngClass]="{'is-invalid': (formGroup.get('colaboradorGroup.usuario').touched || formGroup.get('colaboradorGroup.usuario').dirty) && !formGroup.get('colaboradorGroup.usuario').valid }">
+            <span class="invalid-feedback" style="width: 400px;">
+              <span *ngIf="formGroup.get('colaboradorGroup.usuario').errors?.required">
+                Este campo es obligatorio.
+              </span>
+              <span *ngIf="formGroup.get('colaboradorGroup.usuario').errors?.minlength">
+                El Usuario debe contener al menos 8 caracteres
+              </span>
+            </span>
+          </div>
+          <div class="col-md-2">
+            <label class="col-form-label">Contraseña:</label>
+          </div>
+          <div class=" col-md-4">
+            <input type="password" formControlName="contrasenia" class="form-control" [ngClass]="{'is-invalid': (formGroup.get('colaboradorGroup.contrasenia').touched || formGroup.get('colaboradorGroup.contrasenia').dirty) && !formGroup.get('colaboradorGroup.contrasenia').valid }">
+            <span class="invalid-feedback" style="width: 400px;">
+              <span *ngIf="formGroup.get('colaboradorGroup.contrasenia').errors?.required">
+                Este campo es obligatorio.
+              </span>
+              <span *ngIf="formGroup.get('colaboradorGroup.contrasenia').errors?.minlength">
+                La contraseña debe contener al menos 8 caracteres
+              </span>
+            </span>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-md-2">
+            <label for="" class="col-form-label">
+              Nombre del Usuario:
+            </label>
+          </div>
+          <div class="col-md-4">
+            <input type="text" formControlName="nombre_usuario" class="form-control" [ngClass]="{'is-invalid': (formGroup.get('colaboradorGroup.nombre_usuario').touched || formGroup.get('colaboradorGroup.nombre_usuario').dirty) && !formGroup.get('colaboradorGroup.nombre_usuario').valid }">
+            <span class="invalid-feedback" style="width: 400px;">
+              <span *ngIf="formGroup.get('colaboradorGroup.nombre_usuario').errors?.required">
+                Este campo es obligatorio.
+              </span>
+              <span *ngIf="formGroup.get('colaboradorGroup.nombre_usuario').errors?.minlength">
+                El Nombre de Usuario debe contener al menos 10 caracteres
+              </span>
+            </span>
+          </div>
+
+          <div class="col-md-2">
+            <label for="" class="col-form-label">
+              Correo Electrónico:
+            </label>
+          </div>
+          <div class=" col-md-4">
+            <input type="text" formControlName="correo_electronico" class="form-control" [ngClass]="{'is-invalid': (formGroup.get('colaboradorGroup.correo_electronico').touched || formGroup.get('colaboradorGroup.correo_electronico').dirty) && !formGroup.get('colaboradorGroup.correo_electronico').valid }">
+            <span class="invalid-feedback" style="width: 400px;">
+              <span *ngIf="formGroup.get('colaboradorGroup.correo_electronico').errors?.required">
+                Este campo es obligatorio.
+              </span>
+              <span *ngIf="formGroup.get('colaboradorGroup.correo_electronico').errors?.email">
+                Ingrese un correo electrónico válido.
+              </span>
+            </span>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-md-2">
+            <label for="" class="col-form-label">
+              Celular:
+            </label>
+          </div>
+          <div class=" col-md-4">
+            <input type="text" formControlName="celular" maxlength="9" OnlyNumber="true" class="form-control" [ngClass]="{'is-invalid': (formGroup.get('colaboradorGroup.celular').touched || formGroup.get('colaboradorGroup.celular').dirty) && !formGroup.get('colaboradorGroup.celular').valid }">
+            <span class="invalid-feedback" style="width: 200px;">
+              <span *ngIf="formGroup.get('colaboradorGroup.celular').errors?.required">
+                Este campo es obligatorio.
+              </span>
+              <span *ngIf="formGroup.get('colaboradorGroup.celular').errors?.minlength">
+                Ingrese un número de 8 digitos
+              </span>
+            </span>
+          </div>
+          <div class="col-md-2">
+            <label for="" class="col-form-label">
+              DNI:
+            </label>
+          </div>
+          <div class=" col-md-4">
+            <input type="text" formControlName="dni_usuario" maxlength="8" OnlyNumber="true" class="form-control"
+              [ngClass]="{'is-invalid': (formGroup.get('colaboradorGroup.dni_usuario').touched || formGroup.get('colaboradorGroup.dni_usuario').dirty) && !formGroup.get('colaboradorGroup.dni_usuario').valid }">
+            <span class="invalid-feedback" style="width: 200px;">
+              <span *ngIf="formGroup.get('colaboradorGroup.dni_usuario').errors?.required">
+                Este campo es obligatorio.
+              </span>
+              <span *ngIf="formGroup.get('colaboradorGroup.dni_usuario').errors?.minlength">
+                Ingrese un número de 8 digitos
+              </span>
+            </span>
+          </div>
+        </div>
+      </fieldset>
+
+      <div class="card-head"><b>Seleccione al menos un Tramo de un Proyecto (Obligatorio)</b></div>
+      <div class="row">
+        <div class="col-12 container-scroll">
+          <table class="table table-hover table-responsive table-normal">
+            <thead>
+              <th>Nombre Proyecto</th>
+              <th>Nombre Tramo</th>
+              <th>Seleccionar</th>
+            </thead>
+            <tr *ngFor="let item of tramos">
+              <td class="text-left">{{ item.nombre_proyecto }}</td>
+              <td class="text-left">{{ item.nombre_tramo }}</td>
+              <td><input type="checkbox" [checked]="item.seleccionado" (change)="AddOrRemoveTramoToColaborador(item, $event)" /></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-danger" type="submit" id="btnGuardar" [disabled]="!formGroup.valid || !tieneSeleccionTramos"><i
+            class="fa fa-save"></i>
+          Guardar</button>
+        <button class="btn btn-plomo" id="btnCancelar" type="button" (click)="closeModal()"><i class="fa fa-arrow-left"></i>
+          Cancelar</button>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+
+
+<!-- {{ tieneSeleccionTramos }} -->
+<!-- {{ formGroup.value | json }} -->
+<!-- {{ formGroup.get("colaboradorGroup").valid }} -->

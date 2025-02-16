@@ -1,0 +1,10 @@
+<div class="modal-header">
+</div>
+<div class="modal-body" style="width: 100%; height: 100%; margin: 0">
+  <iframe [src]="ruta_mapa | safe" class="app-mapa">
+  </iframe>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-plomo" id="btnCancelar" type="button" (click)="closeModal()"><i class="fa fa-arrow-left"></i>
+    Cancelar</button>
+</div>

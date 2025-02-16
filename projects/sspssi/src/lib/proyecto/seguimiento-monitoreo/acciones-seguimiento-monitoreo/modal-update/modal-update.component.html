@@ -1,0 +1,80 @@
+<div class="modal-header">
+  <h4 class="modal-title">Edición Acción de Seguimiento y Monitoreo</h4>
+  <p class="pb-2 pl-4 pr-4">Edición de una nueva acción y seguimiento y monitoreo</p>
+</div>
+
+<div class="modal-body">
+  <div class="group-box">
+    <form (ngSubmit)="save()" [formGroup]="formGroup">
+      <!-- <div class="row form-group">
+        <div class="col-sm-6">
+          <label class="control-label">Acción seguimiento y monitoreo (*):</label>
+        </div>
+        <div class="col-sm-6">
+          <select class="form-control" name="cboAccionSeguimiento" formControlName="id_acciones_seguimiento_pvd">
+            <option value="0">Seleccione</option>
+            <option value="{{item.id_acciones_seguimiento_pvd}}" *ngFor="let item of listaAccionesSeguimiento">
+              {{item.acciones_seguimiento}}
+            </option>
+          </select>
+        </div>
+      </div> -->
+
+      <div class="row form-group">
+        <div class="col-sm-6">
+          <label class="control-label">Fecha de la acción de monitoreo (*):</label>
+        </div>
+        <div class="col-sm-6">
+          <input type='text' class="form-control" name="fecha" id="fecha" formControlName="fecha"
+            placeholder="dd/mm/aaaa" bsDatepicker
+            [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es', containerClass: 'theme-red' }"
+            readonly="readonly" />
+        </div>
+      </div>
+
+      <div class="row form-group">
+        <div class="col-sm-6">
+          <label class="control-label">Descripcion de la acción de monitoreo (*):</label>
+        </div>
+        <div class="col-sm-6">
+          <textarea class="form-control" type='multiline' name="comentario" id="comentario"
+            formControlName="descripcion"></textarea>
+        </div>
+      </div>
+
+      <div class="row form-group">
+        <div class="col-sm-6">
+          <label class="control-label">Tipo Documento (*):</label>
+        </div>
+        <div class="col-sm-6">
+          <select class="form-control" name="cboTipoDocumento" formControlName="id_tipo_documento">
+            <option value="0">Seleccione</option>
+            <option value="{{item.id_tipo_documento}}" *ngFor="let item of listaTipoDocumento">
+              {{item.nombre_tipo_documento}}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row form-group">
+        <div class="col-sm-6">
+          <label class="control-label">Documento (*):</label>
+        </div>
+        <div class="col-sm-6">
+          <app-input-file idComp="fileInsert" (onChange)="fileChangeEvent($event)" class="input-group"
+            IdTipoArchivo="{{tipoArchivo}}" Value="{{editRow.nombre_archivo}}"></app-input-file>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" id="btnGuardar" class="btn btn-danger" [hidden]=bMostrar><i class="fa fa-save"></i>
+          Guardar</button>
+        <button class="btn btn-danger" type="button" [hidden]=!bMostrar>
+          <i class="fa fa-save"></i> ....Procesando</button>
+        <button class="btn btn-plomo" id="btnCancelar" type="button" (click)="closeModal()"><i
+            class="fa fa-arrow-left"></i> Cerrar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- {{ formGroup.value | json }} -->

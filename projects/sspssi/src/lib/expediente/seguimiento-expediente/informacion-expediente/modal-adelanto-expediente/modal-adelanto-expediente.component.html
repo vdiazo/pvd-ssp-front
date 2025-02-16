@@ -1,0 +1,213 @@
+<div class="modal-header">
+  <h4 class="modal-title">Adelanto Directo</h4>
+  <p class="pb-2 pl-4 pr-4">Registro de Adelanto Directo</p>
+</div>
+
+<div class="modal-body">
+  <div class="group-box">
+    <ng-container *hasClaim="'monitoreo_tabSeg_infExpediente_regAdelantoDirecto_exp_tec_eje_dir'">
+      <form [formGroup]="formAdelantoExpediente" (ngSubmit)="grabarAdelantoExpediente()" autocomplete="off">
+        <div class="row form-group">
+          <div class="col-md-2">
+            <label class="control-label">Descripción (*):</label>
+          </div>
+          <div class="col-md-6">
+            <input type="text" id="txtDescripcion" class="form-control text-uppercase"
+              formControlName="nombre_adelanto_directo">
+            <span
+              [hidden]="formAdelantoExpediente.get('nombre_adelanto_directo').valid || formAdelantoExpediente.get('nombre_adelanto_directo').pristine"
+              class="alert alert-danger">
+              <span *ngIf="formAdelantoExpediente.get('nombre_adelanto_directo').errors?.required">
+                El campo Descripción es obligatorio.
+              </span>
+            </span>
+          </div>
+        </div>
+        <div class="row form-group">
+          <div class="col-md-2">
+            <label class="control-label">Monto de Adelanto (*):</label>
+          </div>
+          <div class="col-md-3">
+            <input type="text" id="monto_adelanto" class="form-control" formControlName="monto_adelanto"
+              [textMask]="{mask: funciones.currencyMask}">
+
+            <span
+              [hidden]="formAdelantoExpediente.get('monto_adelanto').valid || formAdelantoExpediente.get('monto_adelanto').pristine"
+              class="alert alert-danger">
+              <span *ngIf="formAdelantoExpediente.get('monto_adelanto').errors?.required">
+                El campo Monto de Adelanto es obligatorio.
+              </span>
+            </span>
+          </div>
+        </div>
+        <div class="row form-group">
+          <div class="col-md-2">
+            <label class="control-label">Entidad Financiera (*):</label>
+          </div>
+          <div class="col-md-6">
+            <input type="text" id="entidad_financiera" class="form-control text-uppercase"
+              formControlName="entidad_financiera">
+            <span
+              [hidden]="formAdelantoExpediente.get('entidad_financiera').valid || formAdelantoExpediente.get('entidad_financiera').pristine"
+              class="alert alert-danger">
+              <span *ngIf="formAdelantoExpediente.get('entidad_financiera').errors?.required">
+                El campo Entidad Financiera es obligatorio.
+              </span>
+            </span>
+          </div>
+        </div>
+
+        <div class="row form-group">
+          <div class="col-md-2">
+            <label class="control-label">Fecha Inicio (*):</label>
+          </div>
+          <div class="col-md-3">
+            <div class="inner-addon left-addon">
+              <i class="icono material-icons">event</i>
+              <input type="text" id="fecha_inicio" class="form-control" formControlName="fecha_inicio"
+                placeholder="dd/mm/aaaa" [maxDate]="maxDate" bsDatepicker
+                [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es', containerClass: 'theme-red' }" readonly>
+            </div>
+            <span
+              [hidden]="formAdelantoExpediente.get('fecha_inicio').valid || formAdelantoExpediente.get('fecha_inicio').pristine"
+              class="alert alert-danger">
+              <span *ngIf="formAdelantoExpediente.get('fecha_inicio').errors?.required">
+                El campo Fecha Inicio es obligatorio.
+              </span>
+            </span>
+          </div>
+        </div>
+
+        <div class="row form-group">
+          <div class="col-md-2">
+            <label class="control-label">Fecha Fin (*):</label>
+          </div>
+          <div class="col-md-3">
+            <div class="inner-addon left-addon">
+              <i class="icono material-icons">event</i>
+              <input type="text" id="fecha_termino" class="form-control" formControlName="fecha_termino"
+                [minDate]="minDate" placeholder="dd/mm/aaaa" bsDatepicker
+                [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es', containerClass: 'theme-red' }" readonly>
+            </div>
+            <span
+              [hidden]="formAdelantoExpediente.get('fecha_termino').valid || formAdelantoExpediente.get('fecha_termino').pristine"
+              class="alert alert-danger">
+              <span *ngIf="formAdelantoExpediente.get('fecha_termino').errors?.required">
+                El campo Fecha Fin es obligatorio.
+              </span>
+            </span>
+          </div>
+        </div>
+
+        <div class="row form-group">
+          <div class="col-md-2">
+            <label class="control-label">Monto de la Garantia (*):</label>
+          </div>
+          <div class="col-md-3">
+            <input type="text" id="txtMontoGarantia" class="form-control" formControlName="monto_garantia"
+              [textMask]="{mask: funciones.currencyMask}">
+            <span
+              [hidden]="formAdelantoExpediente.get('monto_garantia').valid || formAdelantoExpediente.get('monto_garantia').pristine"
+              class="alert alert-danger">
+              <span *ngIf="formAdelantoExpediente.get('monto_garantia').errors?.required">
+                El campo Monto de la Garantia es obligatorio.
+              </span>
+            </span>
+          </div>
+        </div>
+
+        <div class="row form-group">
+          <div class="col-md-2">
+            <label class="control-label">Documento (*):</label>
+          </div>
+          <div class="col-md-5">
+            <app-input-file idComp="fileadelantomodal" (onChange)="fileChangeEvent($event)" class="input-group"
+              IdTipoArchivo="{{tipoArchivo}}" Value="{{ nombreArchivo }}">
+            </app-input-file>
+            <p></p>
+          </div>
+        </div>
+        <span class="comentario">(*)Campos Obligatorios</span>
+        <div class="modal-footer" [hidden]=!bEstado>
+          <button type="submit" id="btnGuardar" class="btn btn-danger" [hidden]=bMostrar
+            [disabled]="!formAdelantoExpediente.valid"
+            *hasClaim="'monitoreo_tabSeg_infObra_regAdelantoDirecto_eje_dir'"><i class="fa fa-save"></i>
+            Guardar</button>
+          <button class="btn btn-danger" type="button" [hidden]=!bMostrar>
+            <i class="fa fa-save"></i> ....Procesando</button>
+          <button type="button" id="btnLimpiar" class="btn btn-default"
+            (click)="formAdelantoExpediente.reset();setControles()"
+            *hasClaim="'monitoreo_tabSeg_infObra_delAdelantoDirecto_eje_dir'"> <i class="icon icon-limpiar"></i>
+            Limpiar</button>
+        </div>
+      </form>
+    </ng-container>
+  </div>
+  <div class="row form-group">
+    <div class="col-12 container-scroll">
+      <table class="table table-hover table-responsive">
+        <thead class="table-active">
+          <tr>
+            <th>DESCRIPCIÓN</th>
+            <th>MONTO DE ADELANTO</th>
+            <th>ENTIDAD FINANCIERA</th>
+            <th>FECHA DE VIGENCIA</th>
+            <th>MONTO DE LA GARANTIA</th>
+            <th>DOCUMENTO</th>
+            <th [hidden]=!bEstado *hasClaim="'monitoreo_tabSeg_infExpediente_regAdelantoDirecto_exp_tec_eje_dir'"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of listaAdelantoExpediente">
+            <td class="xs-hidden text-left">{{ item.nombre_adelanto_directo }}</td>
+            <td class="xs-hidden text-right">{{ item.monto_adelanto | formatoMoneda }}</td>
+            <td class="xs-hidden text-left">{{ item.entidad_financiera }}</td>
+            <td class="xs-hidden text-center">{{ item.fecha_inicio }} - {{ item.fecha_termino }}</td>
+            <td class="xs-hidden text-right">{{ item.monto_garantia | formatoMoneda }}</td>
+            <td class="xs-hidden text-center">
+              <div *ngIf="item.ruta_archivo; else templateicono">
+                <a href="{{ item.ruta_archivo }}" target="_blank" [LinkNube]="item.nombre_archivo" [Ruta]="item.ruta_archivo" class="btn-icon mr-1">
+                  <i class="fa fa-15x">
+                    <img src="assets/img/icons/file.svg" alt="archivo">
+                  </i>
+                </a>
+              </div>
+              <ng-template #templateicono>
+              </ng-template>
+            </td>
+            <td class="xs-footer-lista xs-text-right" [hidden]=!bEstado
+              *hasClaim="'monitoreo_tabSeg_infExpediente_regAdelantoDirecto_exp_tec_eje_dir'">
+              <div class="xs-hidden pre-wrap">
+                <a href="javascript:void(0)" (click)="editarAdelantoExpediente(item)" class="btn btn-sm btn-icon"
+                  *hasClaim="'monitoreo_tabSeg_infObra_editAdelantoMateriales_eje_dir'">
+                  <i class="fa fa-15x">
+                    <img src="assets/img/icons/pencil.svg" alt="editar">
+                  </i>
+                </a>
+                <a href="javascript:void(0)" (click)="eliminarAdelantoExpediente(item.id_adelanto_directo)"
+                  class="btn btn-sm btn-icon" *hasClaim="'monitoreo_tabSeg_infObra_delAdelantoMateriales_eje_dir'">
+                  <i class="fa fa-15x">
+                    <img src="assets/img/icons/trash.svg" alt="eliminar">
+                  </i>
+                </a>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="col-12">
+      <nav class="pt-4 pl-3 pull-right">
+        <pagination [totalItems]="totalRegistros" [itemsPerPage]="numPaginasMostrar" [boundaryLinks]="true"
+          previousText="&lsaquo;" nextText="&rsaquo;" [rotate]="false" firstText="&laquo;" lastText="&raquo;"
+          [maxSize]="5" (pageChanged)="cambiarPagina($event)">
+        </pagination>
+      </nav>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-plomo" id="btnCancelar" type="button" (click)="closeModal()"><i class="fa fa-close"></i>
+    Cerrar</button>
+</div>

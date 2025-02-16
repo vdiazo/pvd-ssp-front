@@ -1,0 +1,28 @@
+@media (min-width: 992px){
+    .modal-dialog {
+        max-width: 800px !important;
+    }
+}
+@media (min-width: 576px){
+    .modal-dialog {
+        max-width: 500px;
+        margin: 1.75rem auto;
+    }
+}
+.note{
+    font-size: 10px;
+    color: red;
+    margin-left: 17%;
+}
+
+input.form-control.ng-untouched.ng-pristine.ng-invalid {
+    border-color: lightskyblue
+}
+
+.modal-content{
+    font-family: 'Lato', sans-serif;
+}
+
+label{
+    font-family: 'Lato-Bold', sans-serif;
+}

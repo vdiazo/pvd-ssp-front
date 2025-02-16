@@ -1,0 +1,154 @@
+<div class="modal-header">
+  <h4 class="modal-title" [hidden] ="!cambiarEditar">Nuevo Geo Tramo</h4>
+  <h4 class="modal-title" [hidden] ="cambiarEditar">Editar Geo Tramo</h4>
+  <p class="pl-4 pr-4" [hidden] ="!cambiarEditar">Formulario para el registro de geo tramo</p>
+  <p class="pl-4 pr-4" [hidden] ="cambiarEditar">Formulario para la edición de geo tramo</p>
+</div>
+<div class="modal-body">
+  <form (ngSubmit)="administrarGEO();" #GEOGrabarForm="ngForm" [hidden] ="!cambiarEditar">
+    <div class="row form-group">
+      <label dlabels class="col-md-2 control-label">Tramo:</label>
+      <div class="col-md-10">
+        <ng-select [items]="tramos"
+          placeholder="Seleccione un tramo"
+          bindLabel="nombre_tramo"
+          bindValue="id_tramo"
+          [(ngModel)]="entidadModal.id_tramo"
+          #id_tramo="ngModel"
+        name="id_tramo">
+        </ng-select>
+      </div>
+    </div> 
+    <div class="row form-group">
+      <label dlabels class="col-md-2 control-label">Longitud:</label>
+      <div class="col-md-4">
+        <input dTextBox class="form-control" type='text' [textMask]="{mask: funciones.currencyMask}" name="longitud" placeholder="Ingrese la longitud del tramo" [(ngModel)]="entidadModal.longitud" />
+      </div>
+      <label dlabels class="col-md-2 control-label">Unidad de Medida:</label>
+      <div class="col-md-4">
+          <ng-select [items]="UnidadMedidas"
+          placeholder="Seleccione una unidad de medida"
+          bindLabel="nombre_unidad_medida"
+          bindValue="id_unidad_medida"
+          [(ngModel)]="entidadModal.id_unidad_medida"
+          #id_tramo="ngModel"
+          name="id_unidad_medida">
+          </ng-select>
+      </div>
+    </div>
+    <div class="row form-group">
+      <label dlabels class="col-md-2 control-label">Código de clasificador de rutas:</label>
+      <div class="col-md-4">
+        <input dTextBox class="form-control" type='text' name="codigo_clasificador_ruta" placeholder="Ingrese el código de clasificador de rutas" [(ngModel)]="entidadModal.codigo_clasificador_ruta" />
+      </div>
+      <label dlabels class="col-md-2 control-label">Nombre de Camino:</label>
+      <div class="col-md-4">
+        <input dTextBox class="form-control" type='text' name="nombre_camino" placeholder="Ingrese el nombre del camino" [(ngModel)]="entidadModal.nombre_camino" />
+      </div>
+    </div>
+    <div class="row form-group">
+      <label dlabels class="col-md-2 control-label">Código de provisional de rutas:</label>
+      <div class="col-md-4">
+        <input dTextBox class="form-control" type='text' name="codigo_provisional_ruta" placeholder="Ingrese el código de provisional de rutas" [(ngModel)]="entidadModal.codigo_provisional_ruta" />
+      </div>
+      <label dlabels class="col-md-2 control-label">Descripción provisional:</label>
+      <div class="col-md-4">
+        <input dTextBox class="form-control" type='text' name="descripcion_provisional" placeholder="Ingrese la descripción provisional" [(ngModel)]="entidadModal.descripcion_provisional" />
+      </div>
+    </div> 
+    <div class="row form-group">
+      <label dlabels class="col-md-2 control-label">Código de zona:</label>
+      <div class="col-md-4">
+        <ng-select [items]="codigosZonas"
+          placeholder="Seleccione un código de zona"
+          bindLabel="zona"
+          bindValue="codigo_zona"
+          [(ngModel)]="entidadModal.codigo_zona"
+        name="codigo_zona">
+        </ng-select>
+      </div>
+        <label dlabels class="col-md-2 control-label">ARCHIVO</label>
+        <div class="col-md-4">
+          <app-input-file idComp="filegeotramograbar" (onChange)="fileChangeEvent($event)" IdTipoArchivo="" class="input-group" Solo="seeee" Extensiones=".zip"></app-input-file>
+          <!--  Value="{{this.entidadEditar.archivo_convenio}}"  -->
+        </div>
+    </div>  
+    <div class="modal-footer">
+      <button class="btn btn-danger" type="submit" id="btnGuardar" [disabled]="!GEOGrabarForm.form.valid"><i class="fa fa-save"></i> Guardar</button>
+      <button class="btn btn-plomo" id="btnCancelar" type="button" (click)="closeModal()"><i class="fa fa-arrow-left"></i> Cancelar</button>
+    </div>
+  </form>
+  <form (ngSubmit)="administrarGEO();" #GEOEditarForm="ngForm" [hidden] ="cambiarEditar">
+      <div class="row form-group">
+          <label dlabels class="col-md-2 control-label">Tramo:</label>
+          <div class="col-md-10">
+            <ng-select  [items]="tramos"
+              placeholder="Seleccione un tramo"
+              bindLabel="nombre_tramo"
+              bindValue="id_tramo"
+              [(ngModel)]="entidadModal.id_tramo"
+              #id_tramo="ngModel"
+            name="id_tramo">
+            </ng-select>
+          </div>
+        </div> 
+        <div class="row form-group">
+          <label dlabels class="col-md-2 control-label">Longitud:</label>
+          <div class="col-md-4">
+            <input dTextBox class="form-control" type='text' [textMask]="{mask: funciones.currencyMask}" name="longitud" placeholder="Ingrese la longitud del tramo" [(ngModel)]="entidadModal.longitud" />
+          </div>
+          <label dlabels class="col-md-2 control-label">Unidad de Medida:</label>
+          <div class="col-md-4">
+              <ng-select [items]="UnidadMedidas"
+              placeholder="Seleccione una unidad de medida"
+              bindLabel="nombre_unidad_medida"
+              bindValue="id_unidad_medida"
+              [(ngModel)]="entidadModal.id_unidad_medida"
+              #id_tramo="ngModel"
+              name="id_unidad_medida">
+              </ng-select>
+          </div>
+        </div>
+        <div class="row form-group">
+          <label dlabels class="col-md-2 control-label">Código de clasificador de rutas:</label>
+          <div class="col-md-4">
+            <input dTextBox class="form-control" type='text' name="codigo_clasificador_ruta" placeholder="Ingrese el código de clasificador de rutas" [(ngModel)]="entidadModal.codigo_clasificador_ruta" />
+          </div>
+          <label dlabels class="col-md-2 control-label">Nombre de Camino:</label>
+          <div class="col-md-4">
+            <input dTextBox class="form-control" type='text' name="nombre_camino" placeholder="Ingrese el nombre del camino" [(ngModel)]="entidadModal.nombre_camino" />
+          </div>
+        </div>
+        <div class="row form-group">
+          <label dlabels class="col-md-2 control-label">Código de provisional de rutas:</label>
+          <div class="col-md-4">
+            <input dTextBox class="form-control" type='text' name="codigo_provisional_ruta" placeholder="Ingrese el código de provisional de rutas" [(ngModel)]="entidadModal.codigo_provisional_ruta" />
+          </div>
+          <label dlabels class="col-md-2 control-label">Descripción provisional:</label>
+          <div class="col-md-4">
+            <input dTextBox class="form-control" type='text' name="descripcion_provisional" placeholder="Ingrese la descripción provisional" [(ngModel)]="entidadModal.descripcion_provisional" />
+          </div>
+        </div> 
+        <div class="row form-group">
+          <label dlabels class="col-md-2 control-label">Código de zona:</label>
+          <div class="col-md-4">
+            <ng-select [items]="codigosZonas"
+              placeholder="Seleccione un código de zona"
+              bindLabel="zona"
+              bindValue="codigo_zona"
+              [(ngModel)]="entidadModal.codigo_zona"
+            name="codigo_zona">
+            </ng-select>
+          </div>
+            <label dlabels class="col-md-2 control-label">ARCHIVO</label>
+            <div class="col-md-4">
+              <app-input-file idComp="filegeotramoeditar" (onChange)="fileChangeEvent($event)" IdTipoArchivo="" class="input-group" Solo="seeee" Extensiones=".zip"></app-input-file>
+              <!--  Value="{{this.entidadEditar.archivo_convenio}}"  -->
+            </div>
+        </div> 
+    <div class="modal-footer">
+      <button class="btn btn-danger" type="submit" id="btnGuardar" [disabled]="!GEOEditarForm.form.valid"><i class="fa fa-save"></i> Guardar</button>
+      <button class="btn btn-plomo" id="btnCancelar" type="button" (click)="closeModal()"><i class="fa fa-arrow-left"></i> Cancelar</button>
+    </div>
+  </form>
+</div>

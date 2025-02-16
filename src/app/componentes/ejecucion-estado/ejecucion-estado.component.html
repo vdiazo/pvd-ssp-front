@@ -1,0 +1,177 @@
+<div class="tab-content" id="nav-tabContent">
+  <div class="tab-pane fade show active jumbotron container-fluid pt-4" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+    <accordion>
+      <div *ngIf="id_seguimientoMonitoreoObra"></div>
+      <div class="row">
+        <div class="col-12" >
+          <accordion-group [isOpen]="isOpen" [panelClass]="separator" *hasClaim="'monitoreo_tabSeg_infObra_listInfObra'">
+            <button class="btn btn-link btn-block clearfix" accordion-heading>
+              <div class="pull-left float-left">1. Información de inicio de obra</div>
+              <span class="badge float-right pull-right">
+                <i class="fa fa-circle-o"></i>
+              </span>
+            </button>
+            <app-informacion-obra *ngIf="divMostrarInformacionObra" [idSeguimientoMonitoreoObra]="idSeguimientoMonitoreo" [idFase]="idFase" [idTramo]="idTramo" [bEstado]=true [bEstadoHistorial]=false
+            (eventInformacionObra)="setIdSegMonitoreo($event)"></app-informacion-obra>
+            
+          </accordion-group>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <accordion-group [panelClass]="separator" *hasClaim="'monitoreo_tabSeg_divResponsable'">
+            <button class="btn btn-link btn-block clearfix" accordion-heading>
+              <div class="pull-left float-left">2. Responsables</div>
+              <span class="badge float-right pull-right">
+                <i class="fa fa-circle-o"></i>
+              </span>
+            </button>
+            <app-asignacion-responsable *ngIf="divSegMonitoreo" [idSeguimientoMonitoreoObra]="idSeguimientoMonitoreo" [bEstado]=true>
+            </app-asignacion-responsable>
+          </accordion-group>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <accordion-group [panelClass]="separator" *hasClaim="'monitoreo_tabSeg_regCronograma_listCronograma'">
+            <button class="btn btn-link btn-block clearfix" accordion-heading>
+              <div class="pull-left float-left">3. Programación de Cronograma Valorización de Ejecución de Obra</div>
+              <span class="badge float-right pull-right">
+                <i class="fa fa-circle-o"></i>
+              </span>
+            </button>
+            <app-cronograma *ngIf="divSegMonitoreo" [idSeguimientoMonitoreoObra]="idSeguimientoMonitoreo" [bEstado]=true [guid]="guid"
+              [fecha_inicio_contractual]="fecha_inicio_contractual"></app-cronograma>
+          </accordion-group>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <accordion-group [panelClass]="separator" *hasClaim="'monitoreo_tabSeg_obraValorizaciones_listObraValorizaciones'">
+            <button class="btn btn-link btn-block clearfix" accordion-heading>
+              <div class="pull-left float-left">4. Avance de obra según valorizaciones</div>
+              <span class="badge float-right pull-right">
+                <i class="fa fa-circle-o"></i>
+              </span>
+            </button>
+            <app-valorizaciones *ngIf=divSegMonitoreo [snip]="snip" [idSeguimientoMonitoreoObra]="idSeguimientoMonitoreo" [bEstado]=true></app-valorizaciones>
+          </accordion-group>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <accordion-group [panelClass]="separator">
+            <button class="btn btn-link btn-block clearfix" accordion-heading>
+              <div class="pull-left float-left">5. Acciones de Seguimiento y Monitoreo - UEI</div>
+              <span class="badge float-right pull-right">
+                <i class="fa fa-circle-o"></i>
+              </span>
+            </button>
+            <app-acciones-seguimiento-monitoreo [idSeguimientoMonitoreoObra]="idSeguimientoMonitoreo" [bEstado]=true [idFase]="idFase" tipoPerfil="UEI">
+            </app-acciones-seguimiento-monitoreo>
+          </accordion-group>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <accordion-group [panelClass]="separator" *hasClaim="'monitoreo_tabSeg_divPeriodoParalizacion_UEI'">
+            <button class="btn btn-link btn-block clearfix" accordion-heading>
+              <div class="pull-left float-left">6. Acciones de Seguimiento y Monitoreo del periodo de paralización - suspensión - UEI
+              </div>
+              <span class="badge float-right pull-right">
+                <i class="fa fa-circle-o"></i>
+              </span>
+            </button>
+            <div class="group-box"><!--*ngIf=divSegMonitoreo-->
+                <accordion-group [panelClass]="separator">
+                  <button class="btn btn-link btn-block clearfix" accordion-heading>
+                      <div class="pull-left float-left">Registro de Suspensiones
+                      </div>
+                      <span class="badge float-right pull-right">
+                        <i class="fa fa-circle-o"></i>
+                      </span>
+                  </button>
+                  <div class="group-box">
+                      <app-periodo-suspension (emitEventInformacionObra)="refrescarInformacionObra()" [idSeguimientoMonitoreoObra]="idSeguimientoMonitoreo" tipoPerfil="UEI" [bEstado]=true></app-periodo-suspension>
+                  </div>
+                </accordion-group>
+
+                <accordion-group [panelClass]="separator">
+                  <button class="btn btn-link btn-block clearfix" accordion-heading>
+                      <div class="pull-left float-left">Registro de Paralizaciones
+                      </div>
+                      <span class="badge float-right pull-right">
+                        <i class="fa fa-circle-o"></i>
+                      </span>
+                  </button>
+                  <div class="group-box">
+                      <app-periodo-paralizacion *ngIf=divSegMonitoreo [idSeguimientoMonitoreoObra]="idSeguimientoMonitoreo" tipoPerfil="UEI" [bEstado]=true>
+                      </app-periodo-paralizacion>
+                  </div>
+                </accordion-group>
+            </div>
+          </accordion-group>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <accordion-group [panelClass]="separator" *hasClaim="'monitoreo_tabSeg_divAccionSeguimientoMonitoreo'">
+            <button class="btn btn-link btn-block clearfix" accordion-heading>
+              <div class="pull-left float-left">5. Acciones de Seguimiento y Monitoreo - PVD</div>
+              <span class="badge float-right pull-right">
+                <i class="fa fa-circle-o"></i>
+              </span>
+            </button>
+            <app-acciones-seguimiento-monitoreo [idSeguimientoMonitoreoObra]="idSeguimientoMonitoreo" [bEstado]=true [idFase]="idFase" tipoPerfil="PVD">
+            </app-acciones-seguimiento-monitoreo>
+          </accordion-group>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <accordion-group [panelClass]="separator" *hasClaim="'monitoreo_tabSeg_divPeriodoParalizacion_PVD'">
+            <button class="btn btn-link btn-block clearfix" accordion-heading>
+              <div class="pull-left float-left">6. Acciones de Seguimiento y Monitoreo del periodo de paralización - suspensión - PVD
+              </div>
+              <span class="badge float-right pull-right">
+                <i class="fa fa-circle-o"></i>
+              </span>
+            </button>
+            <div *ngIf=divSegMonitoreo class="group-box">
+                <accordion-group [panelClass]="separator">
+                    <button class="btn btn-link btn-block clearfix" accordion-heading>
+                        <div class="pull-left float-left">Registro de Suspensiones
+                        </div>
+                        <span class="badge float-right pull-right">
+                          <i class="fa fa-circle-o"></i>
+                        </span>
+                    </button>
+                    <div class="group-box">
+                        <app-periodo-suspension [idSeguimientoMonitoreoObra]="idSeguimientoMonitoreo" tipoPerfil="PVD" [bEstado]=true></app-periodo-suspension>
+                    </div>
+                </accordion-group>
+                <accordion-group [panelClass]="separator">
+                    <button class="btn btn-link btn-block clearfix" accordion-heading>
+                        <div class="pull-left float-left">Registro de Paralizaciones
+                        </div>
+                        <span class="badge float-right pull-right">
+                          <i class="fa fa-circle-o"></i>
+                        </span>
+                    </button>
+                    <div class="group-box">
+                        <app-periodo-paralizacion [idSeguimientoMonitoreoObra]="idSeguimientoMonitoreo" tipoPerfil="PVD" [bEstado]=true>
+                        </app-periodo-paralizacion>
+                    </div>
+                </accordion-group>  
+            </div>
+          </accordion-group>
+        </div>
+      </div>
+    </accordion>
+  </div>
+</div> 
+<div class="card">
+  <div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog"></div>
+  </div>
+</div>

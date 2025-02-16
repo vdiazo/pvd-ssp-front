@@ -1,0 +1,399 @@
+<div class="modal-header">
+  <h4 class="modal-title">Nuevo convenio</h4>
+  <p class="pl-4 pr-4">Formulario para el registro de convenios</p>
+</div>
+<div class="modal-body">
+  <form (ngSubmit)="administrarConvenioRegistrar();" #convenioForm="ngForm">
+<!-- <div class="row form-group">
+    <label dlabels class="col-md-2 control-label">CÓDIGO SNIP:</label>
+    <div class="col-md-4">
+      <input dTextBox class="form-control" type='text' (keypress)="this.funciones.IsNumberKey($event)" #codSnip="ngModel" required placeholder="Código SNIP" name="codSnip"
+       [(ngModel)]="entidadModal.codSnip"/>
+       <div [hidden]="codSnip.valid || codSnip.pristine" class="alert alert-danger">
+          El código snip es obligatorio
+        </div>
+    </div>
+    <label dlabels class="col-md-2 control-label">CÓDIGO DE PROYECTO:</label>
+    <div class="col-md-4">
+      <input dTextBox class="form-control" type='text' name="codProyecto" #codProyecto="ngModel" required (keypress)="this.funciones.IsNumberKey($event)" placeholder="Código de Proyecto"
+       [(ngModel)]="entidadModal.codProyecto" />
+      <div [hidden]="codProyecto.valid || codProyecto.pristine" class="alert alert-danger">
+          El código de proyecto es obligatorio
+        </div>
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-md-2">
+      <label dlabels class="control-label">NOMBRE DE PROYECTO:</label>
+    </div>
+    <div class="col-md-10 input-group mb-3">
+      <div class="input-group-prepend">
+        <button  type="button" id="btnExtraerInformacion" class="btn" (click)="ExtraerInfo()"><i class="fa fa-search"></i></button>
+      </div>
+      <input class="form-control" type='text' name="nomProyecto" #nomProyecto="ngModel"  placeholder="Nombre de Proyecto" disabled="disabled" [(ngModel)]="entidadModal.nomProyecto"/>
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-md-2">
+      <label dlabels class="control-label">UNIDAD EJECUTORA:</label>
+    </div>
+    <div class="col-md-10">
+        <ng-select required [items]="municipalidades"
+        placeholder="Seleccione unidad ejecutora"
+          bindLabel="nombre_municipalidad"
+          bindValue="id_municipalidad"
+          [(ngModel)]="entidadModal.nomUniEjecutora"
+          (change)="seleccionarEjecutora($event)"
+          #nomUniEjecutora="ngModel"
+          name="nomUniEjecutora">
+        </ng-select>
+        <div [hidden]="nomUniEjecutora.valid || nomUniEjecutora.pristine" class="alert alert-danger">
+            Unidad Ejecutora es obligatorio
+        </div>
+    </div>
+  </div>
+  <div class="row form-group" [hidden]="!visibleEjecutora">
+    <div class="col-md-2">
+      <label dlabels class="control-label">EJECUTORA:</label>
+    </div>
+    <div class="col-md-10">
+        <ng-select [items]="ejecutoras"
+        placeholder="Seleccione Ejecutora"
+          bindLabel="nombre_ejecutora"
+          bindValue="id_ejecutora"
+          [(ngModel)]="entidadModal.idejecutora"
+          name="unidadejecutora">
+        </ng-select>
+    </div>
+  </div>    
+  <span class="note">*Si no tiene tramos, debe de agregar uno, en caso contrario seleccione uno de ellos</span>
+  <div class="row form-group">
+    <div class="col-md-2">
+        <label dlabels class="control-label">TRAMO</label>
+    </div>
+    <div class="col-md-8">
+        <ng-select [items]="tramos" [hidden] ="!visible"
+        placeholder="Seleccione Tramo"
+          bindLabel="nombre_tramo"
+          bindValue="nombre_tramo"
+          [(ngModel)]="entidadModal.nomTramo"
+          (change)="seleccionar($event)"
+          name="NombreTramo">
+        </ng-select> 
+        <input dTextBox class="form-control" type="text" [hidden] ="visible" name="NombreTramo" placeholder="Escriba Tramo" [(ngModel)]="tramoagregar" />           
+    </div>
+    <div class="col-md-2">
+        <button data-opcion="true" type="button" id="btnAgregar" (click)="ocultar()" [hidden] ="!visible"class="btn"><i class="fa fa-plus"></i> Agregar</button>
+        <button type="button" id="btnOk" (click)="ocultar()" [hidden] ="visible"class="btn"><i class="fa fa-arrow-left"></i> Volver</button>
+        <button data-opcion="true" type="button" id="btnModalAgregarTramo" (click)="modalRegistrarTramo(templateRegistrarTramo)" class="btn"><i class="fa fa-plus"></i> Agregar Tramo</button>
+    </div>
+  </div> -->
+  <div class="row form-group">
+    <!-- <div class="col-md-2">
+      <label dlabels class="control-label">FASE</label>
+    </div>
+    <div class="col-md-4">
+        <ng-select required [items]="fases"
+        placeholder="Seleccione Fase"
+          bindLabel="nombre_tipo_fase"
+          bindValue="id_tipo_fase"
+          [(ngModel)]="entidadModal.nomFase"
+          #nomFase="ngModel"
+          name="nomFase">
+        </ng-select>
+        <div [hidden]="nomFase.valid || nomFase.pristine" class="alert alert-danger">
+            Fase es obligatorio
+        </div>
+    </div> -->
+    <div class="col-md-2">
+      <label dlabels class="control-label">DOCUMENTO DE COMPROMISO</label>
+    </div>
+    <div class="col-md-4">
+        <ng-select required [items]="documentos"
+        placeholder="Seleccione Documento"
+          bindLabel="nombre_documento_compromiso"
+          bindValue="id_documento_compromiso"
+          [(ngModel)]="entidadModal.nomDocumento"
+          #nomDocumento="ngModel"
+          name="nomDocumento">
+        </ng-select>
+        <div [hidden]="nomDocumento.valid || nomDocumento.pristine" class="alert alert-danger">
+            Documento de compromiso es obligatorio
+        </div>
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-md-2">
+      <label dlabels class="control-label">FUENTE DE FINANCIAMIENTO</label>
+    </div>
+    <div class="col-md-4">
+        <ng-select required [items]="denominacion"
+        placeholder="Seleccione Fuente"
+          bindLabel="nombre_fuente"
+          bindValue="id_fuente_financiamiento"
+          [(ngModel)]="entidadModal.nomDenomConvenio"
+          #nomDenomConvenio="ngModel"
+          name="nomDenomConvenio">
+        </ng-select>
+        <div [hidden]="nomDenomConvenio.valid || nomDenomConvenio.pristine" class="alert alert-danger">
+            Fuente de financiamiento es obligatorio
+        </div>
+    </div>
+    <div class="col-md-2">
+      <label dlabels class="control-label">MONTO CONVENIO/ADENDA</label>
+    </div>
+    <div class="col-md-4">
+      <!-- <input class="form-control" maxlength="21" (keyup)="calcularMonto(entidadModal.numMonto_texto)" (keypress)="this.funciones.IsNumberKey($event)" type='text' id="numMonto" name="numMonto" #numMonto="ngModel" required placeholder="Monto de convenio" [(ngModel)]="entidadModal.numMonto_texto" /> -->
+      <input 
+      class="form-control" 
+      maxlength="21" 
+      [textMask]="{mask: funciones.currencyMask}"  
+      type='text' 
+      id="numMonto" 
+      name="numMonto" 
+      #numMonto="ngModel" 
+      required placeholder="Monto de convenio" 
+      [(ngModel)]="entidadModal.numMonto_texto" />
+      <div [hidden]="numMonto.valid || numMonto.pristine" class="alert alert-danger">
+          Monto es obligatorio
+      </div>
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-md-2">
+      <label dlabels class="control-label">FECHA DE LA FIRMA DEL CONVENIO/ADENDA</label>
+    </div>
+    <div class="col-md-4">
+      <input class="form-control" [maxDate]="maxDate" type='text' readonly="readonly" name="fechaConvenio" placeholder="Fecha de firma de convenio" [(ngModel)]="entidadModal.fecFechaConvenio" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es',containerClass: 'theme-red' }" />
+    </div>
+    <div class="col-md-2">
+      <label dlabels class="control-label">FECHA DE VIGENCIA</label>
+    </div>
+    <div class="col-md-4">
+      <input class="form-control" [minDate]="entidadModal.fecFechaConvenio" type='text' readonly="readonly" name="fechaVigencia" placeholder="Fecha de Vigencia" [(ngModel)]="entidadModal.fecFechaVigencia" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es',containerClass: 'theme-red' }" />
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-md-2">
+      <label dlabels class="control-label"> SIGLAS DE CONVENIO</label>
+    </div>
+    <div class="col-md-4">
+      <input class="form-control"placeholder="Convenio N°xxx-2018-MTC/21" type='text' name="nomSiglas" #nomSiglas="ngModel" required  [(ngModel)]="entidadModal.nomSiglas"/>
+      <div [hidden]="nomSiglas.valid || nomSiglas.pristine" class="alert alert-danger">
+          Siglas de convenio es obligatorio
+      </div>
+    </div>
+    <div class="col-md-2">
+      <label dlabels class="control-label">CONVENIO</label>
+    </div>
+    <div class="col-md-4">
+      <app-input-file idComp="filebuscarproyectomodal" (onChange)="fileChangeEvent($event)" IdTipoArchivo="{{IdTipoArchivo}}" class="input-group"></app-input-file>
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-md-2">
+      <label dlabels class="control-label">TIPO INFRAESTRUCTURA</label>
+    </div>
+    <div class="col-md-4">
+        <ng-select required [items]="infraestructuras"
+        placeholder="Seleccione Tipo de Infraestructura"
+          bindLabel="nombre_tipo_infraestructura"
+          bindValue="id_tipo_infraestructura"
+          [(ngModel)]="entidadModal.nomInfraestructura"
+          #nomInfraestructura="ngModel"
+          name="nomInfraestructura">
+        </ng-select>
+        <div [hidden]="nomInfraestructura.valid || nomInfraestructura.pristine" class="alert alert-danger">
+            Tipo infraestructura es obligatorio
+        </div>
+    </div>
+    <div class="col-md-2">
+      <label dlabels class="control-label">TIPO VÍA</label>
+    </div>
+    <div class="col-md-4">
+        <ng-select required [items]="vias"
+        placeholder="Seleccione Tipo de Vía"
+          bindLabel="nombre_tipo_via"
+          bindValue="id_tipo_via"
+          [(ngModel)]="entidadModal.nomVia"
+          #nomVia="ngModel"
+          name="nomVia">
+      </ng-select>
+      <div [hidden]="nomVia.valid || nomVia.pristine" class="alert alert-danger">
+          Tipo vía es obligatorio
+      </div>
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-md-2">
+      <label dlabels class="control-label">UNIDAD DE MEDIDA</label>
+    </div>
+    <div class="col-md-4">
+      <ng-select required [items]="medidas"
+        placeholder="Seleccione unidad de medida"
+          bindLabel="nombre_unidad_medida"
+          bindValue="id_unidad_medida"
+          [(ngModel)]="entidadModal.nomUniMedida"
+          #nomUniMedida="ngModel"
+          name="nomUniMedida">
+      </ng-select> 
+      <div [hidden]="nomUniMedida.valid || nomUniMedida.pristine" class="alert alert-danger">
+          Unidad de medida es obligatorio
+      </div>       
+    </div>
+    <div class="col-md-2">
+      <label dlabels class="control-label">LONGITUD</label>
+    </div>
+    <div class="col-md-4">
+      <!-- <input class="form-control" (keyup)="calcularLongitud(entidadModal.numLongitud_texto)" (keypress)="this.funciones.IsNumberKey($event)" type='text' name="numLongitud" #numLongitud="ngModel" required placeholder="Longitud" [(ngModel)]="entidadModal.numLongitud_texto"/> -->
+      <input class="form-control" 
+      [textMask]="{mask: funciones.currencyMask}" 
+      type='text' 
+      name="numLongitud" 
+      #numLongitud="ngModel" 
+      required placeholder="Longitud" 
+      [(ngModel)]="entidadModal.numLongitud_texto"/>
+      <div [hidden]="numLongitud.valid || numLongitud.pristine" class="alert alert-danger">
+          Longitud es obligatorio
+      </div>
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-md-12">
+      <button data-opcion="true" type="button" id="btnModalAgregarTramo" (click)="modalRegistrarTramo(templateRegistrarTramo)" class="btn"><i class="fa fa-plus"></i> Agregar Tramo</button>
+      <p>
+      <table class="table">
+        <thead>
+          <tr>
+              <th>Tramo</th>
+              <th>Fase</th>
+          </tr>
+        </thead>
+        <tr *ngFor="let x of tramosRegistrados">
+          <td>x.tramo</td>
+          <td>x.fase</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div class="modal-footer">
+  <button class="btn btn-danger" type="submit" id="btnGuardar" [disabled]="!convenioForm.form.valid"><i class="fa fa-save"></i> Guardar</button>
+  <button class="btn btn-plomo" id="btnCancelar" type="button" (click)="closeModal()"><i class="fa fa-arrow-left"></i> Cancelar</button>
+  </div>
+</form>
+</div>
+
+<ng-template #templateRegistrarTramo>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Registra Tramo</h4>
+  </div>
+  <div class="modal-body">
+    <div class="row form-group">
+      <label dlabels class="col-md-2 control-label">CÓDIGO SNIP:</label>
+      <div class="col-md-4">
+        <input dTextBox class="form-control" type='text' (keypress)="this.funciones.IsNumberKey($event)" #codSnip="ngModel" required placeholder="Código SNIP" name="codSnip"
+         [(ngModel)]="entidadModal.codSnip"/>
+         <div [hidden]="codSnip.valid || codSnip.pristine" class="alert alert-danger">
+            El código snip es obligatorio
+          </div>
+      </div>
+      <label dlabels class="col-md-2 control-label">CÓDIGO DE PROYECTO:</label>
+      <div class="col-md-4">
+        <input dTextBox class="form-control" type='text' name="codProyecto" #codProyecto="ngModel" required (keypress)="this.funciones.IsNumberKey($event)" placeholder="Código de Proyecto"
+         [(ngModel)]="entidadModal.codProyecto" />
+        <div [hidden]="codProyecto.valid || codProyecto.pristine" class="alert alert-danger">
+            El código de proyecto es obligatorio
+          </div>
+      </div>
+    </div>
+    <div class="row form-group">
+      <div class="col-md-2">
+        <label dlabels class="control-label">NOMBRE DE PROYECTO:</label>
+      </div>
+      <div class="col-md-10 input-group mb-3">
+        <div class="input-group-prepend">
+          <button  type="button" id="btnExtraerInformacion" class="btn" (click)="ExtraerInfo()"><i class="fa fa-search"></i></button>
+        </div>
+        <input class="form-control" type='text' name="nomProyecto" #nomProyecto="ngModel"  placeholder="Nombre de Proyecto" disabled="disabled" [(ngModel)]="entidadModal.nomProyecto"/>
+      </div>
+    </div>
+    <div class="row form-group">
+      <div class="col-md-2">
+        <label dlabels class="control-label">UNIDAD EJECUTORA:</label>
+      </div>
+      <div class="col-md-10">
+          <ng-select required [items]="municipalidades"
+          placeholder="Seleccione unidad ejecutora"
+            bindLabel="nombre_municipalidad"
+            bindValue="id_municipalidad"
+            [(ngModel)]="entidadModal.nomUniEjecutora"
+            (change)="seleccionarEjecutora($event)"
+            #nomUniEjecutora="ngModel"
+            name="nomUniEjecutora">
+          </ng-select>
+          <div [hidden]="nomUniEjecutora.valid || nomUniEjecutora.pristine" class="alert alert-danger">
+              Unidad Ejecutora es obligatorio
+          </div>
+      </div>
+    </div>
+    <div class="row form-group" [hidden]="!visibleEjecutora">
+      <div class="col-md-2">
+        <label dlabels class="control-label">EJECUTORA:</label>
+      </div>
+      <div class="col-md-10">
+          <ng-select [items]="ejecutoras"
+          placeholder="Seleccione Ejecutora"
+            bindLabel="nombre_ejecutora"
+            bindValue="id_ejecutora"
+            [(ngModel)]="entidadModal.idejecutora"
+            name="unidadejecutora">
+          </ng-select>
+      </div>
+    </div>    
+    <span class="note">*Si no tiene tramos, debe de agregar uno, en caso contrario seleccione uno de ellos</span>
+    <div class="row form-group">
+      <div class="col-md-2">
+          <label dlabels class="control-label">TRAMO</label>
+      </div>
+      <div class="col-md-8">
+          <ng-select [items]="tramos" [hidden] ="!visible"
+          placeholder="Seleccione Tramo"
+            bindLabel="nombre_tramo"
+            bindValue="nombre_tramo"
+            [(ngModel)]="entidadModal.nomTramo"
+            (change)="seleccionar($event)"
+            name="NombreTramo">
+          </ng-select> 
+          <input dTextBox class="form-control" type="text" [hidden] ="visible" name="NombreTramo" placeholder="Escriba Tramo" [(ngModel)]="tramoagregar" />           
+      </div>
+      <div class="col-md-2">
+          <button data-opcion="true" type="button" id="btnAgregar" (click)="ocultar()" [hidden] ="!visible"class="btn"><i class="fa fa-plus"></i> Agregar</button>
+          <button type="button" id="btnOk" (click)="ocultar()" [hidden] ="visible"class="btn"><i class="fa fa-arrow-left"></i> Volver</button>
+         
+      </div>
+    </div>
+    <div class="row form-group">
+      <div class="col-md-2">
+        <label dlabels class="control-label">FASE</label>
+      </div>
+      <div class="col-md-4">
+          <ng-select required [items]="fases"
+          placeholder="Seleccione Fase"
+            bindLabel="nombre_tipo_fase"
+            bindValue="id_tipo_fase"
+            [(ngModel)]="entidadModal.nomFase"
+            #nomFase="ngModel"
+            name="nomFase">
+          </ng-select>
+          <div [hidden]="nomFase.valid || nomFase.pristine" class="alert alert-danger">
+              Fase es obligatorio
+          </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-danger" (click)="guardarTramo()" id="btnGuardarTramo"><i class="fa fa-save"></i> Guardar</button>
+      <button class="btn btn-plomo" id="btnCancelarGuardarTramo" type="button" (click)="closeModalGuardarTramo()"><i class="fa fa-arrow-left"></i> Cancelar</button>
+    </div>
+    <!-- <a class="btn btn-primary" href="javascript:void(0)">Guardar</a> -->
+  </div>
+</ng-template>

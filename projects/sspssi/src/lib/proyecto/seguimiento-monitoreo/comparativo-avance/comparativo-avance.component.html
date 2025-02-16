@@ -1,0 +1,73 @@
+<div class="row">
+  <div class="col-md-6 col-lg-6 col-xl-6 text-center">
+    <div class="card border-light mb-3">
+      <div class="card-body d-flex align-content-stretch justify-content-center">
+        <div class="col-lg-12 col-xl-12 col-md-12 col align-self-center">
+          <dx-chart palette="blue" [dataSource]="lstProgramadoEjecutado"
+            title="Avance Programado Vs. Ejecutado (CURVA S)">
+            <!-- <dxi-series valueField="expediente" name="Expe. Tec."></dxi-series> -->
+            <dxi-series valueField="sumaavanceprogramada" name="Programado"></dxi-series>
+            <dxi-series valueField="sumafisicoreal" name="Ejecutado"></dxi-series>
+            <dxo-common-series-settings argumentField="periodo" type="spline">
+              <dxo-point hoverMode="allArgumentsPoint"></dxo-point>
+            </dxo-common-series-settings>
+            <dxo-margin [bottom]="10"></dxo-margin>
+            <dxo-common-axis-settings>
+              <dxo-grid [visible]="true"></dxo-grid>
+            </dxo-common-axis-settings>
+            <dxo-legend verticalAlignment="bottom" horizontalAlignment="center" itemTextPosition="bottom">
+            </dxo-legend>
+            <dxo-argument-axis [valueMarginsEnabled]="false" discreteAxisDivisionMode="crossLabels">
+              <dxo-grid [visible]="true"></dxo-grid>
+            </dxo-argument-axis>
+            <dxo-crosshair [enabled]="true" color="#949494" [width]="3" dashStyle="dot">
+              <dxo-label [visible]="true" backgroundColor="#949494">
+                <dxo-font color="#fff" [size]="12">
+                </dxo-font>
+              </dxo-label>
+            </dxo-crosshair>
+            <dxo-export [enabled]="true"></dxo-export>
+            <dxo-tooltip [enabled]="true"></dxo-tooltip>
+          </dx-chart>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- <div class="col-md-6 text-center">
+    
+  </div> -->
+  <div class="col-md-6 col-xl-6 col-lg-6 text-right scrollContainer"
+    style="width: 500px; height: 400px; overflow-x:auto">
+    <table class="table table-hover table-bordered table-responsive table-full-detalle">
+      <thead>
+        <tr>
+          <th>Mes</th>
+          <th>Programado mensual (%)</th>
+          <th>Programado acumulado (%)</th>
+          <th>Avance parcial (%)</th>
+          <th>Avance Acumulado (%)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let detalle of lstProgramadoEjecutado">
+          <td class="xs-hidden text-center">
+            {{ detalle.periodo}}
+          </td>
+          <td class="xs-hidden text-center">
+            {{ detalle.avance_programada }}
+          </td>
+          <td class="xs-hidden text-center">
+            {{ detalle.sumaavanceprogramada }}
+          </td>
+          <td class="xs-hidden text-center">
+            {{ detalle.avance_fisico_real }}
+          </td>
+          <td class="xs-hidden text-center">
+            {{ detalle.sumafisicoreal}}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

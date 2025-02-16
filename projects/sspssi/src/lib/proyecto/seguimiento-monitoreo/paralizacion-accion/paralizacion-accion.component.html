@@ -1,0 +1,89 @@
+<div class="modal-header">
+  <h4 class="modal-title">MANTENIMIENTO DE DETALLE DE PARALIZACIÓN</h4>
+  <p class="pb-2 pl-4 pr-4">Descripción del formulario</p>
+</div>
+<div class="modal-body">
+  <div class="group-box">
+    <form (ngSubmit)="administrarAccionParalizacion(model);" #accParalizacionForm="ngForm">
+      <div class="row form-group">
+        <input *ngIf="false" type='text' name="id_paralizacion_accion_obra" id="id_paralizacion_accion_obra"
+          [(ngModel)]="model.id_paralizacion_accion_obra" #id_paralizacion_accion_obra="ngModel" />
+        <input *ngIf="false" type='text' name="id_paralizacion_obra" id="id_paralizacion_obra"
+          [(ngModel)]="model.id_paralizacion_obra" #id_paralizacion_obra="ngModel" />
+        <div class="col-sm-4">
+          <label dlabels class="control-label">Acciones de Seguimiento y Monitoreo:</label>
+        </div>
+        <div class="col-sm-8">
+          <ng-select [items]="tipoParalizacionAccion" placeholder="Seleccione una Accion de Seguimiento y Monitoreo"
+            bindLabel="nombre_accion" bindValue="id_tipo_paralizacion_accion_obra"
+            [(ngModel)]="model.id_tipo_paralizacion_accion_obra" name="id_tipo_paralizacion_accion_obra" required
+            #id_tipo_paralizacion_accion_obra="ngModel">
+          </ng-select>
+          <div [hidden]="id_tipo_paralizacion_accion_obra.valid || id_tipo_paralizacion_accion_obra.pristine"
+            class="alert alert-danger">
+            El tipo de acción de seguimiento monitoreo es obligatorio
+          </div>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-4">
+          <label dlabels class="control-label">Tipo Documento:</label>
+        </div>
+        <div class="col-sm-8">
+          <ng-select [items]="tipoDocumento" placeholder="Seleccione un Tipo de Documento"
+            bindLabel="nombre_tipo_documento" bindValue="id_tipo_documento" [(ngModel)]="model.id_tipo_documento"
+            name="id_tipo_documento" required #id_tipo_documento="ngModel">
+          </ng-select>
+          <div [hidden]="id_tipo_documento.valid || id_tipo_documento.pristine" class="alert alert-danger">
+            El tipo documento es obligatorio
+          </div>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-4">
+          <label dlabels class="control-label" for="fecha">Fecha:</label>
+        </div>
+        <div class="col-sm-8">
+          <input dTextBox class="form-control" type='text' name="model.fecha" id="model.fecha" placeholder="dd/mm/aaaa"
+            [(ngModel)]="model.fecha" [minDate]="minimoDate" [maxDate]="maximoDate" #fecha="ngModel" bsDatepicker
+            required [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es', containerClass: 'theme-red' }"
+            readonly="readonly">
+          <div [hidden]="fecha.valid || fecha.pristine" class="alert alert-danger">
+            Fecha Resolución es obligatorio
+          </div>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-4">
+          <label dlabels class="control-label" for="observaciones">Observaciones :</label>
+        </div>
+        <div class="col-sm-8">
+          <input dTextBox class="form-control" type='text' name="model.observaciones" id="model.observaciones"
+            placeholder="Ingrese observaciones" [(ngModel)]="model.observaciones" #observaciones="ngModel" required />
+          <div [hidden]="observaciones.valid || observaciones.pristine" class="alert alert-danger">
+            Resolución de aprobación es obligatorio
+          </div>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-4">
+          <label dlabels class="control-label">Documento :</label>
+        </div>
+        <div class="col-sm-8">
+          <app-input-file idComp="fileparalizacionaccion" (onChange)="fileChangeEvent($event)"
+            IdTipoArchivo="{{IdTipoArchivo}}" class="input-group"
+            Value="{{this.modelAccionParalizacion.archivo_convenio}}"></app-input-file>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" id="btnGuardar" [disabled]="!accParalizacionForm.form.valid" class="btn btn-danger"
+          [hidden]=bMostrar> <i class="fa fa-save"></i>
+          Guardar</button>
+        <button class="btn btn-danger" type="button" [hidden]=!bMostrar>
+          <i class="fa fa-save"></i> ....Procesando</button>
+        <button id="btnCancelar" type="button" (click)="closeModal()" class="btn btn-plomo"><i
+            class="fa fa-arrow-left"></i> Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,198 @@
+<div class="modal-header">
+  <h4 class="modal-title">Ampliación de Plazo</h4>
+  <p class="pb-2 pl-4 pr-4">Registro y listado de Ampliaciones de Plazo</p>
+</div>
+<div class="modal-body">
+  <ng-container *hasClaim="'monitoreo_tabSeg_infEstudio_regAmpliacionPlazo_pre_inv_eje_dir'">
+    <form [formGroup]="formRegistroAmpliacion" (ngSubmit)="registrarAmpliacionPlazo()">
+      <div class="row form-group">
+        <label class="col-12 col-lg-3 form-label" for="ampliacion">(*) Ampliación (días):</label>
+        <div class="col-12 col-lg-3">
+          <input class="form-control" type="text" (keypress)="funciones.IsNumberKey($event);"
+            formControlName="ampliacion" placeholder="Ingrese días de ampliación" [ngClass]="{'is-invalid': f.ampliacion.invalid && (f.ampliacion.dirty || f.ampliacion.touched), 
+            'ng-inicio': f.ampliacion.invalid}">
+          <span *ngIf="f.ampliacion.invalid && (f.ampliacion.dirty || f.ampliacion.touched)">
+            <strong *ngIf="f.ampliacion.errors?.required" class="text-danger">
+              Plazo de Ampliación es obligatorio
+            </strong>
+          </span>
+        </div>
+        <label class="col-12 col-lg-3 form-label" for="resolucion_aprobacion">(*) RESOLUCIÓN/INFORME DE
+          APROBACIÓN</label>
+        <div class="col-12 col-lg-3 mb-2">
+          <input class="form-control" type="text" formControlName="resolucion_aprobacion" placeholder="Nro. Resolución"
+            [ngClass]="{'is-invalid': f.resolucion_aprobacion.invalid && (f.resolucion_aprobacion.dirty || f.resolucion_aprobacion.touched), 
+          'ng-inicio': f.resolucion_aprobacion.invalid}">
+          <span
+            *ngIf="f.resolucion_aprobacion.invalid && (f.resolucion_aprobacion.dirty || f.resolucion_aprobacion.touched)">
+            <strong *ngIf="f.resolucion_aprobacion.errors?.required" class="text-danger">
+              Nro. de Resolución es obligatorio
+            </strong>
+          </span>
+        </div>
+        <label class="col-12 col-lg-3 form-label" for="fecha_aprobacion">(*) FECHA DE APROBACIÓN</label>
+        <div class="col-12 col-lg-3 mb-2">
+          <div class="inner-addon left-addon">
+            <i class="icono material-icons">event</i>
+            <input type="text" id="resolucion_fecha" class="form-control" formControlName="fecha_aprobacion"
+              placeholder="__/__/____" bsDatepicker
+              [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es', containerClass: 'theme-red' }"
+              [minDate]="fecha_inicio_contractual" readonly [ngClass]="{'is-invalid': f.fecha_aprobacion.invalid && (f.fecha_aprobacion.dirty || f.fecha_aprobacion.touched), 
+            'ng-inicio': f.fecha_aprobacion.invalid}">
+          </div>
+          <span *ngIf="f.fecha_aprobacion.invalid && (f.fecha_aprobacion.dirty || f.fecha_aprobacion.touched)">
+            <strong *ngIf="f.fecha_aprobacion.errors?.required" class="text-danger">
+              Fecha de Aprobación es obligatorio
+            </strong>
+          </span>
+        </div>
+        <label class="col-12 col-lg-3 form-label" for="fileampliacionmodal">(*) DOCUMENTO</label>
+        <div class="col-12 col-lg-3 mb-2">
+          <app-input-file idComp="fileampliacionmodal" (onChange)="fileChangeEvent($event)" class="input-group"
+            IdTipoArchivo="{{tipoArchivo}}" Value="{{ documentoAprobacion }}" [ngClass]="{'is-invalid': f.documento_aprobacion.invalid && (f.documento_aprobacion.dirty || f.documento_aprobacion.touched), 
+            'ng-inicio': f.documento_aprobacion.invalid}">
+          </app-input-file>
+          <span
+            *ngIf="f.documento_aprobacion.invalid && (f.documento_aprobacion.dirty || f.documento_aprobacion.touched)">
+            <strong *ngIf="f.documento_aprobacion.errors?.required" class="text-danger">
+              Documento de Aprobación es obligatorio
+            </strong>
+          </span>
+        </div>
+        <label class="col-12 col-lg-3 form-label" for="id_ampliacion_causal">(*) CAUSAL DE AMPLIACIÓN</label>
+        <div class="col-12 col-lg-3 mb-2">
+          <ng-select [items]="lstAmpliacionCausal" placeholder="Seleccione opción" bindValue="id_ampliacion_causal"
+            bindLabel="descripcion" notFoundText="no se ha encontrado ningún item"
+            formControlName="id_ampliacion_causal" (change)="causalSeleccionado($event)" [ngClass]="{'is-invalid': f.id_ampliacion_causal.invalid && (f.id_ampliacion_causal.dirty || f.id_ampliacion_causal.touched), 
+            'ng-inicio': f.id_ampliacion_causal.invalid && f.id_ampliacion_causal.untouched}">
+          </ng-select>
+          <span
+            *ngIf="f.id_ampliacion_causal.invalid && (f.id_ampliacion_causal.dirty || f.id_ampliacion_causal.touched)">
+            <strong *ngIf="f.id_ampliacion_causal.errors?.required" class="text-danger">
+              Causal de Ampliación es obligatorio
+            </strong>
+          </span>
+        </div>
+        <div class="offset-sm-12 offset-md-0 col-lg-6 mb-2" *ngIf="verOtraCausal">
+          <input type="text" class="form-control" placeholder="Descripción de causal"
+            formControlName="detalle_ampliacion_causal">
+        </div>
+        <label class="col-12 col-lg-3 form-label" for="id_ampliacion_pedido">(*) RESULTADO DEL PEDIDO DE
+          AMPLIACIÓN</label>
+        <div class="col-12 col-lg-3">
+          <ng-select [items]="lstAmpliacionPedido" placeholder="Seleccione opción" bindValue="id_ampliacion_pedido"
+            bindLabel="descripcion" notFoundText="no se ha encontrado ningún item"
+            formControlName="id_ampliacion_pedido" [ngClass]="{'is-invalid': f.id_ampliacion_pedido.invalid && (f.id_ampliacion_pedido.dirty || f.id_ampliacion_pedido.touched), 
+            'ng-inicio': f.id_ampliacion_pedido.invalid && f.id_ampliacion_pedido.untouched }">
+          </ng-select>
+          <span
+            *ngIf="f.id_ampliacion_pedido.invalid && (f.id_ampliacion_pedido.dirty || f.id_ampliacion_pedido.touched)">
+            <strong *ngIf="f.id_ampliacion_pedido.errors?.required" class="text-danger">
+              Resultado es obligatorio
+            </strong>
+          </span>
+        </div>
+      </div>
+      <div class="row form-group">
+        <label class="col-12 col-lg-3 form-label" for="comentario">COMENTARIOS U OBSERVACIONES</label>
+        <div class="col-12 col-lg-9">
+          <textarea class="form-control" formControlName="comentario" name="comentario" id="comentario"
+            rows="3"></textarea>
+        </div>
+      </div>
+      <strong class="text-danger">(*) Campos Obligatorios</strong>
+      <div class="row form-group">
+        <div class="col-12 clearfix">
+          <ng-container>
+            <div class="float-right">
+              <ng-container>
+                <button class="btn btn-danger" type="submit" [disabled]="formRegistroAmpliacion.invalid">
+                  <i [ngClass]=" (cambiarEditar)? 'fa fa-edit' : 'fa fa-save'"></i>
+                  Guardar</button>
+              </ng-container>
+              <button class="btn btn-default ml-1" type="button" (click)="limpiarForm()"><i
+                  class="icon icon-limpiar"></i>
+                Limpiar</button>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </form>
+  </ng-container>
+  <div class="row form-group">
+    <div class="col-sm-12">
+      <label class="control-label">Última Actualización:</label> &nbsp;
+      <span>{{UltimaActualizacion}}</span>
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-12 container-scroll">
+      <table class="table table-hover table-responsive">
+        <thead class="table-active">
+          <tr>
+            <th>Ampl. Plazo (Días)</th>
+            <th>Resultado Ampliacion</th>
+            <th>Resol. Aprobación</th>
+            <th>Resol. Fecha</th>
+            <th>Causal de ampliación</th>
+            <th>Observación</th>
+            <th>Doc.</th>
+            <th *hasClaim="'monitoreo_tabSeg_infEstudio_regAmpliacionPlazo_pre_inv_eje_dir'">(**)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor=" let ampliacion of lstAmpliacionPreinversion; first as isFirst;">
+            <td class="text-center">{{ampliacion.ampliacion}}</td>
+            <td class="text-center">{{ampliacion.descripcion_pedido}}</td>
+            <td class="text-center">{{ampliacion.resolucion_aprobacion}}</td>
+            <td class="text-center">{{ampliacion.fecha_aprobacion | date: 'dd/MM/yyyy'}}</td>
+            <td class="text-center">{{ampliacion.descripcion_causal}}</td>
+            <td class="text-center">{{ampliacion.comentario}}</td>
+            <td class="text-center">
+              <div
+                *ngIf="ampliacion.ruta_documento_ampliacion != '' && ampliacion.documento_aprobacion != null ; else templateicono">
+                <a href="{{ampliacion.ruta_documento_ampliacion}}" target="_blank" class="btn-icon" [LinkNube]="ampliacion.documento_aprobacion" [Ruta]="ampliacion.ruta_documento_ampliacion">
+                  <i class="fa fa-15x">
+                    <img src="assets/img/icons/file.svg" alt="archivo">
+                  </i>
+                </a>
+              </div>
+              <ng-template #templateicono>
+              </ng-template>
+            </td>
+            <td class="text-center" *hasClaim="'monitoreo_tabSeg_infEstudio_regAmpliacionPlazo_pre_inv_eje_dir'">
+              <div class="xs-hidden pre-wrap" *ngIf="isFirst">
+                <a href="javascript:void(0)" *hasClaim="'monitoreo_tabSeg_infObra_modAmpliacion_eje_dir'"
+                  (click)="editarAmpliacionPreinversion(ampliacion)" class="btn btn-sm btn-icon">
+                  <i class="fa fa-15x">
+                    <img src="assets/img/icons/pencil.svg" alt="editar">
+                  </i>
+                </a>
+
+                <a href="javascript:void(0)" *hasClaim="'monitoreo_tabSeg_infObra_eliAmpliacion_eje_dir'"
+                  (click)="anularAmpliacionPreinversion(ampliacion.id_ampliacion)" class="btn btn-sm btn-icon">
+                  <i class="fa fa-15x">
+                    <img src="assets/img/icons/trash.svg" alt="eliminar">
+                  </i>
+                </a>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-12">
+      <nav class="pt-4 pl-3 pull-right">
+        <pagination [totalItems]="totalRegistros" [itemsPerPage]="itemsPerPage" [boundaryLinks]="true"
+          previousText="&lsaquo;" nextText="&rsaquo;" [rotate]="false" firstText="&laquo;" lastText="&raquo;"
+          [maxSize]="5" (pageChanged)="cambiarPagina($event)">
+        </pagination>
+      </nav>
+      <span class="comentario">(**)Sólo se puede modificar el último registro de las ampliaciones de Plazo</span>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-plomo" id="btnCancelar" type="button" (click)="closeModal()"><i class="fa fa-arrow-left"></i>
+    Cerrar</button>
+</div>

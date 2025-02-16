@@ -1,0 +1,66 @@
+<div class="modal-header pb-2">
+  <h4 class="modal-title">Paralización de obra</h4>
+  <p class="pb-0 pl-4 pr-4">Agregar registro </p>
+</div>
+<div class="modal-body">
+  <div class="group-box">
+    <form (ngSubmit)="administrarParalizacion(model);" #paralizacionForm="ngForm">
+      <div class="row form-group">
+        <input *ngIf="false" type='text' name="id_paralizacion_obra" id="id_paralizacion_obra" [(ngModel)]="model.id_paralizacion_obra"
+          #id_paralizacion_obra="ngModel" />
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-3">
+          <label dlabels class="control-label" for="txtMotivoParalizacion">Motivo de Paralización:</label>
+        </div>
+        <div class="col-sm-12">
+          <input dTextBox class="form-control" type='text' name="txtMotivoParalizacion" id="txtMotivoParalizacion" required [(ngModel)]="model.motivo_paralizacion"
+            #txtMotivoParalizacion="ngModel" />
+          <div [hidden]="txtMotivoParalizacion.valid || txtMotivoParalizacion.pristine" class="alert alert-danger">
+            Motivo de Paralización es obligatorio
+          </div>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-3">
+          <label dlabels class="control-label" for="fecha_inicio">Fecha inicio:</label>
+        </div>
+        <div class="col-sm-3">
+          <input dTextBox class="form-control" readonly="readonly" type='text' name="fecha_inicio" id="fecha_inicio" placeholder="Ingrese fecha inicio"
+            required [(ngModel)]="model.fecha_inicio" #fecha_inicio="ngModel" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es', containerClass: 'theme-red' }"
+            [minDate]="fecha_inicio_contractual" />
+          <div [hidden]="fecha_inicio.valid || fecha_inicio.pristine" class="alert alert-danger">
+            Fecha Inicio es obligatorio
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <label dlabels class="control-label" for="fecha_termino">Fecha Probable de Término:</label>
+        </div>
+        <div class="col-sm-3">
+          <input dTextBox class="form-control" readonly="readonly" type='text' name="fecha_termino" id="fecha_termino" placeholder="Ingrese fecha término"
+            required [(ngModel)]="model.fecha_termino" #fecha_termino="ngModel" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es', containerClass: 'theme-red' }"
+            [minDate]="model.fecha_inicio" [disabled]="!model.fecha_inicio" />
+          <div [hidden]="fecha_termino.valid || fecha_termino.pristine" class="alert alert-danger">
+            Fecha Término es obligatorio
+          </div>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-3">
+          <label dlabels class="control-label">Cargar de Acta de Paralización :</label>
+        </div>
+        <div class="col-sm-9">
+          <app-input-file idComp="fileparalizacionmodal" (onChange)="fileChangeEvent($event)" IdTipoArchivo="{{IdTipoArchivo}}" class="input-group"
+            Value="{{this.modelParalizacion.archivo_convenio}}"></app-input-file>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" id="btnGuardar" [disabled]="!paralizacionForm.form.valid" class="btn btn-danger" [hidden]=bMostrar>
+        Guardar</button>
+        <button class="btn btn-danger" type="button" [hidden]=!bMostrar>
+          <i class="fa fa-save"></i> ....Procesando</button>
+        <button class="btn btn-plomo" id="btnCancelar" type="button" (click)="closeModal()"> Cerrar</button>
+      </div>
+    </form>
+  </div>
+</div>

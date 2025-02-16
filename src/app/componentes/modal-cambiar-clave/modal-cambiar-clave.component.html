@@ -1,0 +1,115 @@
+<div class="box-ident">
+<div class="modal-header">
+  <h4 class="modal-title">Cambiar Contraseña</h4>
+  <p class="pl-4 pr-4">Formulario para cambiar la contraseña del primer ingreso</p>
+</div>
+<div class="modal-body">
+  <form (ngSubmit)="administrarCambioClave();" #cambiarClaveForm="ngForm" [hidden] ="!municipalidad">
+  <div class="row form-group">
+    <label dlabels class="col-md-12 control-label">Nueva contraseña:</label>
+    <div class="col-md-12">
+      <input dTextBox class="form-control" minlength="5" #nuevaClave="ngModel" type='password' required placeholder="ingrese la nueva contraseña" name="txtNuevo"  [(ngModel)]="entidadModal.nuevaClave"/>
+      <div [hidden]="nuevaClave.valid || nuevaClave.pristine" class="alert alert-danger">
+        La nueva clave es obligatorio
+      </div>
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-md-12">
+      <label dlabels class="control-label">Repetir Contraseña</label>
+    </div>
+    <div class="col-md-12">
+      <input dTextBox class="form-control" minlength="5" #repetirClave="ngModel" type='password' name="txtRepetir" required placeholder="vuelva a repetir la contraseña" [(ngModel)]="entidadModal.repetirClave" />
+      <div [hidden]="repetirClave.valid || repetirClave.pristine" class="alert alert-danger">
+        El repetir clave es obligatorio
+      </div>
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-md-12">
+      <label dlabels class="control-label">Celular</label>
+    </div>
+    <div class="col-md-12">
+      <input dTextBox class="form-control" type='text' minlength="6" (keypress)="this.funciones.IsNumberKey($event)" #celular="ngModel" name="celular" required placeholder="Ingrese celular" [(ngModel)]="entidadModal.celular" />
+      <div [hidden]="celular.valid || celular.pristine" class="alert alert-danger">
+        El celular es obligatorio
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+  <button class="btn btn-danger" type="submit" id="btnGuardar" [disabled]="!cambiarClaveForm.form.valid"><i class="fa fa-save"></i> Guardar</button>
+  <button class="btn btn-plomo" id="btnCancelar" type="button" (click)="closeModal()"><i class="fa fa-arrow-left"></i> Cancelar</button>
+  </div>
+</form>
+<form (ngSubmit)="administrarCambioClave();" #cambiarClaveMuniForm="ngForm" [hidden] ="municipalidad">
+  <div class="row form-group">
+      <label dlabels class="col-md-12 control-label">Nombres y Apellidos</label>
+      <div class="col-md-12">
+        <input dTextBox class="form-control" type="text" required placeholder="ingrese sus nombres y apellidos" #nombreUsuario="ngModel" [(ngModel)]="entidadModal.nombreUsuario" name="nombreUsuario" />
+        <div [hidden]="nombreUsuario.valid || nombreUsuario.pristine" class="alert alert-danger">
+          Los Nombre y Apellidos es obligatorio
+        </div>
+      </div>
+  </div>
+  <div class="row form-group">
+    <label dlabels class="col-md-12 control-label">Nueva contraseña:</label>
+    <div class="col-md-12">
+      <input dTextBox class="form-control" minlength="5" #nuevaClave="ngModel" type='password' required placeholder="ingrese la nueva contraseña" name="txtNuevo"  [(ngModel)]="entidadModal.nuevaClave"/>
+      <div [hidden]="nuevaClave.valid || nuevaClave.pristine" class="alert alert-danger">
+        La nueva clave es obligatorio
+      </div>
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-md-12">
+      <label dlabels class="control-label">Repetir Contraseña</label>
+    </div>
+    <div class="col-md-12">
+      <input dTextBox class="form-control" minlength="5" #repetirClave="ngModel" type='password' name="txtRepetir" required placeholder="vuelva a repetir la contraseña" [(ngModel)]="entidadModal.repetirClave" />
+      <div [hidden]="repetirClave.valid || repetirClave.pristine" class="alert alert-danger">
+        El repetir clave es obligatorio
+      </div>
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-md-12">
+      <label dlabels class="control-label">Correo Electrónico</label>
+    </div>
+    <div class="col-md-12">
+      <input dTextBox class="form-control" type='email' [email]="true" #correo="ngModel" name="correo" required placeholder="Ingrese correo electrónico" [(ngModel)]="entidadModal.correo"  />
+      <div [hidden]="correo.valid || correo.pristine" class="alert alert-danger">
+        El correo electrónico es obligatorio
+      </div>
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-md-12">
+      <label dlabels class="control-label">Celular</label>
+    </div>
+    <div class="col-md-12">
+      <input dTextBox class="form-control" type='text' minlength="6" maxlength="9" (keypress)="this.funciones.IsNumberKey($event)" #celular="ngModel" name="celular" required placeholder="Ingrese celular" [(ngModel)]="entidadModal.celular" />
+      <div [hidden]="celular.valid || celular.pristine" class="alert alert-danger">
+        El celular es obligatorio
+      </div>
+    </div>
+  </div>
+  <div class="row form-group">
+      <div class="col-md-12">
+        <label dlabels class="control-label">Gerencia u Oficina Responsable de la Ejecución del Proyecto</label>
+      </div>
+      <div class="col-md-12">
+        <input dTextBox class="form-control" type='text' #gerencia="ngModel" name="gerencia" required 
+          placeholder="Ingrese Gerencia u Oficina Responsable de la Ejecución del Proyecto" [(ngModel)]="entidadModal.gerencia" />
+        <div [hidden]="gerencia.valid || gerencia.pristine" class="alert alert-danger">
+          La Gerencia u Oficina Responsable de la Ejecución del Proyecto es obligatorio
+        </div>
+      </div>
+    </div>
+  <div class="modal-footer">
+  <button class="btn btn-danger" type="submit" id="btnSave" [disabled]="!cambiarClaveMuniForm.form.valid"><i class="fa fa-save"></i> Guardar</button>
+  <button class="btn btn-plomo" id="btnCancel" type="button" (click)="closeModal()"><i class="fa fa-arrow-left"></i> Cancelar</button>
+  </div>
+</form>
+</div>
+
+</div>

@@ -1,0 +1,8 @@
+<input type="file" style="display:none;" id="{{idComp}}" class="customfile" (change)="lanzarOnChange($event)" >
+<div class="input-group-prepend">
+  <label class="btn mb-0 rounded-left" for="{{idComp}}">
+    <i class="fa fa-upload"></i>
+  </label>
+</div>
+<span class="input-file-txt-max">{{MensajeMaxSize}}</span>
+<input class="form-control inputfile-receptor" disabled="" name="{{idComp}}"  placeholder="Seleccione archivo" type="text" value="{{Value}}">

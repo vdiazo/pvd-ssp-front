@@ -1,0 +1,56 @@
+<div class="modal-header">
+  <h4 class="modal-title">Transferencia</h4>
+  <p class="pb-2 pl-4 pr-4">Modificacion de archivos de trasnferencia</p>
+</div>
+<div class="modal-body">
+  <div class="group-box">
+    <form (ngSubmit)="modificarTransferencia(modelTransferencia);closeModal()" #transferenciaForm="ngForm">
+      <div class="row form-group">
+        <div class="col-sm-3">
+          <label dlabels class="control-label">Dispositivo de Transferencia:</label>
+        </div>
+        <div class="col-sm-3">{{modelTransferencia.dispositivo}}</div>
+        <div class="col-sm-3">
+          <label dlabels class="control-label">Fecha de Publicación:</label>
+        </div>
+        <div class="col-sm-3">{{modelTransferencia.fecha_publicacion}}</div>
+        <div class="col-sm-3">
+          <label dlabels class="control-label">Nombre de Municipalidad:</label>
+        </div>
+        <div class="col-sm-3">{{modelTransferencia.nombre_municipalidad}}</div>
+        <div class="col-sm-3">
+          <label dlabels class="control-label">Fuente de Financiamiento:</label>
+        </div>
+        <div class="col-sm-3">{{modelTransferencia.nombre_fuente}}</div>
+        <div class="col-sm-3">
+          <label dlabels class="control-label">Monto:</label>
+        </div>
+        <div class="col-sm-3">{{modelTransferencia.monto}}</div>
+        <div class="col-sm-3">
+          <label dlabels class="control-label">Fecha de Incorporación:</label>
+        </div>
+        <div class="col-sm-3">{{modelTransferencia.fecha_incorporacion}}</div>
+        <div class="col-sm-3">
+          <label dlabels class="control-label">Monto de Incorporación:</label>
+        </div>
+        <div class="col-sm-3">{{modelTransferencia.monto_incorporacion}}</div>
+        <div class="col-sm-3">
+          <label dlabels class="control-label">Estado:</label>
+        </div>
+        <div class="col-sm-3">{{modelTransferencia.nombre_estado}}</div>
+        <div class="col-sm-2">
+          <label dlabels class="control-label">CARGAR NOTA MODIFICATORIA  :</label>
+        </div>
+        <div class="col-sm-4">
+          <div class="input-group">
+            <set-input-file idComp="filepampliacionnmodal" (onChange)="fileChangeEvent($event)" IdTipoArchivo="{{IdTipoArchivo}}" class="input-group" Value="{{modelTransferencia.archivo_transferencia}}"></set-input-file>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-danger" id="btnGuardar" type="button" [disabled]="nombreArchivo==null" (click)="modificarTransferencia(modelTransferencia);closeModal()">Guardar</button>
+  <button class="btn btn-plomo" id="btnCancelar" type="button" (click)="closeModal()">Cerrar</button>
+</div>

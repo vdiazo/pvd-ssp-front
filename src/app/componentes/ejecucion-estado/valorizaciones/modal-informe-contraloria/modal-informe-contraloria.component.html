@@ -1,0 +1,112 @@
+<div class="modal-header">
+    <h4 class="modal-title">Informes de Contraloría</h4>
+    <p class="pb-2 pl-4 pr-4">Informes de control relacionados a la obra</p>
+  </div>
+  <!--<div class="modal-body">
+      <div class="group-box">
+          <div class="row form-group">
+              <div class="col-12 container-scroll">
+                <table class="table table-hover table-responsive">
+                  <thead class="table-active">
+                    <tr>
+                      <th>Tipo Informe</th>
+                      <th>N° Informe</th>
+                      <th>Asunto</th>
+                      <th>Fecha Emisión de Informe</th>
+                      <th>Fecha Publicación de Informe</th>
+                      <th>Resumen Ejecutivo</th>
+                      <th>Informe</th>
+                      <th>Videos de servicios de control</th>
+                      <th>Fotos de servicios de control</th>
+                      <th [hidden]=!bEstado></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let supervisor of listSupervisor">
+                      <td class="text-left xs-hidden">{{supervisor.dni}}</td>
+                      <td class="text-left xs-hidden">{{supervisor.apellidos}}, {{supervisor.nombres}}</td>
+                      <td class="text-left xs-hidden">{{supervisor.nombre_tipo_colegiatura}}</td>
+                      <td class="text-right xs-hidden">{{supervisor.nro_colegiatura}}</td>
+                      <td class="xs-hidden">{{supervisor.fecha_designacion | formatoFecha}}</td>
+                      <td class="text-left xs-hidden">{{supervisor.telefono}}</td>
+                      <td class="text-left">
+                        <div class="xs-hidden">
+                          {{supervisor.email}}
+                        </div>
+                        <div class="xs-display">
+                          <div><span class="xs-th">Tipo Informe : </span> {{item.num_entregable}}</div>
+                          <div><span class="xs-th">N° Informe : </span> {{item.num_entregable}}</div>
+                          <div><span class="xs-th">Asunto : </span> {{item.num_entregable}}</div>
+                          <div><span class="xs-th">Fecha Emisión de Informe : </span> {{item.num_entregable}}</div>
+                          <div><span class="xs-th">Fecha Publicación de Informe : </span> {{item.num_entregable}}</div>
+                          <div><span class="xs-th">Resumen Ejecutivo : </span> {{item.num_entregable}}</div>
+                          <div><span class="xs-th">Informe : </span> {{item.num_entregable}}</div>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="xs-hidden">
+                          <div *ngIf="supervisor.nombre_archivo != '' && supervisor.nombre_archivo != null ; else templateicono">
+                            <a href="{{supervisor.ruta_archivo}}" target="_blank" class="btn-icon">
+                              <i class="fa fa-15x">
+                                <img src="assets/img/icons/file.svg" alt="archivo">
+                              </i>
+                            </a>
+                          </div>
+                          <ng-template #templateicono>
+                          </ng-template>
+                        </div>
+                      </td>
+                      <td>Video 1</td>
+                      <td class="xs-footer-lista xs-text-right" [hidden]=!bEstado>
+                        <div class="xs-hidden pre-wrap">
+                          <a href="javascript:void(0)" (click)="editarSupervisor(supervisor)" class="btn btn-sm btn-icon" *hasClaim="'monitoreo_tabSeg_responsable_modSupervisor'">
+                            <i class="fa fa-15x">
+                              <img src="assets/img/icons/pencil.svg" alt="editar">
+                            </i>
+                          </a>
+                          <a href="javascript:void(0)" (click)="eliminarSupervisor(supervisor)" class="btn btn-sm btn-icon" *hasClaim="'monitoreo_tabSeg_responsable_eliSupervisor'">
+                            <i class="fa fa-15x">
+                              <img src="assets/img/icons/trash.svg" alt="eliminar">
+                            </i>
+                          </a>
+                        </div>
+                        <div class="xs-display">
+                          <span *ngIf="supervisor.nombre_archivo != '' && supervisor.nombre_archivo != null;">
+                            <a href="{{supervisor.ruta_archivo}}" target="_blank" class="btn-icon mr-1">
+                              <i class="fa fa-file"></i>
+                            </a>
+                          </span>
+                          <a href="javascript:void(0)" (click)="editarSupervisor(supervisor)" class="btn-icon mr-1" *hasClaim="'monitoreo_tabSeg_responsable_modSupervisor'">
+                            <i class="fa fa-pencil"></i>
+                          </a>
+                          <a href="javascript:void(0)" (click)="eliminarSupervisor(supervisor)" class="btn-icon" *hasClaim="'monitoreo_tabSeg_responsable_eliSupervisor'">
+                            <i class="fa fa-trash"></i>
+                          </a>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="col-12">
+                <nav class="pt-4 pl-3 pull-right">
+                  <pagination [totalItems]="totalRegistros" [itemsPerPage]="numPaginasMostrar" [boundaryLinks]="true" previousText="&lsaquo;"
+                    nextText="&rsaquo;" [rotate]="false" firstText="&laquo;" lastText="&raquo;" [maxSize]="5" (pageChanged)="cambiarPagina($event)">
+                  </pagination>
+                </nav>
+              </div>
+            </div>
+          <div class="modal-footer">
+              
+              <button type="button" id="btnCerrar" class="btn btn-plomo" (click)="cerrarModal()">Cerrar</button>
+          </div>
+      </div>
+  </div>-->
+
+
+
+
+
+
+
+

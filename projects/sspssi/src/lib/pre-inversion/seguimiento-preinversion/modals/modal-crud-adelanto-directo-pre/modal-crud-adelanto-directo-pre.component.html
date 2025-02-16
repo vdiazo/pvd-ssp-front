@@ -1,0 +1,187 @@
+<div class="modal-header">
+  <h4 class="modal-title">Adelanto Directo</h4>
+  <p class="pb-2 pl-4 pr-4">Registro y listado de Adelanto(s) Directo(s)</p>
+</div>
+<div class="modal-body">
+  <ng-container *hasClaim="'monitoreo_tabSeg_infEstudio_regAdelantoDirecto_pre_inv_eje_dir'">
+    <form [formGroup]="formRegistroAdelantoPreinversion" (ngSubmit)="registrarAdelantoDirectoPreinversion()">
+      <div class="row">
+        <label class="col-12 col-lg-2 form-label" for="nombre_adelanto_directo">(*) Descripción:</label>
+        <div class="col-12 col-lg-10 mb-2">
+          <input class="form-control" type="text" name="nombre_adelanto_directo" id="nombre_adelanto_directo"
+            formControlName="nombre_adelanto_directo" [ngClass]="{'is-invalid': f.nombre_adelanto_directo.invalid && (f.nombre_adelanto_directo.dirty || f.nombre_adelanto_directo.touched), 
+            'ng-inicio': f.nombre_adelanto_directo.invalid && f.nombre_adelanto_directo.untouched }">
+          <span
+            *ngIf="f.nombre_adelanto_directo.invalid && (f.nombre_adelanto_directo.dirty || f.nombre_adelanto_directo.touched)">
+            <strong *ngIf="f.nombre_adelanto_directo.errors?.required" class="text-danger">
+              Descripción del Adelanto es obligatorio
+            </strong>
+          </span>
+        </div>
+        <label class="col-12 col-lg-2 form-label" for="monto_adelanto">(*) Monto del Adelanto:</label>
+        <div class="col-12 col-lg-4 mb-2">
+          <input type="text" class="form-control" formControlName="monto_adelanto"
+            [textMask]="{mask: funciones.currencyMask}" [ngClass]="{'is-invalid': f.monto_adelanto.invalid && (f.monto_adelanto.dirty || f.monto_adelanto.touched), 
+          'ng-inicio': f.monto_adelanto.invalid && f.monto_adelanto.untouched }">
+          <span *ngIf="f.monto_adelanto.invalid && (f.monto_adelanto.dirty || f.monto_adelanto.touched)">
+            <strong *ngIf="f.monto_adelanto.errors?.required" class="text-danger">
+              Monto del adelanto es obligatorio
+            </strong>
+          </span>
+        </div>
+        <label class="col-12 col-lg-2 form-label" for="entidad_financiera">(*) Entidad Financiera:</label>
+        <div class="col-12 col-lg-4 mb-2">
+          <input class="form-control" type="text" name="entidad_financiera" id="entidad_financiera"
+            formControlName="entidad_financiera" [ngClass]="{'is-invalid': f.entidad_financiera.invalid && (f.entidad_financiera.dirty || f.entidad_financiera.touched), 
+            'ng-inicio': f.entidad_financiera.invalid && f.entidad_financiera.untouched}">
+          <span *ngIf="f.entidad_financiera.invalid && (f.entidad_financiera.dirty || f.entidad_financiera.touched)">
+            <strong *ngIf="f.entidad_financiera.errors?.required" class="text-danger">
+              Entidad Financiera es obligatorio
+            </strong>
+          </span>
+        </div>
+        <label class="col-12 col-lg-2 form-label" for="fecha_inicio">(*) Fecha de inicio:</label>
+        <div class="col-12 col-lg-4 mb-2">
+          <div class="inner-addon left-addon">
+            <i class="icono material-icons">event</i>
+            <input type="text" class="form-control" formControlName="fecha_inicio" placeholder="__/__/____" bsDatepicker
+              [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es', containerClass: 'theme-red' }" readonly
+              [ngClass]="{'is-invalid': f.fecha_inicio.invalid && (f.fecha_inicio.dirty || f.fecha_inicio.touched), 
+          'ng-inicio': f.fecha_inicio.invalid && f.fecha_inicio.untouched }">
+          </div>
+          <span *ngIf="f.fecha_inicio.invalid && (f.fecha_inicio.dirty || f.fecha_inicio.touched)">
+            <strong *ngIf="f.fecha_inicio.errors?.required" class="text-danger">
+              Fecha de inicio es obligatorio
+            </strong>
+          </span>
+        </div>
+        <label class="col-12 col-lg-2 form-label" for="fecha_termino">(*) Fecha de término: </label>
+        <div class="col-12 col-lg-4 mb-2">
+          <div class="inner-addon left-addon">
+            <i class="icono material-icons">event</i>
+            <input type="text" class="form-control" formControlName="fecha_termino" placeholder="__/__/____"
+              bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es', containerClass: 'theme-red' }"
+              readonly [ngClass]="{'is-invalid': f.fecha_termino.invalid && (f.fecha_termino.dirty || f.fecha_termino.touched), 
+          'ng-inicio': f.fecha_termino.invalid && f.fecha_termino.untouched }">
+          </div>
+          <span *ngIf="f.fecha_termino.invalid && (f.fecha_termino.dirty || f.fecha_termino.touched)">
+            <strong *ngIf="f.fecha_termino.errors?.required" class="text-danger">
+              Fecha de término es obligatorio
+            </strong>
+          </span>
+        </div>
+        <label class="col-12 col-lg-2 form-label" for="monto_garantia">(*) Monto de la garantía:</label>
+        <div class="col-12 col-lg-4 mb-2">
+          <input type="text" class="form-control" formControlName="monto_garantia"
+            [textMask]="{mask: funciones.currencyMask}" [ngClass]="{'is-invalid': f.monto_garantia.invalid && (f.monto_garantia.dirty || f.monto_garantia.touched), 
+          'ng-inicio': f.monto_garantia.invalid && f.monto_garantia.untouched }">
+          <span *ngIf="f.monto_garantia.invalid && (f.monto_garantia.dirty || f.monto_garantia.touched)">
+            <strong *ngIf="f.monto_garantia.errors?.required" class="text-danger">
+              Monto de garantía es obligatorio
+            </strong>
+          </span>
+        </div>
+        <label class="col-12 col-lg-2 form-label" for="fileadelantomodal">(*) Documento:</label>
+        <div class="col-12 col-lg-4 mb-2">
+          <app-input-file idComp="fileadelantomodal" (onChange)="fileChangeEvent($event)" class="input-group"
+            IdTipoArchivo="{{tipoArchivo}}" Value="{{ nombreArchivo }}" [ngClass]="{'is-invalid': f.nombre_archivo.invalid && (f.nombre_archivo.dirty || f.nombre_archivo.touched), 
+            'ng-inicio': f.nombre_archivo.invalid && f.nombre_archivo.untouched }">
+          </app-input-file>
+          <span *ngIf="f.nombre_archivo.invalid && (f.nombre_archivo.dirty || f.nombre_archivo.touched)">
+            <strong *ngIf="f.nombre_archivo.errors?.required" class="text-danger">
+              Documento de Adelanto es obligatorio
+            </strong>
+          </span>
+        </div>
+      </div>
+      <span class="text-danger"><b>(*) Campos Obligatorios</b></span>
+      <div class="row form-group">
+        <div class="col-12 clearfix">
+          <ng-container>
+            <div class="float-right">
+              <button class="btn btn-danger" type="submit" [disabled]="formRegistroAdelantoPreinversion.invalid">
+                <i [ngClass]=" (cambiarEditar)? 'fa fa-edit' : 'fa fa-save'"></i>
+                Guardar</button>
+              <button class="btn btn-default ml-1" type="button" (click)="limpiarForm()"><i
+                  class="icon icon-limpiar"></i>
+                Limpiar</button>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </form>
+  </ng-container>
+  <div class="row form-group">
+    <div class="col-12">
+      <label class="control-label">Última Actualización:</label> &nbsp;
+      <span>{{UltimaActualizacion}}</span>
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-12 container-scroll">
+      <table class="table table-hover table-responsive">
+        <thead class="table-active">
+          <tr>
+            <th>DESCRIPCIÓN</th>
+            <th>MONTO DE ADELANTO</th>
+            <th>ENTIDAD FINANCIERA</th>
+            <th>FECHA DE VIGENCIA</th>
+            <th>MONTO DE LA GARANTIA</th>
+            <th>DOCUMENTO</th>
+            <th *hasClaim="'monitoreo_tabSeg_infEstudio_regAdelantoDirecto_pre_inv_eje_dir'"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let adelanto of lstAdelantoPreinversion; first as isFirst;">
+            <td class="text-center">{{adelanto.nombre_adelanto_directo}}</td>
+            <td class="text-center">{{adelanto.monto_adelanto | currency: 'S/ '}}</td>
+            <td class="text-center">{{adelanto.entidad_financiera}}</td>
+            <td class="text-center">{{adelanto.fecha_inicio}} -
+              {{adelanto.fecha_termino}}</td>
+            <td class="text-center">{{adelanto.monto_garantia | currency: 'S/ '}}</td>
+            <td class="text-center">
+              <div *ngIf="adelanto.ruta_archivo != null && adelanto.nombre_archivo != null ; else templateicono">
+                <a href="{{adelanto.ruta_archivo}}" target="_blank" class="btn-icon" [LinkNube]="adelanto.nombre_archivo" [Ruta]="adelanto.ruta_archivo">
+                  <i class="fa fa-15x">
+                    <img src="assets/img/icons/file.svg" alt="archivo">
+                  </i>
+                </a>
+              </div>
+              <ng-template #templateicono>
+              </ng-template>
+            </td>
+            <td class="text-center" *hasClaim="'monitoreo_tabSeg_infEstudio_regAdelantoDirecto_pre_inv_eje_dir'">
+              <div class="xs-hidden pre-wrap" *ngIf="isFirst">
+                <a href="javascript:void(0)" *hasClaim="'monitoreo_tabSeg_infObra_modAmpliacion_eje_dir'"
+                  (click)="modificarAdelantoDirectoPreinversion(adelanto)" class="btn btn-sm btn-icon">
+                  <i class="fa fa-15x">
+                    <img src="assets/img/icons/pencil.svg" alt="editar">
+                  </i>
+                </a>
+
+                <a href="javascript:void(0)" *hasClaim="'monitoreo_tabSeg_infObra_eliAmpliacion_eje_dir'"
+                  (click)="anularAdelantoDirectoPreinversion(adelanto.id_adelanto_directo)" class="btn btn-sm btn-icon">
+                  <i class="fa fa-15x">
+                    <img src="assets/img/icons/trash.svg" alt="eliminar">
+                  </i>
+                </a>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-12">
+      <nav class="pt-4 pl-3 pull-right">
+        <pagination [totalItems]="totalRegistros" [itemsPerPage]="itemsPerPage" [boundaryLinks]="true"
+          previousText="&lsaquo;" nextText="&rsaquo;" [rotate]="false" firstText="&laquo;" lastText="&raquo;"
+          [maxSize]="5" (pageChanged)="cambiarPagina($event)">
+        </pagination>
+      </nav>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-plomo" id="btnCancelar" type="button" (click)="closeModal()"><i class="fa fa-arrow-left"></i>
+    Cerrar</button>
+</div>

@@ -1,0 +1,153 @@
+<div class="modal-header">
+  <h4 class="modal-title" *ngIf="!cambiarEditar">Registro de Programación de Entregables y/o Informes</h4>
+  <p class="pb-2 pl-4 pr-4" *ngIf="!cambiarEditar">Registrar Programación de Entregables y/o Informes</p>
+  <h4 class="modal-title" *ngIf="cambiarEditar">Edición de Programación de Entregables y/o Informes</h4>
+  <p class="pb-2 pl-4 pr-4" *ngIf="cambiarEditar">Modificar Programación de Entregables y/o Informes</p>
+</div>
+<div class="modal-body">
+  <div class="group-box">
+    <form [formGroup]="formProgramacionEntregables" (ngSubmit)="registrarCronogramaExpediente()" autocomplete="off"
+      novalidate>
+      <div class="row form-group">
+        <div class="col-sm-2">
+          <label class="control-label" for="num_informe">N° de Informes (*):</label>
+        </div>
+        <div class="col-sm-4">
+          <input type="number" id="num_informe" class="form-control" formControlName="num_informe"
+            placeholder="Nro. de Informes" min="0" max="12" maxlength="2"
+            (keyup)="onKey(formProgramacionEntregables.get('num_informe').value)" [readonly]="cambiarEditar">
+          <span
+            [hidden]="formProgramacionEntregables.get('num_informe').valid || formProgramacionEntregables.get('num_informe').pristine"
+            class="alert alert-danger">
+            <span *ngIf="formProgramacionEntregables.get('num_informe').errors?.required">
+              Nro. de Informes es obligatorio.
+            </span>
+            <span *ngIf="formProgramacionEntregables.get('num_informe').errors?.max">
+              Nro. maximo de Informes es 12.
+            </span>
+          </span>
+        </div>
+        <div class="col-sm-2">
+          <label class="control-label" for="documento_aprobacion">Documento de Aprobación (*):</label>
+        </div>
+        <div class="col-sm-4">
+          <ng-select [hidden]="cambiarEditar" [items]="listaDocumentoAprobacion" bindLabel="tipo_informe"
+            bindValue="id_seguimiento_actividad" formControlName="documento_aprobacion" placeholder="Seleccione">
+          </ng-select>
+          <span
+            [hidden]="formProgramacionEntregables.get('documento_aprobacion').valid || formProgramacionEntregables.get('documento_aprobacion').pristine"
+            class="alert alert-danger">
+            <span *ngIf="formProgramacionEntregables.get('documento_aprobacion').errors?.required">
+              Documento de aprobación es obligatorio.
+            </span>
+          </span>
+          <input class="form-control" type="text" formControlName="denominacion" readonly [hidden]="!cambiarEditar">
+        </div>
+      </div>
+      <span class="comentario">(*)Campos Obligatorios</span>
+      <div class="row form-group">
+        <table class="table table-bordered table-responsive table-hover">
+          <thead>
+            <th style="width: 5%">N°<br>INFORME</th>
+            <th style="width: 25%">COMPONENTES</th>
+            <th style="width: 50%">ESPECIALIDADES</th>
+            <th style="width: 10%">PLAZO DE ENTREGA</th>
+            <th style="width: 10%">PORCENTAJE (%)</th>
+          </thead>
+          <tbody formArrayName="informe"
+            *ngFor="let item of formProgramacionEntregables['controls'].informe['controls']; let i= index">
+            <tr [formGroupName]="i">
+              <td>
+                <div class="xs-th">Nro. Informe :</div>
+                <input id="{{'nro_informe' + i}}" class="form-control text-center" formControlName="num_informe"
+                  type="text" style="background: transparent; border: transparent;" readonly value="{{i+1}}">
+              </td>
+              <td colspan="2">
+                <table class="table table-borderless">
+                  <tbody formArrayName="componente"
+                    *ngFor="let componenteInforme of item['controls'].componente['controls']; let j = index">
+                    <tr [formGroupName]="j" *ngIf="componenteInforme.get('activo').value">
+                      <td style="width: 35%">
+                        <div class="xs-th">Componentes:</div>
+                        <ng-select id="{{'id_tipo_componente' + j}}" style="text-align: left"
+                          [items]="listaComponentesExpediente" bindLabel="nombre_componente"
+                          bindValue="id_tipo_componente" formControlName="id_tipo_componente" placeholder="Seleccione">
+                        </ng-select>
+                      </td>
+                      <td style="width: 64%">
+                        <div class="xs-th">Especialidades:</div>
+                        <ng-select id="{{'lista_especialidad' + j}}" style="text-align: left"
+                          [items]="listaEspecialidadesComponente" [selectableGroup]="true" [closeOnSelect]="false"
+                          bindLabel="nombre_especialidad" bindValue="id_especialidad" groupBy="nombre_componente"
+                          formControlName="lista_especialidad" [multiple]=true placeholder="Seleccione">
+                          <ng-template ng-optgroup-tmp let-item="item" let-item$="item$" let-index="index">
+                            <input id="item-{{index}}" type="checkbox" />
+                            {{item.nombre_componente}}
+                          </ng-template>
+                          <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+                            <input id="item-{{index}}" type="checkbox"
+                              [checked]="listaEspecialidadesComponente.indexOf(item) > -1" [ngModel]="item$.selected"
+                              [ngModelOptions]="{standalone: true}" /> {{item.nombre_especialidad}}
+                          </ng-template>
+                        </ng-select>
+                        <span
+                          [hidden]="componenteInforme.get('lista_especialidad').valid || componenteInforme.get('lista_especialidad').pristine"
+                          class="alert alert-danger">
+                          <span *ngIf="componenteInforme.get('lista_especialidad').errors?.required">
+                            Debe seleccionar como mìnimo una especialidad.
+                          </span>
+                        </span>
+                      </td>
+                      <td style="width: 1%">
+                        <div>
+                          <button *ngIf="j > 0" class="btn btn-debug" type="button"
+                            (click)="removerComponenteExpediente(i,j)" title="Quitar componente"><i
+                              class="fa fa-close"></i></button>
+                          <button *ngIf="j == 0" class="btn btn-success" type="button"
+                            (click)="agregarComponenteExpediente(i)" title="Agregar componente"><i
+                              class="fa fa-plus"></i></button>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+              <td>
+                <div class="xs-th">Plazo de entrega:</div>
+                <input type="number" id="{{'plazo_entrega' + i}}" class="form-control text-center"
+                  formControlName="plazo_entrega" placeholder="Dias" min="0"
+                  (keypress)="funciones.IsNumberKey($event);">
+                <span [hidden]="item.get('plazo_entrega').valid || item.get('plazo_entrega').pristine"
+                  class="alert alert-danger">
+                  <span *ngIf="item.get('plazo_entrega').errors?.required">
+                    Plazo es obligatorio.
+                  </span>
+                </span>
+              </td>
+              <td>
+                <input type="number" id="{{'porcentaje' + i}}" class="form-control text-center"
+                  formControlName="porcentaje" placeholder="%" min="0" max="100" step="0.01"
+                  (keypress)="funciones.IsFloat($event)" maxlength="5" (blur)="validarSumaPorcentajes()">
+                <span [hidden]="item.get('porcentaje').valid || item.get('porcentaje').pristine"
+                  class="alert alert-danger">
+                  <span *ngIf="item.get('porcentaje').errors?.required">
+                    Porcentaje es obligatorio.
+                  </span>
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <br>
+      <span class="comentario">(*) Campos obligatorios</span>
+      <div class="modal-footer">
+        <button type="submit" id="btnGuardarEntregables" class="btn btn-danger"
+          [disabled]="formProgramacionEntregables.invalid || !esValidoSumaPorcentajeAvanceProgramado"><i
+            class="fa fa-save"></i> Guardar</button>
+        <button class="btn btn-plomo" id="btnCancelar" type="button" (click)="closeModal()"><i
+            class="fa fa-arrow-left"></i> Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,65 @@
+{
+  "compilerOptions": {
+    "baseUrl": "",
+    "allowSyntheticDefaultImports": true,
+    "declaration": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "lib": [
+      "dom",
+      "es2015"
+    ],
+    "module": "es2015",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "target": "es5",
+    "paths": {
+      "@angular/*": [
+        "node_modules/@angular/*"
+      ],
+      "exceljs": [
+        "node_modules/exceljs/dist/exceljs.min"
+      ],
+      "SSPSET": [
+        "dist/sspset"
+      ],
+      "SSPSET/*": [
+        "dist/sspset/*"
+      ],
+      "sspset": [
+        "dist/sspset"
+      ],
+      "sspset/*": [
+        "dist/sspset/*"
+      ],
+      "SSPSSI": [
+        "dist/sspssi"
+      ],
+      "SSPSSI/*": [
+        "dist/sspssi/*"
+      ],
+      "sspssi": [
+        "dist/sspssi"
+      ],
+      "sspssi/*": [
+        "dist/sspssi/*"
+      ],
+      "jszip": [
+        "./node_modules/jszip/dist/jszip.min.js"
+      ]
+    }
+  },
+  "include": [
+    "src/**/*.ts",
+    "node_modules/ng4-fittext/*.d.ts",
+    "projects/sspssi/src/lib/**/*.ts",
+    "projects/sspset/src/lib/**/*.ts"
+  ],
+  "exclude": [
+    "**/*.spec.ts",
+  ],
+  "compileOnSave": false,
+  "atom": {
+    "rewriteTsconfig": false
+  }
+}

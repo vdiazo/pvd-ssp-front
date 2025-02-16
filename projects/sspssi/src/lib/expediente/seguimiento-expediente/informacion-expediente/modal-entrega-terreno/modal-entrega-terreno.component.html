@@ -1,0 +1,135 @@
+<div class="modal-header">
+  <h4 class="modal-title">Entrega de Terreno</h4>
+  <p class="pb-2 pl-4 pr-4">Registro y listado - Acta de entrega de terreno</p>
+</div>
+<div class="modal-body">
+  <div class="group-box">
+    <ng-container *hasClaim="'monitoreo_tabSeg_infExpediente_regEntregaTerreno_exp_tec_eje_dir'">
+      <form [formGroup]="formEntregaTerreno" (ngSubmit)="procesarActaTerreno()" autocomplete="off">
+        <div class="row form-group">
+          <label class="col-sm-6 control-label" for="fecha_entrega_terreno">Fecha de entrega de terreno (*) :</label>
+          <div class="col-sm-6">
+            <div class="inner-addon left-addon">
+              <i class="icono material-icons">event</i>
+              <input type="text" id="fecha_entrega_terreno" class="form-control" formControlName="fecha_entrega_terreno"
+                placeholder="dd/mm/aaaa" bsDatepicker
+                [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es', containerClass: 'theme-red' }" readonly
+                [ngClass]="{'is-invalid': (formEntregaTerreno.get('fecha_entrega_terreno').touched || formEntregaTerreno.get('fecha_entrega_terreno').dirty) && !formEntregaTerreno.get('fecha_entrega_terreno').valid }">
+            </div>
+            <span class="invalid-feedback" style="width: 200px;">
+              <span *ngIf="formEntregaTerreno.get('fecha_entrega_terreno').errors?.required">
+                Fecha Resolución es obligatorio.
+              </span>
+            </span>
+          </div>
+        </div>
+        <div class="row form-group">
+          <label class="col-sm-6 control-label" for="nombre_archivo">Acta de entrega de terreno (*) :</label>
+          <div class="col-sm-6">
+            <app-input-file idComp="fileactaterreno" (onChange)="fileChangeEvent($event)" class="input-group"
+              IdTipoArchivo="{{tipoArchivo}}" Value="{{ nombreArchivo }}"
+              [ngClass]="{'is-invalid': (formEntregaTerreno.get('nombre_archivo').touched || formEntregaTerreno.get('nombre_archivo').dirty) && !formEntregaTerreno.get('nombre_archivo').valid }">
+            </app-input-file>
+          </div>
+        </div>
+        <div class="row form-group">
+          <label class="col-sm-6 control-label" for="observacion">Observaciones :</label>
+          <div class="col-sm-6">
+            <textarea class="form-control" name="observacion" id="observacion" rows="3"
+              formControlName="observacion"></textarea>
+          </div>
+        </div>
+        <span class="comentario">(*)Campos Obligatorios</span>
+        <div class="modal-footer" [hidden]=!bEstado>
+          <button type="submit" id="btnGuardar" class="btn btn-danger" [disabled]=formEntregaTerreno.invalid
+            *hasClaim="'monitoreo_tabSeg_infObra_regAmpliacion_eje_dir'"> <i class="fa fa-save"></i>
+            Guardar</button>
+          <button type="button" id="btnLimpiar" (click)="formEntregaTerreno.reset();" class="btn btn-default"> <i
+              class="icon icon-limpiar"></i>
+            Limpiar</button>
+        </div>
+        <div class="row form-group">
+          <div class="col-sm-12">
+            <label dlabels class="control-label">Última Actualización:</label> &nbsp;
+            <span>{{UltimaActualizacion}}</span>
+          </div>
+        </div>
+      </form>
+    </ng-container>
+  </div>
+
+  <div class="row form-group">
+    <div class="col-sm-12">
+      <table class="table table-hover table-responsive">
+        <thead class="table-active">
+          <tr>
+            <th>Fecha</th>
+            <th>Observaciones</th>
+            <th>Doc.</th>
+            <th *hasClaim="'monitoreo_tabSeg_infExpediente_regEntregaTerreno_exp_tec_eje_dir'"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let acta of listActaEntregaTerreno; let i = index">
+            <td>{{acta.fecha_entrega_terreno}}</td>
+            <td>{{acta.observacion}}</td>
+            <td>
+              <div class="xs-hidden">
+                <div *ngIf="acta.ruta_archivo != '' && acta.nombre_archivo != null ; else templateicono">
+                  <a href="{{acta.ruta_archivo}}" target="_blank" class="btn-icon" [LinkNube]="acta.nombre_archivo" [Ruta]="acta.ruta_archivo">
+                    <i class="fa fa-15x">
+                      <img src="assets/img/icons/file.svg" alt="archivo">
+                    </i>
+                  </a>
+                </div>
+                <ng-template #templateicono>
+                </ng-template>
+              </div>
+            </td>
+            <td *hasClaim="'monitoreo_tabSeg_infExpediente_regEntregaTerreno_exp_tec_eje_dir'">
+              <div class="xs-hidden pre-wrap" *ngIf="!(i > 0 || paginaActiva!=0)">
+                <a href="javascript:void(0)" (click)="editarEntregaTerreno(acta)" class="btn btn-sm btn-icon">
+                  <i class="fa fa-15x">
+                    <img src="assets/img/icons/pencil.svg" alt="editar">
+                  </i>
+                </a>
+
+                <a href="javascript:void(0)" (click)="eliminarEntregaTerreno(acta.id_terreno)"
+                  class="btn btn-sm btn-icon">
+                  <i class="fa fa-15x">
+                    <img src="assets/img/icons/trash.svg" alt="eliminar">
+                  </i>
+                </a>
+              </div>
+              <div class="xs-display">
+                <div *ngIf="!(i > 0 || paginaActiva!=0); else templateicono">
+                  <span *ngIf="acta.nombre_archivo != ''" class="mr-1">
+                    <a href="{{acta.nombre_archivo}}" target="_blank" class="btn-icon" [LinkNube]="acta.nombre_archivo" [Ruta]="acta.ruta_archivo">
+                      <i class="fa fa-file"></i>
+                    </a>
+                  </span>
+                  <a href="javascript:void(0)" (click)="editarEntregaTerreno(acta)" class="btn-icon mr-1">
+                    <i class="fa fa-pencil"></i>
+                  </a>
+                  <a href="javascript:void(0)" (click)="eliminarEntregaTerreno(acta.id_terreno)" class="btn-icon">
+                    <i class="fa fa-trash"></i>
+                  </a>
+                </div>
+                <ng-template #templateicono>
+                  <span *ngIf="acta.ruta_archivo != '' && acta.nombre_archivo != null">
+                    <a href="{{acta.nombre_archivo}}" target="_blank" class="btn-icon">
+                      <i class="fa fa-file"></i>
+                    </a>
+                  </span>
+                </ng-template>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-dark" type="button" (click)="closeModal()"><i class="fa fa-close"></i> Cerrar</button>
+</div>

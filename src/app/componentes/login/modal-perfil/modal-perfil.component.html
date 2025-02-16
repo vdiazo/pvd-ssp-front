@@ -1,0 +1,11 @@
+<div class="modal-header">
+   mensaje
+  </div>
+
+<div class="modal-body">
+  <div class="row form-group">
+    <div class="col-12">
+      <button *ngFor="let perfil of perfiles" class="btn btn-perfil" (click)="setPerfil(perfil)" type="button">{{perfil.nombre_perfil}}</button>
+    </div>
+  </div>
+</div>

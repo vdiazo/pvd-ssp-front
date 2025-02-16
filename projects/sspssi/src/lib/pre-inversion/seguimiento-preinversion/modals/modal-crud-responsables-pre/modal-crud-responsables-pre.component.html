@@ -1,0 +1,211 @@
+<div class="modal-header">
+  <h3 class="modal-title">Responsable Elaboración Estudio Preinversión</h3>
+  <p class="pb-2 pl-4 pr-4">Registro de Administrador de Contrato - Estudio de Preinversión</p>
+</div>
+<div class="modal-body">
+  <ng-container *hasClaim="'monitoreo_tabSeg_responsable_regResponsable_pre_inv_eje_dir'">
+    <form [formGroup]="formRegistroResponsable" (ngSubmit)="registrarResponsablePreinversion()">
+      <div formArrayName="detalle" *ngFor="let item of detalle.controls; index as i;">
+        <ng-container [formGroupName]="i">
+          <div class="row form-group">
+            <label class="form-label col-5 col-md-2 mb-2">(*) DNI</label>
+            <div class="col-7 col-md-4 mb-2">
+              <div class="inner-addon right-addon">
+                <label class="btn mb-0 rounded-left" title="Validar con RENIEC" for="dni_responsable"
+                  (click)="validarInformacionReniec()"><i class="icono material-icons">search</i></label>
+                <input type="text" formControlName="dni_responsable" id="dni_responsable" placeholder="Número de DNI"
+                  type="text" maxlength="8" class="form-control" (keypress)="funciones.IsNumberKey($event);" [ngClass]="{'is-invalid': item.get('dni_responsable').invalid && (item.get('dni_responsable').dirty || item.get('dni_responsable').touched), 
+                  'ng-inicio': item.get('dni_responsable').invalid && item.get('dni_responsable').untouched}"
+                  (ngModelChange)="validarDNI()" [readOnly]="cambiarEditar">
+              </div>
+              <div
+                *ngIf="item.get('dni_responsable').invalid && (item.get('dni_responsable').dirty || item.get('dni_responsable').touched)">
+                <strong *ngIf="item.get('dni_responsable').errors.required" class="text-danger">DNI es
+                  obligatorio</strong>
+              </div>
+            </div>
+            <label class="form-label col-5 col-md-2 mb-2">Apellidos</label>
+            <div class="col-7 col-md-4 mb-2">
+              <input type="text" class="form-control" formControlName="apellidos" id="apellidos" readonly>
+            </div>
+            <label class="control-label col-5 col-md-2 mb-2">Nombres</label>
+            <div class="col-7 col-md-4 mb-2">
+              <input type="text" class="form-control" formControlName="nombre_responsable" id="nombre_responsable"
+                readonly>
+            </div>
+            <label class="control-label col-5 col-md-2 mb-2">(*) Tipo Colegiatura</label>
+            <div class="col-7 col-md-4 mb-2">
+              <ng-select [items]="lstTipoColegiatura" placeholder="Seleccione" bindLabel="descripcion"
+                bindValue="id_tipo_colegiatura" notFoundText="no se ha encontrado ningún item"
+                formControlName="id_tipo_colegiatura" id="id_tipo_colegiatura" [ngClass]="{'is-invalid': item.get('id_tipo_colegiatura').invalid && (item.get('id_tipo_colegiatura').dirty || item.get('id_tipo_colegiatura').touched), 
+                'ng-inicio': item.get('id_tipo_colegiatura').invalid && item.get('id_tipo_colegiatura').untouched}">
+              </ng-select>
+              <div
+                *ngIf="item.get('id_tipo_colegiatura').invalid && (item.get('id_tipo_colegiatura').dirty || item.get('id_tipo_colegiatura').touched)">
+                <strong *ngIf="item.get('id_tipo_colegiatura').errors.required" class="text-danger">Colegiatura es
+                  obligatorio</strong>
+              </div>
+            </div>
+            <label class="control-label col-5 col-md-2 mb-2">(*) N° Colegiatura</label>
+            <div class="col-7 col-md-4 mb-2">
+              <input type="text" class="form-control" formControlName="nro_colegiatura" id="nro_colegiatura"
+                (keypress)="funciones.IsNumberKey($event);" [ngClass]="{'is-invalid': item.get('nro_colegiatura').invalid && (item.get('nro_colegiatura').dirty || item.get('nro_colegiatura').touched), 
+                'ng-inicio': item.get('nro_colegiatura').invalid && item.get('nro_colegiatura').untouched}">
+              <div
+                *ngIf="item.get('nro_colegiatura').invalid && (item.get('nro_colegiatura').dirty || item.get('nro_colegiatura').touched)">
+                <strong *ngIf="item.get('nro_colegiatura').errors.required" class="text-danger">Nro. de Colegiatura es
+                  obligatorio</strong>
+              </div>
+            </div>
+            <label class="control-label col-5 col-md-2 mb-2">(*) Fecha Designación</label>
+            <div class="col-7 col-md-4 mb-2">
+              <div class="inner-addon left-addon">
+                <i class="icono material-icons">event</i>
+                <input class="form-control" #dpYMD="bsDatepicker" bsDatepicker [readonly]="true"
+                  placeholder="__/__/____"
+                  [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es',showWeekNumbers: false, containerClass: 'theme-red' }"
+                  formControlName="fecha_designacion" id="fecha_designacion" [ngClass]="{'is-invalid': item.get('fecha_designacion').invalid && (item.get('fecha_designacion').dirty || item.get('fecha_designacion').touched), 
+                  'ng-inicio': item.get('fecha_designacion').invalid && item.get('fecha_designacion').untouched}">
+              </div>
+              <div
+                *ngIf="item.get('fecha_designacion').invalid && (item.get('fecha_designacion').dirty || item.get('fecha_designacion').touched)">
+                <strong *ngIf="item.get('fecha_designacion').errors.required" class="text-danger">Fecha de Designación
+                  es obligatorio</strong>
+              </div>
+            </div>
+            <label class="col-5 col-md-2 mb-2">Contrato / Documento de Designación o Delegación</label>
+            <div class="col-7 col-md-4 mb-2">
+              <app-input-file idComp="fileRegistroDocumentoDesignacion" (onChange)="fileChangeEvent($event)"
+                class="input-group" IdTipoArchivo="{{tipoArchivo}}" Value="{{ documentoDesignacion }}"
+                [ngClass]="{'is-invalid': item.get('documento_nombramiento').invalid && (item.get('documento_nombramiento').dirty || item.get('documento_nombramiento').touched), 
+                'ng-inicio': item.get('documento_nombramiento').invalid && item.get('documento_nombramiento').untouched }">
+              </app-input-file>
+              <div
+                *ngIf="item.get('documento_nombramiento').invalid && (item.get('documento_nombramiento').dirty || item.get('documento_nombramiento').touched)">
+                <strong *ngIf="item.get('documento_nombramiento').errors.required" class="text-danger">Documento de
+                  Designación es obligatorio</strong>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+      <div class="row form-group">
+        <label class="col-5 col-md-2 mb-2">Celular</label>
+        <div class="col-7 col-md-4 mb-2">
+          <div formArrayName="numero_telefonico" *ngFor="let item of numeroTelefonico.controls; index as i;">
+            <div [formGroupName]="i">
+              <input type="text" class="form-control" placeholder="Nro. de telefono" id="nro_telefono"
+                formControlName="nro_telefono" (keypress)="funciones.IsNumberKey($event);" maxlength="9">
+            </div>
+          </div>
+        </div>
+        <label class="form-label col-5 col-md-2 mb-2">Correo electrónico</label>
+        <div class="col-7 col-md-4 mb-2">
+          <div formArrayName="email" *ngFor="let item of emails.controls; index as i;">
+            <div [formGroupName]="i">
+              <input type="text" class="form-control" id="email" formControlName="email"
+                placeholder="example@domain.com">
+              <strong *ngIf="item.get('email').errors?.email" class="text-danger">Email incorrecto</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+      <strong class="text-danger">(*) Campos Obligatorios</strong>
+      <div class="row form-group">
+        <div class="col-12 clearfix">
+          <ng-container>
+            <div class="float-right">
+              <button class="btn btn-danger" type="submit" [disabled]="formRegistroResponsable.invalid">
+                <i [ngClass]=" (cambiarEditar)? 'fa fa-edit' : 'fa fa-save'"></i>
+                Guardar</button>
+              <button class="btn btn-default ml-1" type="button" (click)="limpiarForm()"><i
+                  class="icon icon-limpiar"></i>
+                Limpiar</button>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </form>
+  </ng-container>
+  <div class="row form-group">
+    <div class="col-sm-12">
+      <label class="control-label">Última Actualización:</label> &nbsp;
+      <span>{{UltimaActualizacion}}</span>
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-12 container-scroll">
+      <table class="table table-hover table-responsive">
+        <thead class="table-active">
+          <tr>
+            <th>DNI</th>
+            <th>RESPONSABLE</th>
+            <th>TIPO COLEGIATURA</th>
+            <th>COLEGIATURA</th>
+            <th>FECHA DESIGNACION</th>
+            <th>TELEFONO</th>
+            <th>CORREO ELECTRONICO</th>
+            <th>DOCUMENTO</th>
+            <th *hasClaim="'monitoreo_tabSeg_responsable_regResponsable_pre_inv_eje_dir'"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let responsable of lstResponsablePreinversion; first as isFirst;">
+            <td class="text-center">{{responsable.dni_responsable}}</td>
+            <td class="text-center">{{responsable.nombre_responsable}} {{responsable.ape_pat_responsable}}
+              {{responsable.ape_mat_responsable}}</td>
+            <td class="text-center">{{responsable.descripcion_tipo_colegiatura}}</td>
+            <td class="text-center">{{responsable.nro_colegiatura}}</td>
+            <td class="text-center">{{responsable.fecha_designacion | date: 'dd/MM/yyyy'}}</td>
+            <td class="text-center">
+              <span
+                *ngIf="responsable.numero_telefonico.length > 0">{{responsable.numero_telefonico[0].nro_telefono}}</span>
+            </td>
+            <td class="text-center">
+              <span *ngIf="responsable.email.length > 0">{{responsable.email[0].email}}</span>
+            </td>
+            <td class="text-center">
+              <div
+                *ngIf="responsable.ruta_documento_nombramiento != '' && responsable.documento_nombramiento != null ; else templateicono">
+                <a href="{{responsable.ruta_documento_nombramiento}}" target="_blank" class="btn-icon" [LinkNube]="responsable.documento_nombramiento" [Ruta]="responsable.ruta_documento_nombramiento">
+                  <i class="fa fa-15x">
+                    <img src="assets/img/icons/file.svg" alt="archivo">
+                  </i>
+                </a>
+              </div>
+              <ng-template #templateicono>
+              </ng-template>
+            </td>
+            <td class="text-center" *hasClaim="'monitoreo_tabSeg_responsable_regResponsable_pre_inv_eje_dir'">
+              <div class="xs-hidden pre-wrap" *ngIf="isFirst">
+                <a href="javascript:void(0)" (click)="editarResponsable(responsable)" class="btn btn-sm btn-icon">
+                  <i class="fa fa-15x">
+                    <img src="assets/img/icons/pencil.svg" alt="editar">
+                  </i>
+                </a>
+                <a href="javascript:void(0)" *hasClaim="'monitoreo_tabSeg_responsable_regResponsable_pre_inv_eje_dir'"
+                  (click)="anularResponsable(responsable.id_responsable)" class="btn btn-sm btn-icon">
+                  <i class="fa fa-15x">
+                    <img src="assets/img/icons/trash.svg" alt="eliminar">
+                  </i>
+                </a>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-12">
+      <nav class="pt-4 pl-3 pull-right">
+        <pagination [totalItems]="totalRegistros" [itemsPerPage]="itemsPerPage" [boundaryLinks]="true"
+          previousText="&lsaquo;" nextText="&rsaquo;" [rotate]="false" firstText="&laquo;" lastText="&raquo;"
+          [maxSize]="5" (pageChanged)="cambiarPagina($event)">
+        </pagination>
+      </nav>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-plomo" id="btnCancelar" type="button" (click)="closeModal()"><i class="fa fa-close"></i>
+    Cerrar</button>
+</div>

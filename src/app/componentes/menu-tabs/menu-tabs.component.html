@@ -1,0 +1,62 @@
+<div class="container-fluid pt-4">
+  <div class="social-card status mb-4">
+    <h6>{{Proyecto.nombre_proyecto}}</h6>
+    <div class="pb-1 c-white">
+      <span class="f-w-7 f-s-14">SNIP </span> {{Proyecto.cod_snip}}</div>
+  </div>
+  <nav>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+      <a class="nav-item nav-link" data-toggle="tab" role="tab" aria-controls="nav-informacion-general-proyecto" aria-selected="false"
+        routerLink="infogeneral/{{rutavariables}}" routerLinkActive="active">Información General Proyecto
+      </a>
+      <a class="nav-item nav-link" data-toggle="tab" role="tab" aria-controls="nav-informacion-general-proyecto" aria-selected="false"
+        routerLink="financiamiento/{{rutavariables}}" routerLinkActive="active">Financiamiento</a>
+      <a class="nav-item nav-link" data-toggle="tab" role="tab" aria-controls="nav-informacion-general-proyecto" aria-selected="false"
+        routerLink="proceso-seleccion/{{rutavariables}}" routerLinkActive="active">Procedimiento de Selección
+      </a>
+      <a class="nav-item nav-link" data-toggle="tab" role="tab" aria-controls="nav-informacion-general-proyecto" aria-selected="false"
+        routerLink="seguimiento-monitoreo/{{rutavariables}}" routerLinkActive="active">Seguimiento y monitoreo a Ejecución</a>
+
+      <span *hasClaim="'monitoreo_tabInfComplementaria'">
+        <a *ngIf="!bSegMonitoreo; else templateLinkTabAdicionalyDeductivo" class="nav-item nav-link" data-toggle="tab" role="tab"
+          aria-controls="nav-informacion-general-proyecto" aria-selected="true" routerLink="adicional-deductivo/{{rutavariables}}"
+          routerLinkActive="active">Adicional y Deductivo</a>
+        <ng-template #templateLinkTabAdicionalyDeductivo>
+          <a class="nav-item nav-link" data-toggle="tab" role="tab" aria-controls="nav-informacion-general-proyecto" [ngClass]="{ 'disabled': funcion() }"
+            aria-selected="true">Adicional y Deductivo</a>
+        </ng-template>
+      </span>
+      <a *ngIf="!bSegMonitoreo; else templateLinkRecepcionyLiquidacion" class="nav-item nav-link" data-toggle="tab" role="tab"
+        aria-controls="nav-informacion-general-proyecto" aria-selected="true" routerLink="recepcion-liquidacion/{{rutavariables}}"
+        routerLinkActive="active">Recepción y Liquidación
+      </a>
+      <ng-template #templateLinkRecepcionyLiquidacion>
+        <a class="nav-item nav-link" data-toggle="tab" role="tab" aria-controls="nav-informacion-general-proyecto" [ngClass]="{ 'disabled': funcion() }"
+          aria-selected="true">Recepción y Liquidación
+        </a>
+      </ng-template>
+
+      <span *hasClaim="'monitoreo_tabHistorial'">
+        <a class="nav-item nav-link" data-toggle="tab" role="tab" aria-controls="nav-informacion-resolucion-contrato"
+          aria-selected="true" routerLink="resolucion-contrato/{{rutavariables}}" routerLinkActive="active">Historial</a>
+      </span>
+    </div>
+  </nav>
+</div>
+<div class="container-fluid m-0 p-0">
+  <div class="tab-content" id="nav-tabContent">
+    <div class="tab-pane tab-pane-border fade show active" id="nav-informacion-general-proyecto" role="tabpanel" aria-labelledby="nav-informacion-general-proyecto">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
+
+<!-- 
+<nav>
+  <div class="nav nav-tabs" id="nav-tab" role="tablist">
+      <a routerLink="infogeneral"  routerLinkActive="active" class="nav-item nav-link active" data-toggle="tab" href="#nav-informacion-general-proyecto"
+      role="tab" aria-controls="nav-informacion-general-proyecto" aria-selected="false">primero</a>
+      <a routerLink="financiamiento"  routerLinkActive="active" class="nav-item nav-link active" data-toggle="tab" href="#nav-informacion-general-proyecto"
+      role="tab" aria-controls="nav-informacion-general-proyecto" aria-selected="false">Segundo</a>
+  </div>
+</nav> -->

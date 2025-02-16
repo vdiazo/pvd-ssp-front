@@ -1,0 +1,117 @@
+<div class="modal-header">
+    <h4 class="modal-title">Asignar Menu - Componente</h4>
+    <p class="pl-4 pr-4">Formulario para el asignación y listado de menu</p>
+  </div>
+  <div class="modal-body">
+    <div class="row form-group">
+        <label dlabels class="col-md-2 control-label">Menu:</label>
+        <div class="col-md-10">
+            <ng-select [items]="menuDetalles"
+            placeholder="Seleccione un Menu"
+            bindLabel="nombre_menu"
+            bindValue="id_detalle_perfil_menu"
+            [(ngModel)]="campoBusqueda"
+            (change)="habilitar($event)"
+            name="campoBusqueda">
+          </ng-select>
+        </div>
+    </div>
+    <div class="row form-group" [hidden]="mostrarRegistrar">
+        <label dlabels class="col-md-2 control-label">PÁGINA:</label>
+        <div class="col-md-4">
+          <input type="text" class="form-control" name="paginas" [(ngModel)]="paginas"/>
+        </div>
+        <label dlabels class="col-md-2 control-label">SECCIÓN:</label>
+        <div class="col-md-4">
+          <input type="text" class="form-control" name="seccion" [(ngModel)]="seccion" />
+        </div>
+    </div>
+    <div class="row form-group" [hidden]="mostrarRegistrar">
+        <label dlabels class="col-md-2 control-label">MÓDULO:</label>
+        <div class="col-md-4">
+          <input type="text" class="form-control" name="modulos" [(ngModel)]="modulos"/>
+        </div>
+    </div>
+    <div class="row form-group" [hidden]="mostrarRegistrar">  
+        <label dlabels class="col-md-2 control-label">NOMBRE:</label>
+        <div class="col-md-10">
+          <input type="text" class="form-control" name="componentes" [(ngModel)]="nombreComponentes" />
+        </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-sm-12">
+          <div class=" pull-right">
+            <button type="button" id="btnBuscar" class="btn pull-left btn-plomo" (click)="BusquedaDetalleComponente()"><i class="fa fa-search"></i> Buscar</button>  
+            <button type="button" id="btnNuevoRegistro" [hidden]="mostrarRegistrar" class="btn pull-left ml-1 btn-danger" (click)="modalAgregarMenuComponente(campoBusqueda)"> Nuevo Registro</button>
+          </div>
+        </div>
+    </div> 
+    <div class="form-group">
+      <div class="row">
+        <table class="table table-hover table-responsive table-normal">
+          <thead>
+            <tr>
+              <th>MENÚ</th>
+              <th>SECCIÓN</th>
+              <th>COMPONENTE</th>
+              <th>VISIBLE</th>
+              <th></th>
+            </tr>            
+          </thead>
+          <tbody *ngIf="arregloDetalleComponente.length != 0; else templateDetalle">
+            <tr *ngFor="let campos of arregloDetalleComponente">
+              <td>{{campos.nombre_menu}}</td>
+              <td>{{campos.seccion}}</td>
+              <td>
+                <div class="xs-hidden text-left">
+                  {{campos.nombre_componente}}
+                </div>
+                <div class="xs-display">
+                    <div class="xs-th f-s-8">{{campos.nombre_menu}}</div>
+                    <div class="xs-th f-s-8">{{campos.seccion}}</div>
+                  <div class="xs-th f-s-8">{{campos.nombre_componente}}</div>
+                </div>
+              </td>
+              <td>
+                  <ui-switch size="small" [checked]="campos.visible" (change)="estado($event,campos)"></ui-switch>
+              </td>
+              <td width="140" class="xs-footer-lista xs-100 xs-text-right pre-wrap">
+                  <div class="xs-hidden">
+                      <span class="btn btn-sm btn-opt btn-icon" (click)="mostrarAlerta(campos.id_detalle_perfil_menu_componente)"><i class="fa fa-15x"><img src="assets/img/icons/trash.svg"></i></span>
+                  </div>
+                  <div class="xs-display">
+                      <span class="btn-icon" (click)="mostrarAlerta(campos.id_detalle_perfil_menu_componente)"><i class="fa fa-trash"></i></span>
+                  </div>
+              </td>
+            </tr>
+          </tbody>
+          <ng-template #templateDetalle>
+              <tr>
+                  <td colspan="4" style="text-align: center">SIN INFORMACIÓN</td>
+              </tr>
+          </ng-template>
+        </table>
+      </div>
+      <div class="row">
+          <div class="col-12">            
+              <nav class="pt-4 pl-3 pull-right">
+              <pagination [totalItems]="totalDetalleComponente"
+                  [boundaryLinks]="true"
+                  previousText="&lsaquo;"
+                  nextText="&rsaquo;"
+                  [rotate]="false"
+                  firstText="&laquo;"
+                  lastText="&raquo;"
+                  [maxSize]="5"
+                  [itemsPerPage] = "5"
+                  [(ngModel)]="paginaActual"
+                  (pageChanged)="cambiarPagina($event)">
+                </pagination>
+            </nav>
+          </div>
+        </div>
+    </div>    
+    <div class="modal-footer">        
+      <button class="btn btn-plomo" id="btnCancelar" type="button" (click)="closeModal()"><i class="fa fa-arrow-left"></i> Cancelar</button>
+    </div>
+  </div>

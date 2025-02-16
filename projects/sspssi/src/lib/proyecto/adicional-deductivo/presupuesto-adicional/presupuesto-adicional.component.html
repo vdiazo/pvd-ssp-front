@@ -1,0 +1,140 @@
+<div class="row form-group" *hasClaim="'monitoreo_tabInfComplementaria_nuevPptoAdicional_eje_dir'">
+  <div class="col-6" [hidden]=!bEstado>
+    <button class="btn btn-plomo" (click)="nuevo()">
+      <i class="fa fa-plus"></i> Nuevo
+    </button>
+  </div>
+  <div class="col-6 text-right">
+    <label dlabels class="control-label">Última Actualización:</label>&nbsp;
+    <span>{{UltimaActualizacion}}</span>
+  </div>
+</div>
+<div class="row">
+
+
+  <div class="col-12 container-scroll">
+    <table class="table table-hover table-bordered table-responsive table-full-detalle">
+      <thead>
+        <tr>
+          <th>Monto Presupuesto</th>
+          <th>Resolución Aprobación</th>
+          <th>Resolución Fecha</th>
+          <th>% Incidencia</th>
+          <th>Concepto</th>
+          <th>Observaciones</th>
+          <th>Doc.</th>
+          <th [hidden]=!bEstado></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of lista">
+          <td class="xs-hidden text-right">
+            {{ item.monto_presupuesto | formatoMoneda }}
+          </td>
+          <td class="xs-hidden text-left">
+            {{ item.resolucion_aprobacion }}
+          </td>
+          <td class="xs-hidden">
+            {{ item.resolucion_fecha | formatoFecha }}
+          </td>
+          <td class="xs-hidden text-right">
+            {{ item.incidencia }}
+          </td>
+          <td class="xs-hidden text-left">
+            {{ item.concepto }}
+          </td>
+          <td>
+            <div class="xs-hidden text-left">
+              {{ item.observacion }}
+            </div>
+            <div class="xs-display">
+              <div>
+                <span class="xs-th">Resolución Fecha</span>
+                <span>{{ item.resolucion_fecha | formatoFecha }}</span>
+              </div>
+              <div>
+                <span class="xs-th">Monto Presupuesto : </span>
+                <span>{{ item.monto_presupuesto | formatoMoneda }}</span>
+              </div>
+              <div>
+                <span class="xs-th">Resolución Aprobación : </span>
+                <span>{{ item.resolucion_aprobacion }}</span>
+              </div>
+              <div>
+                <span class="xs-th">% Incidencia : </span>
+                <span> {{ item.incidencia }}</span>
+              </div>
+              <div>
+                <span class="xs-th">Concepto</span>
+                <span></span>
+              </div>
+              <div>{{item.concepto}}</div>
+              <div>
+                <span class="xs-th">Observaciones</span>
+                <span></span>
+              </div>
+              <div>{{item.observacion}}</div>
+            </div>
+          </td>
+          <td class="xs-hidden">
+            <div *ngIf="item.nombre_archivo != '' ; else templateicono">
+              <a href="{{item.ruta_archivo}}" target="_blank" class="btn-icon mr-1" [LinkNube]="item.nombre_archivo" [Ruta]="item.ruta_archivo">
+                <i class="fa fa-15x">
+                  <img src="assets/img/icons/file.svg" alt="archivo">
+                </i>
+              </a>
+            </div>
+            <ng-template #templateicono>
+            </ng-template>
+          </td>
+          <td class="xs-footer-lista xs-text-right" [hidden]=!bEstado>
+            <div class="xs-hidden pre-wrap">
+              <span>
+                <a class="btn btn-sm btn-icon mr-1s" href="javascript:void(0);" (click)="editar(item)" *hasClaim="'monitoreo_tabInfComplementaria_editPptoAdicional_eje_dir'">
+                  <i class="fa fa-15x">
+                    <img src="assets/img/icons/pencil.svg" alt="editar">
+                  </i>
+                </a>
+              </span>
+              <span>
+                <a class="btn btn-sm btn-icon" href="javascript:void(0);" (click)="eliminar(item)" *hasClaim="'monitoreo_tabInfComplementaria_eliPptoAdicional_eje_dir'">
+                  <i class="fa fa-15x">
+                    <img src="assets/img/icons/trash.svg" alt="eliminar">
+                  </i>
+                </a>
+              </span>
+            </div>
+            <div class="xs-display">
+              <span *ngIf="item.nombre_archivo != '' ; else templateicono">
+                <a class="btn-icon mr-1" href="{{item.ruta_archivo}}" target="_blank" [LinkNube]="item.nombre_archivo" [Ruta]="item.ruta_archivo">
+                  <i class="fa fa-file"></i>
+                </a>
+              </span>
+              <span>
+                <a class="btn-icon mr-1" href="javascript:void(0);" (click)="editar(item)" *hasClaim="'monitoreo_tabInfComplementaria_editPptoAdicional_eje_dir'">
+                  <i class="fa fa-pencil"> </i>
+                </a>
+              </span>
+              <span>
+                <a class="btn-icon" href="javascript:void(0);" (click)="eliminar(item)" *hasClaim="'monitoreo_tabInfComplementaria_eliPptoAdicional_eje_dir'">
+                  <i class="fa fa-trash"></i>
+                </a>
+              </span>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-12">
+    <nav class="pt-4 pl-3 pull-right">
+      <pagination [totalItems]="totalRegistros" [boundaryLinks]="true" previousText="&lsaquo;" nextText="&rsaquo;" [rotate]="false"
+        firstText="&laquo;" lastText="&raquo;" [itemsPerPage]="numPaginasMostrar" (pageChanged)="cambiarPagina($event)">
+      </pagination>
+    </nav>
+  </div>
+  <div class="col-4">Total Adicionales: {{((montoTotal)? montoTotal:"0") | formatoMoneda}}</div>
+  <div class="col-4">
+    <span class="comentario"> Nota: Los adicionales harán variar el avance de la obra.</span>
+  </div>
+</div>

@@ -1,0 +1,147 @@
+
+
+<!--<div class="tab-content" id="nav-tabContent">
+    <div class="tab-pane fade show active jumbotron container-fluid pt-4" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+        <div class="container-fluid">
+            <div class="card card-principal">
+                <div class="card-body">
+                      <div class="row">
+                        <div class="col-12 container-scroll">
+                        <table class="table table-hover table-responsive table-normal">
+                            <thead class="table-active">
+                              <tr>
+                                <th>Descripción</th>
+                                <th>Documentos</th>
+                                
+                                <th [hidden]=!bEstado></th>
+                              </tr>
+                            </thead>
+                            <tbody >
+                              <tr *ngFor="let manual of listaManualesDetalleBD">
+                                <td class="text-left">
+                                  <div class="xs-hidden">
+                                      {{manual.denominacion}}
+                                  </div>
+                                  <div class="xs-display">
+                                      <div class="xs-th">
+                                           Descripción:   {{manual.denominacion}}
+                                      </div>
+                                  </div>
+                                  <div *ngFor="let detalleManual of manual.detalle_capacitacion">
+                                      <div class="xs-display">Documentos: 
+                                          <div *ngIf="detalleManual.nombre_archivo != '' ; else templateicono">
+                                      
+                                              <span title="{{detalleManual.denominacion}}">
+                                                <a href="{{detalleManual.ruta_archivo}}" target="_blank" class="btn-icon">
+                                                  <i class="fa fa-15x">
+                                                    <img src="assets/img/icons/file.svg" alt="archivo">
+                                                  </i>
+                                                </a>
+                                              </span>
+                                              <a (click)="AbirirPopUpDetalleObservacion(detalleManual.denominacion)" style="
+                                              background-color: #686f7a;
+                                              
+                                              transform: translateX(-50%);
+                                              left: 50%;
+                                              bottom: 25%;
+                                              padding: 3px 6px;
+                                              border-radius: 3px;
+                                              color: #ffffff;
+                                              font-size: 11px;
+                                              cursor: pointer;
+                                          ">Leer Descripción
+                                            </a>&nbsp;&nbsp;
+                                            <a href="{{detalleManual.ruta_archivo}}" download target="_blank"><i class="material-icons">cloud_download</i></a>
+                                            </div>
+                                      </div>
+                                  </div>
+                                </td>  
+                                <td>
+                                  <table>
+                                    <tr >
+                                      <td class="xs-hidden" *ngFor="let detalleManual of manual.detalle_capacitacion">
+                                          <div *ngIf="detalleManual.nombre_archivo != '' ; else templateicono">
+                                            
+                                              <span title="{{detalleManual.denominacion}}">
+                                                <a href="{{detalleManual.ruta_archivo}}" target="_blank" class="btn-icon">
+                                                  <i class="fa fa-15x">
+                                                    <img src="assets/img/icons/file.svg" alt="archivo">
+                                                  </i>
+                                                </a>
+                                              </span>
+                                              <a (click)="AbirirPopUpDetalleObservacion(detalleManual.denominacion)" style="
+                                              background-color: #686f7a;
+                                              
+                                              transform: translateX(-50%);
+                                              left: 50%;
+                                              bottom: 25%;
+                                              padding: 3px 6px;
+                                              border-radius: 3px;
+                                              color: #ffffff;
+                                              font-size: 11px;
+                                              cursor: pointer;
+                                          ">Leer Descripción
+                                            </a>&nbsp;&nbsp;
+                                            <a href="{{detalleManual.ruta_archivo}}" download target="_blank"><i class="material-icons">cloud_download</i></a>
+                                            </div>
+                                            <ng-template #templateicono>
+                                            </ng-template>     
+                                      </td>
+                                    </tr>
+                                  </table>
+                                </td>   
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    <div class="row">
+                        <div class="col-12">            
+                            <nav class="pt-4 pl-3 pull-right">
+              
+                            <pagination [totalItems]="totalCapacitaciones" [itemsPerPage]="paginaActiva" [boundaryLinks]="true"
+                              previousText="&lsaquo;" nextText="&rsaquo;" [rotate]="false" firstText="&laquo;" lastText="&raquo;" [maxSize]="5"
+                              (pageChanged)="cambiarPagina($event)">
+                            </pagination>
+                          </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>-->
+
+
+
+<div class="tab-content" id="nav-tabContent">
+
+  <div class="tab-pane fade show active jumbotron container-fluid pt-4" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+      <div class="container-fluid">
+          <div class="card card-principal">
+              <div class="card-body">
+                  <div class="row">
+                    <div class="col-12 container-scroll">
+                        <div  *ngFor="let item of listaManualesDetalleBD; index as i">
+                            <div *ngFor="let detalle of item.detalle_capacitacion">
+                                <div><a href="{{detalle.ruta_archivo}}" target="_blank" [LinkNube]="detalle.nombre_archivo" [Ruta]="detalle.ruta_archivo">{{item.denominacion}} <br> <span><i class="material-icons">get_app</i> Descargar</span></a></div>
+                            </div><br>
+                        </div>
+
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-12">            
+                        <nav class="pt-4 pl-3 pull-right">
+                        <pagination [totalItems]="totalCapacitaciones" [itemsPerPage]="paginaActiva" [boundaryLinks]="true"
+                              previousText="&lsaquo;" nextText="&rsaquo;" [rotate]="false" firstText="&laquo;" lastText="&raquo;" [maxSize]="5"
+                              (pageChanged)="cambiarPagina($event)">
+                        </pagination>
+                      </nav>
+                    </div>
+                  </div>
+              </div>
+            </div>
+      </div>
+  </div>
+</div>

@@ -1,0 +1,66 @@
+<div class="row form-group">
+  <div class="col-6" [hidden]=!bEstado>
+    <button class="btn btn-plomo" (click)="nuevoRegistroResponsableElaboracionEstudio()"
+      *hasClaim="'monitoreo_tabRYL_regRespElaboracionEstudio_nuevResponsable_pre_inv_eje_dir'">
+      <i class="fa fa-plus"></i> Nuevo
+    </button>
+  </div>
+  <div class="col-6 text-right">
+    <label dlabels class="control-label">Última Actualización: </label>&nbsp;
+    <span>{{UltimaActualizacion}}</span>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-12 container-scroll">
+    <table class="table table-hover table-bordered table-responsive table-full-detalle">
+      <thead>
+        <tr>
+          <th>DNI</th>
+          <th>APELLIDOS</th>
+          <th>NOMBRES</th>
+          <th>FUNCIÓN</th>
+          <th>TELÉFONO / CORREO</th>
+          <th>FOTO</th>
+          <th *hasClaim="'monitoreo_tabRYL_regRespElaboracionEstudio_eliResponsable_pre_inv_eje_dir'">ACCIONES</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let responsable of lstResponsableElaboracionEstudio">
+          <td class="text-center">{{responsable.nro_dni}}</td>
+          <td class="text-left">{{responsable.apellido_paterno}} {{responsable.apellido_materno}}</td>
+          <td class="text-left">{{responsable.nombres}}</td>
+          <td class="text-left">
+            {{responsable.id_funcion==7 ? responsable.funcion +' - '+ responsable.otra_descripcion_funcion: responsable.funcion}}
+          </td>
+          <td class="text-left">
+            <div *ngFor="let fono of responsable.telefonos">
+              - {{fono.telefono}}
+            </div>
+            <div *ngFor="let correo of responsable.correos">
+              - {{correo.email}}
+            </div>
+          </td>
+          <td class="text-center"><img [src]="_DomSanitizationService.bypassSecurityTrustUrl(responsable.foto)"
+              class="img-responsive" width="50px"></td>
+          <td class="text-left" *hasClaim="'monitoreo_tabRYL_regRespElaboracionEstudio_eliResponsable_pre_inv_eje_dir'">
+            <a href="javascript:void(0)"
+              (click)="anularResponsableElaboracionEstudio(responsable.id_responsable_elaboracion)"
+              class="btn btn-sm btn-icon">
+              <i class="fa fa-15x">
+                <img src="assets/img/icons/trash.svg" alt="eliminar">
+              </i>
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-12">
+    <nav class="pt-4 pl-3 pull-right">
+      <pagination [totalItems]="totalRegistros" [boundaryLinks]="true" previousText="&lsaquo;" nextText="&rsaquo;"
+        [rotate]="false" firstText="&laquo;" lastText="&raquo;" [itemsPerPage]="itemsPerPage"
+        (pageChanged)="cambiarPagina($event)">
+      </pagination>
+    </nav>
+  </div>
+</div>

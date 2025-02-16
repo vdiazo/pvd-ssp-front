@@ -1,0 +1,184 @@
+<div class="card-header">
+        <h4 class="modal-title">2.1. Seguimiento al Proceso de Aprobación y Liquidación</h4>
+    </div>
+    <div class="group-box">
+        <div class="row form-group" *hasClaim="'monitoreo_tabRYL_LiqSeg_regLiquidacion_exp_tec'">
+            <div class="col-6" [hidden]=!bEstado>
+                <button type="button" id="btnNuevoRegistro" class="btn pull-left ml-1 btn-plomo" [hidden]="ocultarNuevo" (click)="modalAgregarLiquidacion()">
+                    <i class="fa fa-plus"></i> Nuevo</button>
+            </div>
+            <!--<div class="col-6 text-right">
+                <label dlabels class="control-label">Última Actualización:</label> &nbsp;
+                <span>{{UltimaActualizacion}}</span>
+            </div>-->
+        </div>
+        <table class="table table-hover table-bordered table-responsive table-full-detalle">
+            <thead class="table-danger">
+                <tr>
+                    <!--<th>Estado de Liquidación</th>
+                    <th>Fecha</th>
+                    <th>Tipo de documento</th>
+                    <th>Observaciones</th>
+                    <th>Documento</th>
+                    <th [hidden]=!bEstado></th>-->
+                    <th>Fecha de Informe de Aprobación</th>
+                    <th>Informe de Aprobación</th>
+                    <th>Fecha Aprobación de Resolución</th>
+                    <th>Informe Aprobación Resolución</th>
+                    <th [hidden]=!bEstado></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let campo of arregloLiquidacion">
+                    <td class="text-left">
+                        <div class="xs-hidden">
+                                {{campo.fecha_informe_aprobacion}}
+                        </div>
+                        <div class="xs-display">
+                                <div><span class="xs-th">Fecha de Informe de Aprobación: </span> {{campo.fecha_informe_aprobacion}}</div>
+                                <div><span class="xs-th">Fecha Aprobación de Resolución : </span> {{campo.fecha_aprobacion_expediente}}</div>
+                        </div>
+                    </td>
+                    <td class="xs-hidden">
+                        <div *hasClaim="'monitoreo_tabRYL_LiqSeg_listSegLiquidacion_verArchivoInformeAprobacion_exp_tec'">
+                            <div *ngIf="campo.nombre_archivo_informe_expediente != '' ; else templateicono">
+                                <a href="{{campo.ruta_archivo_informe_expediente}}" target="_blank" class="btn-icon" [LinkNube]="campo.nombre_archivo_informe_expediente" [Ruta]="campo.ruta_archivo_informe_expediente">
+                                    <i class="fa fa-15x">
+                                        <img src="assets/img/icons/file.svg" alt="archivo">
+                                    </i>
+                                </a>
+                            </div>
+                            <ng-template #templateicono>
+                            </ng-template>
+                        </div>     
+                    </td>
+                    <td class="xs-hidden text-left">{{campo.fecha_aprobacion_expediente}}</td>
+                    <td class="xs-hidden text-left">
+                        <div *hasClaim="'monitoreo_tabRYL_LiqSeg_listSegLiquidacion_verArchivoAprobacionExpediente_exp_tec'">
+                                <div *ngIf="campo.nombre_archivo_aprobacion_expediente != '' ; else templateicono">
+                                        <a href="{{campo.ruta_archivo_aprobacion_expediente}}" target="_blank" class="btn-icon" [LinkNube]="campo.nombre_archivo_aprobacion_expediente" [Ruta]="campo.ruta_archivo_aprobacion_expediente">
+                                            <i class="fa fa-15x">
+                                                <img src="assets/img/icons/file.svg" alt="archivo">
+                                            </i>
+                                        </a>
+                                    </div>
+                                    <ng-template #templateicono>
+                                    </ng-template>
+                        </div>
+                    </td>
+                    <!--<td>
+                        <div *hasClaim="'monitoreo_tabRYL_LiqSeg_listSegLiquidacion_verArchivo_exp_tec'" class="xs-hidden">
+                            <div *ngIf="campo.nombre_archivo_seguimiento_expediente != '' ; else templateicono">
+                                <a href="{{campo.nombre_archivo_seguimiento_expediente}}" target="_blank" class="btn-icon">
+                                    <i class="fa fa-15x">
+                                        <img src="assets/img/icons/file.svg" alt="archivo">
+                                    </i>
+                                </a>
+                            </div>
+                            <ng-template #templateicono>
+                            </ng-template>
+                        </div>
+                        <div class="xs-display">
+                            <div class="xs-th f-s-13">{{campo.fecha_seguimiento_expediente }}</div>
+                            <div>
+                                <span class="xs-th">Estado de Liquidación: </span>{{campo.estado_liquidacion_expediente}}</div>
+                            <div>
+                                <span class="xs-th">Tipo de Documento&nbsp;&nbsp;&nbsp;&nbsp;: </span>{{campo.tipo_documento_liquidacion_expediente}}</div>
+                            <div class="xs-th">Observaciones&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</div>
+                            <div>{{campo.observaciones }}</div>
+                        </div>
+                    </td>-->
+                    <td width="100" class="xs-footer-lista xs-100 xs-text-right pre-wrap" [hidden]=!bEstado>
+                        <div class="xs-hidden">
+                            <span *hasClaim="'monitoreo_tabRYL_LiqSeg_listSegLiquidacion_modLiquidacion_exp_tec'" class="btn btn-sm btn-opt btn-icon" (click)="modalEditarLiquidacion(campo)">
+                                <i class="fa fa-15x">
+                                    <img src="assets/img/icons/pencil.svg" alt="editar">
+                                </i>
+                            </span>
+                            <span *hasClaim="'monitoreo_tabRYL_LiqSeg_listSegLiquidacion_eliLiquidacion_exp_tec'" class="btn btn-sm btn-opt btn-icon" (click)="mostrarAlerta(campo.id_liquidacion_seguimiento_expediente)">
+                                <i class="fa fa-15x">
+                                    <img src="assets/img/icons/trash.svg" alt="eliminar">
+                                </i>
+                            </span>
+                        </div>
+                        <div class="xs-display">
+                            <span *hasClaim="'monitoreo_tabRYL_LiqSeg_listSegLiquidacion_verArchivo_exp_tec'">
+                                <a *ngIf="campo.nombre_archivo_informe_expediente != ''" href="{{campo.ruta_archivo_informe_expediente}}" target="_blank" class="btn-icon mr-1" [LinkNube]="campo.nombre_archivo_informe_expediente" [Ruta]="campo.ruta_archivo_informe_expediente">
+                                    <i class="fa fa-file"></i>
+                                </a>
+                            </span>
+                            <span *hasClaim="'monitoreo_tabRYL_LiqSeg_listSegLiquidacion_verArchivo_exp_tec'">
+                                <a *ngIf="campo.nombre_archivo_aprobacion_expediente != ''" href="{{campo.ruta_archivo_aprobacion_expediente}}" target="_blank" class="btn-icon mr-1" [LinkNube]="campo.nombre_archivo_aprobacion_expediente" [Ruta]="campo.ruta_archivo_aprobacion_expediente">
+                                    <i class="fa fa-file"></i>
+                                </a>
+                            </span>
+                            <span *hasClaim="'monitoreo_tabRYL_LiqSeg_listSegLiquidacion_modLiquidacion_exp_tec'" class="btn-icon mr-1" (click)="modalEditarLiquidacion(campo)">
+                                <i class="fa fa-pencil"></i>
+                            </span>
+                            <span *hasClaim="'monitoreo_tabRYL_LiqSeg_listSegLiquidacion_eliLiquidacion_exp_tec'" class="btn-icon" (click)="mostrarAlerta(campo.id_liquidacion_seguimiento_expediente)">
+                                <i class="fa fa-trash"></i>
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="row">
+            <div class="col-12 xs-p-0">
+                <nav class="pt-2 pull-right">
+                    <pagination [totalItems]="totalRegistroLiquidacion" [itemsPerPage]="numPaginasMostrar" [(ngModel)]="paginaActual" [boundaryLinks]="true"
+                        previousText="&lsaquo;" nextText="&rsaquo;" [rotate]="false" firstText="&laquo;" lastText="&raquo;" [maxSize]="5"
+                        (pageChanged)="cambiarPagina($event)">
+                    </pagination>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <div *hasClaim="'monitoreo_tabRYL_LiqInfo_verInformacion_exp_tec'" class="card-header">
+        <h4 class="modal-title">2.2. Información de Liquidación</h4>
+    </div>
+    <div *hasClaim="'monitoreo_tabRYL_LiqInfo_verInformacion_exp_tec'" class="group-box">
+        <div class="row form-group">
+            <div class="col-12" *ngFor="let detalle of arregloLiquidacion"> <!--arregloDetalle-->
+                <div class="col-12">
+                    <hr>
+                </div>
+                <div class="col-12 table-full-detalle">
+                    <div class="f-w-6">RESOLUCIÓN DE LIQUIDACIÓN DE ELABORACIÓN DE EXPEDIENTE TÉCNICO</div>
+                    <div class="f-w-6 f-s-14">{{detalle.resolucion_liquidacion_expediente}}
+                        <span *hasClaim="'monitoreo_tabRYL_LiqInfo_verInformacion_verArchivoObra_exp_tec'">
+                            <a *ngIf="detalle.nombre_archivo_liquidacion_expediente != ''" href="{{detalle.ruta_archivo_liquidacion_expediente}}"  [LinkNube]="detalle.nombre_archivo_liquidacion_expediente" [Ruta]="detalle.ruta_archivo_liquidacion_expediente"
+                                target="_blank" class="btn-icon">
+                                <i class="fa fa-file">
+                                </i>
+                            </a>
+                        </span>
+                    </div>
+                    <div class="f-w-6">FECHA</div>
+                    <div> {{detalle.fecha_liquidacion_expediente}}</div>
+                    <div class="f-w-6">MONTO DE LIQ.</div>
+                    <div>{{detalle.monto_liquidacion_expediente | currency:" S/ "}}</div>
+                </div>
+                <div class="col-12">
+                    <hr>
+                </div>
+                <!--<div class="col-12 table-full-detalle">
+                    <div class="f-w-6">RESOLUCIÓN DE LIQUIDACIÓN DE SUPERVISIÓN A LA ELABORACIÓN DE EXPEDIENTE TÉCNICO</div>
+                    <div class="f-w-6 f-s-14">{{detalle.resolucion_liquidacion_supervicion_expediente}}
+                        <span *hasClaim="'monitoreo_tabRYL_LiqInfo_verInformacion_verArchivoSupervision_exp_tec'">
+                            <a *ngIf="detalle.nombre_archivo_liquidacion_supervicion_expediente != ''" href="{{detalle.nombre_archivo_liquidacion_supervicion_expediente}}"
+                                target="_blank" class="btn-icon">
+                                <i class="fa fa-file">
+                                </i>
+                            </a>
+                        </span>
+                    </div>
+                    <div class="f-w-6">FECHA</div>
+                    <div> {{detalle.fecha_liquidacion_supervicion_expediente}}</div>
+                    <div class="f-w-6">MONTO DE LIQ.</div>
+                    <div>{{detalle.monto_liquidacion_supervicion_expediente | currency:" S/ "}}</div>
+                </div>-->
+            </div>
+        </div>
+    </div>
+    

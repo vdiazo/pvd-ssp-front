@@ -1,0 +1,90 @@
+<div class="row form-group">
+  <div class="col-6" [hidden]=!bEstado>
+    <button class="btn btn-plomo" (click)="nuevoRegistroProgramacionEstudio()"
+      *hasClaim="'monitoreo_tabSeg_regCronograma_nuevCronograma_pre_inv_eje_dir'">
+      <i class="fa fa-plus"></i> Nuevo
+    </button>
+  </div>
+  <div class="col-6 text-right">
+    <label dlabels class="control-label">Última Actualización: </label>&nbsp;
+    <span>{{UltimaActualizacion}}</span>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-12 container-scroll">
+    <table class="table table-hover table-bordered table-responsive table-full-detalle">
+      <thead>
+        <tr>
+          <th>DETALLE ENTREGABLES</th>
+          <th>N° INFORMES</th>
+          <th>DOCUMENTO QUE APRUEBA </th>
+          <th>FECHA PRESENTACIÓN<br>DE PROGRAMACIÓN</th>
+          <th>MONTO TOTAL</th>
+          <th *hasClaim="'monitoreo_tabSeg_regCronograma_editCronograma_pre_inv_eje_dir'">ACCIONES</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let cronograma of lstCronogramaPreinversion;">
+          <tr>
+            <td>
+              <a href="javascript:void(0)" class="btn btn-sm btn-icon" (click)="openDetails(cronograma)"
+                tooltip="Ver detalle">
+                <i [ngClass]="(cronograma.is_open)? 'fa fa-chevron-up' : 'fa fa-chevron-down'"></i>
+              </a>
+            </td>
+            <td>{{cronograma.nro_entregable}}</td>
+            <td>{{cronograma.documento_aprueba}}</td>
+            <td>{{cronograma.fecha_aprobacion | date: 'dd/MM/yyyy'}}</td>
+            <td>{{cronograma.monto_total | formatoMoneda}}</td>
+            <td *hasClaim="'monitoreo_tabSeg_regCronograma_editCronograma_pre_inv_eje_dir'">
+              <a href="javascript:void(0)" (click)="modificarRegistroProgramacionEstudio(cronograma)"
+                class="btn btn-sm btn-icon">
+                <i class="fa fa-15x">
+                  <img src="assets/img/icons/pencil.svg" alt="editar">
+                </i>
+              </a>
+              <a href="javascript:void(0)" (click)="anularProgramacionEstudio(cronograma.id_programacion)"
+                class="btn btn-sm btn-icon">
+                <i class="fa fa-15x">
+                  <img src="assets/img/icons/trash.svg" alt="eliminar">
+                </i>
+              </a>
+            </td>
+          </tr>
+          <tr *ngIf="cronograma.is_open">
+            <td colspan="8">
+              <table class="table table-hover table-bordered table-responsive table-full-detalle">
+                <thead>
+                  <th>ITEM</th>
+                  <th>NRO. ENTREGABLE</th>
+                  <th>DESCRIPCION CONTENIDO</th>
+                  <th>PLAZO DE ENTREGA</th>
+                  <th>FECHA DE ENTREGA PROGRAMADA</th>
+                  <th>MONTO</th>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of cronograma.detalle; index as i;">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{item.nro_entregable}}</td>
+                    <td>{{item.descripcion_contenido}}</td>
+                    <td>{{item.plazo_entrega}}</td>
+                    <td>{{item.fecha_entrega_programada | date: 'dd/MM/yyyy'}}</td>
+                    <td>{{item.monto | currency: 'S/ '}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-12">
+    <nav class="pt-4 pl-3 pull-right">
+      <pagination [totalItems]="totalRegistros" [boundaryLinks]="true" previousText="&lsaquo;" nextText="&rsaquo;"
+        [rotate]="false" firstText="&laquo;" lastText="&raquo;" [itemsPerPage]="itemsPerPage"
+        (pageChanged)="cambiarPagina($event)">
+      </pagination>
+    </nav>
+  </div>
+</div>

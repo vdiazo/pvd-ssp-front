@@ -1,0 +1,221 @@
+<div class="modal-header">
+  <h4 class="modal-title">Supervisor de obra</h4>
+  <p class="pb-2 pl-4 pr-4">Registro y listado de Supervisor de la obra</p>
+</div>
+<div class="modal-body">
+  <div class="group-box" *hasClaim="'monitoreo_tabSeg_responsable_divSupervisor'">
+    <form (ngSubmit)="modificarSupervisor(model,supervisorForm)" #supervisorForm="ngForm">
+      <div class="row form-group">
+        <input [hidden]="true" type='text' name="id_supervisor_seguimiento_obra" id="id_supervisor_seguimiento_obra" [(ngModel)]="model.id_supervisor_seguimiento_obra"
+          #id_supervisor_seguimiento_obra="ngModel" />
+        <div class="col-sm-2">
+          <label dlabels class="control-label" for="dni">DNI (*):</label>
+        </div>
+        <div class="col-sm-4">
+          <input dTextBox class="form-control" type='text' name="dni" id="dni" placeholder="DNI" [(ngModel)]="model.dni" maxlength="8"
+            (keypress)="funciones.IsNumberKey($event)" #dni="ngModel" required/>
+          <div [hidden]="dni.valid || dni.pristine" class="alert alert-danger">
+            DNI del Supervisor de la obra es obligatorio
+          </div>
+        </div>
+        <div class="col-sm-2">
+          <label dlabels class="control-label" for="apellidos">Apellidos (*):</label>
+        </div>
+        <div class="col-sm-4">
+          <input dTextBox class="form-control" type='text' name="apellidos" id="apellidos" placeholder="Apellidos" [(ngModel)]="model.apellidos"
+            #apellidos="ngModel" required pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+" />
+          <div [hidden]="apellidos.valid || apellidos.pristine" class="alert alert-danger">
+            Apellidos del Supervisor de la obra es obligatorio
+          </div>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-2">
+          <label dlabels class="control-label" for="nombres">Nombres (*):</label>
+        </div>
+        <div class="col-sm-4">
+          <input dTextBox class="form-control" type='text' name="nombres" id="nombres" placeholder="Nombres" [(ngModel)]="model.nombres"
+            #nombres="ngModel" required pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+" />
+          <div [hidden]="nombres.valid || nombres.pristine" class="alert alert-danger">
+            Nombres del Supervisor de la obra es obligatorio
+          </div>
+        </div>
+        <div class="col-sm-2">
+          <label dlabels class="control-label" for="id_tipo_colegiatura">Tipo de Colegiatura (*):</label>
+        </div>
+        <div class="col-sm-4">
+          <ng-select [items]="listColegiatura" placeholder="Seleccione un tipo de colegiatura" bindLabel="tipo_colegiatura" bindValue="id_tipo_colegiatura"
+            [(ngModel)]="model.id_tipo_colegiatura" name="tipo_colegiatura" id="tipo_colegiatura">
+          </ng-select>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-2">
+          <label dlabels class="control-label" for="nro_colegiatura">Nº de Colegiatura (*):</label>
+        </div>
+        <div class="col-sm-4">
+          <input dTextBox class="form-control" type='text' name="nro_colegiatura" id="nro_colegiatura" placeholder="Nº de Colegiatura"
+            [(ngModel)]="model.nro_colegiatura" #nro_colegiatura="ngModel" required maxlength="12" />
+          <div [hidden]="nro_colegiatura.valid || nro_colegiatura.pristine" class="alert alert-danger">
+            Nº de Colegiatura del Supervisor de la obra es obligatorio
+          </div>
+        </div>
+        <div class="col-sm-2">
+          <label dlabels class="control-label" for="fecha_designacion">Fecha Designación (*):</label>
+        </div>
+        <div class="col-sm-4">
+          <input dTextBox class="form-control" type='text' name="fecha_designacion" id="fecha_designacion" placeholder="dd/mm/aaaa"
+            bsDatepicker required [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es', containerClass: 'theme-red' }"
+            [(ngModel)]="model.fecha_designacion" #fecha_designacion="ngModel" readonly="readonly" />
+          <div [hidden]="fecha_designacion.valid || fecha_designacion.pristine" class="alert alert-danger">
+            Fecha Designación es obligatorio
+          </div>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-2">
+          <label dlabels class="control-label">Nº de Teléfono (*):</label>
+        </div>
+        <div class="col-sm-4">
+          <input dTextBox class="form-control" type='text' name="telefono" id="telefono" placeholder="Nº de Teléfono" [(ngModel)]="model.telefono"
+            #telefono="ngModel" required (keypress)="funciones.IsNumberKey($event)" maxlength="10" />
+          <div [hidden]="telefono.valid || telefono.pristine" class="alert alert-danger">
+            Nº de Teléfono del Supervisor de la obra es obligatorio
+          </div>
+        </div>
+        <div class="col-sm-2">
+          <label dlabels class="control-label" for="observacion">Correo Electrónico (*):</label>
+        </div>
+        <div class="col-sm-4">
+          <input dTextBox class="form-control" type='text' name="email" id="email" placeholder="Correo Electrónico" [(ngModel)]="model.email"
+            #email="ngModel" required pattern="^[^\s@]+@[^\s@]+\.[^\s@]{2,}$" />
+          <div [hidden]="email.valid || email.pristine" class="alert alert-danger">
+            Correo Electrónico es obligatorio
+          </div>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-2">
+          <label dlabels class="control-label">Documento Nombramiento (*):</label>
+        </div>
+        <div class="col-sm-4">
+          <div class="input-group">
+            <app-input-file-listado idComp="filesupervisor" (onChange)="fileChangeEvent($event)" class="input-group" Value="{{model.nombre_archivo}}"></app-input-file-listado>
+          </div>
+        </div>
+      </div>
+      <span class="comentario">(*)Campos Obligatorios</span>
+      <div class="modal-footer" [hidden]=!bEstado>
+        <button type="submit" class="btn btn-danger" id="btnGuardar" readonly *hasClaim="'monitoreo_tabSeg_responsable_regSupervisor'"
+          [hidden]=bMostrar [disabled]="!supervisorForm.form.valid || model.dni.length!=8 || model.id_tipo_colegiatura == null || file == undefined && model.nombre_archivo == undefined">Guardar</button>
+        <button class="btn btn-danger" type="button" [hidden]=!bMostrar>
+          <i class="fa fa-save"></i> ....Procesando</button>
+        <button type="button" id="btnLimpiar" (click)="supervisorForm.reset();setControles()" class="btn btn-plomo"> Limpiar</button>
+      </div>
+    </form>
+  </div>
+  <div class="row form-group">
+    <div class="col-12 container-scroll">
+      <table class="table table-hover table-responsive">
+        <thead class="table-active">
+          <tr>
+            <th *ngIf="false">id</th>
+            <th *ngIf="false">id_seguimiento_monitoreo_obra</th>
+            <th *ngIf="false">id_tipo_colegiatura</th>
+            <th>DNI</th>
+            <th>Supervisor</th>
+            <th>Tipo Colegiatura</th>
+            <th>Colegiatura</th>
+            <th>Fecha de Designación</th>
+            <th>Teléfono</th>
+            <th>Correo Electrónico</th>
+            <th>Doc.</th>
+            <th [hidden]=!bEstado></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let supervisor of listSupervisor">
+            <td *ngIf="false">{{supervisor.id_supervisor_seguimiento_obra}}</td>
+            <td *ngIf="false">{{supervisor.id_seguimiento_monitoreo_obra}}</td>
+            <td *ngIf="false">{{supervisor.id_tipo_colegiatura}}</td>
+            <td class="text-left xs-hidden">{{supervisor.dni}}</td>
+            <td class="text-left xs-hidden">{{supervisor.apellidos}}, {{supervisor.nombres}}</td>
+            <td class="text-left xs-hidden">{{supervisor.nombre_tipo_colegiatura}}</td>
+            <td class="text-right xs-hidden">{{supervisor.nro_colegiatura}}</td>
+            <td class="xs-hidden">{{supervisor.fecha_designacion | formatoFecha}}</td>
+            <td class="text-left xs-hidden">{{supervisor.telefono}}</td>
+            <td class="text-left">
+              <div class="xs-hidden">
+                {{supervisor.email}}
+              </div>
+              <div class="xs-display">
+                <div class="xs-th">DNI: {{supervisor.dni}}</div>
+                <div class="xs-th">{{supervisor.apellidos}}, {{supervisor.nombres}}</div>
+                <div class="xs-th">Tipo Colegiatura</div>
+                <div>{{supervisor.nombre_tipo_colegiatura}}</div>
+                <div class="xs-th">Colegiatura</div>
+                <div>{{supervisor.nro_colegiatura}}</div>
+                <div class="xs-th">Fecha de Designación</div>
+                <div>{{supervisor.fecha_designacion | formatoFecha}}</div>
+                <div class="xs-th">Teléfono</div>
+                <div>{{supervisor.telefono}}</div>
+                <div class="xs-th">Correo Electrónico</div>
+                <div>{{supervisor.email}}</div>
+              </div>
+            </td>
+            <td>
+              <div class="xs-hidden">
+                <div *ngIf="supervisor.nombre_archivo != '' && supervisor.nombre_archivo != null ; else templateicono">
+                  <a href="{{supervisor.ruta_archivo}}" target="_blank" class="btn-icon"  [LinkNube]="supervisor.nombre_archivo" [Ruta]="supervisor.ruta">
+                    <i class="fa fa-15x">
+                      <img src="assets/img/icons/file.svg" alt="archivo">
+                    </i>
+                  </a>
+                </div>
+                <ng-template #templateicono>
+                </ng-template>
+              </div>
+            </td>
+            <td class="xs-footer-lista xs-text-right" [hidden]=!bEstado>
+              <div class="xs-hidden pre-wrap">
+                <a href="javascript:void(0)" (click)="editarSupervisor(supervisor)" class="btn btn-sm btn-icon" *hasClaim="'monitoreo_tabSeg_responsable_modSupervisor'">
+                  <i class="fa fa-15x">
+                    <img src="assets/img/icons/pencil.svg" alt="editar">
+                  </i>
+                </a>
+                <a href="javascript:void(0)" (click)="eliminarSupervisor(supervisor)" class="btn btn-sm btn-icon" *hasClaim="'monitoreo_tabSeg_responsable_eliSupervisor'">
+                  <i class="fa fa-15x">
+                    <img src="assets/img/icons/trash.svg" alt="eliminar">
+                  </i>
+                </a>
+              </div>
+              <div class="xs-display">
+                <span *ngIf="supervisor.nombre_archivo != '' && supervisor.nombre_archivo != null;">
+                  <a href="{{supervisor.ruta_archivo}}" target="_blank" class="btn-icon mr-1" [LinkNube]="supervisor.nombre_archivo" [Ruta]="supervisor.ruta">
+                    <i class="fa fa-file"></i>
+                  </a>
+                </span>
+                <a href="javascript:void(0)" (click)="editarSupervisor(supervisor)" class="btn-icon mr-1" *hasClaim="'monitoreo_tabSeg_responsable_modSupervisor'">
+                  <i class="fa fa-pencil"></i>
+                </a>
+                <a href="javascript:void(0)" (click)="eliminarSupervisor(supervisor)" class="btn-icon" *hasClaim="'monitoreo_tabSeg_responsable_eliSupervisor'">
+                  <i class="fa fa-trash"></i>
+                </a>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-12">
+      <nav class="pt-4 pl-3 pull-right">
+        <pagination [totalItems]="totalRegistros" [itemsPerPage]="numPaginasMostrar" [boundaryLinks]="true" previousText="&lsaquo;"
+          nextText="&rsaquo;" [rotate]="false" firstText="&laquo;" lastText="&raquo;" [maxSize]="5" (pageChanged)="cambiarPagina($event)">
+        </pagination>
+      </nav>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-plomo" id="btnCancelar" type="button" (click)="closeModal()">Cerrar</button>
+</div>

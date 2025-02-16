@@ -1,0 +1,98 @@
+<div class="tab-content" id="nav-tabContent">
+    <div class="tab-pane fade show active jumbotron container-fluid pt-4" id="nav-home" role="tabpanel"
+      aria-labelledby="nav-home-tab">
+      <accordion>
+        <div class="row">
+          <div class="col-12">
+            <accordion-group [isOpen]=true [panelClass]="separator" *hasClaim="'monitoreo_tabSeg_infObra_listInfObra_exp_tec'"> 
+              <button class="btn btn-link btn-block clearfix" accordion-heading>
+                <div class="pull-left float-left">1. Información del Expediente Técnico</div>
+                <span class="badge float-right pull-right">
+                  <i class="fa fa-circle-o"></i>
+                </span>
+              </button>
+              <set-informacion-obra #InformacionObraExpTec (EventEliminarAmpliacion)="EntregableExpTec.listarEntregables(0,5)" [idSeguimientoMonitoreoObra]="idSeguimientoMonitoreo" [idFase]="idFase" [idTramo]="idTramo" [bEstado]=true
+              (eventInformacionObra)="setIdSegMonitoreo($event)"></set-informacion-obra>
+
+              <span class="comentario">(*)Campos Obligatorios</span>
+            </accordion-group>
+          </div>
+        </div>
+  
+        <div class="row">
+          <div class="col-12">
+            <accordion-group [isOpen]=false [panelClass]="separator" *hasClaim="'monitoreo_tabSeg_divResponsable_exp_tec'">
+              <button class="btn btn-link btn-block clearfix" accordion-heading>
+                <div class="pull-left float-left">2. Responsables</div>
+                <span class="badge float-right pull-right">
+                  <i class="fa fa-circle-o"></i>
+                </span>
+              </button>
+              <set-asignacion-responsable-exp-tec *ngIf="divSegMonitoreo" [idSeguimientoMonitoreoObra]="idSeguimientoMonitoreo" [bEstado]=true></set-asignacion-responsable-exp-tec>
+              
+              <span class="comentario">(*)Campos Obligatorios</span>
+            </accordion-group>
+          </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+              <accordion-group [isOpen]=false [panelClass]="separator" *hasClaim="'monitoreo_tabSeg_regCronograma_listCronograma_exp_tec'">
+                <button class="btn btn-link btn-block clearfix" accordion-heading>
+                  <div class="pull-left float-left">3. Registro de Programación - UEI</div>
+                  <span class="badge float-right pull-right">
+                    <i class="fa fa-circle-o"></i>
+                  </span>
+                </button>
+
+                <set-entregables-exp-tec #EntregableExpTec (EventEliminar)="AvanceEntregableExpTec.listarAvanceEntregables(0,5)" *ngIf="divSegMonitoreo" [idSeguimientoMonitoreoObra]="idSeguimientoMonitoreo" [bEstado]=true [guid]="guid"></set-entregables-exp-tec>
+              </accordion-group>
+            </div>
+          </div>
+
+          <div class="row">
+              <div class="col-12">
+                <accordion-group [isOpen]=false [panelClass]="separator" *hasClaim="'monitoreo_tabSeg_obraValorizaciones_listObraValorizaciones_exp_tec'">
+                  <button class="btn btn-link btn-block clearfix" accordion-heading>
+                    <div class="pull-left float-left">4. Avance de Elaboración del Expediente Técnico, según Informes - UEI</div>
+                    <span class="badge float-right pull-right">
+                      <i class="fa fa-circle-o"></i>
+                    </span>
+                  </button>
+                  <set-avance-elaboracion-expediente #AvanceEntregableExpTec *ngIf=divSegMonitoreo [idSeguimientoMonitoreoObra]="idSeguimientoMonitoreo" [bEstado]=true></set-avance-elaboracion-expediente>
+                </accordion-group>
+              </div>
+          </div>
+
+          <div class="row">
+              <div class="col-12">
+                <accordion-group [isOpen]=false [panelClass]="separator">
+                  <button class="btn btn-link btn-block clearfix" accordion-heading>
+                    <div class="pull-left float-left">5. Acciones de Seguimiento - UEI</div>
+                    <span class="badge float-right pull-right">
+                      <i class="fa fa-circle-o"></i>
+                    </span>
+                  </button>
+                  <set-acciones-seguimiento-monitoreo-exp-tec [idSeguimientoMonitoreoObra]="idSeguimientoMonitoreo" [bEstado]=true [idFase]="idFase" tipoPerfil="UEI">
+                  </set-acciones-seguimiento-monitoreo-exp-tec>
+                </accordion-group>
+              </div>
+          </div>
+
+          <div class="row">
+              <div class="col-12">
+                <accordion-group [isOpen]=false [panelClass]="separator" *hasClaim="'monitoreo_tabSeg_divAccionSeguimientoMonitoreo_exp_tec'">
+                  <button class="btn btn-link btn-block clearfix" accordion-heading>
+                    <div class="pull-left float-left">6. Acciones de Seguimiento y Monitoreo - PVD</div>
+                    <span class="badge float-right pull-right">
+                      <i class="fa fa-circle-o"></i>
+                    </span>
+                  </button>
+                  <set-acciones-seguimiento-monitoreo-exp-tec [idSeguimientoMonitoreoObra]="idSeguimientoMonitoreo" [bEstado]=true [idFase]="idFase" tipoPerfil="PVD">
+                  </set-acciones-seguimiento-monitoreo-exp-tec>
+                </accordion-group>
+              </div>
+          </div>
+      </accordion>
+    </div>
+  </div>

@@ -1,0 +1,92 @@
+<div class="modal-header">
+  <h4 class="modal-title" [hidden]="!cambiarEditar">Nuevo Geo Tramo</h4>
+  <h4 class="modal-title" [hidden]="cambiarEditar">Editar Geo Tramo</h4>
+  <p class="pl-4 pr-4" [hidden]="!cambiarEditar">Formulario para el registro de geo tramo</p>
+  <p class="pl-4 pr-4" [hidden]="cambiarEditar">Formulario para la edición de geo tramo</p>
+</div>
+<div class="modal-body">
+  <form [formGroup]="formEdicionGeoTramo" (ngSubmit)="administrarGeoTramo()">
+    <div class="row form-group">
+      <label class="col-md-2 control-label" for="buscarTramo">Tramo:</label>
+      <div *ngIf="cambiarEditar" class="col-md-10">
+        <input type="text" class="form-control" [matAutocomplete]="auto" [formControl]="buscarTramo"
+          (focus)="limpiarAutocomplete()" required placeholder="ingrese nombre del Tramo" id="nombreTramo"
+          style="text-transform: uppercase">
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)='mostrarTramoSeleccionado($event.option.value)'>
+          <mat-option *ngFor="let itemTramo of tramos" [value]="itemTramo.id_tramo + '|' + itemTramo.nombre_tramo">
+            {{ itemTramo.nombre_tramo }}
+          </mat-option>
+        </mat-autocomplete>
+      </div>
+      <div *ngIf="!cambiarEditar" class="col-md-10">
+        <input type="text" class="form-control" [formControl]="buscarTramo" id="nombreTramo" readonly>
+      </div>
+    </div>
+    <div class="row form-group d-flex align-items-center">
+      <label class="col-md-2 control-label" for="longitud">Longitud:</label>
+      <div class="col-md-4">
+        <input class="form-control" type="number" formControlName="longitud" id="longitud"
+          placeholder="Ingrese longitud del tramo">
+      </div>
+      <label class="col-md-2 control-label" for="unidad_medida">Unidad de Medida:</label>
+      <div class="col-md-4">
+        <select formControlName="unidad_medida" class="form-control" id="unidad_medida">
+          <option [ngValue]=null disabled>Seleccione unidad de medida</option>
+          <option *ngFor="let item of unidadMedidas" [ngValue]="item.id_unidad_medida">
+            {{ item.nombre_unidad_medida }}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="row form-group d-flex align-items-center">
+      <label class="col-md-2 control-label" for="codigo_clasificador_ruta">Codigo Clasificador de Rutas:</label>
+      <div class="col-md-4">
+        <input class="form-control" type="text" formControlName="codigo_clasificador_ruta" id="codigo_clasificador_ruta"
+          placeholder="Ingrese el código clasificador de rutas">
+      </div>
+      <label class="col-md-2 control-label" for="nombre_camino">Nombre del camino:</label>
+      <div class="col-md-4">
+        <input class="form-control" type="text" formControlName="nombre_camino" id="nombre_camino"
+          placeholder="Ingrese el nombre del camino">
+      </div>
+    </div>
+    <div class="row form-group d-flex align-items-center">
+      <label class="col-md-2 control-label" for="codigo_provisional_ruta">Codigo Provisional de Rutas:</label>
+      <div class="col-md-4">
+        <input class="form-control" type="text" formControlName="codigo_provisional_ruta" id="codigo_provisional_ruta"
+          placeholder="Ingrese el código provisional de rutas">
+      </div>
+      <label class="col-md-2 control-label" for="descripcion_provisional">Descripción provisional:</label>
+      <div class="col-md-4">
+        <input class="form-control" type="text" formControlName="descripcion_provisional" id="descripcion_provisional"
+          placeholder="Ingrese la descripción provisional">
+      </div>
+    </div>
+    <div class="row form-group d-flex align-items-center">
+      <label class="col-md-2 control-label" for="codigo_zona">Codigo de Zona:</label>
+      <div class="col-md-4">
+        <select formControlName="codigo_zona" class="form-control" id="codigo_zona">
+          <option [ngValue]=null disabled>Seleccione codigo de zona</option>
+          <option *ngFor="let zona of codigosZonas" [ngValue]="zona.codigo_zona">
+            {{ zona.zona }}
+          </option>
+        </select>
+      </div>
+      <label class="col-md-2 control-label" for="archivo">Archivo:</label>
+      <div class="col-md-4">
+        <app-input-file idComp="filegeotramograbar" (onChange)="fileChangeEvent($event)" IdTipoArchivo=""
+          class="input-group" Solo="seeee" Extensiones=".zip"></app-input-file>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-danger" type="submit" id="btnGuardar" [disabled]="formEdicionGeoTramo.invalid"><i
+          class="fa fa-save"></i> Guardar</button>
+      <button class="btn pull-left ml-1" type="button" id="btnLimpiar" [hidden]="!cambiarEditar"
+        (click)="formEdicionGeoTramo.reset()"><i class="icon icon-limpiar"></i>
+        Limpiar</button>
+      <button class="btn btn-plomo" id="btnCancelar" type="button" (click)="closeModal()"><i
+          class="fa fa-arrow-left"></i>
+        Cancelar</button>
+    </div>
+  </form>
+</div>

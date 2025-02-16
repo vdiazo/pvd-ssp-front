@@ -1,0 +1,139 @@
+<div class="row form-group" *hasClaim="'monitoreo_tabSeg_avanceExpediente_nuevInformeAvance_exp_tec_eje_dir'">
+  <div class="col-sm-6" [hidden]=!bEstado>
+    <button class="btn btn-plomo" type="button" id="btnNuevaAccionSeguimientoMonitoreo"
+      (click)="openModalValEntregable()">
+      <i class="fa fa-plus"></i> Nuevo</button>
+  </div>
+  <div class="col-6 text-right">
+    <label dlabels class="control-label">Última Actualización:</label> &nbsp;
+    <span>{{UltimaActualizacionAvanceInforme}}</span>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-sm-12 container-scroll">
+    <table class="table table-hover table-bordered table-responsive table-full-detalle">
+      <thead class="table-active">
+        <tr>
+          <th>Item</th>
+          <th>Doc. Aprobacion</th>
+          <th>Nro. Informe</th>
+          <th>Fecha Presentación</th>
+          <th>Fecha de Conformidad</th>
+          <th>Monto Pagado (S/)</th>
+          <th>Observación</th>
+          <th>Doc. Presentación</th>
+          <th>Doc. Conformidad</th>
+          <th [hidden]=!bEstado></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let informe of listaEntregablesAvance; let i=index">
+          <td class="xs-hidden">{{i+1}}</td>
+          <td class="xs-hidden">{{informe.denominacion}}</td>
+          <td class="xs-hidden">Informe N° {{informe.num_informe}}</td>
+          <td>
+            <div class="xs-hidden">
+              {{informe.fecha_presentacion | formatoFecha}}
+            </div>
+            <div class="xs-display">
+              <div class="xs-th f-s-12">Doc. Aprobación: </div> {{informe.denominacion}}
+              <div class="xs-th f-s-12">Nro. de Informe</div> {{informe.num_informe}}
+              <div class="xs-th f-s-12"><i class="fa fa-calendar"></i> Fecha de Presentación: </div>
+              {{informe.fecha_presentacion | formatoFecha}}
+              <div class="xs-th f-s-12"><i class="fa fa-calendar"></i> Fecha de Conformidad: </div>
+              {{informe.fecha_conformidad =="-infinity" ? "" : informe.fecha_conformidad | formatoFecha}}
+              <div class="xs-th f-s-12">Monto neto pagado: </div>{{informe.monto_informe_neto | formatoMoneda}}
+              <div class="xs-th f-s-12">Observación: </div>{{informe.observacion}}
+            </div>
+          </td>
+          <td class="xs-hidden">
+            {{informe.fecha_conformidad =="-infinity" ? "" : informe.fecha_conformidad | formatoFecha}}</td>
+          <td class="xs-hidden">
+            {{informe.monto_informe_neto | formatoMoneda}}
+          </td>
+          <td class="xs-hidden">{{informe.observacion}}</td>
+          <td class="xs-hidden">
+            <div
+              *ngIf="informe.ruta_archivo_presentacion != null && informe.nombre_archivo_presentacion != '' ; else templateicono">
+              <a href="{{informe.ruta_archivo_presentacion}}" target="_blank" class="btn-icon mr-1" [LinkNube]="informe.nombre_archivo_presentacion" [Ruta]="informe.ruta_archivo_presentacion">
+                <i class="fa fa-15x">
+                  <img src="assets/img/icons/file.svg" alt="archivo">
+                </i>
+              </a>
+            </div>
+            <ng-template #templateicono>
+            </ng-template>
+          </td>
+          <td class="xs-hidden">
+            <div
+              *ngIf="informe.ruta_archivo_conformidad != null && informe.nombre_archivo_conformidad != '' ; else templateicono">
+              <a href="{{informe.ruta_archivo_conformidad}}" target="_blank" class="btn-icon mr-1" [LinkNube]="informe.nombre_archivo_conformidad" [Ruta]="informe.ruta_archivo_conformidad">
+                <i class="fa fa-15x">
+                  <img src="assets/img/icons/file.svg" alt="archivo">
+                </i>
+              </a>
+            </div>
+            <ng-template #templateicono>
+            </ng-template>
+          </td>
+          <td colspan="2" class="xs-footer-lista" [hidden]=!bEstado>
+            <div class="xs-hidden pre-wrap">
+              <span *hasClaim="'monitoreo_tabSeg_avanceExpediente_editInformeAvance_exp_tec_eje_dir'">
+                <a class="btn btn-sm btn-icon mr-1s" href="javascript:void(0);"
+                  (click)="editarAvanceEntregable(informe)">
+                  <i class="fa fa-15x">
+                    <img src="assets/img/icons/pencil.svg" alt="editar">
+                  </i>
+                </a>
+              </span>
+              <span *hasClaim="'monitoreo_tabSeg_avanceExpediente_eliInformeAvance_exp_tec_eje_dir'">
+                <a class="btn btn-sm btn-icon" href="javascript:void(0);"
+                  (click)="anularAvanceEntregable(informe.id_avance_informe)">
+                  <i class="fa fa-15x">
+                    <img src="assets/img/icons/trash.svg" alt="eliminar">
+                  </i>
+                </a>
+              </span>
+            </div>
+            <div class="xs-display xs-text-right">
+              <a *ngIf="informe.ruta_archivo_conformidad != '' && informe.nombre_archivo_conformidad != null"
+                href="{{informe.nombre_archivo}}" target="_blank" class="btn-icon mr-1" [LinkNube]="informe.nombre_archivo_conformidad" [Ruta]="informe.ruta_archivo_conformidad">
+                <i class="fa fa-file"></i>
+              </a>
+              <a class="btn-icon mr-1" href="javascript:void(0);" (click)="editarAvanceEntregable(informe)"
+                *hasClaim="'monitoreo_tabSeg_avanceExpediente_editInformeAvance_exp_tec_eje_dir'">
+                <i class="fa fa-pencil"></i>
+              </a>
+              <a class="btn-icon" href="javascript:void(0);" (click)="anularAvanceEntregable(informe.id_avance_informe)"
+                *hasClaim="'monitoreo_tabSeg_avanceExpediente_eliInformeAvance_exp_tec_eje_dir'">
+                <i class="fa fa-trash"></i>
+              </a>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-12">
+    <nav class="pt-4 pl-3 pull-right">
+      <pagination [totalItems]="totalRegistros" [boundaryLinks]="true" previousText="&lsaquo;" nextText="&rsaquo;"
+        [rotate]="false" firstText="&laquo;" lastText="&raquo;" [maxSize]="5" [itemsPerPage]="5"
+        (pageChanged)="cambiarPagina($event)">
+      </pagination>
+    </nav>
+  </div>
+</div>
+<div class="group-box">
+  <div class="row">
+    <div class="col-sm-12">
+      <label dlabels class="control-label">
+        <b>Avance Financiero Acumulado Total:</b>
+        {{montoTotalFinancieroAcumulado | currency: "S/ "}}
+      </label>
+      <br>
+      <label dlabels class="control-label">
+        <b>Avance Físico Acumulado (%):</b> {{porcentajeAvanceFisicoAcumulado}} %
+      </label>
+    </div>
+  </div>
+</div>

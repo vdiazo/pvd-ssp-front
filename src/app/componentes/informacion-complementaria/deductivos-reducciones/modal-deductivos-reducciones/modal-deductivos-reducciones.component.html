@@ -1,0 +1,97 @@
+<div class="modal-header">
+  <h4 class="modal-title">Deductivo Reducción</h4>
+  <p class="pb-2 pl-4 pr-4">Registro y listado de Deductivo Reducción</p>
+</div>
+<div class="modal-body">
+  <div class="group-box">
+    <form (ngSubmit)="modificarDeductivoReduccion(model);" #deductivoReduccionForm="ngForm">
+      <div class="row form-group">
+        <input [hidden]="true" type='number' name="id_deductivo_reduccion_obra" id="id_deductivo_reduccion_obra" [(ngModel)]="model.id_deductivo_reduccion_obra"
+          #id_deductivo_reduccion_obra="ngModel" />
+        <div class="col-sm-2">
+          <label dlabels class="control-label" for="monto_presupuesto">Monto Presupuesto (*):</label>
+        </div>
+        <div class="col-sm-4">
+          <input dTextBox class="form-control" type='text' [textMask]="{mask: funciones.currencyMask}" name="monto_presupuesto" id="monto_presupuesto" placeholder="Ingrese monto presupuesto"
+            required [(ngModel)]="model.monto_presupuesto" #monto_presupuesto="ngModel" />
+          <div [hidden]="monto_presupuesto.valid || monto_presupuesto.pristine" class="alert alert-danger">
+            Monto Presupuesto es obligatorio
+          </div>
+        </div>
+        <div class="col-sm-2">
+          <label dlabels class="control-label" for="resolucion_aprobacion">Resolución Aprobacion (*):</label>
+        </div>
+        <div class="col-sm-4">
+          <input dTextBox class="form-control" type='text' name="resolucion_aprobacion" id="resolucion_aprobacion" required [(ngModel)]="model.resolucion_aprobacion"
+            #resolucion_aprobacion="ngModel" placeholder="Ingrese resolución de aprobación" />
+          <div [hidden]="resolucion_aprobacion.valid || resolucion_aprobacion.pristine" class="alert alert-danger">
+            Resolución Aprobación es obligatorio
+          </div>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-2">
+          <label dlabels class="control-label" for="resolucion_fecha">Resolucion Fecha (*):</label>
+        </div>
+        <div class="col-sm-4">
+          <input dTextBox class="form-control" type='text' name="resolucion_fecha" id="resolucion_fecha" placeholder="dd/mm/aaaa" bsDatepicker
+            required [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es', containerClass: 'theme-red' }" [(ngModel)]="model.resolucion_fecha"
+            #resolucion_fecha="ngModel" readonly="readonly" />
+          <div [hidden]="resolucion_fecha.valid || resolucion_fecha.pristine" class="alert alert-danger">
+            Resolución Fecha es obligatorio
+          </div>
+        </div>
+        <div class="col-sm-2">
+          <label dlabels class="control-label" for="incidencia">Incidencia (*):</label>
+        </div>
+        <div class="col-sm-4">
+          <input dTextBox class="form-control" type='number' name="incidencia" id="incidencia" placeholder="Ingrese porcentaje de incidencia"
+            required [(ngModel)]="model.incidencia" #incidencia="ngModel" min="0" max="100" step="0.01" (keyup)="model.incidencia=funciones.numberRange(model.incidencia,0,100)"
+            (keypress)="funciones.IsFloat($event)" />
+          <div [hidden]="incidencia.valid || incidencia.pristine" class="alert alert-danger">
+            Incidencia es obligatorio
+          </div>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-2">
+          <label dlabels class="control-label" for="concepto">Concepto (*):</label>
+        </div>
+        <div class="col-sm-4">
+          <input dTextBox class="form-control" type='text' name="concepto" id="concepto" required [(ngModel)]="model.concepto" #concepto="ngModel"
+            placeholder="Ingrese concepto" />
+          <div [hidden]="concepto.valid || concepto.pristine" class="alert alert-danger">
+            Concepto es obligatorio
+          </div>
+        </div>
+        <div class="col-sm-2">
+          <label dlabels class="control-label">Cargar Resolución de Aprobación de Deductivo:</label>
+        </div>
+        <div class="col-sm-4">
+          <div class="input-group">
+            <app-input-file idComp="fileDeductivoReduccion" (onChange)="fileChangeEvent($event)" required IdTipoArchivo="{{IdTipoArchivo}}"
+              class="input-group" Value="{{model.nombre_archivo}}"></app-input-file>
+          </div>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-2">
+          <label dlabels class="control-label" for="observacion">Observación:</label>
+        </div>
+        <div class="col-sm-10">
+          <textarea class="form-control" type='multiline' name="observacion" id="observacion" placeholder="Ingrese Observación" [(ngModel)]="model.observacion"
+            #observacion="ngModel"></textarea>
+          <div [hidden]="observacion.valid || observacion.pristine" class="alert alert-danger">
+            Observación es obligatorio
+          </div>
+        </div>
+      </div>
+      <span class="comentario">(*)Campos obligatorios</span>
+      <div class="modal-footer">
+        <button type="submit" id="btnGuardar" readonly [disabled]="!deductivoReduccionForm.form.valid" class="btn btn-danger">
+          Guardar</button>
+        <button class="btn btn-plomo" id="btnCancelar" type="button" (click)="closeModal()">Cerrar</button>
+      </div>
+    </form>
+  </div>
+</div>

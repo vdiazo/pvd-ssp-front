@@ -1,0 +1,232 @@
+<div class="modal-header">
+  <h4 class="modal-title">Editar Convenio</h4>
+  <p class="pl-4 pr-4">Formulario para la edición de convenios</p>
+</div>
+<div class="modal-body">
+  <form (ngSubmit)="administrarConvenioEditar();" #convenioEditForm="ngForm">
+    <div class="row form-group">
+        <label dlabels class="col-sm-2 control-label">CÓDIGO SNIP:</label>
+        <div class="col-sm-4">
+          <input dTextBox class="form-control" type='text'  placeholder="Código SNIP" name="codSnip" [(ngModel)]="entidadEditar.cod_snip" disabled="disabled" />
+        </div>
+        <label dlabels class="col-sm-2 control-label">CÓDIGO DE PROYECTO:</label>
+        <div class="col-sm-4">
+          <input dTextBox class="form-control" type='text' name="codProyecto" placeholder="Código de Proyecto" [(ngModel)]="entidadEditar.cod_unificado" disabled="disabled" />
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-2">
+          <label dlabels class="control-label">NOMBRE DE PROYECTO:</label>
+        </div>
+        <div class="col-sm-10">
+          <input dTextBox class="form-control" type='text' name="nomProyecto" placeholder="Nombre de Proyecto" disabled="disabled" [(ngModel)]="entidadEditar.nombre_proyecto"/>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-2">
+          <label dlabels class="control-label">UNIDAD EJECUTORA:</label>
+        </div>
+        <div class="col-sm-10">
+            <ng-select required disabled [items]="municipalidades"
+            placeholder="Seleccione unidad ejecutora"
+              bindLabel="nombre_municipalidad"
+              bindValue="id_municipalidad"
+              [(ngModel)]="entidadEditar.id_municipalidad"
+              (change)="seleccionarEjecutora($event)"
+              #id_municipalidad="ngModel"
+              name="id_municipalidad">
+            </ng-select>
+            <div [hidden]="id_municipalidad.valid || id_municipalidad.pristine" class="alert alert-danger">
+                Unidad ejecutora es obligatorio
+            </div>
+        </div>
+      </div>
+      <div class="row form-group" [hidden]="!visibleEjecutora">
+        <div class="col-md-2">
+          <label dlabels class="control-label">EJECUTORA:</label>
+        </div>
+        <div class="col-md-10">
+            <ng-select [items]="ejecutoras"
+            placeholder="Seleccione Ejecutora"
+              bindLabel="nombre_ejecutora"
+              bindValue="id_ejecutora"
+              [(ngModel)]="entidadEditar.id_ejecutora"
+              name="unidadejecutora">
+            </ng-select>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-2">
+            <label dlabels class="control-label">TRAMO</label>
+        </div>
+        <div class="col-sm-10"> 
+            <input dTextBox class="form-control" disabled="disabled" type="text" name="nombre_tramo" placeholder="Escriba Tramo" [(ngModel)]="entidadEditar.nombre_tramo" />           
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-2">
+          <label dlabels class="control-label">FASE</label>
+        </div>
+        <div class="col-sm-4">
+            <input dTextBox class="form-control" type="text" name="NombreTramo" disabled="disabled" placeholder="Escriba Tramo" [(ngModel)]="entidadEditar.nombre_tipo_fase" />           
+        </div>
+        <div class="col-sm-2">
+          <label dlabels class="control-label">DOCUMENTO DE COMPROMISO</label>
+        </div>
+        <div class="col-sm-4">
+            <ng-select required [items]="documentos"
+            placeholder="Seleccione Documento"
+              bindLabel="nombre_documento_compromiso"
+              bindValue="id_documento_compromiso"
+              [(ngModel)]="entidadEditar.id_documento_compromiso"
+              #id_documento_compromiso="ngModel"
+              name="id_documento_compromiso">
+            </ng-select>
+            <div [hidden]="id_documento_compromiso.valid || id_documento_compromiso.pristine" class="alert alert-danger">
+                Documento de compromiso es obligatorio
+            </div>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-2">
+          <label dlabels class="control-label">FUENTE DE FINANCIAMIENTO</label>
+        </div>
+        <div class="col-sm-4">
+            <ng-select required [items]="denominacion"
+            placeholder="Seleccione Fuente"
+              bindLabel="nombre_fuente"
+              bindValue="id_fuente_financiamiento"
+              [(ngModel)]="entidadEditar.id_fuente_financiamiento"
+              #id_fuente_financiamiento="ngModel"
+              name="id_fuente_financiamiento">
+            </ng-select>
+            <div [hidden]="id_fuente_financiamiento.valid || id_fuente_financiamiento.pristine" class="alert alert-danger">
+                Fuente de financiamiento es obligatorio
+            </div>
+        </div>
+        <div class="col-sm-2">
+          <label dlabels class="control-label">MONTO CONVENIO/ADENDA</label>
+        </div>
+        <div class="col-sm-4">
+          <!-- <input class="form-control" maxlength="21" (keyup)="calcularMonto(entidadEditar.numMonto_texto)" (keypress)="this.funciones.IsNumberKey($event)" type='text' id="monto" name="monto" #monto="ngModel" required placeholder="Monto de convenio" [(ngModel)]="entidadEditar.numMonto_texto" /> -->
+          <input 
+          class="form-control" 
+          maxlength="21" 
+          [textMask]="{mask: funciones.currencyMask}"
+          type='text' id="monto" 
+          name="monto" #monto="ngModel" 
+          required placeholder="Monto de convenio" 
+          [(ngModel)]="entidadEditar.numMonto_texto" />
+          <div [hidden]="monto.valid || monto.pristine" class="alert alert-danger">
+              Monto es obligatorio
+          </div>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-2">
+          <label dlabels class="control-label">FECHA DE LA FIRMA DEL CONVENIO/ADENDA</label>
+        </div>
+        <div class="col-sm-4">
+          <input class="form-control" type='text' readonly="readonly" name="fechaConvenio" placeholder="Fecha de firma de convenio" [(ngModel)]="entidadEditar.fecha_firma" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es',containerClass: 'theme-red' }" />
+        </div>
+        <div class="col-sm-2">
+          <label dlabels class="control-label">FECHA DE VIGENCIA</label>
+        </div>
+        <div class="col-sm-4">
+          <input class="form-control" type='text' readonly="readonly" name="fechaVigencia" placeholder="Fecha de Vigencia" [(ngModel)]="entidadEditar.fecha_vigencia" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', locale: 'es',containerClass: 'theme-red' }" />
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-2">
+          <label dlabels class="control-label"> SIGLAS DE CONVENIO</label>
+        </div>
+        <div class="col-sm-10">
+          <input class="form-control" type='text' #siglas="ngModel" required name="siglas"  placeholder="Convenio N°xxx-2018-MTC/21" [(ngModel)]="entidadEditar.siglas" />
+          <div [hidden]="siglas.valid || siglas.pristine" class="alert alert-danger">
+            Siglas de convenio es obligatorio
+          </div>
+        </div>          
+      </div>
+      <div class="row form-group">
+          <div class="col-md-2">
+              <label dlabels class="control-label">CONVENIO</label>
+            </div>
+            <div class="col-md-10">
+              <app-input-file idComp="fileeditarconvenio" (onChange)="fileChangeEvent($event)" IdTipoArchivo="{{IdTipoArchivo}}" class="input-group" Value="{{this.entidadEditar.archivo_convenio}}"></app-input-file>
+            </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-2">
+          <label dlabels class="control-label">TIPO INFRAESTRUCTURA</label>
+        </div>
+        <div class="col-sm-4">
+            <ng-select required [items]="infraestructuras"
+            placeholder="Seleccione Tipo de Infraestructura"
+              bindLabel="nombre_tipo_infraestructura"
+              bindValue="id_tipo_infraestructura"
+              [(ngModel)]="entidadEditar.id_tipo_infraestructura"
+              #id_tipo_infraestructura="ngModel"
+              name="id_tipo_infraestructura">
+            </ng-select>
+            <div [hidden]="id_tipo_infraestructura.valid || id_tipo_infraestructura.pristine" class="alert alert-danger">
+                Tipo infraestructura es obligatorio
+            </div>
+        </div>
+        <div class="col-sm-2">
+          <label dlabels class="control-label">TIPO VÍA</label>
+        </div>
+        <div class="col-sm-4">
+            <ng-select required [items]="vias"
+            placeholder="Seleccione Tipo de Vía"
+              bindLabel="nombre_tipo_via"
+              bindValue="id_tipo_via"
+              [(ngModel)]="entidadEditar.id_tipo_via"
+              #id_tipo_via="ngModel"
+              name="id_tipo_via">
+              <div [hidden]="id_tipo_via.valid || id_tipo_via.pristine" class="alert alert-danger">
+                  Tipo vía es obligatorio
+              </div>
+        </ng-select>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-2">
+          <label dlabels class="control-label">UNIDAD DE MEDIDA</label>
+        </div>
+        <div class="col-sm-4">
+          <ng-select required [items]="medidas"
+            placeholder="Seleccione unidad de medida"
+              bindLabel="nombre_unidad_medida"
+              bindValue="id_unidad_medida"
+              [(ngModel)]="entidadEditar.id_unidad_medida"
+              #id_unidad_medida="ngModel"
+              name="id_unidad_medida">
+          </ng-select>
+          <div [hidden]="id_unidad_medida.valid || id_unidad_medida.pristine" class="alert alert-danger">
+              Unidad medida es obligatorio
+          </div>
+        </div>
+        <div class="col-sm-2">
+          <label dlabels class="control-label">LONGITUD</label>
+        </div>
+        <div class="col-sm-4">
+          <!-- <input class="form-control" (keyup)="calcularLongitud(entidadEditar.numLongitud_texto)" (keypress)="this.funciones.IsNumberKey($event)" type='text' name="longitud" #longitud="ngModel" required placeholder="longitud" [(ngModel)]="entidadEditar.numLongitud_texto"/> -->
+          <input 
+          class="form-control" 
+          [textMask]="{mask: funciones.currencyMask}" 
+          type='text' 
+          name="longitud" 
+          #longitud="ngModel" 
+          required placeholder="longitud" 
+          [(ngModel)]="entidadEditar.numLongitud_texto"/>
+          <div [hidden]="longitud.valid || longitud.pristine" class="alert alert-danger">
+              Longitud es obligatorio
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+          <button class="btn btn-danger"  type="submit" id="btnGuardar" [disabled]="!convenioEditForm.form.valid"><i class="fa fa-save"></i> Guardar</button>
+          <button class="btn btn-plomo" id="btnCancelar" type="button" (click)="closeModal()"><i class="fa fa-arrow-left"></i> Cancelar</button>
+        </div>
+      </form>
+</div>
